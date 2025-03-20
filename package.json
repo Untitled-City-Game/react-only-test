@@ -1,0 +1,24 @@
+{
+  "name": "parcel-react-client-starter",
+  "private": true,
+  "version": "0.0.0",
+  "source": "src/index.html",
+  "scripts": {
+    "start": "parcel",
+    "build": "parcel build",
+    "serve": "tsx watch src/server.ts"
+  },
+  "dependencies": {
+    "boardgame.io": "^0.50.2",
+    "react": "^19.0.0",
+    "react-dom": "^19.0.0",
+    "react-router": "^7.4.0"
+  },
+  "devDependencies": {
+    "@types/react": "^19.0.12",
+    "@types/react-dom": "^19.0.4",
+    "parcel": "^2.14.1",
+    "process": "^0.11.10",
+    "tsx": "^4.19.3"
+  }
+}
