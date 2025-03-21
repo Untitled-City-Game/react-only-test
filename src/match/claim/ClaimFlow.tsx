@@ -1,15 +1,14 @@
-;
-import { GameContext } from "@/components/Board";
-import Header from "@/components/userInterface/Header";
+import { ClaimStateMoves } from "@/scripts/connect_four";
 import { storage } from "@/scripts/firebase";
 import { MetroGameBoardProps, ZoneData } from "@/scripts/types";
-import { ClaimStateMoves } from "@/server/connect_four";
-import { ChooseChallenge } from "@components/gameScreens/claim/ChooseChallenge";
-import ConfirmClaim from "@components/gameScreens/claim/ConfirmClaim";
-import { Evidence } from "@components/gameScreens/claim/Evidence";
+import { GameContext } from "@/src/match/Board";
+import { ChooseChallenge } from "@/src/match/claim/ChooseChallenge";
+import ConfirmClaim from "@/src/match/claim/ConfirmClaim";
+import { Evidence } from "@/src/match/claim/Evidence";
+import Header from "@/src/userInterface/Header";
 import { Button, Center, Group, Modal, Stack, Stepper } from "@mantine/core";
-import { useForm, UseFormReturnType } from "@mantine/form";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { UseFormReturnType, useForm } from "@mantine/form";
+import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
 import { useContext, useState } from "react";
 
 export type Form = UseFormReturnType<

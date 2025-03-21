@@ -41,12 +41,12 @@ export default function Board(props: MetroGameBoardProps) {
 	console.log("rendering board with playerID", playerID);
 	return (
 		<GameContext.Provider value={{ ...rest }}>
-			<p>Player ID: {playerID}</p>
+			{/* <p>Player ID: {playerID}</p>
 			<p>
 				Team: {playerID && props.G.allPlayersData[playerID].teamColor}
 			</p>
 			<p>Game state: {props.G.active ? "active" : "inactive"}</p>
-			<p>Gameover: {props.G.gameOver ? "true" : "false"}</p>
+			<p>Gameover: {props.G.gameOver ? "true" : "false"}</p> */}
 			{children}
 		</GameContext.Provider>
 	);

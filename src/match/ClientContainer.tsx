@@ -1,12 +1,13 @@
 import { ConnectFour } from "@/scripts/connect_four";
+import { gameLocationCenter } from "@/scripts/consts";
 import type { ClientSetupData, GameSetupData, MapData, PlayerData } from "@/scripts/types";
 import Board from "@/src/match/Board";
-import Span from "@/src/userInterface/Span";
+import { Library } from "@googlemaps/js-api-loader";
+import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
 import { LobbyClient } from "boardgame.io/client";
 import { SocketIO } from "boardgame.io/multiplayer";
 import { Client } from "boardgame.io/react";
 import { Suspense, useEffect, useMemo, useState } from "react";
-
 
 export default function ClientContainer(
 	props: { children: React.ReactNode }
@@ -14,7 +15,7 @@ export default function ClientContainer(
 	console.log("rendering client container")
 	const [playerData, setPlayerData] = useState<PlayerData>();
 	const [gameSetupData, setGameSetupData] = useState<GameSetupData>();
-	const lobbyClient = useMemo(() => new LobbyClient({ server: process.env.NEXT_PUBLIC_GAME_SERVER }), []);
+	const lobbyClient = useMemo(() => new LobbyClient({ server: process.env.GAME_SERVER }), []);
 	//Check if session is already part of a game
 	useEffect(() => {
 		console.log("running session playerdata effect")
@@ -35,7 +36,7 @@ export default function ClientContainer(
 			lobbyClient.getMatch("connect-four", playerData.matchID).then(async res => {
 				const cityName = res.setupData.city;
 				console.log("city", cityName);
-				const mapDataRes = await fetch(process.env.NEXT_PUBLIC_GAME_SERVER + "/map-data/" + cityName)
+				const mapDataRes = await fetch(process.env.GAME_SERVER + "/map-data/" + cityName)
 				const mapDataResJSON = await mapDataRes.json() as MapData;
 				setGameSetupData({
 					...mapDataResJSON,
@@ -56,7 +57,7 @@ export default function ClientContainer(
 				collapseOnLoad: true,
 			},
 			multiplayer: SocketIO({
-				server: process.env.NEXT_PUBLIC_GAME_SERVER,
+				server: process.env.GAME_SERVER,
 			}),
 		}) as React.JSXElementConstructor<ClientSetupData>
 		return (
@@ -65,7 +66,54 @@ export default function ClientContainer(
 			</Suspense>
 		)
 	} else {
-		return <Span>Game loading...</Span>
+		return <TestMap />
 	}
 }
+const libraries: Library[] = ["places", "geometry"];
 
+
+function TestMap() {
+	const { isLoaded } = useJsApiLoader({
+		id: "google-map-script",
+		googleMapsApiKey: "AIzaSyAhg8bq82cx8W6bqb-KTjk1QmrgOi43gdA",
+		libraries: libraries,
+		mapIds: ["fc1cd512863f2ee3"]
+	});
+
+	return isLoaded ? (
+		<div id="map" style={mapStyles}>
+		<GoogleMap
+			mapContainerStyle={containerStyle}
+			center={gameLocationCenter}
+			zoom={12}
+			options={{ 
+				mapId: "fc1cd512863f2ee3",
+				streetViewControl: false,
+				fullscreenControl: false,
+				mapTypeControl: false,
+			}}
+			>
+		</GoogleMap>
+	</div>
+	) : (
+		<>Test Map Loading...</>
+	);
+}
+
+//Styles to make map appear
+const containerStyle = {
+	width: "100%",
+	height: "100%",
+};
+
+const mapStyles: React.CSSProperties = {
+	flexBasis: "200px",
+	flexGrow: 7,
+};
+
+
+const mapContainerStyles: React.CSSProperties = {
+	display: "flex",
+	flexDirection: "column",
+	flexGrow: 10,
+};

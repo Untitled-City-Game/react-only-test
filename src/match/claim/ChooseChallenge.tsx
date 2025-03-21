@@ -1,7 +1,8 @@
 ;
-import { MetroGameBoardProps } from "@/scripts/types";
+import type { MetroGameBoardProps } from "@/scripts/types";
+import type { Form } from "@/src/match/claim/ClaimFlow";
+import Span from "@/src/userInterface/Span";
 import { Container, Group, Paper, Radio } from "@mantine/core";
-import { Form } from "./ClaimFlow";
 
 export function ChooseChallenge({
 	props, claimForm,

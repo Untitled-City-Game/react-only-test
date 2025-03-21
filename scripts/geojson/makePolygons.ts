@@ -1,6 +1,6 @@
 import { LineData, PolyData, PolygonFeature } from "@/scripts/types";
 import { Position } from "geojson";
-import PointInPolygon from 'point-in-polygon';
+import PointInPolygon from "point-in-polygon";
 
 export default function makePolygons(zoneDataObj: GeoJSON.FeatureCollection, zoneLines: LineData[]) {
 
@@ -33,5 +33,3 @@ export default function makePolygons(zoneDataObj: GeoJSON.FeatureCollection, zon
 	
 	return zonePolygons;
 }
-
-

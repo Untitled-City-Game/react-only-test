@@ -12,7 +12,7 @@ export default function CreateGame() {
 	
 
 	const navigate = useNavigate();
-	const lobbyClient = useMemo(() => new LobbyClient({ server: process.env.NEXT_PUBLIC_GAME_SERVER }), []);
+	const lobbyClient = useMemo(() => new LobbyClient({ server: process.env.GAME_SERVER }), []);
 	
 	const teamOptions = [
 		{ label: "Red", value: "red"},
@@ -58,7 +58,7 @@ export default function CreateGame() {
 	const handleCreateGame = async (values : FormValues) => {
 		console.log("creating game", values);
 		//get map data
-		const mapDataRes = await fetch(process.env.NEXT_PUBLIC_GAME_SERVER + "/map-data/" + values.city)
+		const mapDataRes = await fetch(process.env.GAME_SERVER + "/map-data/" + values.city)
 		const mapDataResJSON = await mapDataRes.json();
 
 		//handle errors

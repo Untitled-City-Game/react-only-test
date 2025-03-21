@@ -1,5 +1,5 @@
 import Span from "@/src/userInterface/Span";
-import { Button, Center, Group, Paper, Radio, Stack } from "@mantine/core";
+import { Button, Group, Paper, Radio, Stack } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { LobbyAPI } from "boardgame.io";
 import { LobbyClient } from "boardgame.io/client";
@@ -8,7 +8,7 @@ import { Link, useNavigate } from "react-router";
 
 export default function ChooseMatch() {
 	let navigate = useNavigate();
-	const lobbyClient = useMemo(() => new LobbyClient({ server: process.env.NEXT_PUBLIC_GAME_SERVER }), []);
+	const lobbyClient = useMemo(() => new LobbyClient({ server: process.env.GAME_SERVER }), []);
 
 	//Get all matches
 	const [matches, setMatches] = useState<LobbyAPI.Match[]>([]);
@@ -39,7 +39,7 @@ export default function ChooseMatch() {
 				<Radio.Indicator size="lg" color="orange" />
 				<div>
 					<Span>City: {match.setupData.city}</Span>
-					<Span>Gameover: {match.setupData.gameover}</Span>
+					{/* <Span>Gameover: {match.setupData.gameover}</Span> */}
 					<Span>
 						{ match.players?.length ? `Current players: ${match.players.map(player => player.name).filter(name => name).join(", ")}` : 'Empty' }
 					</Span>
@@ -56,25 +56,23 @@ export default function ChooseMatch() {
 	}
 
 	return (
-		<Center>
-		<h1>Connect Four Lobby</h1>
-		<Button component={Link} to="/game/lobby/create-match">Create New Game</Button>
-		<h2>Join a game</h2>
-
-			<form
-				onSubmit={joinGameForm.onSubmit(handleJoinGame)}>
-					<Stack>
-						<h2>Choose a Match</h2>
-						<Radio.Group
-							label="Choose a match"
-							key={joinGameForm.key("MatchID")}
-							{...joinGameForm.getInputProps("MatchID")}
-						>
-						{matchCards}
-						</Radio.Group>
-						<Button type="submit">Join</Button>
-					</Stack>
-				</form>
-		</Center>
+		<>
+			<h1>Connect Four Lobby</h1>
+			<Button component={Link} to="/lobby/create-match">Create New Game</Button>
+			<h2>Join a game</h2>
+				<form
+					onSubmit={joinGameForm.onSubmit(handleJoinGame)}>
+						<Stack>
+							<Radio.Group
+								label="Choose a match"
+								key={joinGameForm.key("MatchID")}
+								{...joinGameForm.getInputProps("MatchID")}
+							>
+							<Stack>{matchCards}</Stack>
+							</Radio.Group>
+							<Button type="submit">Join</Button>
+						</Stack>
+					</form>
+		</>
 		);
 }

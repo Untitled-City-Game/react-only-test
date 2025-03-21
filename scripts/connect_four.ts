@@ -181,7 +181,7 @@ const claimStateMoves = {
 export const ConnectFour: Game<GameState> = {
 	name: `connect-four`,
 	//set up game board using map json info
-	setup: ({ ctx }, setupData) => gameSetup(setupData, ctx),
+	setup: ({ ctx }, setupData) => gameSetup(ctx, setupData),
 	endIf: ({ G }) => {G.gameOver ? "Game ended" : null},
 	moves: {
 		claimZone,
@@ -208,7 +208,7 @@ export const ConnectFour: Game<GameState> = {
 
 export type ClaimStateMoves = StripContext<typeof claimStateMoves>;
 
-function gameSetup(setupData: GameSetupData, ctx: Ctx): GameState {
+function gameSetup(ctx: Ctx, setupData: GameSetupData): GameState {
 	console.log("Setting up game of metromayhem");
 	console.log("players: ", ctx.numPlayers);
 	console.log("currentplayer ", ctx.currentPlayer);

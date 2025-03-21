@@ -1,4 +1,5 @@
 import { ZoneData } from "@/scripts/types";
+import Span from "@/src/userInterface/Span";
 import {
 	Container,
 	Image

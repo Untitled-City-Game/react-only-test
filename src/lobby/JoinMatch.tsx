@@ -1,13 +1,4 @@
-;
-import {
-	Button,
-	Center,
-	Group,
-	Paper,
-	Radio,
-	Stack,
-	TextInput
-} from "@mantine/core";
+import { Button, Center, Group, Paper, Radio, Stack, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { LobbyAPI } from "boardgame.io";
 import { LobbyClient } from "boardgame.io/client";
@@ -15,12 +6,7 @@ import { useNavigate } from "react-router";
 
 import { joinMatch } from "@/scripts/joinMatch";
 import Span from "@/src/userInterface/Span";
-import {
-	useEffect,
-	useMemo,
-	useState
-} from "react";
-let navigate = useNavigate();
+import { useEffect, useMemo, useState } from "react";
 
 export default function JoinMatch({
 	matchID = "default",
@@ -28,9 +14,11 @@ export default function JoinMatch({
 	matchID?: string;
 }) {
 	const lobbyClient = useMemo(
-		() => new LobbyClient({ server: process.env.NEXT_PUBLIC_GAME_SERVER }),
+		() => new LobbyClient({ server: process.env.GAME_SERVER }),
 		[]
 	);
+
+	let navigate = useNavigate();
 
 	//get match data
 	const [matchData, setMatchData] = useState<LobbyAPI.Match>();
@@ -49,15 +37,20 @@ export default function JoinMatch({
 		},
 	});
 
-	type FormValues = { 
-		PlayerName: string; 
-		teamID: string; 
+	type FormValues = {
+		PlayerName: string;
+		teamID: string;
 	};
 	const handleJoinGame = async (values: FormValues) => {
 		console.log(values);
-		const playerData = await joinMatch(lobbyClient, matchID, values.PlayerName, values.teamID);
+		const playerData = await joinMatch(
+			lobbyClient,
+			matchID,
+			values.PlayerName,
+			values.teamID
+		);
 		sessionStorage.setItem("sessionPlayerData", JSON.stringify(playerData));
-		navigate('/match');
+		navigate("/match");
 	};
 
 	if (matchData) {
@@ -93,20 +86,21 @@ export default function JoinMatch({
 					<h1>Join Game</h1>
 					<p>Match ID: {matchID}</p>
 					<form onSubmit={joinGameForm.onSubmit(handleJoinGame)}>
-					<h2>Join a Game</h2>
-					<TextInput
-						label="Your name"
-						key={joinGameForm.key("PlayerName")}
-						{...joinGameForm.getInputProps("PlayerName")}
-					/>
-					<Radio.Group label="Choose a team" key={joinGameForm.key("teamID")}
-											{...joinGameForm.getInputProps("teamID")}
-					>
-						<Stack pt="md" gap="xs">
-							{teamCards}
-						</Stack>
-					</Radio.Group>
-					<Button type="submit">Join Game</Button>
+						<h2>Join a Game</h2>
+						<TextInput
+							label="Your name"
+							key={joinGameForm.key("PlayerName")}
+							{...joinGameForm.getInputProps("PlayerName")}
+						/>
+						<Radio.Group
+							label="Choose a team"
+							key={joinGameForm.key("teamID")}
+							{...joinGameForm.getInputProps("teamID")}>
+							<Stack pt="md" gap="xs">
+								{teamCards}
+							</Stack>
+						</Radio.Group>
+						<Button type="submit">Join Game</Button>
 					</form>
 				</Stack>
 			</Center>
@@ -124,7 +118,7 @@ export default function JoinMatch({
 // 					const activeMatches = matches.filter(match => !match.gameover);
 // 					let matchID = 'default';
 // 					if(activeMatches.length == 0){
-// 						const mapDataRes = await fetch(process.env.NEXT_PUBLIC_GAME_SERVER + "/map-data/" + 'melbourne')
+// 						const mapDataRes = await fetch(process.env.GAME_SERVER + "/map-data/" + 'melbourne')
 // 						const mapData : GameSetupData = await mapDataRes.json();
 // 						const res = await lobbyClient.createMatch('metro-mayhem', {
 // 							numPlayers: 20,
