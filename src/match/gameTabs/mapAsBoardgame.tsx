@@ -1,16 +1,17 @@
-import { gameLocationCenter, highlightColor } from "@/scripts/consts";
+import { highlightColor } from "@/scripts/consts";
 import { MetroGameBoardProps, ZoneData } from "@/scripts/types";
 import { GameContext } from "@/src/match/Board";
 import MapLine from "@/src/match/googleMaps/GoogleMapsLine";
 import ZonePolygon from "@/src/match/googleMaps/GoogleMapsPolygon";
-import LocationMarker from "@/src/match/googleMaps/location";
+import MapElement from "@/src/match/googleMaps/MapElement";
 import SelectedZonePopup from "@/src/match/googleMaps/SelectedZonePopup";
 import Header from "@/src/userInterface/Header";
 import { Library } from "@googlemaps/js-api-loader";
-import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
+import { useJsApiLoader } from "@react-google-maps/api";
 import { useContext, useState } from "react";
 
 const libraries: Library[] = ["places", "geometry"];
+
 
 
 export default function MapBoard() {
@@ -42,7 +43,7 @@ export default function MapBoard() {
 		id: "google-map-script",
 		googleMapsApiKey: "AIzaSyAhg8bq82cx8W6bqb-KTjk1QmrgOi43gdA",
 		libraries: libraries,
-		mapIds: ["fc1cd512863f2ee3"]
+		mapIds: ["fc1cd512863f2ee3"],
 	});
 
 	//Render zone lines
@@ -84,53 +85,30 @@ export default function MapBoard() {
 	//Render the map or loading screen
 	return isLoaded ? (
 		<>
-		<Header>
-			<h1>Map</h1>
-		</Header>
-		<div style={mapContainerStyles}>
-			<div id="map" style={mapStyles}>
-				<GoogleMap
-					mapContainerStyle={containerStyle}
-					center={gameLocationCenter}
-					zoom={12}
-					options={{ 
-						mapId: "fc1cd512863f2ee3",
-						streetViewControl: false,
-						fullscreenControl: false,
-						mapTypeControl: false,
-					}}
-					onClick={() => {
-						setCurrentZone(undefined);
-						setLineVisibility({});
-						setHighlightedZones({});		
-					}}
-					>
-					{/* This does the montreal grid */}
-					{zoneElements}
-					<>{lineElements}</>
-					{/* This is the location marker */}
-					<LocationMarker initialPosition={gameLocationCenter} />
-				</GoogleMap>
+			<Header>
+				<h1>Map</h1>
+			</Header>
+			<div style={mapContainerStyles}>
+				<div id="map" style={mapStyles}>
+					<MapElement
+						setLineVisibility={setLineVisibility}
+						setHighlightedZones={setHighlightedZones}
+						setCurrentZone={setCurrentZone}
+						lineElements={lineElements}
+						zoneElements={zoneElements} />
+				</div>
+				<SelectedZonePopup currentZone={currentZone} />
 			</div>
-			<SelectedZonePopup currentZone={currentZone} />
-		</div>
 		</>
 	) : (
 		<>Loading...</>
 	);
 }
 
-//Styles to make map appear
-const containerStyle = {
-	width: "100%",
-	height: "100%",
-};
-
 const mapStyles: React.CSSProperties = {
 	flexBasis: "200px",
 	flexGrow: 7,
 };
-
 
 const mapContainerStyles: React.CSSProperties = {
 	display: "flex",
