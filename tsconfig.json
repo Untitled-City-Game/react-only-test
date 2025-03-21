@@ -24,6 +24,18 @@
     "strict": true,
 
     /* Completeness */
-    "skipLibCheck": true
+    "skipLibCheck": true,
+    "baseUrl" : "./",
+    "paths": {
+      "@/*": ["./*"],
+      "@src/*": ["src/*"],
+      "@scripts/*": ["scripts/*"],
+      "@server/*": ["server/*"],
+      "@data/*": ["./data/*"],
+      "@styles/*": ["styles/*"],
+      "@match/*": ["src/match/*"],
+      "react": ["next-app/node_modules/@types/react/index"],
+    }
+
   }
 }
