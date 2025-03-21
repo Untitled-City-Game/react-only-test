@@ -18,12 +18,12 @@ export default function ClientContainer(
 	const lobbyClient = useMemo(() => new LobbyClient({ server: process.env.GAME_SERVER }), []);
 	//Check if session is already part of a game
 	useEffect(() => {
-		console.log("running session playerdata effect")
+		console.log("running localstorage playerdata effect")
 		if (!playerData){
-			const sessionPlayerData = sessionStorage.getItem("sessionPlayerData");
-			if (sessionPlayerData){
-				const loadedPlayerData = JSON.parse(sessionPlayerData) as PlayerData;
-				console.log("setting player data from session storage", sessionPlayerData);
+			const localPlayerData = localStorage.getItem("localPlayerData");
+			if (localPlayerData){
+				const loadedPlayerData = JSON.parse(localPlayerData) as PlayerData;
+				console.log("setting player data from local storage", localPlayerData);
 				setPlayerData(loadedPlayerData);
 			}
 		}

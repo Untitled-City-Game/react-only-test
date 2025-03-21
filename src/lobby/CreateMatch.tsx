@@ -85,7 +85,7 @@ export default function CreateGame() {
 
 		//join match
 		const playerData: PlayerData = await joinMatch(lobbyClient, matchID, values.PlayerName, values.teamID);
-		sessionStorage.setItem("sessionPlayerData", JSON.stringify(playerData));
+		localStorage.setItem("localPlayerData", JSON.stringify(playerData));
 		navigate('/match');
 	}
 

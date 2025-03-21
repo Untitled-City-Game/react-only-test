@@ -49,7 +49,7 @@ export default function JoinMatch({
 			values.PlayerName,
 			values.teamID
 		);
-		sessionStorage.setItem("sessionPlayerData", JSON.stringify(playerData));
+		localStorage.setItem("localPlayerData", JSON.stringify(playerData));
 		navigate("/match");
 	};
 
