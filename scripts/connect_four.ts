@@ -181,6 +181,7 @@ const claimStateMoves = {
 export const ConnectFour: Game<GameState> = {
 	name: `connect-four`,
 	//set up game board using map json info
+	validateSetupData: (data) => isGameSetupData(data),
 	setup: ({ ctx }, setupData) => gameSetup(ctx, setupData),
 	endIf: ({ G }) => {G.gameOver ? "Game ended" : null},
 	moves: {
@@ -207,6 +208,13 @@ export const ConnectFour: Game<GameState> = {
 }
 
 export type ClaimStateMoves = StripContext<typeof claimStateMoves>;
+
+function isGameSetupData (data : unknown) : string | undefined {
+	if(!data) return('No game setup data provided');
+	if(typeof data !== 'object') return('Game setup data is not an object');
+	if(!('city' in data) || typeof data.city !== 'string') return('Game setup data is missing city');
+	if(!('zonePolygons' in data) || !('winningLines' in data) || !data.zonePolygons || !data.zonePolygons) return('Game setup data is missing map data');
+}
 
 function gameSetup(ctx: Ctx, setupData: GameSetupData): GameState {
 	console.log("Setting up game of metromayhem");

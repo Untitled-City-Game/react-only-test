@@ -7,11 +7,13 @@ import Match from "@/src/match/mapTabs/Match";
 import RootLayout from "@/src/userInterface/RootLayout";
 import { BrowserRouter, Route, Routes } from "react-router";
 import MatchLayout from "./match/MatchLayout";
+import MapTest from "@/src/match/googleMaps/MapTest";
 
 const App = () => (
 	<BrowserRouter>
 		<Routes>
 			<Route element={<RootLayout />}>
+				<Route index element={<MapTest />} />
 				<Route path="match" element={<MatchLayout />}>
 					<Route index element={<Match />} />
 				</Route>

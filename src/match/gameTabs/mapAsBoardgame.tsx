@@ -3,16 +3,9 @@ import { MetroGameBoardProps, ZoneData } from "@/scripts/types";
 import { GameContext } from "@/src/match/Board";
 import MapLine from "@/src/match/googleMaps/GoogleMapsLine";
 import ZonePolygon from "@/src/match/googleMaps/GoogleMapsPolygon";
-import MapElement from "@/src/match/googleMaps/MapElement";
 import SelectedZonePopup from "@/src/match/googleMaps/SelectedZonePopup";
 import Header from "@/src/userInterface/Header";
-import { Library } from "@googlemaps/js-api-loader";
-import { useJsApiLoader } from "@react-google-maps/api";
 import { useContext, useState } from "react";
-
-const libraries: Library[] = ["places", "geometry"];
-
-
 
 export default function MapBoard() {
 	const props: MetroGameBoardProps = useContext(GameContext);
@@ -38,13 +31,6 @@ export default function MapBoard() {
 
 	const [currentZone, setCurrentZone] = useState<ZoneData>();
 
-	//Load the map
-	const { isLoaded } = useJsApiLoader({
-		id: "google-map-script",
-		googleMapsApiKey: "AIzaSyAhg8bq82cx8W6bqb-KTjk1QmrgOi43gdA",
-		libraries: libraries,
-		mapIds: ["fc1cd512863f2ee3"],
-	});
 
 	//Render zone lines
 	const lineElements = winningLines.map((line, index) => {
@@ -82,29 +68,25 @@ export default function MapBoard() {
 		);
 	});
 
-	//Render the map or loading screen
-	return isLoaded ? (
+	return (
 		<>
 			<Header>
 				<h1>Map</h1>
 			</Header>
 			<div style={mapContainerStyles}>
 				<div id="map" style={mapStyles}>
-					<MapElement
+					{/* <VisGlMapElement
 						setLineVisibility={setLineVisibility}
 						setHighlightedZones={setHighlightedZones}
 						setCurrentZone={setCurrentZone}
 						lineElements={lineElements}
-						zoneElements={zoneElements} />
+						zoneElements={zoneElements} /> */}
 				</div>
 				<SelectedZonePopup currentZone={currentZone} />
 			</div>
 		</>
-	) : (
-		<>Loading...</>
-	);
+	)
 }
-
 const mapStyles: React.CSSProperties = {
 	flexBasis: "200px",
 	flexGrow: 7,
