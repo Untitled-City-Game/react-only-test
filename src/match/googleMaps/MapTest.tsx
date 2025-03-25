@@ -1,3 +1,4 @@
+import { VisGLMapTest } from "@/src/match/googleMaps/MapElement";
 
 export default function MapTest() {
 
@@ -5,6 +6,7 @@ export default function MapTest() {
 	return (
 		<>
 		<h1>Map</h1>
+		<VisGLMapTest />
 
 	</>
 )

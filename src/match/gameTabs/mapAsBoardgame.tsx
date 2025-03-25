@@ -2,13 +2,14 @@ import { highlightColor } from "@/scripts/consts";
 import { MetroGameBoardProps, ZoneData } from "@/scripts/types";
 import { GameContext } from "@/src/match/Board";
 import MapLine from "@/src/match/googleMaps/GoogleMapsLine";
-import ZonePolygon from "@/src/match/googleMaps/GoogleMapsPolygon";
-import { VisGlMapElement } from "@/src/match/googleMaps/MapElement";
+import { VisGLMapTest } from "@/src/match/googleMaps/MapElement";
 import SelectedZonePopup from "@/src/match/googleMaps/SelectedZonePopup";
+import ZonePolygon from "@/src/match/googleMaps/ZonePolygon";
 import Header from "@/src/userInterface/Header";
 import { useContext, useState } from "react";
 
 export default function MapBoard() {
+	console.log("rendering mapboard")
 	const props: MetroGameBoardProps = useContext(GameContext);
 	//console.log("playerdata", props.G.allPlayersData);
 	const { zonePolygons, winningLines, G } = props;
@@ -76,13 +77,14 @@ export default function MapBoard() {
 			</Header>
 			<div style={mapContainerStyles}>
 				<div id="map" style={mapStyles}>
-					<VisGlMapElement
+					{/* <VisGlMapElement
 						setLineVisibility={setLineVisibility}
 						setHighlightedZones={setHighlightedZones}
 						setCurrentZone={setCurrentZone}
 						lineElements={lineElements}
 						zoneElements={zoneElements} 
-					/>
+					/> */}
+					<VisGLMapTest />
 				</div>
 				<SelectedZonePopup currentZone={currentZone} />
 			</div>

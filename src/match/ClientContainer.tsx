@@ -66,7 +66,8 @@ export default function ClientContainer(
 			</Suspense>
 		)
 	} else {
-		return <TestMap />
+		console.log("no game setup data, rendering test map");
+		return <>No game setup data here.</>
 	}
 }
 const libraries: Library[] = ["places", "geometry"];

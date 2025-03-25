@@ -4,6 +4,7 @@ import GameLog from "@/src/match/gameTabs/GameLog";
 import MapBoard from "@/src/match/gameTabs/mapAsBoardgame";
 import { Container, Tabs, TabsList, TabsPanel, TabsTab } from "@mantine/core";
 export default function Home() {
+	console.log("rendering match")
 	return (
 		<Container mih="100vh" h={0} px={0}>
 			<Tabs defaultValue={"map"} h="100%" variant="pills" radius="xs">

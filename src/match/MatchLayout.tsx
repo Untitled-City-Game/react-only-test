@@ -4,6 +4,7 @@ import { Outlet } from "react-router";
 
 export default function MatchLayout() 
   {
+    console.log("rendering matchlayout")
 	 return (
     <ClientContainer>
       <Suspense>
