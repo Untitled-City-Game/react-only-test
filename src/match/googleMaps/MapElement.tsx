@@ -43,7 +43,7 @@ export default function MapElement(props: MapElementProps) {
 				props.setLineVisibility({});
 				props.setHighlightedZones({});
 			}}>
-			{/* This does the montreal grid */}
+			{/* This does the grid */}
 			{props.zoneElements}
 			<>{props.lineElements}</>
 			{/* This is the location marker */}
@@ -54,7 +54,7 @@ export default function MapElement(props: MapElementProps) {
 	);
 }
 
-export function VisGlMapElement() {
+export function VisGlMapElement(props: MapElementProps) {
 	return (
 		<APIProvider 
 		apiKey="AIzaSyAhg8bq82cx8W6bqb-KTjk1QmrgOi43gdA"
@@ -62,17 +62,18 @@ export function VisGlMapElement() {
 		onError={(e) => console.error(e)}
 		>
 			<Map 
-			mapId = "fc1cd512863f2ee3"
-			streetViewControl={false}
-			fullscreenControl={false}
-			mapTypeControl={false}
-			style={{ width: "100vw", height: "100vh" }}
-			defaultCenter={gameLocationCenter}
-			defaultZoom={12}
-			gestureHandling={'greedy'}
-			disableDefaultUI={true}
-	  
-			/>
+				mapId = "fc1cd512863f2ee3"
+				streetViewControl={false}
+				fullscreenControl={false}
+				mapTypeControl={false}
+				style={{ width: "100vw", height: "100vh" }}
+				defaultCenter={gameLocationCenter}
+				defaultZoom={12}
+				gestureHandling={'greedy'}
+				disableDefaultUI={true}
+			>
+			{props.zoneElements}
+			</Map>
 		</APIProvider>
 	);
 }

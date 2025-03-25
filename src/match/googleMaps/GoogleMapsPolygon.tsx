@@ -1,5 +1,5 @@
-import { PolyData, ZoneData, Color } from "@/scripts/types";
-import { Polygon } from "@react-google-maps/api";
+import { Color, PolyData, ZoneData } from "@/scripts/types";
+import { Polygon } from "@match/googleMaps/Polygon";
 
 type ZonePolygonProps = {
 	zone: PolyData, 
@@ -17,16 +17,26 @@ export default function ZonePolygon({zone, handleZoneClick, currentZone, highlig
 	const highlightedZonesTemp = Object.fromEntries(zone.matchedLines.map((line) => line.matchedPolygons.map((poly) => {
 		return [poly, true]
 	})).flat());
-	return <Polygon 
-		path = {zone.coords}
+	return <Polygon
+		paths = {zone.coords}
 		key = {zone.featureName}
-		options = {{
-			strokeColor: 'black',
-			strokeOpacity: 0.8,
-			strokeWeight: amCurrentZone ? 4 : 2,
-			fillColor: highlightedZones[zone.featureName] ? highlightColor : zoneGameData.color,
-			fillOpacity: amCurrentZone ? 0.5 : 0.2
-		}}
-		onClick = {() => handleZoneClick(lineVisibilityTemp, highlightedZonesTemp)}
+		strokeColor = {'black'}
+		strokeOpacity={0.8}
+		strokeWeight={amCurrentZone ? 4 : 2}
+		fillColor={highlightedZones[zone.featureName] ? highlightColor : zoneGameData.color}
+		fillOpacity={amCurrentZone ? 0.5 : 0.2}
+		onClick={() => handleZoneClick(lineVisibilityTemp, highlightedZonesTemp)}
 		/>
+	// return <Polygon 
+	// 	path = {zone.coords}
+	// 	key = {zone.featureName}
+	// 	options = {{
+	// 		strokeColor: 'black',
+	// 		strokeOpacity: 0.8,
+	// 		strokeWeight: amCurrentZone ? 4 : 2,
+	// 		fillColor: highlightedZones[zone.featureName] ? highlightColor : zoneGameData.color,
+	// 		fillOpacity: amCurrentZone ? 0.5 : 0.2
+	// 	}}
+	// 	onClick = {() => handleZoneClick(lineVisibilityTemp, highlightedZonesTemp)}
+	// 	/>
 }
