@@ -1,3 +1,4 @@
+import { LobbyAPI } from 'boardgame.io';
 import { BoardProps } from 'boardgame.io/react';
 import { LineString } from 'geojson';
 import { Dispatch, ReactElement, SetStateAction } from 'react';
@@ -100,6 +101,8 @@ export interface ClientSetupData extends GameSetupData {
 	playerID : `${number}`;
 	credentials?: string;
 }
+
+export type StrictMatch = Omit<LobbyAPI.Match, 'gameover' | 'setupData'> & { gameover: boolean, setupData: GameSetupData };
 
 export type MetroGameBoardProps = BoardProps<GameState> & GameSetupData & {
 	playerData: {

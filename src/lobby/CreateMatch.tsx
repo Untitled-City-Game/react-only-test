@@ -1,6 +1,6 @@
 import { cities, numPlayers } from "@/scripts/consts";
 import { joinMatch } from '@/scripts/joinMatch';
-import { GameSetupData, MapData, PlayerData } from "@/scripts/types";
+import { City, GameSetupData, MapData, PlayerData } from "@/scripts/types";
 import Span from "@/src/userInterface/Span";
 import { Button, Center, Group, NumberInput, Paper, Radio, Select, Stack, TextInput } from "@mantine/core";
 import { hasLength, useForm } from "@mantine/form";
@@ -37,13 +37,13 @@ export default function CreateGame() {
 		mode: "uncontrolled",
 		initialValues: {
 			PlayerName: "",
-			city: "melbourne",
+			city: "melbourne" as City,
 			teamID: "blue",
 			numPlayers: numPlayers,
 		},
 		validate : {
 			PlayerName: hasLength({min: 2, max: 20}, "Player name must be between 2 and 20 characters"),
-			city: city => cities.includes(city) ? null : "Invalid city",
+			city: city => cities.includes(city as City) ? null : "Invalid city",
 			teamID: teamID => teamOptions.map(option => option.value).includes(teamID) ? null: "Invalid team",
 			numPlayers: numPlayers => numPlayers > 2 && numPlayers < 100 ? null: "Invalid number of players"
 		}
@@ -51,7 +51,7 @@ export default function CreateGame() {
 
 	type FormValues = { 
 		PlayerName: string; 
-		city: string; 
+		city: City; 
 		teamID: string; 
 		numPlayers: number; 
 	};

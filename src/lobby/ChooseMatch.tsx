@@ -1,7 +1,7 @@
+import { StrictMatch } from "@/scripts/types";
 import Span from "@/src/userInterface/Span";
 import { Button, Group, Paper, Radio, Stack } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { LobbyAPI } from "boardgame.io";
 import { LobbyClient } from "boardgame.io/client";
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router";
@@ -11,13 +11,23 @@ export default function ChooseMatch() {
 	const lobbyClient = useMemo(() => new LobbyClient({ server: process.env.GAME_SERVER }), []);
 
 	//Get all matches
-	const [matches, setMatches] = useState<LobbyAPI.Match[]>([]);
+	const [matches, setMatches] = useState<StrictMatch[]>([]);
 
 	useEffect(() => {
 		lobbyClient.listMatches('connect-four').then(res => {
 			console.log("matches", res.matches);
-			const activeMatches = res.matches.filter(match => !match.gameover);
-			setMatches(activeMatches);
+			const matches = res.matches as StrictMatch[];
+			const activeMatches = matches.filter(match => !match.gameover);
+			console.log('active matches', activeMatches);
+			const availableMatches = activeMatches.filter(match => {
+				const maxPlayers = match.players.length
+				const numPlayers = match.players.filter(player => player.name).length;
+				console.log('maxPlayers', maxPlayers, 'numPlayers', numPlayers);
+				return maxPlayers > numPlayers;
+
+			});
+			console.log('available matches', availableMatches);
+			setMatches(availableMatches);
 		}
 		);
 	},
