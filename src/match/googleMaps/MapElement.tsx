@@ -1,5 +1,6 @@
 import { gameLocationCenter } from "@/scripts/consts";
 import { ZoneData } from "@/scripts/types";
+import { Circle } from "@/src/match/googleMaps/shapes/Circle";
 import { APIProvider, Map } from "@vis.gl/react-google-maps";
 
 type MapElementProps = {
@@ -76,7 +77,19 @@ export default function VisGlMapElement(props: MapElementProps) {
 				gestureHandling={'greedy'}
 				disableDefaultUI={true}
 			>
-			{props.zoneElements}
+			<Circle
+				key={"circle"+0}
+				center={gameLocationCenter}
+				radius={1000}
+				visible={true}
+				strokeColor = {"red"}
+				strokeOpacity = {0.8}
+				strokeWeight = {6}
+				fillColor = {"red"}
+				fillOpacity = {0.8}
+				zIndex={12}
+			/>
+			<>{props.zoneElements}</>
 			<>{props.lineElements}</>
 			</Map>
 		</APIProvider>

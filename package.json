@@ -5,10 +5,10 @@
   "source": "src/index.html",
   "scripts": {
     "start": "parcel",
-    "build": "parcel build ./src/index.html --public-url ./ --no-optimize",
+    "build": "parcel build ./src/index.html --public-url ./ --no-optimize --no-cache",
+    "deploy": "npm run build && firebase deploy",
     "serve": "tsx watch server/server.ts",
-    "typecheck": "tsc --noEmit",
-    "lint": "eslint src --ext .ts,.tsx"
+    "typecheck": "tsc --noEmit"
   },
   "dependencies": {
     "@mantine/core": "^7.17.2",

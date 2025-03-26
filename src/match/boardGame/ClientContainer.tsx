@@ -2,7 +2,6 @@ import { ConnectFour } from "@/scripts/connect_four";
 import type { ClientSetupData, GameSetupData, MapData, PlayerData } from "@/scripts/types";
 import Board from "@/src/match/boardGame/Board";
 import Loading from "@/src/match/boardGame/Loading";
-import { Library } from "@googlemaps/js-api-loader";
 import { LobbyClient } from "boardgame.io/client";
 import { SocketIO } from "boardgame.io/multiplayer";
 import { Client } from "boardgame.io/react";
@@ -71,7 +70,6 @@ export default function ClientContainer(
 		return <>No game setup data here.</>
 	}
 }
-const libraries: Library[] = ["places", "geometry"];
 
 
 //Styles to make map appear

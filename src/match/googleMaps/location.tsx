@@ -1,4 +1,4 @@
-import { Marker } from "@react-google-maps/api";
+import { Marker } from "@vis.gl/react-google-maps";
 import { useEffect, useState } from "react";
 
 export default function LocationMarker({initialPosition = {lat: 0, lng: 0}} : {initialPosition: google.maps.LatLngLiteral}) {

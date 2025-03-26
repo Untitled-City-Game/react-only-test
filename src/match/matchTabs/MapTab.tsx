@@ -75,6 +75,7 @@ export default function MapTab() {
 			<Header>
 				<h1>Map</h1>
 			</Header>
+			<span>Version 1.0.6</span>
 			<div style={mapContainerStyles}>
 				<div id="map" style={mapStyles}>
 					<VisGlMapElement
