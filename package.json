@@ -1,8 +1,7 @@
 {
-  "name": "parcel-react-client-starter",
-  "private": true,
+  "name": "metro-game-server",
   "version": "0.0.0",
-  "source": "src/index.html",
+  "main": "server/server.ts",
   "scripts": {
     "start": "tsx server/server.ts",
     "typecheck": "tsc --noEmit"
@@ -25,20 +24,15 @@
     "react-error-boundary": "^5.0.0",
     "react-firebase-hooks": "^5.1.1",
     "react-router": "^7.4.0",
-    "typescript": "^5.8.2"
+    "typescript": "^5.8.2",
+    "tsx": "^4.19.3",
+    "@types/geojson": "^7946.0.15"
   },
   "devDependencies": {
-    "@types/geojson": "^7946.0.15",
     "@types/google.maps": "^3.58.1",
     "@types/react": "^19.0.12",
     "@types/react-dom": "^19.0.4",
     "buffer": "^6.0.3",
-    "parcel": "^2.14.1",
-    "postcss": "^8.5.3",
-    "postcss-preset-mantine": "^1.17.0",
-    "postcss-simple-vars": "^7.0.1",
-    "process": "^0.11.10",
-    "tailwindcss": "^4.0.15",
-    "tsx": "^4.19.3"
+    "process": "^0.11.10"
   }
 }
