@@ -1,5 +1,6 @@
 import { LineData } from "@/scripts/types";
-import { Polyline, Circle } from "@react-google-maps/api";
+import { Circle } from "@/src/match/googleMaps/shapes/Circle";
+import { Polyline } from "@/src/match/googleMaps/shapes/PolyLine";
 import { Fragment } from "react";
 
 export default function MapLine({
@@ -15,11 +16,9 @@ export default function MapLine({
 			<Polyline
 				path={line.coords}
 				visible={lineVisibility}
-				options={{
-					strokeColor: "red",
-					strokeOpacity: 0.8,
-					strokeWeight: 6,
-				}}
+				strokeColor = {"red"}
+				strokeOpacity = {0.8}
+				strokeWeight = {6}
 			/>
 			{/* Make a circle at each vertex of the polyline */}
 			{line.coords.map((coord, index) => {
@@ -30,25 +29,22 @@ export default function MapLine({
 							radius={0}
 							visible={lineVisibility}
 							key={"circle"+index}
-							options={{
-								strokeColor: "red",
-								strokeOpacity: 1,
-								strokeWeight: 12,
-								fillColor: "red",
-								fillOpacity: 1,
-							}}
+								strokeColor= {"red"}
+								strokeOpacity = {1}
+								strokeWeight= {12}
+								fillColor= {"red"}
+								fillOpacity= {1}
 						/>
 						<Circle
 							center={coord}
 							radius={0}
 							visible={lineVisibility}
 							key={"innercircle"+index}
-							options={{
-								strokeColor: "white",
-								strokeOpacity: 1,
-								strokeWeight: 6,
-								zIndex: 1,
-							}}
+							strokeColor={"white"}
+							strokeOpacity = {1}
+							strokeWeight = {6}
+							zIndex = {1}
+
 						/>
 					</Fragment>
 				);

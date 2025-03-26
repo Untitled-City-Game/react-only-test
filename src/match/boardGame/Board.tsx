@@ -1,6 +1,6 @@
 import { MetroGameBoardProps } from "@/scripts/types";
 import GameOver from "@/src/lobby/GameOver";
-import Waiting from "@/src/match/Waiting";
+import Waiting from "@/src/match/boardGame/Waiting";
 import Span from "@/src/userInterface/Span";
 import { createContext, useEffect } from "react";
 

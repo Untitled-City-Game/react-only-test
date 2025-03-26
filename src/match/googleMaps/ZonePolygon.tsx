@@ -1,5 +1,5 @@
 import { Color, PolyData, ZoneData } from "@/scripts/types";
-import { Polygon } from "@match/googleMaps/Polygon";
+import { Polygon } from "@/src/match/googleMaps/shapes/Polygon";
 
 type ZonePolygonProps = {
 	zone: PolyData, 

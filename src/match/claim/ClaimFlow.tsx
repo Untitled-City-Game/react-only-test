@@ -1,14 +1,14 @@
 import { ClaimStateMoves } from "@/scripts/connect_four";
 import { storage } from "@/scripts/firebase";
 import { MetroGameBoardProps, ZoneData } from "@/scripts/types";
-import { GameContext } from "@/src/match/Board";
+import { GameContext } from "@/src/match/boardGame/Board";
 import { ChooseChallenge } from "@/src/match/claim/ChooseChallenge";
 import ConfirmClaim from "@/src/match/claim/ConfirmClaim";
 import { Evidence } from "@/src/match/claim/Evidence";
 import Header from "@/src/userInterface/Header";
 import { Button, Center, Group, Modal, Stack, Stepper } from "@mantine/core";
 import { UseFormReturnType, useForm } from "@mantine/form";
-import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { useContext, useState } from "react";
 
 export type Form = UseFormReturnType<

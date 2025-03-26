@@ -1,11 +1,11 @@
 import { MetroGameBoardProps } from "@/scripts/types";
-import { GameContext } from "@/src/match/Board";
+import { GameContext } from "@/src/match/boardGame/Board";
 import Header from "@/src/userInterface/Header";
-import { Container, Stack, Group, Button, Paper } from "@mantine/core";
+import { Button, Container, Group, Paper, Stack } from "@mantine/core";
 import { useContext } from "react";
 
 
-export default function Challenges(){
+export default function ChallengesTab(){
 	const props: MetroGameBoardProps = useContext(GameContext);
 	//TODO: hoist this
 	const { allTeamsData, allPlayersData } = props.G; 

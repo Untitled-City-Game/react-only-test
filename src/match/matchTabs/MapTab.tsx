@@ -1,14 +1,14 @@
 import { highlightColor } from "@/scripts/consts";
 import { MetroGameBoardProps, ZoneData } from "@/scripts/types";
-import { GameContext } from "@/src/match/Board";
+import { GameContext } from "@/src/match/boardGame/Board";
 import MapLine from "@/src/match/googleMaps/GoogleMapsLine";
-import { VisGlMapElement } from "@/src/match/googleMaps/MapElement";
+import VisGlMapElement from "@/src/match/googleMaps/MapElement";
 import SelectedZonePopup from "@/src/match/googleMaps/SelectedZonePopup";
 import ZonePolygon from "@/src/match/googleMaps/ZonePolygon";
 import Header from "@/src/userInterface/Header";
 import { useContext, useState } from "react";
 
-export default function MapBoard() {
+export default function MapTab() {
 	console.log("rendering mapboard");
 	const props: MetroGameBoardProps = useContext(GameContext);
 	//console.log("playerdata", props.G.allPlayersData);
@@ -84,9 +84,6 @@ export default function MapBoard() {
 						lineElements={lineElements}
 						zoneElements={zoneElements} 
 					/>
-					{/* <Suspense fallback={<span>Loading vsglmap in mapasboardgame.tsx.</span>}>
-						<VisGLMapTest />
-					</Suspense> */}
 				</div>
 				<SelectedZonePopup currentZone={currentZone} />
 			</div>

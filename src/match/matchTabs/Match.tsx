@@ -1,11 +1,11 @@
-import Challenges from "@/src/match/gameTabs/Challenges";
-import GameLog from "@/src/match/gameTabs/GameLog";
-import MapBoard from "@/src/match/gameTabs/mapAsBoardgame";
+import ChallengesTab from "@/src/match/matchTabs/ChallengesTab";
+import LogTab from "@/src/match/matchTabs/LogTab";
+import MapTab from "@/src/match/matchTabs/MapTab";
 import { Container, Tabs, TabsList, TabsPanel, TabsTab } from "@mantine/core";
 import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 
-export default function Home() {
+export default function Match() {
 	console.log("rendering match");
 	return (
 		<Container mih="100vh" h={0} px={0}>
@@ -13,7 +13,7 @@ export default function Home() {
 				<TabsPanel value="challenges" style={panelStyles}>
 					<ErrorBoundary
 						fallback={<span>Something went wrong.</span>}>
-						<Challenges />
+						<ChallengesTab />
 					</ErrorBoundary>
 				</TabsPanel>
 				<TabsPanel value="map" className="mapPanel" style={panelStyles}>
@@ -22,14 +22,14 @@ export default function Home() {
 							fallback={
 								<span>Loading mapboard in match.tsx.</span>
 							}>
-							<MapBoard />
+							<MapTab />
 						</Suspense>
 					</ErrorBoundary>
 				</TabsPanel>
 				<TabsPanel value="log" style={panelStyles}>
 					<ErrorBoundary
 						fallback={<span>Something went wrong.</span>}>
-						<GameLog />
+						<LogTab />
 					</ErrorBoundary>
 				</TabsPanel>
 				<TabsList

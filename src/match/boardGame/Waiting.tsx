@@ -1,6 +1,6 @@
 import { MetroGameBoardProps } from "@/scripts/types";
+import { GameContext } from "@/src/match/boardGame/Board";
 import { Button, Center, Container, Stack } from "@mantine/core";
-import { GameContext } from "@match/Board";
 import { useContext } from "react";
 
 export default function Waiting() {

@@ -1,7 +1,6 @@
 import { gameLocationCenter } from "@/scripts/consts";
 import { ZoneData } from "@/scripts/types";
 import LocationMarker from "@/src/match/googleMaps/location";
-import { Polygon } from "@/src/match/googleMaps/Polygon";
 import { Library } from "@googlemaps/js-api-loader";
 import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
 import { APIProvider, Map } from "@vis.gl/react-google-maps";
@@ -28,7 +27,7 @@ const testCoordsLatLng = coordsarr.map((coord) => {
 	}
 })
 
-export default function MapElement(props: MapElementProps) {
+export function MapElement(props: MapElementProps) {
 	//Load the map
 	const { isLoaded } = useJsApiLoader({
 		id: "google-map-script",
@@ -62,39 +61,8 @@ export default function MapElement(props: MapElementProps) {
 		<>Loading...</>
 	);
 }
-export function VisGLMapTest(){
-	console.log("rendering vsglmaptest")
-	console.log('testcooords',testCoordsLatLng)
-	return (
-		<APIProvider 
-		apiKey="AIzaSyAhg8bq82cx8W6bqb-KTjk1QmrgOi43gdA"
-		libraries={["geometry"]}
-		onError={(e) => console.error(e)}
-		>
-			<Map 
-				mapId = "fc1cd512863f2ee3"
-				streetViewControl={false}
-				fullscreenControl={false}
-				mapTypeControl={false}
-				style={{ width: "100vw", height: "100vh" }}
-				defaultCenter={gameLocationCenter}
-				defaultZoom={12}
-				gestureHandling={'greedy'}
-				disableDefaultUI={true}
-			>
-				<Polygon 
-					paths = {testCoordsLatLng}
-					strokeColor = {'black'}
-					strokeOpacity={0.8}
-					strokeWeight={2}
-					key={'test'}
-					/>
-			</Map>
-		</APIProvider>
-	);
 
-}
-export function VisGlMapElement(props: MapElementProps) {
+export default function VisGlMapElement(props: MapElementProps) {
 	console.log("rendering visglmapelement")
 	return (
 		<APIProvider 
@@ -114,6 +82,7 @@ export function VisGlMapElement(props: MapElementProps) {
 				disableDefaultUI={true}
 			>
 			{props.zoneElements}
+			<>{props.lineElements}</>
 			</Map>
 		</APIProvider>
 	);

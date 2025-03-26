@@ -1,6 +1,6 @@
 import { ClaimStateMoves } from "@/scripts/connect_four";
 import { GameState, LogMetadata, MetroGameBoardProps, PlayerData } from "@/scripts/types";
-import { GameContext } from "@/src/match/Board";
+import { GameContext } from "@/src/match/boardGame/Board";
 import Header from "@/src/userInterface/Header";
 import ImageMantine from "@/src/userInterface/ImageMantine";
 import Span from "@/src/userInterface/Span";
@@ -8,7 +8,7 @@ import { Alert, Box, Button, Group, Stack } from "@mantine/core";
 import { LogEntry } from "boardgame.io";
 import { useContext, useEffect, useState } from "react";
 
-export default function GameLog() {
+export default function LogTab() {
 	const props: MetroGameBoardProps = useContext(GameContext);
 	const moves = props.moves as ClaimStateMoves;
 	const playerData = props.playerData.data;
