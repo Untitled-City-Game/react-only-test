@@ -44,7 +44,7 @@ async function buildServer(){
 	const AllMapsData : Record<string, GameSetupData> = await fetchAllData();
 	const server = Server({
 		games: [ConnectFour],
-		origins: [Origins.LOCALHOST, "http://10.0.0.231:1234", "http://10.0.0.231", "https://nextjs-metrogame--metro-game-474bc.us-central1.hosted.app", "https://otbg-live-test--metro-game-474bc.us-central1.hosted.app"],
+		origins: [Origins.LOCALHOST, "https://metro-game-474bc.web.app", "http://10.0.0.231:1234", "http://10.0.0.231", "https://nextjs-metrogame--metro-game-474bc.us-central1.hosted.app", "https://otbg-live-test--metro-game-474bc.us-central1.hosted.app"],
 		// db: database,
 	});
 	server.router.get('/hello', (ctx) => {
