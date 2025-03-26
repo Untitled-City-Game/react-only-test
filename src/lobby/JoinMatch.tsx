@@ -5,6 +5,7 @@ import { LobbyClient } from "boardgame.io/client";
 import { useNavigate, useParams } from "react-router";
 
 import { joinMatch } from "@/scripts/joinMatch";
+import Loading from "@/src/match/boardGame/Loading";
 import Span from "@/src/userInterface/Span";
 import { useEffect, useMemo, useState } from "react";
 
@@ -21,7 +22,7 @@ export default function JoinMatch() {
 	const [matchData, setMatchData] = useState<LobbyAPI.Match>();
 	useEffect(() => {
 		lobbyClient.getMatch("connect-four", matchID).then((res) => {
-			console.log("match data", res);
+			console.timeLog("load", "got match data " + matchID);
 			setMatchData(res);
 		});
 	}, [matchID, lobbyClient]);
@@ -104,7 +105,7 @@ export default function JoinMatch() {
 		);
 	}
 
-	return <Span>Loading...</Span>;
+	return <Loading message="Loading..." />;
 }
 
 // 	return (

@@ -64,7 +64,6 @@ const panelStyles: React.CSSProperties = {
 
 const testLayout: React.CSSProperties = {
 	paddingBottom: tabHeight,
-	border: "1px solid red",
 	display: "flex",
 	flexDirection: "column",
 	maxHeight: "100%",

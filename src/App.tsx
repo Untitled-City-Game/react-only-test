@@ -8,8 +8,9 @@ import RootLayout from "@/src/userInterface/RootLayout";
 import { BrowserRouter, Route, Routes } from "react-router";
 import MatchLayout from "./match/boardGame/MatchLayout";
 
-const App = () => (
-	<BrowserRouter>
+const App = () => {
+	console.time("load");
+	return (<BrowserRouter>
 		<Routes>
 			<Route element={<RootLayout />}>
 				<Route path="match" element={<MatchLayout />}>
@@ -22,7 +23,7 @@ const App = () => (
 				</Route>
 			</Route>
 		</Routes>
-	</BrowserRouter>
-);
+	</BrowserRouter>)
+}
 
 export default App;

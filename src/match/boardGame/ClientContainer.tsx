@@ -7,6 +7,7 @@ import { SocketIO } from "boardgame.io/multiplayer";
 import { Client } from "boardgame.io/react";
 import { useEffect, useMemo, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
+import { useNavigate } from "react-router";
 
 export default function ClientContainer(
 	props: { children: React.ReactNode }
@@ -15,6 +16,7 @@ export default function ClientContainer(
 	const [playerData, setPlayerData] = useState<PlayerData>();
 	const [gameSetupData, setGameSetupData] = useState<GameSetupData>();
 	const lobbyClient = useMemo(() => new LobbyClient({ server: process.env.GAME_SERVER }), []);
+	const navigate = useNavigate();
 	//Check if session is already part of a game
 	useEffect(() => {
 		console.log("running localstorage playerdata effect")
@@ -24,6 +26,9 @@ export default function ClientContainer(
 				const loadedPlayerData = JSON.parse(localPlayerData) as PlayerData;
 				console.log("setting player data from local storage", localPlayerData);
 				setPlayerData(loadedPlayerData);
+			} else {
+				console.log("no player data in local storage");
+				navigate("/lobby");
 			}
 		}
 	}, [playerData]);

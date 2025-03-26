@@ -104,6 +104,7 @@ export interface ClientSetupData extends GameSetupData {
 
 export type StrictMatch = Omit<LobbyAPI.Match, 'gameover' | 'setupData'> & { gameover: boolean, setupData: GameSetupData };
 
+
 export type MetroGameBoardProps = BoardProps<GameState> & GameSetupData & {
 	playerData: {
 		data: PlayerData;

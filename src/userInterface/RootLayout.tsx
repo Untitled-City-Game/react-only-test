@@ -6,7 +6,7 @@ import { ErrorBoundary } from "react-error-boundary";
 import { Outlet } from "react-router";
 
 export default function RootLayout() {
-  console.log("rendering rootlayout")
+	console.timeLog("load", "root layout");
   return (
     <>
       <head>

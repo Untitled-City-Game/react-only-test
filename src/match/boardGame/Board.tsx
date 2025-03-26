@@ -1,8 +1,9 @@
 import { MetroGameBoardProps } from "@/scripts/types";
 import GameOver from "@/src/lobby/GameOver";
+import Loading from "@/src/match/boardGame/Loading";
 import Waiting from "@/src/match/boardGame/Waiting";
-import Span from "@/src/userInterface/Span";
 import { createContext, useEffect } from "react";
+import { useNavigate } from "react-router";
 
 export const GameContext = createContext({} as MetroGameBoardProps);
 export default function Board(props: MetroGameBoardProps) {
@@ -10,8 +11,10 @@ export default function Board(props: MetroGameBoardProps) {
 	const { children, ...rest } = props;
 	const { moves, playerID } = props;
 	const playerData = props.playerData.data;
+	let navigate = useNavigate();
 	useEffect(() => {
 		if (playerID && !props.G.allPlayersData[playerID]) {
+			console.timeLog("load", "player setup");
 			console.log(
 				"setting up player ",
 				playerID,
@@ -26,6 +29,10 @@ export default function Board(props: MetroGameBoardProps) {
 		return <GameOver />;
 	}
 
+	if (!playerID){
+		navigate("/lobby");
+	}
+
 	if (!props.G.active) {
 		return (
 			<GameContext.Provider value={{ ...rest }}>
@@ -35,10 +42,9 @@ export default function Board(props: MetroGameBoardProps) {
 	}
 
 	if (playerID && !props.G.allPlayersData[playerID]) {
-		return <Span>Loading...</Span>;
+		return <Loading message="Looking for local player data" />;
 	}
 
-	console.log("rendering board with playerID", playerID);
 	return (
 		<GameContext.Provider value={{ ...rest }}>
 			{/* <p>Player ID: {playerID}</p>

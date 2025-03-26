@@ -1,4 +1,5 @@
 import { StrictMatch } from "@/scripts/types";
+import Loading from "@/src/match/boardGame/Loading";
 import Span from "@/src/userInterface/Span";
 import { Button, Group, Paper, Radio, Stack } from "@mantine/core";
 import { useForm } from "@mantine/form";
@@ -7,26 +8,28 @@ import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate } from "react-router";
 
 export default function ChooseMatch() {
+	console.timeLog("load", "choose match");
 	let navigate = useNavigate();
 	const lobbyClient = useMemo(() => new LobbyClient({ server: process.env.GAME_SERVER }), []);
 
 	//Get all matches
 	const [matches, setMatches] = useState<StrictMatch[]>([]);
+	const [loadingMatches, setLoadingMatches] = useState(true);
 
 	useEffect(() => {
+		console.timeLog("load", "list matches effect");
 		lobbyClient.listMatches('connect-four').then(res => {
-			console.log("matches", res.matches);
+			console.timeLog("load", "received matches");
 			const matches = res.matches as StrictMatch[];
 			const activeMatches = matches.filter(match => !match.gameover);
-			console.log('active matches', activeMatches);
 			const availableMatches = activeMatches.filter(match => {
 				const maxPlayers = match.players.length
 				const numPlayers = match.players.filter(player => player.name).length;
-				console.log('maxPlayers', maxPlayers, 'numPlayers', numPlayers);
 				return maxPlayers > numPlayers;
 
 			});
-			console.log('available matches', availableMatches);
+			console.timeLog("load", "set matches");
+			setLoadingMatches(false);
 			setMatches(availableMatches);
 		}
 		);
@@ -70,7 +73,7 @@ export default function ChooseMatch() {
 			<h1>Connect Four Lobby</h1>
 			<Button component={Link} to="/lobby/create-match">Create New Game</Button>
 			<h2>Join a game</h2>
-				<form
+			{loadingMatches ? <Loading message="Loading matches"/>: <form
 					onSubmit={joinGameForm.onSubmit(handleJoinGame)}>
 						<Stack>
 							<Radio.Group
@@ -83,6 +86,7 @@ export default function ChooseMatch() {
 							<Button type="submit">Join</Button>
 						</Stack>
 					</form>
+			}
 		</>
 		);
 }
