@@ -2,6 +2,7 @@ import { theme } from "@/styles/theme";
 import { ColorSchemeScript, MantineProvider } from '@mantine/core';
 import '@mantine/core/styles.css';
 import "@styles/globals.css";
+import { ErrorBoundary } from "react-error-boundary";
 import { Outlet } from "react-router";
 
 export default function RootLayout() {
@@ -16,9 +17,11 @@ export default function RootLayout() {
 
 
       <body style={{ backgroundColor: theme.white }}>
+        <ErrorBoundary fallback={<span>Something went wrong in rootlayout</span>}>
         <MantineProvider theme={theme}>
           <Outlet />
         </MantineProvider>
+        </ErrorBoundary>
       </body>
       </>
   );

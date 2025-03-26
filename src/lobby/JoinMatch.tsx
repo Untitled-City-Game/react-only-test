@@ -2,17 +2,14 @@ import { Button, Center, Group, Paper, Radio, Stack, TextInput } from "@mantine/
 import { useForm } from "@mantine/form";
 import { LobbyAPI } from "boardgame.io";
 import { LobbyClient } from "boardgame.io/client";
-import { useNavigate } from "react-router";
+import { useNavigate, useParams } from "react-router";
 
 import { joinMatch } from "@/scripts/joinMatch";
 import Span from "@/src/userInterface/Span";
 import { useEffect, useMemo, useState } from "react";
 
-export default function JoinMatch({
-	matchID = "default",
-}: {
-	matchID?: string;
-}) {
+export default function JoinMatch() {
+	const { matchID } = useParams() as { matchID: string };
 	const lobbyClient = useMemo(
 		() => new LobbyClient({ server: process.env.GAME_SERVER }),
 		[]

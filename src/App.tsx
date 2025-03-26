@@ -3,11 +3,11 @@ import ChooseMatch from "@/src/lobby/ChooseMatch";
 import CreateMatch from "@/src/lobby/CreateMatch";
 import JoinMatch from "@/src/lobby/JoinMatch";
 import LobbyLayout from "@/src/lobby/LobbyLayout";
+import MapTest from "@/src/match/googleMaps/MapTest";
 import Match from "@/src/match/mapTabs/Match";
 import RootLayout from "@/src/userInterface/RootLayout";
 import { BrowserRouter, Route, Routes } from "react-router";
 import MatchLayout from "./match/MatchLayout";
-import MapTest from "@/src/match/googleMaps/MapTest";
 
 const App = () => (
 	<BrowserRouter>
@@ -18,7 +18,7 @@ const App = () => (
 					<Route index element={<Match />} />
 				</Route>
 				<Route path="/lobby?" element={<LobbyLayout />}>
-					<Route path="join-match" element={<JoinMatch />} />
+					<Route path="join-match/:matchID" element={<JoinMatch />} />
 					<Route path="create-match" element={<CreateMatch />} />
 					<Route index element={<ChooseMatch />} />
 				</Route>

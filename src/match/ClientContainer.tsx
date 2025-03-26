@@ -1,13 +1,13 @@
 import { ConnectFour } from "@/scripts/connect_four";
-import { gameLocationCenter } from "@/scripts/consts";
 import type { ClientSetupData, GameSetupData, MapData, PlayerData } from "@/scripts/types";
 import Board from "@/src/match/Board";
+import Loading from "@/src/match/Loading";
 import { Library } from "@googlemaps/js-api-loader";
-import { GoogleMap, useJsApiLoader } from "@react-google-maps/api";
 import { LobbyClient } from "boardgame.io/client";
 import { SocketIO } from "boardgame.io/multiplayer";
 import { Client } from "boardgame.io/react";
-import { Suspense, useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
+import { ErrorBoundary } from "react-error-boundary";
 
 export default function ClientContainer(
 	props: { children: React.ReactNode }
@@ -59,47 +59,20 @@ export default function ClientContainer(
 			multiplayer: SocketIO({
 				server: process.env.GAME_SERVER,
 			}),
+			loading: Loading,
 		}) as React.JSXElementConstructor<ClientSetupData>
 		return (
-			<Suspense>
+			<ErrorBoundary fallback={<span>Something went wrong with the game client.</span>}>
 			<GameClient matchID={playerData.matchID || "default"} playerData={{data: playerData, setter: setPlayerData}} playerID={playerData.playerID} credentials = {playerData.playerCredentials} {...gameSetupData} {...props} />
-			</Suspense>
+			</ErrorBoundary>
 		)
 	} else {
-		console.log("no game setup data, rendering test map");
+		console.log("no game setup data");
 		return <>No game setup data here.</>
 	}
 }
 const libraries: Library[] = ["places", "geometry"];
 
-
-function TestMap() {
-	const { isLoaded } = useJsApiLoader({
-		id: "google-map-script",
-		googleMapsApiKey: "AIzaSyAhg8bq82cx8W6bqb-KTjk1QmrgOi43gdA",
-		libraries: libraries,
-		mapIds: ["fc1cd512863f2ee3"]
-	});
-
-	return isLoaded ? (
-		<div id="map" style={mapStyles}>
-		<GoogleMap
-			mapContainerStyle={containerStyle}
-			center={gameLocationCenter}
-			zoom={12}
-			options={{ 
-				mapId: "fc1cd512863f2ee3",
-				streetViewControl: false,
-				fullscreenControl: false,
-				mapTypeControl: false,
-			}}
-			>
-		</GoogleMap>
-	</div>
-	) : (
-		<>Test Map Loading...</>
-	);
-}
 
 //Styles to make map appear
 const containerStyle = {
