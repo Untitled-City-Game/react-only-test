@@ -128,7 +128,5 @@ export default function ClaimFlow({
 				</Stack>
 			</Center>
 		</Modal>
-	) : (
-		"no zone selected"
-	);
+	) : null;
 }

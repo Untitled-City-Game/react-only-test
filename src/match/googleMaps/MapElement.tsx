@@ -1,6 +1,5 @@
 import { gameLocationCenter } from "@/scripts/consts";
 import { ZoneData } from "@/scripts/types";
-import { Circle } from "@/src/match/googleMaps/shapes/Circle";
 import { APIProvider, Map } from "@vis.gl/react-google-maps";
 
 type MapElementProps = {
@@ -71,35 +70,23 @@ export default function VisGlMapElement(props: MapElementProps) {
 				streetViewControl={false}
 				fullscreenControl={false}
 				mapTypeControl={false}
-				style={{ width: "100vw", height: "100vh" }}
 				defaultCenter={gameLocationCenter}
 				defaultZoom={12}
 				gestureHandling={'greedy'}
 				disableDefaultUI={true}
+				onClick={() => {
+					props.setCurrentZone(undefined);
+					props.setLineVisibility({});
+					props.setHighlightedZones({});
+				}}
 			>
-			<Circle
-				key={"circle"+0}
-				center={gameLocationCenter}
-				radius={1000}
-				visible={true}
-				strokeColor = {"red"}
-				strokeOpacity = {0.8}
-				strokeWeight = {6}
-				fillColor = {"red"}
-				fillOpacity = {0.8}
-				zIndex={12}
-			/>
 			<>{props.zoneElements}</>
 			<>{props.lineElements}</>
 			</Map>
 		</APIProvider>
 	);
 }
-//Styles to make map appear
-const containerStyle = {
-	width: "100%",
-	height: "100%",
-};
+
 
 
 

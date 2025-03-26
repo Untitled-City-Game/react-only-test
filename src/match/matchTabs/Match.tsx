@@ -8,15 +8,15 @@ import { ErrorBoundary } from "react-error-boundary";
 export default function Match() {
 	console.log("rendering match");
 	return (
-		<Container mih="100vh" h={0} px={0}>
-			<Tabs defaultValue={"map"} h="100%" variant="pills" radius="xs">
-				<TabsPanel value="challenges" style={panelStyles}>
+		<Container>
+			<Tabs defaultValue={"map"} variant="pills" radius={0}>
+				<TabsPanel value="challenges" style={testLayout}>
 					<ErrorBoundary
 						fallback={<span>Something went wrong.</span>}>
 						<ChallengesTab />
 					</ErrorBoundary>
 				</TabsPanel>
-				<TabsPanel value="map" className="mapPanel" style={panelStyles}>
+				<TabsPanel value="map" className="mapPanel" style={testLayout}>
 					<ErrorBoundary fallback={<div>Something went wrong.</div>}>
 						<Suspense
 							fallback={
@@ -26,7 +26,7 @@ export default function Match() {
 						</Suspense>
 					</ErrorBoundary>
 				</TabsPanel>
-				<TabsPanel value="log" style={panelStyles}>
+				<TabsPanel value="log" style={testLayout}>
 					<ErrorBoundary
 						fallback={<span>Something went wrong.</span>}>
 						<LogTab />
@@ -37,6 +37,7 @@ export default function Match() {
 					bottom={0}
 					left={0}
 					h={tabHeight}
+					p={0}
 					w="100%"
 					bg="white"
 					grow={true}>
@@ -49,7 +50,8 @@ export default function Match() {
 	);
 }
 
-const tabHeight = "3rem";
+const tabHeight = "3em";
+
 
 const panelStyles: React.CSSProperties = {
 	paddingBottom: tabHeight,
@@ -59,3 +61,13 @@ const panelStyles: React.CSSProperties = {
 	minHeight: "100%",
 	flexGrow: 10,
 };
+
+const testLayout: React.CSSProperties = {
+	paddingBottom: tabHeight,
+	border: "1px solid red",
+	display: "flex",
+	flexDirection: "column",
+	maxHeight: "100%",
+	alignItems: "stretch",
+	flexGrow: 10,
+}

@@ -52,6 +52,7 @@ export default function MapTab() {
 			lineVisibilityTemp: { [key: string]: boolean },
 			highlightedZonesTemp: { [key: string]: boolean }
 		) {
+			console.log("zone clicked", zone);
 			//set line visibility
 			setLineVisibility(lineVisibilityTemp);
 			setHighlightedZones(highlightedZonesTemp);
@@ -74,30 +75,28 @@ export default function MapTab() {
 		<>
 			<Header>
 				<h1>Map</h1>
+				<span>Version 1.0.6</span>
 			</Header>
-			<span>Version 1.0.6</span>
-			<div style={mapContainerStyles}>
-				<div id="map" style={mapStyles}>
-					<VisGlMapElement
-						setLineVisibility={setLineVisibility}
-						setHighlightedZones={setHighlightedZones}
-						setCurrentZone={setCurrentZone}
-						lineElements={lineElements}
-						zoneElements={zoneElements} 
-					/>
-				</div>
-				<SelectedZonePopup currentZone={currentZone} />
+			<div id="map" style={mapStyles}>
+				<VisGlMapElement
+					setLineVisibility={setLineVisibility}
+					setHighlightedZones={setHighlightedZones}
+					setCurrentZone={setCurrentZone}
+					lineElements={lineElements}
+					zoneElements={zoneElements} 
+				/>
 			</div>
+			<SelectedZonePopup currentZone={currentZone} style={selectedZonePopupStyles}/>
 		</>
 	)
 }
 const mapStyles: React.CSSProperties = {
-	flexBasis: "200px",
-	flexGrow: 7,
+	flexBasis: "100vh",
+	flexGrow: 4,
+	//flexShrink: 7,
 };
 
-const mapContainerStyles: React.CSSProperties = {
-	display: "flex",
-	flexDirection: "column",
-	flexGrow: 10,
+const selectedZonePopupStyles: React.CSSProperties = {
+	flexBasis: "3em",
+	flexGrow: 4,
 };

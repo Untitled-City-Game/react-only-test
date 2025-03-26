@@ -5,20 +5,24 @@ import { useDisclosure } from "@mantine/hooks";
 
 export default function SelectedZonePopup({
 	currentZone,
+	style
 }: {
 	currentZone: ZoneData | undefined;
+	style: React.CSSProperties;
 }) {
 	const [opened, { open, close }] = useDisclosure(false);
 	return (
 		<>
 			<Center
-				style={infoZoneStyles}
+				style={style}
 				display={currentZone ? "initial" : "none"}>
-				<Container>
+				<Container style={selectedStyles}>
 					<Paper>
+						<Center>
 						<Button onClick={open}>
 							Claim {currentZone?.name}
 						</Button>
+						</Center>
 					</Paper>
 				</Container>
 			</Center>
@@ -31,7 +35,6 @@ export default function SelectedZonePopup({
 	);
 }
 
-const infoZoneStyles: React.CSSProperties = {
-	flexBasis: "20px",
-	flexGrow: 1,
+const selectedStyles: React.CSSProperties = {
+	padding: "1em",
 };
