@@ -12,6 +12,7 @@ export default function MapTab() {
 	console.log("rendering mapboard");
 	const props: MetroGameBoardProps = useContext(GameContext);
 	//console.log("playerdata", props.G.allPlayersData);
+	console.log("city", props.city);
 	const { zonePolygons, winningLines, G } = props;
 	const [lineVisibility, setLineVisibility] = useState(
 		winningLines
@@ -84,6 +85,7 @@ export default function MapTab() {
 					setCurrentZone={setCurrentZone}
 					lineElements={lineElements}
 					zoneElements={zoneElements} 
+					city={props.city}
 				/>
 			</div>
 			<SelectedZonePopup currentZone={currentZone} style={selectedZonePopupStyles}/>

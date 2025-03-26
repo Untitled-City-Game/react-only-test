@@ -81,12 +81,14 @@ export interface MapData {
 	winningLines: LineData[];
 }
 
+export type City = typeof cities[number];
+
 export interface GameSetupData extends MapData {
-	city : typeof cities[number];
+	city : City;
 }
 
 export type ConnectFourSetupData = {
-	city : typeof cities[number];
+	city : City;
 }
 
 export interface ClientSetupData extends GameSetupData {
