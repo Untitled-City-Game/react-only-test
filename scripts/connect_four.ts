@@ -27,7 +27,7 @@ const handSize = 5;
 
 function addLogMetadata({ log }: { log: LogAPI }, metadata: LogMetadata) {
 	console.log("adding metadata", metadata);
-	log.setMetadata({ ...metadata, date: new Date() });
+	log.setMetadata({ ...metadata, date: new Date().toString() });
 }
 
 function completeChallengeAndClaim(
@@ -42,7 +42,6 @@ function completeChallengeAndClaim(
 	addLogMetadata(
 		{ log },
 		{
-			date: new Date(),
 			zone: zoneID,
 			zoneName: G.zoneData[zoneID].name,
 			team: G.allPlayersData[playerID].teamColor,
@@ -59,8 +58,7 @@ function claimZone(
 	const claimedZone = G.zoneData[zoneID];
 	claimedZone.color = G.allPlayersData[playerID].teamColor;
 	console.log("claiming zone", zoneID);
-	log.setMetadata("test");
-	//addLogMetadata({log}, {date: new Date(), zone: zoneID, team: claimedZone.color});
+	addLogMetadata({log}, {zone: zoneID, team: claimedZone.color});
 }
 
 function completeChallenge(
@@ -72,7 +70,6 @@ function completeChallenge(
 	addLogMetadata(
 		{ log },
 		{
-			date: new Date(),
 			challenge,
 			evidence,
 			team: G.allPlayersData[playerID].teamColor,
@@ -92,7 +89,6 @@ function discardChallenge(
 		(challengeInHand) => challengeInHand.title === challenge
 	);
 	teamData.challengeDiscard.concat(removedChallenge);
-	console.log("removed challenge from hand", challenge);
 }
 
 function discardHand({ G, log, playerID }: { G: GameState; log: LogAPI; playerID: string }) {
@@ -130,7 +126,7 @@ function drawToFull({ G, playerID }: { G: GameState; playerID: string }) {
 }
 
 function playerSetup(
-	{ G, playerID }: { G: GameState; playerID: string },
+	{ G, playerID, log }: { G: GameState; playerID: string; log: LogAPI },
 	newPlayerData: PlayerData
 ) {
 	G.allPlayersData[playerID] = newPlayerData;
@@ -141,6 +137,11 @@ function playerSetup(
 		newPlayerData.name,
 		newPlayerData.teamColor
 	);
+	addLogMetadata(
+		{ log },
+		{ team: G.allPlayersData[0].teamColor }
+	);
+
 }
 
 function startGame({ events, G, random, log }: FnContext<GameState>) {
@@ -150,7 +151,7 @@ function startGame({ events, G, random, log }: FnContext<GameState>) {
 	G.active = true;
 	addLogMetadata(
 		{ log },
-		{ date: new Date(), team: G.allPlayersData[0].teamColor }
+		{ team: G.allPlayersData[0].teamColor }
 	);
 }
 

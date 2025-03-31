@@ -7,6 +7,7 @@ import Span from "@/src/userInterface/Span";
 import { Alert, Button, Container, Group, Stack } from "@mantine/core";
 import { LogEntry } from "boardgame.io";
 import { useContext, useEffect, useState } from "react";
+import { ErrorBoundary } from "react-error-boundary";
 
 export default function LogTab() {
 	const props: MetroGameBoardProps = useContext(GameContext);
@@ -31,9 +32,9 @@ export default function LogTab() {
 				<Stack align="flex-start" mb="md">
 					{props.log
 						.map((entry, index) => (
-							<MessageBox key={index} entry={entry} gameData={props.G} playerData={playerData}>
-								{entry.action.payload.type === "completeChallengeAndClaim" ? <ChallengeCompleted metadata={entry.metadata as LogMetadata} /> : entry.action.type}
-							</MessageBox>
+							<ErrorBoundary key={index} fallback={<span>Message failed to load.</span>}>
+								<MessageBox key={index} entry={entry} gameData={props.G} playerData={playerData} />
+							</ErrorBoundary>
 						))
 						.reverse()}
 				</Stack>
@@ -42,21 +43,42 @@ export default function LogTab() {
 	);
 }
 
-function MessageBox({ children, entry, gameData, playerData }: { children: React.ReactNode, entry: LogEntry, gameData: GameState, playerData: PlayerData }) {
-	const [timestamp, setTimestamp] = useState("");
+function MessageBox({ entry, gameData, playerData }: { entry: LogEntry, gameData: GameState, playerData: PlayerData }) {
+	const [timestamp, setTimestamp] = useState("placeholder timestamp");
 	const metadata = entry.metadata ? entry.metadata as LogMetadata : undefined;
+	const senderData = gameData.allPlayersData[entry.action.payload.playerID];
 	useEffect(() => {
 		if(metadata && metadata.date){
-			const date = new Date(metadata.date);
-			setTimestamp(date.toLocaleTimeString());
+			console.log("metadata date", metadata.date);
+			const dateObj = new Date(metadata.date);
+			console.log("dateobj", dateObj);
+			const time = dateObj.toLocaleTimeString();
+			console.log("time", time);
+			setTimestamp(time);
 			return;
-		}
+		} else {
+			setTimestamp("no timestamp");
+			return;
+			}
 	}, [metadata]);
-	const senderData = gameData.allPlayersData[entry.action.payload.playerID];
+	const Message = () => {switch(entry.action.payload.type){
+		case "completeChallengeAndClaim":
+			return <ChallengeCompleted metadata={entry.metadata as LogMetadata} />
+		
+		case "playerSetup":
+			return <JoinedMatch senderData={senderData} />
+
+		case "startGame":
+			return <GameStarted senderData={senderData} />
+		
+		default:
+			return <span>{entry.action.payload.type}</span>
+	}}
+
 	return (
 		<Alert maw="max-content" miw="40%" title={senderData.name} color={senderData.teamColor} ml={senderData.playerID === playerData.playerID ? "auto" : "0"}>
 			<Span fs="italic" mt="0" size="xs"><span className="capitalize">{senderData.teamColor}</span> team</Span>
-			{children}
+			{Message()}
 			<Span>{timestamp}</Span>
 		</Alert>
 	);
@@ -75,17 +97,23 @@ function ChallengeCompleted({ metadata }: { metadata: LogMetadata }) {
 	)
 
 }
-// function MetadataRenderer({ metadata }: { metadata: LogMetadata}) {
-// 	if (!metadata){
-// 		return <Span>No metadata</Span>
-// 		}
-// 		return (
-// 			<Stack>
-// 				<Span>Date: {metadata.date.toLocaleString()}</Span>
-// 				<Span>Team: {metadata.team}</Span>
-// 				{metadata.challenge && <Span>Challenge: {metadata.challenge}</Span>}
-// 				{metadata.zone && <Span>Zone: {metadata.zone}</Span>}
-// 				{metadata.evidence && <Image src={metadata.evidence} alt="evidence" w={300} h={300} />}
-// 				</Stack>
-// 			)
-// }
+
+function JoinedMatch({ senderData} : { senderData: PlayerData }) {
+	return (
+		<>
+			<Span>
+				<span className="capitalize">{senderData.name}</span> joined the match on <span className="capitalize">{senderData.teamColor}</span> team.
+			</Span>
+		</>
+	)
+}
+
+function GameStarted({ senderData} : { senderData: PlayerData }) {
+	return (
+		<>
+			<Span>
+				<span className="capitalize">{senderData.name}</span> started the game.
+			</Span>
+		</>
+	)
+}

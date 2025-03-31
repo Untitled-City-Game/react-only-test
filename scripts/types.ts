@@ -114,7 +114,7 @@ export type MetroGameBoardProps = BoardProps<GameState> & GameSetupData & {
 }
 
 export type LogMetadata = {
-	date: Date;
+	date?: string;
 	evidence?: string;
 	challenge?: string;
 	zone?: number;
