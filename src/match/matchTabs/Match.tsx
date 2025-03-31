@@ -34,7 +34,7 @@ export default function Match() {
 				<TabsList
 				style={TabListStyles}
 					p="0"
-					w="100%"
+					// w="100%"
 					bg="white"
 					grow={true}>
 					<TabsTab value="challenges">Challenges</TabsTab>
@@ -48,7 +48,7 @@ export default function Match() {
 //This contains the tabpanel and the tablist
 const MatchContainerStyles: React.CSSProperties = {
 	height: "100vh",
-	width: "100vw",
+	//width: "100vw",
 	display: "flex",
 	flexDirection: "column",
 	alignItems: "stretch",
@@ -62,7 +62,7 @@ const panelLayout: React.CSSProperties = {
 	flexDirection: "column",
 	alignItems: "stretch",
 	flexGrow: 10,
-	overflow: "scroll"
+	overflowY: "scroll"
 }
 
 const TabListStyles: React.CSSProperties = {

@@ -81,14 +81,14 @@ export default function MapTab() {
 			</Header>
 			<div id="map" style={mapStyles}>
 			<SelectedZonePopup currentZone={currentZone} style={selectedZonePopupStyles}/>
-				<VisGlMapElement
-					setLineVisibility={setLineVisibility}
-					setHighlightedZones={setHighlightedZones}
-					setCurrentZone={setCurrentZone}
-					lineElements={lineElements}
-					zoneElements={zoneElements} 
-					city={props.city}
-				/>
+			<VisGlMapElement
+				setLineVisibility={setLineVisibility}
+				setHighlightedZones={setHighlightedZones}
+				setCurrentZone={setCurrentZone}
+				lineElements={lineElements}
+				zoneElements={zoneElements} 
+				city={props.city}
+			/>
 			</div>
 		</>
 	)
@@ -96,6 +96,7 @@ export default function MapTab() {
 const mapStyles: React.CSSProperties = {
 	flexGrow: 10,
 	position: "relative",
+	userSelect: "none",
 	//flexShrink: 7,
 };
 
