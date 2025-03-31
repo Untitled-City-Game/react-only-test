@@ -1,3 +1,4 @@
+import { ClaimStateMoves } from "@/scripts/connect_four";
 import { MetroGameBoardProps } from "@/scripts/types";
 import { GameContext } from "@/src/match/boardGame/Board";
 import Header from "@/src/userInterface/Header";
@@ -6,6 +7,7 @@ import { useContext } from "react";
 
 export default function ChallengesTab() {
 	const props: MetroGameBoardProps = useContext(GameContext);
+	const moves = props.moves as ClaimStateMoves;
 	//TODO: hoist this
 	const { allTeamsData, allPlayersData } = props.G;
 	const playerData = allPlayersData[props.playerData.data.playerID];
@@ -14,12 +16,16 @@ export default function ChallengesTab() {
 	if (!challengeHand) {
 		return <h1>No challenges available</h1>;
 	}
+	function handleDiscarHand(){
+		console.log("discarding hand");
+		moves.discardHand();
+	}
 	return (
 		<>
 			<Header>
 				<h1>Challenges</h1>
 				<Group>
-						<Button>Discard Hand</Button>
+						<Button onClick={handleDiscarHand}>Discard Hand</Button>
 					</Group>
 
 			</Header>

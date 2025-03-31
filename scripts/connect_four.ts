@@ -95,6 +95,14 @@ function discardChallenge(
 	console.log("removed challenge from hand", challenge);
 }
 
+function discardHand({ G, log, playerID }: { G: GameState; log: LogAPI; playerID: string }) {
+	const team = G.allPlayersData[playerID].teamColor;
+	const teamData = G.allTeamsData[team];
+	teamData.challengeDiscard.concat(teamData.challengeHand);
+	teamData.challengeHand = [];
+	drawToFull({ G, playerID });
+}
+
 function drawChallenge({ G, playerID }: { G: GameState; playerID: string }) {
 	//draw a challenge from deck
 	const teamData = G.allTeamsData[G.allPlayersData[playerID].teamColor];
@@ -173,6 +181,7 @@ const claimStateMoves = {
 	drawChallenge,
 	drawToFull,
 	discardChallenge,
+	discardHand,
 	completeChallenge,
 	completeChallengeAndClaim,
 	endGame,
