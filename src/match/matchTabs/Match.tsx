@@ -10,13 +10,13 @@ export default function Match() {
 	return (
 		<Container>
 			<Tabs defaultValue={"map"} variant="pills" radius={0}>
-				<TabsPanel value="challenges" style={testLayout}>
+				<TabsPanel value="challenges" style={panelLayout}>
 					<ErrorBoundary
 						fallback={<span>Something went wrong.</span>}>
 						<ChallengesTab />
 					</ErrorBoundary>
 				</TabsPanel>
-				<TabsPanel value="map" className="mapPanel" style={testLayout}>
+				<TabsPanel value="map" className="mapPanel" style={panelLayout}>
 					<ErrorBoundary fallback={<div>Something went wrong.</div>}>
 						<Suspense
 							fallback={
@@ -26,7 +26,7 @@ export default function Match() {
 						</Suspense>
 					</ErrorBoundary>
 				</TabsPanel>
-				<TabsPanel value="log" style={testLayout}>
+				<TabsPanel value="log" style={panelLayout}>
 					<ErrorBoundary
 						fallback={<span>Something went wrong.</span>}>
 						<LogTab />
@@ -53,20 +53,12 @@ export default function Match() {
 const tabHeight = "3em";
 
 
-const panelStyles: React.CSSProperties = {
+const panelLayout: React.CSSProperties = {
 	paddingBottom: tabHeight,
 	display: "flex",
 	flexDirection: "column",
-	alignItems: "stretch",
 	minHeight: "100%",
-	flexGrow: 10,
-};
-
-const testLayout: React.CSSProperties = {
-	paddingBottom: tabHeight,
-	display: "flex",
-	flexDirection: "column",
-	maxHeight: "100%",
+	height: "100%",
 	alignItems: "stretch",
 	flexGrow: 10,
 }

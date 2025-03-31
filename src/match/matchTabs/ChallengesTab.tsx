@@ -1,7 +1,7 @@
 import { MetroGameBoardProps } from "@/scripts/types";
 import { GameContext } from "@/src/match/boardGame/Board";
 import Header from "@/src/userInterface/Header";
-import { Button, Container, Group, Paper, Stack } from "@mantine/core";
+import { Button, Group, Paper, Stack } from "@mantine/core";
 import { useContext } from "react";
 
 
@@ -20,19 +20,17 @@ export default function ChallengesTab(){
 		<Header>
 			<h1>Challenges</h1>
 		</Header>
-		<Container mt="md" mb="md">
-			<Stack>
-				<Group>
-					<Button>Discard Hand</Button>
-				</Group>
-				{challengeHand.map((challenge, index) => {
-					return <Paper key={index} shadow="xs" withBorder p="md" radius="md">
-						<h3>{ challenge.title}</h3>
-						<p>{ challenge.description}</p>
-					</Paper>
-				})}
-			</Stack>
-		</Container>
+		<Stack mt="md" mb="md">
+			<Group>
+				<Button>Discard Hand</Button>
+			</Group>
+			{challengeHand.map((challenge, index) => {
+				return <Paper key={index} shadow="xs" withBorder p="md" radius="md">
+					<h3>{ challenge.title}</h3>
+					<p>{ challenge.description}</p>
+				</Paper>
+			})}
+		</Stack>
 		</>
 	)
 }

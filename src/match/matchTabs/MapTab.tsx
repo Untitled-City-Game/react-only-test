@@ -6,6 +6,7 @@ import VisGlMapElement from "@/src/match/googleMaps/MapElement";
 import SelectedZonePopup from "@/src/match/googleMaps/SelectedZonePopup";
 import ZonePolygon from "@/src/match/googleMaps/ZonePolygon";
 import Header from "@/src/userInterface/Header";
+import { theme } from "@/styles/theme";
 import { useContext, useState } from "react";
 
 export default function MapTab() {
@@ -87,18 +88,24 @@ export default function MapTab() {
 					zoneElements={zoneElements} 
 					city={props.city}
 				/>
-			</div>
 			<SelectedZonePopup currentZone={currentZone} style={selectedZonePopupStyles}/>
+			</div>
 		</>
 	)
 }
 const mapStyles: React.CSSProperties = {
-	flexBasis: "100vh",
-	flexGrow: 4,
+	height: "100%",
+	position: "relative",
+	//flexGrow: 10,
 	//flexShrink: 7,
 };
 
 const selectedZonePopupStyles: React.CSSProperties = {
-	flexBasis: "3em",
-	flexGrow: 4,
+	// flexBasis: "3em",
+	// flexGrow: 1,
+	position: "absolute",
+	top: "0",
+	zIndex: 10,
+	backgroundColor : theme.white,
+	width: "100%",
 };
