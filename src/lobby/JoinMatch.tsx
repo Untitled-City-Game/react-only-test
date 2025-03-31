@@ -33,6 +33,10 @@ export default function JoinMatch() {
 			PlayerName: "",
 			teamID: "",
 		},
+		validate: {
+			PlayerName: (value) => value.length > 0 ? null : "Player name is required",
+			teamID: (value) => value.length > 0 ? null : "Team is required",
+		}
 	});
 
 	type FormValues = {
