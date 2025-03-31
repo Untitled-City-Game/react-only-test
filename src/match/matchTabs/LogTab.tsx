@@ -4,7 +4,7 @@ import { GameContext } from "@/src/match/boardGame/Board";
 import Header from "@/src/userInterface/Header";
 import ImageMantine from "@/src/userInterface/ImageMantine";
 import Span from "@/src/userInterface/Span";
-import { Alert, Box, Button, Group, Stack } from "@mantine/core";
+import { Alert, Button, Container, Group, Stack } from "@mantine/core";
 import { LogEntry } from "boardgame.io";
 import { useContext, useEffect, useState } from "react";
 
@@ -27,8 +27,8 @@ export default function LogTab() {
 					<Button onClick={handleEndGame}>End Game</Button>
 				</Group>
 			</Header>
-			<Box m="md">
-				<Stack align="flex-start">
+			<Container mih="0" w="100%">
+				<Stack align="flex-start" mb="md">
 					{props.log
 						.map((entry, index) => (
 							<MessageBox key={index} entry={entry} gameData={props.G} playerData={playerData}>
@@ -37,7 +37,7 @@ export default function LogTab() {
 						))
 						.reverse()}
 				</Stack>
-			</Box>
+			</Container>
 		</>
 	);
 }

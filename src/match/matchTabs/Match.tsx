@@ -32,8 +32,8 @@ export default function Match() {
 					</ErrorBoundary>
 				</TabsPanel>
 				<TabsList
+				style={TabListStyles}
 					p="0"
-					h="3em"
 					w="100%"
 					bg="white"
 					grow={true}>
@@ -63,4 +63,9 @@ const panelLayout: React.CSSProperties = {
 	alignItems: "stretch",
 	flexGrow: 10,
 	overflow: "scroll"
+}
+
+const TabListStyles: React.CSSProperties = {
+	height: "3em",
+	flexShrink: 0,
 }

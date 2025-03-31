@@ -24,7 +24,7 @@ export default function ChallengesTab() {
 
 			</Header>
 			<Container mih="0">
-				<Stack>
+				<Stack pb="md">
 				{challengeHand.map((challenge, index) => {
 					return (
 						<Paper
