@@ -22,7 +22,7 @@ export default function LogTab() {
 		<>
 			<Header>
 				<h1>Game Log</h1>
-				<p>Game will end at {props.G.endTime}</p>
+				<p>Game will end at {props.G.endTime && new Date(props.G.endTime).toLocaleTimeString("en-US", {timeStyle: "short"})}</p>
 				<Group>
 					<Button variant="outline">Pause Game</Button>
 					<Button onClick={handleEndGame}>End Game</Button>
