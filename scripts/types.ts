@@ -72,7 +72,9 @@ export interface GameState {
 	active: boolean,
 	allPlayersData : AllPlayersData,
 	allTeamsData : AllTeamsData,
-	gameOver : boolean
+	gameOver : boolean,
+	startTime? : number,
+	endTime? : number,
 }
 
 export type zoneStatus = Color | "empty";
