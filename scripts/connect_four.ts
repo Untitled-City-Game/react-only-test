@@ -1,3 +1,4 @@
+import { gameTimeMinutes } from "@/scripts/consts";
 import {
 	AllPlayersData,
 	AllTeamsData,
@@ -148,6 +149,7 @@ function startGame({ events, G, random, log }: FnContext<GameState>) {
 	//shuffle and create decks
 	events.setActivePlayers({ all: "claim" });
 	teamSetup(G.allTeamsData, random);
+	startGameTimer(G);
 	G.active = true;
 	addLogMetadata(
 		{ log },
@@ -167,6 +169,12 @@ function teamSetup(teams: AllTeamsData, random: RandomAPI) {
 			challengeDiscard: [],
 		};
 	}
+}
+
+function startGameTimer(G: GameState) {
+	const startTime = Date.now();
+	G.startTime = startTime;
+	G.endTime = startTime + gameTimeMinutes * 60 * 1000;
 }
 
 function endGame({ G, log }: FnContext<GameState>) {

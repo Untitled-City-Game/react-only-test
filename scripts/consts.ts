@@ -1,6 +1,7 @@
 export const highlightColor = "orange";
 
 export const numPlayers = 6;
+export const gameTimeMinutes = 300;
 export const cities = [
 	"melbourne",
 	"montreal",
