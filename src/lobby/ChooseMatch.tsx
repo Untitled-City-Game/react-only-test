@@ -88,7 +88,9 @@ export default function ChooseMatch() {
 				<h1>Connect Four Lobby</h1>
 				<h2>Join a game</h2>
 				{loadingMatches ? <Loading message="Loading matches"/>: chooseMatchFormElement}
-				<Button component={Link} to="/lobby/create-match">Create New Game</Button>
+				<h2>Create a game</h2>
+				<p>Create and host a new game of Connect Four</p>
+				<Button component={Link} to="/lobby/create-match">Create</Button>
 			</Stack>
 		</Center>
 		);
