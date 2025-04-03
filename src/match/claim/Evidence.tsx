@@ -1,7 +1,7 @@
 ;
 import { MetroGameBoardProps } from "@/scripts/types";
 import { FileInput } from "@mantine/core";
-import { Form } from "./ClaimFlow";
+import { Form } from "./ClaimFlowModal";
 
 export function Evidence({
 	claimForm,

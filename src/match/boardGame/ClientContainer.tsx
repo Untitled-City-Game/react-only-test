@@ -57,9 +57,7 @@ export default function ClientContainer(
 		const GameClient = Client({
 			game: ConnectFour,
 			board: Board,
-			debug: {
-				collapseOnLoad: true,
-			},
+			debug: false,
 			multiplayer: SocketIO({
 				server: process.env.GAME_SERVER,
 			}),

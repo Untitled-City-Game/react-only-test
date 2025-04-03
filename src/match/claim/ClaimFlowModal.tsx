@@ -22,7 +22,7 @@ export type Form = UseFormReturnType<
 	}
 >;
 
-export default function ClaimFlow({
+export default function ClaimFlowModal({
 	open,
 	close,
 	claimedZone,
@@ -57,16 +57,20 @@ export default function ClaimFlow({
 		const evidenceURL = await getDownloadURL(imageRef);
 
 		moves.completeChallengeAndClaim(zone, challenge, evidenceURL);
+		closeClaim();
+	}
+
+	function closeClaim(){
+		console.log("closing claim form");
+		claimForm.reset();
+		setStep(0);
 		close();
 	}
 
 	return claimedZone ? (
 		<Modal
 			opened={open}
-			onClose={() => {
-				close();
-				setStep(0);
-			}}
+			onClose={closeClaim}
 			size="xl"
 			title={`Claim ${zoneName}`}
 			fullScreen
@@ -104,7 +108,7 @@ export default function ClaimFlow({
 									Next step
 								</Button>
 								{step === 0 ? (
-									<Button onClick={close}>Back</Button>
+									<Button onClick={closeClaim}>Back</Button>
 								) : (
 									<Button onClick={() => setStep(step - 1)}>
 										Back

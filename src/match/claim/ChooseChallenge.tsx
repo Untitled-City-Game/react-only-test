@@ -1,6 +1,6 @@
 ;
 import type { MetroGameBoardProps } from "@/scripts/types";
-import type { Form } from "@/src/match/claim/ClaimFlow";
+import type { Form } from "@/src/match/claim/ClaimFlowModal";
 import Span from "@/src/userInterface/Span";
 import { Container, Group, Paper, Radio } from "@mantine/core";
 
