@@ -1,4 +1,4 @@
-import { ClaimStateMoves } from "@/scripts/connect_four";
+import { ClaimStateMoves } from "@/scripts/games/connect_four";
 import { MetroGameBoardProps } from "@/scripts/types";
 import { GameContext } from "@/src/match/boardGame/Board";
 import Header from "@/src/userInterface/Header";

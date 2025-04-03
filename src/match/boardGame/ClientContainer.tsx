@@ -1,4 +1,4 @@
-import { ConnectFour } from "@/scripts/connect_four";
+import { ConnectFour } from "@/scripts/games/connect_four";
 import type { ClientSetupData, GameSetupData, MapData, PlayerData } from "@/scripts/types";
 import Board from "@/src/match/boardGame/Board";
 import Loading from "@/src/match/boardGame/Loading";

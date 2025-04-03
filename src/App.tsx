@@ -1,5 +1,5 @@
 // App.tsx
-import ChooseMatch from "@/src/lobby/ChooseMatch";
+import ChooseGame from "@/src/lobby/ChooseGame";
 import CreateMatch from "@/src/lobby/CreateMatch";
 import JoinMatch from "@/src/lobby/JoinMatch";
 import LobbyLayout from "@/src/lobby/LobbyLayout";
@@ -19,7 +19,8 @@ const App = () => {
 				<Route path="/lobby?" element={<LobbyLayout />}>
 					<Route path="join-match/:matchID" element={<JoinMatch />} />
 					<Route path="create-match" element={<CreateMatch />} />
-					<Route index element={<ChooseMatch />} />
+					<Route path="join-match" element={<JoinMatch />} />
+					<Route index element={<ChooseGame />} />
 				</Route>
 			</Route>
 		</Routes>
