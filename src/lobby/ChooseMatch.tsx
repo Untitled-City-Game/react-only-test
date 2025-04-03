@@ -1,7 +1,7 @@
 import { StrictMatch } from "@/scripts/types";
 import Loading from "@/src/match/boardGame/Loading";
 import Span from "@/src/userInterface/Span";
-import { Button, Group, Paper, Radio, Stack } from "@mantine/core";
+import { Button, Center, Group, Paper, Radio, Stack } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { LobbyClient } from "boardgame.io/client";
 import { useEffect, useMemo, useState } from "react";
@@ -68,25 +68,28 @@ export default function ChooseMatch() {
 		navigate('/lobby/join-match/' + values.MatchID);
 	}
 
+	const chooseMatchFormElement = matches.length > 0 ? <form
+	onSubmit={joinGameForm.onSubmit(handleJoinGame)}>
+		<Stack>
+			<Radio.Group
+				label="Choose a match"
+				key={joinGameForm.key("MatchID")}
+				{...joinGameForm.getInputProps("MatchID")}
+			>
+			<Stack>{matchCards}</Stack>
+			</Radio.Group>
+			<Button type="submit">Join</Button>
+		</Stack>
+	</form> : <Span>No matches available.</Span>;
+
 	return (
-		<>
-			<h1>Connect Four Lobby</h1>
-			<Button component={Link} to="/lobby/create-match">Create New Game</Button>
-			<h2>Join a game</h2>
-			{loadingMatches ? <Loading message="Loading matches"/>: <form
-					onSubmit={joinGameForm.onSubmit(handleJoinGame)}>
-						<Stack>
-							<Radio.Group
-								label="Choose a match"
-								key={joinGameForm.key("MatchID")}
-								{...joinGameForm.getInputProps("MatchID")}
-							>
-							<Stack>{matchCards}</Stack>
-							</Radio.Group>
-							<Button type="submit">Join</Button>
-						</Stack>
-					</form>
-			}
-		</>
+		<Center>
+			<Stack>
+				<h1>Connect Four Lobby</h1>
+				<h2>Join a game</h2>
+				{loadingMatches ? <Loading message="Loading matches"/>: chooseMatchFormElement}
+				<Button component={Link} to="/lobby/create-match">Create New Game</Button>
+			</Stack>
+		</Center>
 		);
 }
