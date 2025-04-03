@@ -1,39 +1,48 @@
 import {
-	colorsTuple,
-	createTheme,
-	DEFAULT_THEME,
-	mergeMantineTheme,
-  } from '@mantine/core';
+  colorsTuple,
+  createTheme,
+  DEFAULT_THEME,
+  mergeMantineTheme,
+} from '@mantine/core';
 
 const themeOverride = createTheme({
   primaryShade: 7,
   primaryColor: "actionColor",
-  white: "#F6F2E6",
+  white: "#FFFFFF",
   colors: {
-	paper: colorsTuple("#F6F2E6"),
+	  paper: colorsTuple("#FFFFFF"),
+    red: colorsTuple("#E51938"),
+    green: colorsTuple("#00A950"),
+    blue: colorsTuple("#0076C0"),
+    grey: colorsTuple("#A1A3A1"),
+    yellow: colorsTuple("#FFD200"),
+    water: colorsTuple("#79BDE8"),
+    roadGrey: colorsTuple("#C4CDC7"),
+    grass: colorsTuple("#CFE5A7"),
+    grassDark: colorsTuple("#9BB965"),
     secondaryColor: [
-      "#ffedf5",
-      "#f5dbe5",
-      "#e4b6c8",
-      "#d58eaa",
-      "#c76d90",
-      "#bf577f",
-      "#bc4c77",
-      "#a63d66",
-      "#95345a",
-      "#84294e"
+      "#e5f8ff",
+      "#d0edff",
+      "#9fd8fd",
+      "#6cc3fb",
+      "#47b1fa",
+      "#32a6fa",
+      "#26a0fb",
+      "#188be0",
+      "#007cc9",
+      "#006bb2"
     ],
     actionColor:  [
-      "#ffedeb",
-      "#fadbd8",
-      "#eab6b2",
-      "#db8f89",
-      "#cf6e65",
-      "#c8594f",
-      "#c64d43",
-      "#af3e35",
-      "#9d352d",
-      "#8a2a24"
+      "#ffe9ee",
+      "#fed3da",
+      "#f6a5b1",
+      "#f07487",
+      "#ea4b62",
+      "#e7304b",
+      "#e7213f",
+      "#cd1332",
+      "#b80a2b",
+      "#a20023"
     ]
   }
 

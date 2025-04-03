@@ -23,7 +23,7 @@ export default function ZonePolygon({zone, handleZoneClick, currentZone, highlig
 		strokeColor = {'black'}
 		strokeOpacity={0.8}
 		strokeWeight={amCurrentZone ? 4 : 2}
-		fillColor={highlightedZones[zone.featureName] ? highlightColor : zoneGameData.color}
+		fillColor={zoneGameData.color}
 		fillOpacity={amCurrentZone ? 0.5 : 0.2}
 		onClick={() => handleZoneClick(lineVisibilityTemp, highlightedZonesTemp)}
 		/>
