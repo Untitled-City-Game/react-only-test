@@ -24,6 +24,7 @@ export const games = [
 		name: "Connect Four",
 		code: "connect_four",
 		active: true,
+		description: "Connect four neighbourhoods in your city before the other team!"
 	},
 	{
 		name: "Tag",

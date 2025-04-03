@@ -18,7 +18,9 @@ export default function ChooseMatch() {
 
 	useEffect(() => {
 		console.timeLog("load", "list matches effect");
-		lobbyClient.listMatches('connect-four').then(res => {
+		const fetchMatches = async () => {
+		try{
+			const res = await lobbyClient.listMatches('connect-four')
 			console.timeLog("load", "received matches");
 			const matches = res.matches as StrictMatch[];
 			const activeMatches = matches.filter(match => !match.gameover);
@@ -31,8 +33,14 @@ export default function ChooseMatch() {
 			console.timeLog("load", "set matches");
 			setLoadingMatches(false);
 			setMatches(availableMatches);
+		} catch (e){
+			console.log("error listing matches", e);
+			setLoadingMatches(false);
+			setMatches([]);
+			return;
+			}
 		}
-		);
+		fetchMatches();
 	},
 	[lobbyClient])
 
