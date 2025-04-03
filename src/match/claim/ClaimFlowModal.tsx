@@ -1,5 +1,5 @@
-import { ClaimStateMoves } from "@/scripts/connect_four";
 import { storage } from "@/scripts/firebase";
+import { ClaimStateMoves } from "@/scripts/games/connect_four";
 import { MetroGameBoardProps, ZoneData } from "@/scripts/types";
 import { GameContext } from "@/src/match/boardGame/Board";
 import { ChooseChallenge } from "@/src/match/claim/ChooseChallenge";

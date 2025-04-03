@@ -1,5 +1,5 @@
-import { ConnectFour } from '@/scripts/connect_four';
 import { cities } from '@/scripts/consts';
+import { ConnectFour } from '@/scripts/games/connect_four';
 import { GameSetupData } from '@/scripts/types';
 import { fetchMapData } from '@scripts/fetchMapData';
 import { Firestore } from 'bgio-firebase';
