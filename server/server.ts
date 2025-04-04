@@ -44,6 +44,11 @@ async function buildServer(){
 		console.log("getting map data for city", ctx.params.city);
 		ctx.body = AllMapsData[ctx.params.city] ? AllMapsData[ctx.params.city] : {};
 	  });
+	server.router.get("/delete-match/:matchID", (ctx) => {
+		console.log("deleting match", ctx.params.matchID);
+		const matchID = ctx.params.matchID;
+		database.wipe(matchID);
+	});
 	const PORT = parseInt(process.env.PORT || "8000");
 	server.run(PORT, () => console.log("server running..."));
 }
