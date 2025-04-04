@@ -131,4 +131,6 @@ type namedColor = "red" | "blue" | "green" | "yellow" | "purple" | "orange" | "b
 
 export type Color = RGB | RGBA | HEX | namedColor;
 
-
+export function isCity(city: string) : city is City{
+	return cities.includes(city as City);
+	}

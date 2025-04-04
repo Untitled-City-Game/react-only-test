@@ -1,6 +1,6 @@
 import { cities, numPlayers } from "@/scripts/consts";
 import { joinMatch } from '@/scripts/joinMatch';
-import { City, GameSetupData, MapData, PlayerData } from "@/scripts/types";
+import { City, GameSetupData, isCity, MapData, PlayerData } from "@/scripts/types";
 import Span from "@/src/userInterface/Span";
 import { Button, Center, Group, NumberInput, Paper, Radio, Select, Stack, TextInput } from "@mantine/core";
 import { hasLength, useForm } from "@mantine/form";
@@ -58,18 +58,13 @@ export default function CreateGame() {
 	const handleCreateGame = async (values : FormValues) => {
 		console.log("creating game", values);
 		//get map data
-		const mapDataRes = await fetch(process.env.GAME_SERVER + "/map-data/" + values.city)
+		if(!isCity(values.city)){
+			throw new Error("Invalid city");
+		}
+		const mapDataRes = await fetch(process.env.GAME_SERVER + "/map-data/" + values.city).catch(e => {
+			throw new Error("Error fetching map data");
+		});
 		const mapDataResJSON = await mapDataRes.json();
-
-		//handle errors
-		if(mapDataResJSON.error){
-			console.log("error fetching map data", mapDataResJSON.error);
-			return;
-		}
-		if(!mapDataResJSON){
-			console.log("no map data found for city", values.city);
-			return;
-		}
 
 		//match setup
 		const setupData : GameSetupData = {

@@ -19,21 +19,11 @@ const database = new Firestore({
 async function fetchAllData(){
 	const allData : Record<string, GameSetupData> = {};
 	for (const city of cities){
-		let data : GameSetupData;
-		try {
-			const mapData = await fetchMapData(city);
-			data = {
-				city: city,
-				...mapData
-			}
-			console.log("fetched data for city", city);
-			allData[city] = data;
-			continue;
-			} catch (e){
-				console.log("error fetching data for city", city);
-				console.log(e);
-				continue;
-			}
+		const mapData = await fetchMapData(city).catch(e => console.error(e));
+		if (!mapData) continue;
+		console.log("fetched data for city", city);
+		allData[city] = mapData;
+		continue;
 	}
 	return allData;
 }
