@@ -1,6 +1,6 @@
 import { initializeApp } from "firebase/app";
 import { getFirestore } from "firebase/firestore";
-import { getStorage } from "firebase/storage";
+import { connectStorageEmulator, getStorage } from "firebase/storage";
 
 import 'firebase/firestore';
 const firebaseConfig = {
@@ -15,5 +15,11 @@ const firebaseConfig = {
 const fireBaseApp = initializeApp(firebaseConfig);
 const firestore = getFirestore(fireBaseApp);
 const storage = getStorage(fireBaseApp);
+if (location.hostname === "localhost") {
+	// Point to the Storage emulator running on localhost.
+	connectStorageEmulator(storage, "127.0.0.1", 9199);
+  } 
+  
 
-export { firestore, storage, firebaseConfig };
+export { firebaseConfig, firestore, storage };
+
