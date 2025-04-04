@@ -201,7 +201,13 @@ export const ConnectFour: Game<GameState> = {
 	//set up game board using map json info
 	validateSetupData: (data) => isGameSetupData(data),
 	setup: ({ ctx }, setupData) => gameSetup(ctx, setupData),
-	endIf: ({ G }) => {G.gameOver ? "Game ended" : null},
+	endIf: ({ G }) => {
+		console.log("gameover check", G.gameOver);
+		return G.gameOver ? "Game ended" : null;
+	},
+	onEnd: () => {
+		console.log("on end");
+	},
 	moves: {
 		claimZone,
 		startGame,

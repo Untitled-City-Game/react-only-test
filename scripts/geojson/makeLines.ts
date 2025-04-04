@@ -12,7 +12,7 @@ export default function makeLines(regionDataObj: GeoJSON.FeatureCollection) {
 
 	//Create the lines
 	const regionLines : LineData[] = validPolyLines.map((line: LineFeature) => {
-		const lineName: string = line.properties.Name
+		const lineName: string = line.properties.Name || line.properties.name;
 		//convert coords to latlong
 		const lineCoords = line.geometry.coordinates.map((coord: Position) => {
 			const latlong = coord as number[];

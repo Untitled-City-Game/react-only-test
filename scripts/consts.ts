@@ -5,6 +5,7 @@ export const gameTimeMinutes = 300;
 export const cities = [
 	"melbourne",
 	"montreal",
+	"london",
 ] as const;
 
 export const gameLocationCenters = {
@@ -15,6 +16,10 @@ export const gameLocationCenters = {
 	montreal: {
 		lat:  45.529819917244254,
 		lng: -73.60361034602055,
+	},
+	london: {
+		lat:  51.5073509,
+		lng: -0.1277583,
 	},
 }
 
