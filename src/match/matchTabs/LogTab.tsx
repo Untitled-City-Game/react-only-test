@@ -6,17 +6,20 @@ import ImageMantine from "@/src/userInterface/ImageMantine";
 import Span from "@/src/userInterface/Span";
 import { Alert, Button, Container, Group, Stack } from "@mantine/core";
 import { LogEntry } from "boardgame.io";
-import { useContext, useEffect, useState } from "react";
+import { LobbyClient } from "boardgame.io/client";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 
 export default function LogTab() {
 	const props: MetroGameBoardProps = useContext(GameContext);
+	const lobbyClient = useMemo(() => new LobbyClient({ server: process.env.GAME_SERVER }), []);
 	const moves = props.moves as ClaimStateMoves;
 	const playerData = props.playerData.data;
-	function handleEndGame(){
+	async function handleEndGame(){
 		console.log("ending game");
+		// await lobbyClient.updatePlayer("connect-four", props.matchID, { playerID: playerData.playerID, credentials: props.credentials || 'undefined', data: { 'teamColor': props.playerData.data.teamColor, 'gameover': true } });
 		moves.endGame();
-		props.playerData.setter(undefined);
+		//props.playerData.setter(undefined);
 	}
 	return (
 		<>

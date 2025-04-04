@@ -3,7 +3,7 @@ import { ConnectFour } from '@/scripts/games/connect_four';
 import { GameSetupData } from '@/scripts/types';
 import { fetchMapData } from '@scripts/fetchMapData';
 import { Firestore } from 'bgio-firebase';
-import { Origins, Server } from 'boardgame.io/server';
+import { FlatFile, Origins, Server } from 'boardgame.io/server';
 import admin from 'firebase-admin';
 
 const database = new Firestore({
@@ -35,8 +35,11 @@ async function buildServer(){
 	const server = Server({
 		games: [ConnectFour],
 		origins: [Origins.LOCALHOST, "http://10.0.0.231:1234", "http://10.0.0.231", "https://nextjs-metrogame--metro-game-474bc.us-central1.hosted.app", "https://otbg-live-test--metro-game-474bc.us-central1.hosted.app"],
-		// db: database,
+		db: new FlatFile({
+			dir: process.cwd() + '/server/db',
+		})
 	});
+
 	server.router.get('/hello', (ctx) => {
 		ctx.body = 'Hello ee!';
 	  });

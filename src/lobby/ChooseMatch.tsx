@@ -1,6 +1,7 @@
 import { StrictMatch } from "@/scripts/types";
 import Loading from "@/src/match/boardGame/Loading";
 import Span from "@/src/userInterface/Span";
+import { theme } from "@/styles/theme";
 import { Button, Center, Group, Paper, Radio, Stack } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { LobbyClient } from "boardgame.io/client";
@@ -20,10 +21,12 @@ export default function ChooseMatch() {
 		console.timeLog("load", "list matches effect");
 		const fetchMatches = async () => {
 		try{
-			const res = await lobbyClient.listMatches('connect-four');
+			//const res = await lobbyClient.listMatches('connect-four');
+			const resString = await fetch(process.env.GAME_SERVER + "/games/connect-four");
+			const res = await resString.json();
 			console.timeLog("load", "received matches", res.matches);
 			const matches = res.matches as StrictMatch[];
-			const activeMatches = matches.filter(match => !match.gameover);
+			const activeMatches = matches.filter(match => !match.gameover && match.players.length > 0);
 			const availableMatches = activeMatches.filter(match => {
 				const maxPlayers = match.players.length
 				const numPlayers = match.players.filter(player => player.name).length;
@@ -54,8 +57,8 @@ export default function ChooseMatch() {
 
 	//Render radio cards for matches
 	const matchCards = matches.map((match) => (
-		<Radio.Card radius="md" value={match.matchID} key={match.matchID}>
-			<Paper radius="md" p="md">
+		<Radio.Card radius="md" value={match.matchID} key={match.matchID} disabled={match.gameover ? true : false}>
+			<Paper radius="md" p="md" bg={match.gameover ? theme.colors.gray[0] : ''}>
 			<Group wrap="nowrap" align="center">
 				<Radio.Indicator size="lg" color="orange" />
 				<div>
@@ -64,6 +67,7 @@ export default function ChooseMatch() {
 					<Span>
 						{ match.players?.length ? `Current players: ${match.players.map(player => player.name).filter(name => name).join(", ")}` : 'Empty' }
 					</Span>
+					{match.gameover ? <Span fs="italic" opacity={0.6}>This game has ended.</Span> : null}
 				</div>
 			</Group>
 			</Paper>

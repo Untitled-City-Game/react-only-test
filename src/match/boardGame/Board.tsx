@@ -7,7 +7,7 @@ import { useNavigate } from "react-router";
 
 export const GameContext = createContext({} as MetroGameBoardProps);
 export default function Board(props: MetroGameBoardProps) {
-	console.log("attempting to render board");
+	console.log("attempting to render board", props);
 	const { children, ...rest } = props;
 	const { moves, playerID } = props;
 	const playerData = props.playerData.data;
