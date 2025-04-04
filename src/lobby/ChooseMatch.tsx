@@ -20,8 +20,8 @@ export default function ChooseMatch() {
 		console.timeLog("load", "list matches effect");
 		const fetchMatches = async () => {
 		try{
-			const res = await lobbyClient.listMatches('connect-four')
-			console.timeLog("load", "received matches");
+			const res = await lobbyClient.listMatches('connect-four');
+			console.timeLog("load", "received matches", res.matches);
 			const matches = res.matches as StrictMatch[];
 			const activeMatches = matches.filter(match => !match.gameover);
 			const availableMatches = activeMatches.filter(match => {
