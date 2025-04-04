@@ -6,11 +6,6 @@ export const cities = [
 	"melbourne",
 	"montreal",
 ] as const;
-//Melbourne
-export const gameLocationCenter: google.maps.LatLngLiteral = {
-	lat: -37.8136,
-	lng: 144.9631
-  }
 
 export const gameLocationCenters = {
 	melbourne: {
@@ -22,6 +17,26 @@ export const gameLocationCenters = {
 		lng: -73.60361034602055,
 	},
 }
+
+//games
+export const games = [
+	{
+		name: "Connect Four",
+		code: "connect_four",
+		active: true,
+		description: "Connect four neighbourhoods in your city before the other team!"
+	},
+	{
+		name: "Tag",
+		code: "tag",
+		active: false,
+	},
+	{
+		name: "Battleship",
+		code: "battleship",
+		active: false,
+	}
+]
 
    //Montreal
 
