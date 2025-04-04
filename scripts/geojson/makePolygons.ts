@@ -12,7 +12,7 @@ export default function makePolygons(zoneDataObj: GeoJSON.FeatureCollection, zon
 	const validPolygons = polygons.filter(isValidPolygon);
 	//Create the zones
 	const zonePolygons = validPolygons.map((zone: PolygonFeature) => {
-		const zoneName: string = zone.properties.Name;
+		const zoneName: string = zone.properties.Name || zone.properties.name;
 		//Find lines which have a point in the polygon
 		const matchedLines = zoneLines.filter((line: LineData) => {
 			return line.coords.some((coord) => PointInPolygon([coord.lng, coord.lat], zone.geometry.coordinates[0]));
