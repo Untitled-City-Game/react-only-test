@@ -5,4 +5,5 @@ src merge=ours
 src/ merge=ours
 src/* merge=ours
 src/** merge=ours
+src/lobby/ChooseMatch.tsx merge=ours
 package.json merge=ours
