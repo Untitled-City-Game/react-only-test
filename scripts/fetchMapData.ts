@@ -1,16 +1,13 @@
 import makeLines from "@/scripts/geojson/makeLines";
 import makePolygons from "@/scripts/geojson/makePolygons";
 import toGeoJson from "@tmcw/togeojson";
-import { promises as fs } from 'fs';
-import util from "util";
 import { DOMParser } from "xmldom";
 import { City, GameSetupData, LineData, PolyData } from "./types";
 
 export async function fetchMapData(cityName: City = "melbourne") : Promise<GameSetupData> {
   let zoneDataObj : GeoJSON.FeatureCollection;
   try{
-    const zoneData = await fs.readFile(process.cwd() + `/data/${cityName}.geojson`, 'utf8');
-    zoneDataObj = JSON.parse(zoneData);
+    zoneDataObj = await fetchKML();
   } catch (error) {
     throw new Error(`Error reading file: ${error}`);
   }
@@ -28,7 +25,9 @@ async function fetchKML(){
   const kmlText = await res.text();
   const kmlParsed = new DOMParser().parseFromString(kmlText, "text/xml");
   const geoJson = toGeoJson.kml(kmlParsed);
-  console.log(util.inspect(geoJson, {showHidden: false, depth: null, colors: true}))
+  if(!geoJson.features){
+    throw new Error("KML file did not contain features");
+  }
+  return geoJson as GeoJSON.FeatureCollection;
+ // console.log(util.inspect(geoJson, {showHidden: false, depth: null, colors: true}))
 }
-
-fetchKML();
