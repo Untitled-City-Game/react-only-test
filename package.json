@@ -29,6 +29,7 @@
     "react-router": "^7.4.0",
     "typescript": "^5.8.2",
     "tsx": "^4.19.3",
+    "xmldom": "^0.6.0",
     "@types/geojson": "^7946.0.15"
   },
   "devDependencies": {
