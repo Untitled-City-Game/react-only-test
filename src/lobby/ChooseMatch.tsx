@@ -53,6 +53,9 @@ export default function ChooseMatch() {
 		initialValues: {
 			MatchID: "",
 		},
+		validate: {
+			MatchID: (value) => value.length > 0 ? null: "Please select a match"
+		}
 	});
 
 	//Render radio cards for matches
