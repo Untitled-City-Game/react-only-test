@@ -8,6 +8,29 @@ export const cities = [
 	"london",
 ] as const;
 
+export const maps = {
+	melbourne: {
+		name: "Melbourne",
+		code: "melbourne",
+		kml_live_id: "1h1mLlEU1PRRbiF9eusZUplFhg7wjCaU",
+	},
+	montreal: {
+		name: "Montreal",
+		code: "montreal",
+		kml_live_id: "1bliTnqrqX9A6txnta7C27Em0PJ3phzE",
+	},
+	london: {
+		name: "London",
+		code: "london",
+		kml_live_id: "1DWUN7rKm1FUFr0BiKme7f0NpqegZWos",
+	},
+	nyc: {
+		name: "New York City",
+		code: "nyc",
+		kml_live_id: "1L42PLDup2h_AiMSNTT1hAdBoyE5P6Ig"
+	}
+}
+
 export const gameLocationCenters = {
 	melbourne: {
 		lat: -37.8136,

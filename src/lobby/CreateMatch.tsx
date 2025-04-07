@@ -1,6 +1,7 @@
 import { cities, numPlayers } from "@/scripts/consts";
+import { fetchMapData } from "@/scripts/fetchMapData";
 import { joinMatch } from '@/scripts/joinMatch';
-import { City, GameSetupData, isCity, MapData, PlayerData } from "@/scripts/types";
+import { City, isCity, MatchMapData, PlayerData } from "@/scripts/types";
 import Span from "@/src/userInterface/Span";
 import { Button, Center, Group, NumberInput, Paper, Radio, Select, Stack, TextInput } from "@mantine/core";
 import { hasLength, useForm } from "@mantine/form";
@@ -61,16 +62,13 @@ export default function CreateGame() {
 		if(!isCity(values.city)){
 			throw new Error("Invalid city");
 		}
-		const mapDataRes = await fetch(process.env.GAME_SERVER + "/map-data/" + values.city).catch(e => {
-			throw new Error("Error fetching map data");
-		});
-		const mapDataResJSON = await mapDataRes.json();
+		// const mapDataRes = await fetch(process.env.GAME_SERVER + "/map-data/" + values.city).catch(e => {
+		// 	throw new Error("Error fetching map data");
+		// });
+		// const mapDataResJSON = await mapDataRes.json();
 
 		//match setup
-		const setupData : GameSetupData = {
-			city: values.city,
-			...mapDataResJSON as MapData
-		}
+		const setupData : MatchMapData = await fetchMapData(values.city);
 
 		//create match
 		const { matchID } = await lobbyClient.createMatch('connect-four', {
