@@ -1,3 +1,4 @@
 src/lobby/*.tsx merge=ours
 src/match/boardGame/*.tsx merge=ours
 src/match/matchTabs/*.tsx merge=ours
+package.json merge=ours
