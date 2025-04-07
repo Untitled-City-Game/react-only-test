@@ -69,6 +69,7 @@ export type AllTeamsData = AtLeastOneColor<Color>;
 
 export interface GameState {
 	zoneData: ZoneData[],
+	MatchMapData: MatchMapData,
 	active: boolean,
 	allPlayersData : AllPlayersData,
 	allTeamsData : AllTeamsData,
@@ -86,7 +87,7 @@ export interface MapData {
 
 export type City = typeof cities[number];
 
-export interface GameSetupData extends MapData {
+export interface MatchMapData extends MapData {
 	city : City;
 }
 
@@ -94,7 +95,7 @@ export type ConnectFourSetupData = {
 	city : City;
 }
 
-export interface ClientSetupData extends GameSetupData {
+export type ClientSetupData = {
 	playerData: {
 		data: PlayerData;
 		setter: Dispatch<SetStateAction<PlayerData | undefined>>
@@ -103,17 +104,24 @@ export interface ClientSetupData extends GameSetupData {
 	playerID : `${number}`;
 	credentials?: string;
 }
+// export interface ClientSetupData extends GameSetupData {
+// 	playerData: {
+// 		data: PlayerData;
+// 		setter: Dispatch<SetStateAction<PlayerData | undefined>>
+// 	};
+// 	matchID: string;
+// 	playerID : `${number}`;
+// 	credentials?: string;
+// }
 
-export type StrictMatch = Omit<LobbyAPI.Match, 'gameover' | 'setupData'> & { gameover: boolean, setupData: GameSetupData };
+export type StrictMatch = Omit<LobbyAPI.Match, 'gameover' | 'setupData'> & { gameover: boolean, setupData: MatchMapData };
 
 
-export type MetroGameBoardProps = BoardProps<GameState> & GameSetupData & {
-	playerData: {
-		data: PlayerData;
-		setter: Dispatch<SetStateAction<PlayerData | undefined>>
-	};
+export type MetroGameBoardProps = MetroGameContext & {
 	children?: React.ReactNode;
 }
+
+export type MetroGameContext = BoardProps<GameState> & ClientSetupData
 
 export type LogMetadata = {
 	date?: string;
