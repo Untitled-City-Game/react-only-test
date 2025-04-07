@@ -1,14 +1,14 @@
-import { MetroGameBoardProps } from "@/scripts/types";
+import { MetroGameBoardProps, MetroGameContext } from "@/scripts/types";
 import GameOver from "@/src/lobby/GameOver";
 import Loading from "@/src/match/boardGame/Loading";
 import Waiting from "@/src/match/boardGame/Waiting";
 import { createContext, useEffect } from "react";
 import { useNavigate } from "react-router";
 
-export const GameContext = createContext({} as MetroGameBoardProps);
+export const GameContext = createContext({} as MetroGameContext);
 export default function Board(props: MetroGameBoardProps) {
 	console.log("attempting to render board", props);
-	const { children, ...rest } = props;
+	const { children, ...boardGameContext }  = props;
 	const { moves, playerID } = props;
 	const playerData = props.playerData.data;
 	let navigate = useNavigate();
@@ -35,7 +35,7 @@ export default function Board(props: MetroGameBoardProps) {
 
 	if (!props.G.active) {
 		return (
-			<GameContext.Provider value={{ ...rest }}>
+			<GameContext.Provider value={{ ...boardGameContext }}>
 				<Waiting />
 			</GameContext.Provider>
 		);
@@ -46,7 +46,7 @@ export default function Board(props: MetroGameBoardProps) {
 	}
 
 	return (
-		<GameContext.Provider value={{ ...rest }}>
+		<GameContext.Provider value={{ ...boardGameContext }}>
 			{/* <p>Player ID: {playerID}</p>
 			<p>
 				Team: {playerID && props.G.allPlayersData[playerID].teamColor}

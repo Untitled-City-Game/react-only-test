@@ -12,9 +12,8 @@ import { useContext, useState } from "react";
 export default function MapTab() {
 	console.log("rendering mapboard");
 	const props: MetroGameBoardProps = useContext(GameContext);
-	//console.log("playerdata", props.G.allPlayersData);
-	console.log("city", props.city);
-	const { zonePolygons, winningLines, G } = props;
+	const G = props.G;
+	const { zonePolygons, winningLines, city } = G.MatchMapData;
 	const [lineVisibility, setLineVisibility] = useState(
 		winningLines
 			? winningLines.reduce((acc, line) => {
@@ -87,7 +86,7 @@ export default function MapTab() {
 				setCurrentZone={setCurrentZone}
 				lineElements={lineElements}
 				zoneElements={zoneElements} 
-				city={props.city}
+				city={city}
 			/>
 			</div>
 		</>
