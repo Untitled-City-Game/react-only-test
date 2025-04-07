@@ -4,9 +4,9 @@ import {
 	AllTeamsData,
 	ChallengeData,
 	Color,
-	GameSetupData,
 	GameState,
 	LogMetadata,
+	MatchMapData,
 	PlayerData,
 	PolyData,
 	TeamData,
@@ -150,6 +150,7 @@ function startGame({ events, G, random, log }: FnContext<GameState>) {
 	events.setActivePlayers({ all: "claim" });
 	teamSetup(G.allTeamsData, random);
 	startGameTimer(G);
+
 	G.active = true;
 	addLogMetadata(
 		{ log },
@@ -200,7 +201,7 @@ export const ConnectFour: Game<GameState> = {
 	name: `connect-four`,
 	//set up game board using map json info
 	validateSetupData: (data) => isGameSetupData(data),
-	setup: ({ ctx }, setupData) => gameSetup(ctx, setupData),
+	setup: ({ ctx }, setupData : MatchMapData) => gameSetup(ctx, setupData),
 	endIf: ({ G }) => {
 		console.log("gameover check", G.gameOver);
 		return G.gameOver ? "Game ended" : null;
@@ -240,12 +241,15 @@ function isGameSetupData (data : unknown) : string | undefined {
 	if(!('zonePolygons' in data) || !('winningLines' in data) || !data.zonePolygons || !data.zonePolygons) return('Game setup data is missing map data');
 }
 
-function gameSetup(ctx: Ctx, setupData: GameSetupData): GameState {
+function gameSetup(ctx: Ctx, setupData: MatchMapData): GameState {
 	console.log("Setting up game of metromayhem");
 	console.log("players: ", ctx.numPlayers);
 	console.log("currentplayer ", ctx.currentPlayer);
+	console.log("getting map data");
+	
 	return {
 		zoneData: createBoardFromMapJson(setupData.zonePolygons),
+		MatchMapData: setupData,
 		active: false,
 		gameOver: false,
 		allPlayersData: {} as AllPlayersData,
