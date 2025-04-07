@@ -1,7 +1,4 @@
-import { cities } from '@/scripts/consts';
 import { ConnectFour } from '@/scripts/games/connect_four';
-import { MatchMapData } from '@/scripts/types';
-import { fetchMapData } from '@scripts/fetchMapData';
 import { Firestore } from 'bgio-firebase';
 import { Origins, Server } from 'boardgame.io/server';
 import admin from 'firebase-admin';
@@ -16,17 +13,17 @@ const database = new Firestore({
 
 //This is a comment
 
-async function fetchAllData(){
-	const allData : Record<string, MatchMapData> = {};
-	for (const city of cities){
-		const mapData = await fetchMapData(city).catch(e => console.error(e));
-		if (!mapData) continue;
-		console.log("fetched data for city", city);
-		allData[city] = mapData;
-		continue;
-	}
-	return allData;
-}
+// async function fetchAllData(){
+// 	const allData : Record<string, MatchMapData> = {};
+// 	for (const city of cities){
+// 		const mapData = await fetchMapData(city).catch(e => console.error(e));
+// 		if (!mapData) continue;
+// 		console.log("fetched data for city", city);
+// 		allData[city] = mapData;
+// 		continue;
+// 	}
+// 	return allData;
+// }
 
 
 async function buildServer(){

@@ -5,3 +5,4 @@ node_modules/
 *.code-workspace
 *.cache
 server/db/
+package-lock.json
