@@ -43,7 +43,7 @@ async function buildServer(){
 		const mapData = await fetch(`https://www.google.com/maps/d/u/0/kml?forcekml=1&mid=${ctx.params.citycode}`);
 		ctx.body = await mapData.text();
 	  });
-	const PORT = parseInt(process.env.PORT || "8000");
+	const PORT = parseInt(process.env.PORT || "8080");
 	server.run(PORT, () => console.log("server running..."));
 }
 
