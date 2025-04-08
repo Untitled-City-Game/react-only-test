@@ -118,6 +118,7 @@ export default function CreateGame() {
 						</Stack>
 					</Radio.Group>
 					<Button type="submit">Create and Join</Button>
+					<Button variant="outline" onClick={() => navigate("/lobby/choose-match")}>Back</Button>
 				</Stack>
 			</form>
 		</Center>
