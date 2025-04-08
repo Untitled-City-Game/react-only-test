@@ -6,8 +6,9 @@ import JoinMatch from "@/src/lobby/JoinMatch";
 import LobbyLayout from "@/src/lobby/LobbyLayout";
 import Match from "@/src/match/matchTabs/Match";
 import RootLayout from "@/src/userInterface/RootLayout";
+import MatchLayout from "@src/match/boardGame/MatchLayout";
+import NotFound from "@src/userInterface/NotFound";
 import { BrowserRouter, Route, Routes } from "react-router";
-import MatchLayout from "./match/boardGame/MatchLayout";
 
 const App = () => {
 	console.time("load");
@@ -18,12 +19,13 @@ const App = () => {
 				<Route path="match" element={<MatchLayout />}>
 					<Route index element={<Match />} />
 				</Route>
-				<Route path="/lobby?" element={<LobbyLayout />}>
+				<Route path="lobby?" element={<LobbyLayout />}>
 					<Route path="join-match/:matchID" element={<JoinMatch />} />
 					<Route path="create-match" element={<CreateMatch />} />
 					<Route path="choose-match" element={<ChooseMatch />} />
 					<Route index element={<ChooseGame />} />
 				</Route>
+				<Route path="*" element={<NotFound />} />
 			</Route>
 		</Routes>
 	</BrowserRouter>
