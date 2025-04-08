@@ -1,6 +1,6 @@
 import { ConnectFour } from '@/scripts/games/connect_four';
 import { Firestore } from 'bgio-firebase';
-import { Server } from 'boardgame.io/server';
+import { Origins, Server } from 'boardgame.io/server';
 import admin from 'firebase-admin';
 
 const database = new Firestore({
@@ -31,7 +31,7 @@ async function buildServer(){
 	//const AllMapsData : Record<string, MatchMapData> = await fetchAllData();
 	const server = Server({
 		games: [ConnectFour],
-		origins: ["https://metro-game-474bc.web.app"],
+		origins: ["https://metro-game-474bc.web.app", Origins.LOCALHOST],
 		db: database,
 	});
 
