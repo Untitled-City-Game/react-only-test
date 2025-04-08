@@ -11,7 +11,8 @@ import MatchLayout from "./match/boardGame/MatchLayout";
 
 const App = () => {
 	console.time("load");
-	return (<BrowserRouter>
+	return (
+	<BrowserRouter>
 		<Routes>
 			<Route element={<RootLayout />}>
 				<Route path="match" element={<MatchLayout />}>
@@ -25,7 +26,8 @@ const App = () => {
 				</Route>
 			</Route>
 		</Routes>
-	</BrowserRouter>)
+	</BrowserRouter>
+	)
 }
 
 export default App;
