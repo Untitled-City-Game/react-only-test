@@ -2,7 +2,7 @@ import { StrictMatch } from "@/scripts/types";
 import Loading from "@/src/match/boardGame/Loading";
 import Span from "@/src/userInterface/Span";
 import { theme } from "@/styles/theme";
-import { Button, Center, Group, Paper, Radio, Stack } from "@mantine/core";
+import { Button, Center, Container, Group, Paper, Radio, Stack } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { LobbyClient } from "boardgame.io/client";
 import { useEffect, useMemo, useState } from "react";
@@ -98,15 +98,17 @@ export default function ChooseMatch() {
 	</form> : <Span>No matches available.</Span>;
 
 	return (
+		<Container pb="md">
 		<Center>
 			<Stack>
 				<h1>Connect Four Lobby</h1>
-				<h2>Join a game</h2>
-				{loadingMatches ? <Loading message="Loading matches"/>: chooseMatchFormElement}
 				<h2>Create a game</h2>
 				<p>Create and host a new game of Connect Four</p>
 				<Button component={Link} to="/lobby/create-match">Create</Button>
+				<h2>Join a game</h2>
+				{loadingMatches ? <Loading message="Loading matches"/>: chooseMatchFormElement}
 			</Stack>
 		</Center>
+		</Container>
 		);
 }

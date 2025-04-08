@@ -36,7 +36,7 @@ export default function JoinMatch() {
 		validate: {
 			PlayerName: (value) => value.length > 0 ? null : "Player name is required",
 			teamID: (value) => value.length > 0 ? null : "Team is required",
-		}
+		},
 	});
 
 	type FormValues = {
@@ -87,7 +87,7 @@ export default function JoinMatch() {
 				<Stack>
 					<h1>Join Game</h1>
 					<p>Match ID: {matchID}</p>
-					<form onSubmit={joinGameForm.onSubmit(handleJoinGame)}>
+					<form onSubmit={joinGameForm.onSubmit(handleJoinGame)} id="joingame">
 						<h2>Join a Game</h2>
 						<TextInput
 							label="Your name"
@@ -102,8 +102,9 @@ export default function JoinMatch() {
 								{teamCards}
 							</Stack>
 						</Radio.Group>
-						<Button type="submit">Join Game</Button>
 					</form>
+					<Button type="submit" form="joingame" >Join Game</Button>
+					<Button variant="outline" onClick={() => navigate("/lobby/choose-match")}>Back</Button>
 				</Stack>
 			</Center>
 		);
