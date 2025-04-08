@@ -87,7 +87,7 @@ export default function CreateGame() {
 			<form
 				onSubmit={createGameForm.onSubmit(handleCreateGame)}>
 				<Stack>
-					<h2>Create a Game</h2>
+					<h2>Create a Game of Connect Four</h2>
 					<Select
 						label="Choose a city"
 						placeholder="melbourne"
