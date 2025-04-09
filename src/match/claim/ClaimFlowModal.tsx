@@ -6,7 +6,15 @@ import { ChooseChallenge } from "@/src/match/claim/ChooseChallenge";
 import ConfirmClaim from "@/src/match/claim/ConfirmClaim";
 import { Evidence } from "@/src/match/claim/Evidence";
 import Header from "@/src/userInterface/Header";
-import { Button, Center, Group, Modal, Stack, Stepper } from "@mantine/core";
+import {
+	Button,
+	Center,
+	Group,
+	LoadingOverlay,
+	Modal,
+	Stack,
+	Stepper,
+} from "@mantine/core";
 import { UseFormReturnType, useForm } from "@mantine/form";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { useContext, useState } from "react";
@@ -33,16 +41,28 @@ export default function ClaimFlowModal({
 }) {
 	const props: MetroGameBoardProps = useContext(GameContext);
 	const moves = props.moves as ClaimStateMoves;
+	const [loading, setLoading] = useState(false);
+
 	const [step, setStep] = useState(0);
 	const claimForm = useForm({
 		mode: "uncontrolled",
 		initialValues: {
-			challenge: "None",
+			challenge: "",
 			evidence: "",
 		},
+		validate: (values) => {
+			console.log("validating claim form", values);
+			if (step === 0) {
+				return {
+					challenge: values.challenge ? null : "Select a challenge to claim this zone",
+				};
+			}
+			return {};
+		}
 	});
 	const zoneName = claimedZone?.name;
 	async function claimZone(zone: number, challenge: string, evidence: File) {
+		setLoading(true);
 		console.log("claiming zone on client", zone, challenge, evidence);
 		const imageRef = ref(
 			storage,
@@ -58,9 +78,10 @@ export default function ClaimFlowModal({
 
 		moves.completeChallengeAndClaim(zone, challenge, evidenceURL);
 		closeClaim();
+		setLoading(false);
 	}
 
-	function closeClaim(){
+	function closeClaim() {
 		console.log("closing claim form");
 		claimForm.reset();
 		setStep(0);
@@ -79,6 +100,7 @@ export default function ClaimFlowModal({
 				<h1>Claiming {zoneName}</h1>
 			</Header>
 			<Center>
+				<LoadingOverlay visible={loading} />
 				<Stack pb="md">
 					<Stepper
 						active={step}
@@ -104,7 +126,10 @@ export default function ClaimFlowModal({
 					<Group justify="center" mt="xl">
 						{step !== 2 ? (
 							<>
-								<Button onClick={() => setStep(step + 1)}>
+								<Button onClick={() => {
+									if(claimForm.validate().hasErrors) return;
+									setStep(step + 1)
+									}}>
 									Next step
 								</Button>
 								{step === 0 ? (
@@ -116,17 +141,22 @@ export default function ClaimFlowModal({
 								)}
 							</>
 						) : (
-							<Button
-								onClick={() =>
-									claimZone(
-										claimedZone.id,
-										claimForm.getValues().challenge,
-										claimForm.getValues()
-											.evidence as unknown as File
-									)
-								}>
-								Claim
-							</Button>
+							<>
+								<Button
+									onClick={() =>
+										claimZone(
+											claimedZone.id,
+											claimForm.getValues().challenge,
+											claimForm.getValues()
+												.evidence as unknown as File
+										)
+									}>
+									Claim
+								</Button>
+								<Button onClick={() => setStep(step - 1)}>
+									Back
+								</Button>
+							</>
 						)}
 					</Group>
 				</Stack>
