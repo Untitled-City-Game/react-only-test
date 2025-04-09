@@ -20,6 +20,7 @@ export default function MapLine({
 				strokeColor = {theme.colors.red[0]}
 				strokeOpacity = {1}
 				strokeWeight = {4}
+				clickable={false}
 			/>
 			{/* Make a circle at each vertex of the polyline */}
 			{line.coords.map((coord, index) => {
@@ -29,6 +30,7 @@ export default function MapLine({
 							position={coord}
 							key={"marker"+index}
 							visible={lineVisibility}
+							clickable={false}
 							zIndex={5}
 							icon = {{
 								strokeColor: `${theme.black}`,
