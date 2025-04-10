@@ -23,52 +23,18 @@ const testCoordsLatLng = coordsarr.map((coord) => {
 	}
 })
 
-// export function MapElement(props: MapElementProps) {
-// 	//Load the map
-// 	const { isLoaded } = useJsApiLoader({
-// 		id: "google-map-script",
-// 		googleMapsApiKey: "AIzaSyAhg8bq82cx8W6bqb-KTjk1QmrgOi43gdA",
-// 		libraries: libraries,
-// 		mapIds: ["fc1cd512863f2ee3"],
-// 	});
-// 	return isLoaded ? (
-// 		<GoogleMap
-// 			mapContainerStyle={containerStyle}
-// 			center={gameLocationCenter}
-// 			zoom={12}
-// 			options={{
-// 				mapId: "fc1cd512863f2ee3",
-// 				streetViewControl: false,
-// 				fullscreenControl: false,
-// 				mapTypeControl: false,
-// 			}}
-// 			onClick={() => {
-// 				props.setCurrentZone(undefined);
-// 				props.setLineVisibility({});
-// 				props.setHighlightedZones({});
-// 			}}>
-// 			{/* This does the grid */}
-// 			{props.zoneElements}
-// 			<>{props.lineElements}</>
-// 			{/* This is the location marker */}
-// 			<LocationMarker initialPosition={gameLocationCenter} />
-// 		</GoogleMap>
-// 	) : (
-// 		<>Loading...</>
-// 	);
-// }
 
 export default function VisGlMapElement(props: MapElementProps) {
 	console.log("rendering visglmapelement")
 	const center = gameLocationCenters[props.city];
 	return (
 		<APIProvider 
-		apiKey="AIzaSyAhg8bq82cx8W6bqb-KTjk1QmrgOi43gdA"
+		apiKey="AIzaSyCG6Ouy-lsuiGpNCcibChoSxW6f0zupHNc"
 		libraries={["geometry"]}
 		onError={(e) => console.error(e)}
 		>
 			<Map 
-				mapId = "fc1cd512863f2ee3"
+				mapId = "5eaa0d345956e4f1"
 				streetViewControl={false}
 				fullscreenControl={false}
 				mapTypeControl={false}
