@@ -267,7 +267,7 @@ function createBoardFromMapJson(mapData: PolyData[]): ZoneData[] {
 			id: index,
 			status: "empty",
 			name: zone.featureName,
-			color: "grey",
+			color: null,
 		};
 	});
 }
