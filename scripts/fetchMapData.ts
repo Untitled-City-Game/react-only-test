@@ -11,7 +11,7 @@ export async function fetchMapData(cityName: City = "melbourne") : Promise<Match
   // } catch (error) {
   //   throw new Error(`Error reading file: ${error}`);
   // }
-  zoneDataObj = await fetchKML();
+  zoneDataObj = await fetchKML(cityName);
   const zoneLines: LineData[] = makeLines(zoneDataObj);
   const zonePolygons: PolyData[] = makePolygons(zoneDataObj, zoneLines);
   return {
