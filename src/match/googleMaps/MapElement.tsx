@@ -68,7 +68,7 @@ export default function VisGlMapElement(props: MapElementProps) {
 		onError={(e) => console.error(e)}
 		>
 			<Map 
-				mapId = "fc1cd512863f2ee3"
+				mapId = "5eaa0d345956e4f1"
 				streetViewControl={false}
 				fullscreenControl={false}
 				mapTypeControl={false}
