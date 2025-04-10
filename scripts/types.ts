@@ -31,7 +31,7 @@ export type ZoneData = {
 	id: number;
 	status: zoneStatus;
 	name: string;
-	color: Color;
+	color: Color | null;
 }
 
 export type PlayerData = {
