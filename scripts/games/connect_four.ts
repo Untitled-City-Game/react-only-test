@@ -1,28 +1,28 @@
 import { gameTimeMinutes } from "@/scripts/consts";
 import {
+	AllChallengeData,
 	AllPlayersData,
 	AllTeamsData,
-	ChallengeData,
-	Color,
 	GameState,
 	LogMetadata,
 	MatchMapData,
+	MatchTeamColor,
 	PlayerData,
 	PolyData,
-	TeamData,
-	ZoneData,
+	ZoneData
 } from "@/scripts/types";
-import type { Ctx, FnContext, Game } from "boardgame.io";
+import type { Ctx, DefaultPluginAPIs, Game } from "boardgame.io";
 import { LogAPI } from "boardgame.io/dist/types/src/plugins/plugin-log";
-import { RandomAPI } from "boardgame.io/dist/types/src/plugins/random/random";
 import challengeDataJSON from "data/challenges.json";
 import { remove } from "lodash";
-const challengeData: ChallengeData = challengeDataJSON;
+const challengeData: AllChallengeData = challengeDataJSON;
 // function functionMove({G, ctx, playerID}: FnContext<GameState>, claimId: number, teamID: zoneNames, ...args: unknown[]){
 // 	G.zones[claimId] = teamID;
 // 	console.log(playerID);
 // 	return { ...G };
 // }
+
+type MoveContext = DefaultPluginAPIs & { G: GameState; ctx: Ctx; playerID: string };
 
 const handSize = 5;
 
@@ -32,14 +32,15 @@ function addLogMetadata({ log }: { log: LogAPI }, metadata: LogMetadata) {
 }
 
 function completeChallengeAndClaim(
-	{ G, log, playerID }: { G: GameState; log: LogAPI; playerID: string },
+	context: MoveContext,
 	zoneID: number,
 	challenge: string,
 	evidence: string
 ) {
+	const { G, log, playerID } = context;
 	completeChallenge({ G, log, playerID }, challenge, evidence);
 	claimZone({ G, log, playerID }, zoneID);
-	drawToFull({ G, playerID });
+	drawToFull(context);
 	addLogMetadata(
 		{ log },
 		{
@@ -57,9 +58,9 @@ function claimZone(
 	zoneID: number
 ) {
 	const claimedZone = G.zoneData[zoneID];
-	claimedZone.color = G.allPlayersData[playerID].teamColor;
+	claimedZone.controlTeam = G.allPlayersData[playerID].teamColor;
 	console.log("claiming zone", zoneID);
-	addLogMetadata({log}, {zone: zoneID, team: claimedZone.color});
+	addLogMetadata({log}, {zone: zoneID, team: claimedZone.controlTeam});
 }
 
 function completeChallenge(
@@ -92,12 +93,13 @@ function discardChallenge(
 	teamData.challengeDiscard.concat(removedChallenge);
 }
 
-function discardHand({ G, log, playerID }: { G: GameState; log: LogAPI; playerID: string }) {
+function discardHand(context: MoveContext) {
+	const { G, log, playerID } = context;
 	const team = G.allPlayersData[playerID].teamColor;
 	const teamData = G.allTeamsData[team];
 	teamData.challengeDiscard.concat(teamData.challengeHand);
 	teamData.challengeHand = [];
-	drawToFull({ G, playerID });
+	drawToFull(context);
 }
 
 function drawChallenge({ G, playerID }: { G: GameState; playerID: string }) {
@@ -113,9 +115,9 @@ function drawChallenge({ G, playerID }: { G: GameState; playerID: string }) {
 	}
 }
 
-function drawToFull({ G, playerID }: { G: GameState; playerID: string }) {
+function drawToFull({ G, playerID}: MoveContext, team?: MatchTeamColor) {
 	let i = 0;
-	const teamData = G.allTeamsData[G.allPlayersData[playerID].teamColor];
+	const teamData = team ? G.allTeamsData[team] : G.allTeamsData[G.allPlayersData[playerID].teamColor];
 	while (teamData.challengeHand.length < handSize) {
 		drawChallenge({ G, playerID });
 		i++;
@@ -131,6 +133,16 @@ function playerSetup(
 	newPlayerData: PlayerData
 ) {
 	G.allPlayersData[playerID] = newPlayerData;
+	//check if team color is already set up
+	G.allTeamsData[newPlayerData.teamColor]
+	if(!G.allTeamsData[newPlayerData.teamColor]){
+		console.log("adding team data for", newPlayerData.teamColor);
+		G.allTeamsData[newPlayerData.teamColor] = {
+			challengeDeck: [],
+			challengeHand: [],
+			challengeDiscard: [],
+		}
+	}
 	console.log(
 		"added player data for",
 		playerID,
@@ -145,10 +157,11 @@ function playerSetup(
 
 }
 
-function startGame({ events, G, random, log }: FnContext<GameState>) {
+function startGame(context: MoveContext) {
+	const { events, G, random, log, ...rest } = context;
 	//shuffle and create decks
 	events.setActivePlayers({ all: "claim" });
-	teamSetup(G.allTeamsData, random);
+	teamSetup(context);
 	startGameTimer(G);
 
 	G.active = true;
@@ -158,17 +171,16 @@ function startGame({ events, G, random, log }: FnContext<GameState>) {
 	);
 }
 
-function teamSetup(teams: AllTeamsData, random: RandomAPI) {
+function teamSetup(context: MoveContext) {
+	const { G, random } = context;
 	console.log("setting up teams");
-	//iterate over keys in teams object
-	for (const teamColor in teams) {
-		console.log("team color: ", teamColor);
+	//extract team colors from players
+	for (const [teamColor, team] of Object.entries(G.allTeamsData)) {
 		const shuffledDeck = random.Shuffle(challengeData);
-		teams[teamColor as Color] = {
-			challengeDeck: shuffledDeck,
-			challengeHand: shuffledDeck.slice(0, 5),
-			challengeDiscard: [],
-		};
+		team.challengeDeck = shuffledDeck;
+		team.challengeHand = [];
+		team.challengeDiscard = [];
+		drawToFull(context, teamColor as MatchTeamColor);
 	}
 }
 
@@ -178,7 +190,7 @@ function startGameTimer(G: GameState) {
 	G.endTime = startTime + gameTimeMinutes * 60 * 1000;
 }
 
-function endGame({ G, log }: FnContext<GameState>) {
+function endGame({ G, log }: MoveContext) {
 	console.log("ending game");
 	log.setMetadata("game end");
 	G.gameOver = true;
@@ -254,10 +266,7 @@ function gameSetup(ctx: Ctx, setupData: MatchMapData): GameState {
 		gameOver: false,
 		allPlayersData: {} as AllPlayersData,
 		//declare allteamsdata as AllTeamsData object
-		allTeamsData: {
-			red: {} as TeamData,
-			blue: {} as TeamData,
-		} as AllTeamsData,
+		allTeamsData: {} as AllTeamsData,
 	};
 }
 
@@ -267,7 +276,7 @@ function createBoardFromMapJson(mapData: PolyData[]): ZoneData[] {
 			id: index,
 			status: "empty",
 			name: zone.featureName,
-			color: null,
+			controlTeam: null,
 		};
 	});
 }

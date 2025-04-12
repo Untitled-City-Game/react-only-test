@@ -59,19 +59,19 @@ export default function ZonePolygon({
 				paths={zone.coords}
 				key={zone.featureName}
 				strokeColor={
-					amCurrentZone ? "purple" : zoneGameData.color || "black"
+					amCurrentZone ? "purple" : zoneGameData.controlTeam || "black"
 				}
 				strokeOpacity={0.8}
 				strokeWeight={amCurrentZone ? 4 : 3}
 				fillColor={
-					zoneGameData.color ||
+					zoneGameData.controlTeam ||
 					(amCurrentZone ? "purple" : "#FFFFFF00")
 				}
 				fillOpacity={0.15}
 				onClick={() =>
 					handleZoneClick(lineVisibilityTemp, highlightedZonesTemp)
 				}
-				zIndex={amCurrentZone ? 10 : zoneGameData.color ? 1 : 0}
+				zIndex={amCurrentZone ? 10 : zoneGameData.controlTeam ? 1 : 0}
 			/>
 			{showLabels && (
 			<PolygonLabel
