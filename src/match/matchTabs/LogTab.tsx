@@ -15,6 +15,7 @@ export default function LogTab() {
 	const lobbyClient = useMemo(() => new LobbyClient({ server: process.env.GAME_SERVER }), []);
 	const moves = props.moves as ClaimStateMoves;
 	const playerData = props.playerData.data;
+	const logs = props.log.reverse();
 	async function handleEndGame(){
 		console.log("ending game");
 		// await lobbyClient.updatePlayer("connect-four", props.matchID, { playerID: playerData.playerID, credentials: props.credentials || 'undefined', data: { 'teamColor': props.playerData.data.teamColor, 'gameover': true } });
