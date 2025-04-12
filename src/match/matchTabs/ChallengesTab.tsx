@@ -13,6 +13,7 @@ export default function ChallengesTab() {
 	const playerData = allPlayersData[props.playerData.data.playerID];
 	const myTeam = playerData.teamColor;
 	const challengeHand = allTeamsData[myTeam]?.challengeHand;
+	const challengeDeck = allTeamsData[myTeam]?.challengeDeck;
 	if (!challengeHand) {
 		return <h1>No challenges available</h1>;
 	}
@@ -31,6 +32,7 @@ export default function ChallengesTab() {
 			</Header>
 			<Container mih="0">
 				<Stack pb="md">
+				<Paper>{challengeDeck.length} challenges left in deck</Paper>
 				{challengeHand.map((challenge, index) => {
 					return (
 						<Paper
