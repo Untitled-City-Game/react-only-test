@@ -4,6 +4,7 @@ import { LineString } from 'geojson';
 import { Dispatch, ReactElement, SetStateAction } from 'react';
 import { cities } from './consts';
 
+//Google maps
 export type geospatialFeature = {
 	featureName : string,
 	coords: { lat: number; lng: number; }[]
@@ -27,46 +28,7 @@ export interface PolygonFeature extends GeoJSON.Feature {
 		properties: GeoJSON.GeoJsonProperties & {Name: string};
 	}
 
-export type ZoneData = {
-	id: number;
-	status: zoneStatus;
-	name: string;
-	color: Color | null;
-}
-
-export type PlayerData = {
-	playerID: `${number}`;
-	name: string;
-	teamColor: Color;
-	playerCredentials?: string;
-	matchID?: string;
-}
-
-export type AllPlayersData = {
-	[key:string] : PlayerData
-}
-
-export type Challenge = {
-	title: string,
-	description: string,
-}
-
-export type ChallengeData = Challenge[]
-
-export type TeamData = {
-	challengeDeck : Challenge[];
-	challengeHand : Challenge[];
-	challengeDiscard : Challenge[];
-}
-
-type AtLeastOneColor<T extends string> = {
-	[K in T]?: TeamData; // Values can be anything, change type as needed
-  } & {
-	[K in T]: TeamData;
-  }
-  
-export type AllTeamsData = AtLeastOneColor<Color>;
-
+//Game state
 export interface GameState {
 	zoneData: ZoneData[],
 	MatchMapData: MatchMapData,
@@ -76,6 +38,42 @@ export interface GameState {
 	gameOver : boolean,
 	startTime? : number,
 	endTime? : number,
+}
+
+export type ZoneData = {
+	id: number;
+	status: zoneStatus;
+	name: string;
+	controlTeam: Color | null;
+}
+
+export type AllPlayersData = {
+	[key:string] : PlayerData
+}
+
+export type PlayerData = {
+	playerID: `${number}`;
+	name: string;
+	teamColor: MatchTeamColor;
+	playerCredentials?: string;
+	matchID?: string;
+}
+
+export type AllChallengeData = Challenge[]
+
+export type Challenge = {
+	title: string,
+	description: string,
+}
+
+export type AllTeamsData = {
+	[key in MatchTeamString] : TeamData
+}
+
+export type TeamData = {
+	challengeDeck : Challenge[];
+	challengeHand : Challenge[];
+	challengeDiscard : Challenge[];
 }
 
 export type zoneStatus = Color | "empty";
@@ -104,15 +102,6 @@ export type ClientSetupData = {
 	playerID : `${number}`;
 	credentials?: string;
 }
-// export interface ClientSetupData extends GameSetupData {
-// 	playerData: {
-// 		data: PlayerData;
-// 		setter: Dispatch<SetStateAction<PlayerData | undefined>>
-// 	};
-// 	matchID: string;
-// 	playerID : `${number}`;
-// 	credentials?: string;
-// }
 
 export type StrictMatch = Omit<LobbyAPI.Match, 'gameover' | 'setupData'> & { gameover: boolean, setupData: MatchMapData };
 
@@ -135,10 +124,36 @@ export type LogMetadata = {
 type RGB = `rgb(${number}, ${number}, ${number})`;
 type RGBA = `rgba(${number}, ${number}, ${number}, ${number})`;
 type HEX = `#${string}`;
-type namedColor = "red" | "blue" | "green" | "yellow" | "purple" | "orange" | "black" | "white"| "grey";
+export type NamedColor = "red" | "blue" | "green" | "yellow" | "purple" | "orange" | "black" | "white"| "grey";
 
-export type Color = RGB | RGBA | HEX | namedColor;
+export type Color = RGB | RGBA | HEX | NamedColor;
 
 export function isCity(city: string) : city is City{
 	return cities.includes(city as City);
 	}
+
+type AtLeastOneColor<T extends string> = {
+	[K in T]?: TeamData; // Values can be anything, change type as needed
+	} & {
+	[K in T]: TeamData;
+	}
+
+type MatchTeamString = string & {__isMatchTeam: true};
+export type MatchTeamColor = NamedColor & {__isMatchTeam: true};
+
+/** Mimics the result of Object.keys(...) */
+export type keysOf<o> = o extends readonly unknown[]
+    ? number extends o["length"]
+        ? `${number}`
+        : keyof o & `${number}`
+    : {
+          [K in keyof o]: K extends string
+              ? K
+              : K extends number
+              ? `${K}`
+              : never
+      }[keyof o]
+
+export const keysOf = <o extends object>(o: o) => Object.keys(o) as keysOf<o>[]
+
+
