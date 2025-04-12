@@ -46,7 +46,7 @@ export default function CreateGame() {
 			PlayerName: hasLength({min: 2, max: 20}, "Player name must be between 2 and 20 characters"),
 			city: city => cities.includes(city as City) ? null : "Invalid city",
 			teamColor: teamColor => teamOptions.map(option => option.value).includes(teamColor) ? null: "Invalid team",
-			numPlayers: numPlayers => numPlayers > 2 && numPlayers < 100 ? null: "Invalid number of players"
+			numPlayers: numPlayers => numPlayers > 1 && numPlayers < 100 ? null: "Invalid number of players"
 		}
 	});
 
