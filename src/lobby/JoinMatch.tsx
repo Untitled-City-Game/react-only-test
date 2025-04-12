@@ -5,6 +5,7 @@ import { LobbyClient } from "boardgame.io/client";
 import { useNavigate, useParams } from "react-router";
 
 import { joinMatch } from "@/scripts/joinMatch";
+import { NamedColor } from "@/scripts/types";
 import Loading from "@/src/match/boardGame/Loading";
 import Span from "@/src/userInterface/Span";
 import { useEffect, useMemo, useState } from "react";
@@ -31,17 +32,17 @@ export default function JoinMatch() {
 		mode: "uncontrolled",
 		initialValues: {
 			PlayerName: "",
-			teamID: "",
+			teamColor: "red" as NamedColor,
 		},
 		validate: {
 			PlayerName: (value) => value.length > 0 ? null : "Player name is required",
-			teamID: (value) => value.length > 0 ? null : "Team is required",
+			teamColor: (value) => value.length > 0 ? null : "Team is required",
 		},
 	});
 
 	type FormValues = {
 		PlayerName: string;
-		teamID: string;
+		teamColor: NamedColor;
 	};
 	const handleJoinGame = async (values: FormValues) => {
 		console.log(values);
@@ -49,7 +50,7 @@ export default function JoinMatch() {
 			lobbyClient,
 			matchID,
 			values.PlayerName,
-			values.teamID
+			values.teamColor
 		);
 		localStorage.setItem("localPlayerData", JSON.stringify(playerData));
 		navigate("/match");
@@ -96,8 +97,8 @@ export default function JoinMatch() {
 						/>
 						<Radio.Group
 							label="Choose a team"
-							key={joinGameForm.key("teamID")}
-							{...joinGameForm.getInputProps("teamID")}>
+							key={joinGameForm.key("teamColor")}
+							{...joinGameForm.getInputProps("teamColor")}>
 							<Stack pt="md" gap="xs">
 								{teamCards}
 							</Stack>
@@ -138,7 +139,7 @@ export default function JoinMatch() {
 // 						{
 // 							playerName: values.PlayerName,
 // 							data: {
-// 								teamColor: values.teamID
+// 								teamColor: values.teamColor
 // 							}
 // 						}
 // 					)
@@ -148,7 +149,7 @@ export default function JoinMatch() {
 // 						playerID: res.playerID as `${number}`,
 // 						matchID: matchID,
 // 						playerCredentials: res.playerCredentials,
-// 						teamColor: values.teamID as Color,
+// 						teamColor: values.teamColor as Color,
 // 					};
 // 					setPlayerData(playerData);
 // 				})}>

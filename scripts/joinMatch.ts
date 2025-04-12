@@ -1,11 +1,11 @@
 import { LobbyClient } from 'boardgame.io/dist/types/packages/client';
-import { PlayerData, Color } from './types';
+import { MatchTeamColor, NamedColor, PlayerData } from './types';
 
 export async function joinMatch(
 	lobbyClient: LobbyClient, 
 	matchID: string, 
 	PlayerName: string,
-	teamID: string
+	teamID: NamedColor
  	) {
 	const res = await lobbyClient.joinMatch(
 		'connect-four',
@@ -24,7 +24,7 @@ export async function joinMatch(
 		playerID: res.playerID as `${number}`,
 		matchID: matchID,
 		playerCredentials: res.playerCredentials,
-		teamColor: teamID as Color,
+		teamColor: teamID as MatchTeamColor,
 	};
 	return playerData;
 }

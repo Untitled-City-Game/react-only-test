@@ -1,7 +1,7 @@
 import { cities, numPlayers } from "@/scripts/consts";
 import { fetchMapData } from "@/scripts/fetchMapData";
 import { joinMatch } from '@/scripts/joinMatch';
-import { City, isCity, MatchMapData, PlayerData } from "@/scripts/types";
+import { City, isCity, MatchMapData, NamedColor, PlayerData } from "@/scripts/types";
 import Span from "@/src/userInterface/Span";
 import { Button, Center, Group, NumberInput, Paper, Radio, Select, Stack, TextInput } from "@mantine/core";
 import { hasLength, useForm } from "@mantine/form";
@@ -39,13 +39,13 @@ export default function CreateGame() {
 		initialValues: {
 			PlayerName: "",
 			city: "melbourne" as City,
-			teamID: "blue",
+			teamColor: "blue" as NamedColor,
 			numPlayers: numPlayers,
 		},
 		validate : {
 			PlayerName: hasLength({min: 2, max: 20}, "Player name must be between 2 and 20 characters"),
 			city: city => cities.includes(city as City) ? null : "Invalid city",
-			teamID: teamID => teamOptions.map(option => option.value).includes(teamID) ? null: "Invalid team",
+			teamColor: teamColor => teamOptions.map(option => option.value).includes(teamColor) ? null: "Invalid team",
 			numPlayers: numPlayers => numPlayers > 2 && numPlayers < 100 ? null: "Invalid number of players"
 		}
 	});
@@ -53,7 +53,7 @@ export default function CreateGame() {
 	type FormValues = { 
 		PlayerName: string; 
 		city: City; 
-		teamID: string; 
+		teamColor: NamedColor; 
 		numPlayers: number; 
 	};
 	const handleCreateGame = async (values : FormValues) => {
@@ -77,7 +77,7 @@ export default function CreateGame() {
 		});
 
 		//join match
-		const playerData: PlayerData = await joinMatch(lobbyClient, matchID, values.PlayerName, values.teamID);
+		const playerData: PlayerData = await joinMatch(lobbyClient, matchID, values.PlayerName, values.teamColor);
 		localStorage.setItem("localPlayerData", JSON.stringify(playerData));
 		navigate('/match');
 	}
@@ -110,8 +110,8 @@ export default function CreateGame() {
 					/>
 					<Radio.Group 
 						label="Choose a team" 
-						key={createGameForm.key("teamID")}
-						{...createGameForm.getInputProps("teamID")}
+						key={createGameForm.key("teamColor")}
+						{...createGameForm.getInputProps("teamColor")}
 					>
 						<Stack pt="md" gap="xs">
 							{teamCards}

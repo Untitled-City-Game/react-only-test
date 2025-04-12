@@ -7,7 +7,7 @@ import Span from "./Span";
 
 export default function Header({ children }: { children: React.ReactNode }) {
 	const {G, playerData} = useContext(GameContext);
-	const claimedZones = G.zoneData.filter(zone => zone.color === playerData.data.teamColor).length
+	const claimedZones = G.zoneData.filter(zone => zone.controlTeam === playerData.data.teamColor).length
 	return (
 			<Container style={headerStyles} className="header">
 				<Group justify="center" align="center">

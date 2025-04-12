@@ -1,3 +1,4 @@
+import useWindowDimensions from "@/scripts/useWindowDimensions";
 import ChallengesTab from "@/src/match/matchTabs/ChallengesTab";
 import LogTab from "@/src/match/matchTabs/LogTab";
 import MapTab from "@/src/match/matchTabs/MapTab";
@@ -6,9 +7,10 @@ import { Suspense } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 
 export default function Match() {
+	const { height, width } = useWindowDimensions();
 	console.log("rendering match");
 	return (
-			<Tabs defaultValue={"map"} variant="pills" radius={0} style={MatchContainerStyles} id="matchContainer">
+			<Tabs defaultValue={"map"} variant="pills" radius={0} style={MatchContainerStyles} h={height} id="matchContainer">
 				<TabsPanel value="challenges" style={panelLayout}>
 					<ErrorBoundary
 						fallback={<span>Something went wrong.</span>}>
@@ -47,7 +49,6 @@ export default function Match() {
 
 //This contains the tabpanel and the tablist
 const MatchContainerStyles: React.CSSProperties = {
-	height: "100vh",
 	//width: "100vw",
 	display: "flex",
 	flexDirection: "column",
