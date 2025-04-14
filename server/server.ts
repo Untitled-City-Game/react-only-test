@@ -6,7 +6,7 @@ import admin from 'firebase-admin';
 const database = new Firestore({
 	config: {
 		credential: admin.credential.applicationDefault(),
-		databaseURL: 'https://metro-game-474bc.firebaseio.com',
+		databaseURL: `https://${process.env.FIREBASE}.firebaseio.com`,
 	},
   });
   
