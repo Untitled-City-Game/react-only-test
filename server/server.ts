@@ -30,11 +30,11 @@ async function fetchAllData(){
 
 
 async function buildServer(){
-	console.log("building server")
+	console.log("building server", process.env.GAME_ADDRESS, process.env.GAME_SERVER);
 	//const AllMapsData : Record<string, MatchMapData> = await fetchAllData();
 	const server = Server({
 		games: [ConnectFour],
-		origins: [Origins.LOCALHOST, "http://10.0.0.231:1234", "http://10.0.0.231", "http://192.168.1.116:1234"],
+		origins: [process.env.GAME_ADDRESS ==='localhost' && Origins.LOCALHOST || process.env.GAME_ADDRESS || false],
 		db: new FlatFile({
 			dir: process.cwd() + '/server/db',
 		})
