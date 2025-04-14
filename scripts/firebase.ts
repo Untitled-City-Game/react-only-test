@@ -9,7 +9,8 @@ const firebaseConfig = {
 	projectId: process.env.FIREBASE,
 	storageBucket: process.env.STORAGE,
 	messagingSenderId: "99015817585",
-	appId: "1:99015817585:web:e596628b1ff97745a3ded0"
+	appId: process.env.FIREBASE_APP_ID
+	//appId: "1:99015817585:web:e596628b1ff97745a3ded0"
   };
 
 const fireBaseApp = initializeApp(firebaseConfig);
