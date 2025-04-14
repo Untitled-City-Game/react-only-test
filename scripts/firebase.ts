@@ -4,11 +4,11 @@ import { getStorage } from "firebase/storage";
 
 import 'firebase/firestore';
 const firebaseConfig = {
-	apiKey: "AIzaSyBQdAxW64FE0ZAOH1oiMhIk_jVQmVROqt4",
+	apiKey: process.env.FIREBASE_API_KEY,
 	authDomain: `${process.env.FIREBASE}.firebaseapp.com`,
 	projectId: process.env.FIREBASE,
-	storageBucket: process.env.STORAGE,
-	messagingSenderId: "99015817585",
+	storageBucket: `${process.env.FIREBASE}.firebasestorage.com`,
+	messagingSenderId: "137678094895",
 	appId: process.env.FIREBASE_APP_ID
 	//appId: "1:99015817585:web:e596628b1ff97745a3ded0"
   };
