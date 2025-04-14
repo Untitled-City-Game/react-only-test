@@ -4,6 +4,7 @@ import { Firestore } from 'bgio-firebase';
 import { Origins, Server } from 'boardgame.io/server';
 
 const database = new Firestore({
+	app: 'outside-2d699',
 	config: {
 		...firebaseConfig,
 		databaseURL: `https://${process.env.FIREBASE}.firebaseio.com`,

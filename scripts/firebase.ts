@@ -9,8 +9,8 @@ const firebaseConfig = {
 	projectId: process.env.FIREBASE,
 	storageBucket: `${process.env.FIREBASE}.firebasestorage.com`,
 	messagingSenderId: "137678094895",
-	appId: process.env.FIREBASE_APP_ID
-	//appId: "1:99015817585:web:e596628b1ff97745a3ded0"
+	appId: process.env.FIREBASE_APP_ID,
+	measurementId: "G-MWQ2Q9DK3V"
   };
 
 const fireBaseApp = initializeApp(firebaseConfig);

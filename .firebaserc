@@ -1,7 +1,7 @@
 {
   "projects": {
-    "default": "metro-game-474bc",
-    "prod": "outside-2d699"
+    "staging": "metro-game-474bc",
+    "default": "outside-2d699"
   },
   "targets": {},
   "etags": {}
