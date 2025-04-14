@@ -13,6 +13,7 @@ import { BrowserRouter, Route, Routes } from "react-router";
 const App = () => {
 	console.time("load");
 	console.log(process.env.NODE_ENV);
+	console.log(process.env.APP_ENVIRONMENT);
 	return (
 	<BrowserRouter>
 		<Routes>
