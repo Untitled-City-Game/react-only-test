@@ -29,7 +29,7 @@ async function buildServer(){
 	//const AllMapsData : Record<string, MatchMapData> = await fetchAllData();
 	const server = Server({
 		games: [ConnectFour],
-		origins: ["https://metro-game-474bc.web.app", Origins.LOCALHOST],
+		origins: [process.env.GAME_ADDRESS ==='localhost' && Origins.LOCALHOST || process.env.GAME_ADDRESS || false],
 		db: database,
 	});
 
