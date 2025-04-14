@@ -13,6 +13,7 @@ export function Evidence({
 		<FileInput
 			label="Photo evidence"
 			key={claimForm.key("evidence")}
+			clearable = {claimForm.getValues().evidence !== undefined}
 			{...claimForm.getInputProps("evidence")} />
 	);
 }

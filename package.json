@@ -7,7 +7,7 @@
     "start": "parcel --no-cache",
     "build": "parcel build ./src/index.html --no-optimize --no-cache",
     "deploy": "npm run build && firebase deploy",
-    "serve": "tsx watch server/server.ts",
+    "serve": "tsx --env-file .env --env-file .env.development server/server.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
