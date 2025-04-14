@@ -27,7 +27,7 @@ const database = new Firestore({
 
 
 async function buildServer(){
-	console.log("building server")
+	console.log("building server", process.env.GAME_ADDRESS, process.env.GAME_SERVER);
 	//const AllMapsData : Record<string, MatchMapData> = await fetchAllData();
 	const server = Server({
 		games: [ConnectFour],
