@@ -4,7 +4,7 @@ import { Origins, Server } from 'boardgame.io/server';
 import admin from 'firebase-admin';
 
 const database = new Firestore({
-	app: 'outside-2d699',
+	app: process.env.FIREBASE,
 	config: {
 		credential: admin.credential.applicationDefault(),
 		databaseURL: `https://${process.env.FIREBASE}.firebaseio.com`,
