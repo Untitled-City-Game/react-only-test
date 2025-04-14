@@ -1,12 +1,12 @@
-import { firebaseConfig } from '@/scripts/firebase';
 import { ConnectFour } from '@/scripts/games/connect_four';
 import { Firestore } from 'bgio-firebase';
 import { Origins, Server } from 'boardgame.io/server';
+import admin from 'firebase-admin';
 
 const database = new Firestore({
 	app: 'outside-2d699',
 	config: {
-		...firebaseConfig,
+		credential: admin.credential.applicationDefault(),
 		databaseURL: `https://${process.env.FIREBASE}.firebaseio.com`,
 	},
   });
