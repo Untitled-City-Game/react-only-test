@@ -3,9 +3,11 @@ import * as turf from "@turf/turf";
 import { Feature, FeatureCollection, GeoJsonProperties, LineString, MultiPolygon, Point, Polygon } from "geojson";
 
 //100 is baseline, go up or down as needed
-const centralityFactor = 500;
+const centralityFactor = 300;
 const turnPenalityFactor = 100;
 
+//one is on, zero is off
+const turnPenaltyScaling = 1;
 
 export type GeoGridProperties = {
 	x: number;
@@ -20,7 +22,7 @@ export type GeoGridProperties = {
 export type CostGridPoint = {
 	x: number;
 	y: number;
-	neighbours: CostGridPoint[];
+	neighbours: {node: CostGridPoint, direction: Direction}[];
 	totalCost: number;
 	costFromStart: number;
 	estimatedCost: number;
@@ -29,8 +31,18 @@ export type CostGridPoint = {
 	parent: CostGridPoint | null;
 	polygonName: string;
 	coords : ConfidentPosition;
+	edgeDistance ?: number;
 	edgeProximity: number;
+	directions? : Direction[];
 }
+
+enum Direction {
+    UP,
+	RIGHT,
+	DOWN,
+	LEFT,
+};
+
 
 export interface ConfidentPoint extends Point {
 	coordinates: [number, number] | [number, number, number];
@@ -78,11 +90,28 @@ export function createGeoGrid(polygons: Feature<Polygon, GeoJsonProperties>[], n
 	const cellSize = Math.sqrt(turf.area(bigPolygon)) / (nGridCells*1000); //in km
 	console.log("cell size", cellSize);
 
-	//TODO: Pick a really good angle
+	//Find the mean orientation of edges in polygons, with matching pairs at 90 degrees
+	const segments = turf.lineSegment(bigPolygon);
+	console.log("segments", segments.features.length);
+	const bearings = segments.features.map(segment => turf.bearing(segment.geometry.coordinates[0]!, segment.geometry.coordinates[1]!));
+	console.log("bearings", bearings.length, bearings[0]);
+	
+	//translate to 0-360 degrees
+	const bearings360 = bearings.map(bearing => bearing + 180);
+	console.log("bearings360", bearings360[0]);
 
-	const geoGrid : FeatureCollection<ConfidentPoint, GeoGridProperties> = turf.pointGrid(turf.bbox(bigPolygon), cellSize, {
+	//get remainders of 90 degrees
+	const remainders = bearings360.map(bearing => bearing % 90);
+	console.log("90 degree bearings", remainders[0], remainders);
+
+	//find mean bearing
+	const meanBearing = remainders.reduce((acc, remainder) => acc + remainder, 0) / remainders.length;
+	console.log("mean bearing", meanBearing);
+
+	let geoGrid : FeatureCollection<ConfidentPoint, GeoGridProperties> = turf.pointGrid(turf.bbox(bigPolygon), cellSize, {
 		//mask: bigPolygon,
 	}) as FeatureCollection<ConfidentPoint, GeoGridProperties>;
+
 	console.log("created geogrid of size", geoGrid.features.length);
 	if(geoGrid.features.length === 0) throw new Error("Geogrid has no points");
 	//give each point an xy value, containing polygon value
@@ -91,7 +120,6 @@ export function createGeoGrid(polygons: Feature<Polygon, GeoJsonProperties>[], n
 	let ypos = 0;
 	// const [minX, minY, maxX, maxY] = turf.bbox(bigPolygon); //as longlat coordinates
 	geoGrid.features = geoGrid.features.map((point) => {
-		const test = point.geometry.coordinates
 		if((point.geometry.coordinates[0] || 0) > xtrack){
 			xpos = 0;
 			ypos++;
@@ -101,18 +129,26 @@ export function createGeoGrid(polygons: Feature<Polygon, GeoJsonProperties>[], n
 			x: xpos,
 			y: ypos,
 			obstacle: false,
-			polygon: polygons.find(poly => turf.booleanPointInPolygon(point, poly)),
+			polygon: undefined,
 			polygonName:  "",
 			edgeDistance: 0,
 			edgeProximity: 0,			
 		};
-		point.properties.polygonName = point.properties.polygon?.properties?.Name || "";
-		if(point.properties.polygon){
-			point.properties.edgeDistance = turf.pointToPolygonDistance(point, point.properties.polygon);
-		}
 		xpos++;
 		return point as Feature<ConfidentPoint, GeoGridProperties>;
 	})
+	
+	//rotate that bad boy
+	geoGrid = turf.transformRotate(geoGrid, meanBearing);
+
+	//Now we set the polygons etc
+	geoGrid.features.forEach(point => {
+		const polygon = polygons.find(poly => turf.booleanPointInPolygon(point, poly));
+		if(!polygon) return;
+		point.properties.polygon = polygon;
+		point.properties.polygonName = polygon.properties?.Name || "";
+	});
+
 	geoGrid.features = geoGrid.features.filter(point => point.properties.polygon);
 	//normalise edge distance to 0-1 edgeproximity for each polygon
 	polygons.forEach(polygon => {
@@ -156,8 +192,8 @@ function createPathGrid(geoGrid: FeatureCollection<ConfidentPoint, GeoGridProper
 		for(let y = 0; y < pathGrid[x]!.length; y++){
 			if(!pathGrid[x]![y]) continue;
 			const node = pathGrid[x]![y];
-			const neighbours = [pathGrid[x+1]?.[y], pathGrid[x-1]?.[y], pathGrid[x]?.[y+1], pathGrid[x]?.[y-1]].filter(node => node) as CostGridPoint[];
-			node?.neighbours.push(...neighbours);
+			const neighbours = [{node: pathGrid[x+1]?.[y], direction: Direction.RIGHT}, {node: pathGrid[x-1]?.[y], direction: Direction.LEFT}, {node: pathGrid[x]?.[y+1], direction: Direction.DOWN}, {node: pathGrid[x]?.[y-1], direction: Direction.UP}].filter(node => node.node) as {node: CostGridPoint, direction: Direction}[];
+			node?.neighbours.push(...neighbours);			
 		}
 	}
 	//flatten
@@ -193,13 +229,42 @@ function createCostGrid(grid: CostGridPoint[], line: string[], polygons : Featur
 	const costedGrid = grid.filter(node => line.includes(node.polygonName));
 
 	//add proximity weights to each point
+	//get polygons not in line
+	const notInLinePolygons = polygons.filter(polygon => !line.includes(polygon.properties?.Name)); 
+	//blob them up
+	const notInLine = turf.union(turf.featureCollection(notInLinePolygons));
+	if(!notInLine) throw new Error("Unable to create non line blob");
+
+	const allPolygons = turf.union(turf.featureCollection(polygons));
+	if(!allPolygons) throw new Error("Unable to create all polygons blob");
+
+	const friendlyPolygons = polygons.filter(polygon => line.includes(polygon.properties?.Name));
+	const friendlyBlob = turf.union(turf.featureCollection(friendlyPolygons));
+	if(!friendlyBlob) throw new Error("Unable to create friendly blob");
+
+	const allPolygonsFat = turf.buffer(allPolygons, 10);
+	if(!allPolygonsFat) throw new Error("Unable to create fat blob");
+
+	const obstacleZone = turf.difference(turf.featureCollection([allPolygonsFat, friendlyBlob]));
+	if(!obstacleZone) throw new Error("Unable to create obstacle zone");
+
+	//
+
+	let maxDistance = 0;
 	costedGrid.forEach(node => {
+		// node.toll = 1 + node.edgeProximity * centralityFactor/100;
+		const distance = turf.pointToPolygonDistance(node.coords, obstacleZone);
+		if(distance > maxDistance) { maxDistance = distance;}
+		node.edgeDistance = distance;
+	});
+	//normalize edge distance to 0-1 edgeproximity
+	costedGrid.forEach(node => {
+		node.edgeProximity = node.edgeDistance ? 1- node.edgeDistance / maxDistance : 0;
 		node.toll = 1 + node.edgeProximity * centralityFactor/100;
 	});
-
 	//trim neighbours of removed points
 	costedGrid.forEach(node => {
-		node.neighbours = node.neighbours.filter(neighbour => costedGrid.includes(neighbour));
+		node.neighbours = node.neighbours.filter(neighbour => costedGrid.includes(neighbour.node));
 	});
 	console.log("created costedgrid", costedGrid)
 	return costedGrid;
@@ -207,18 +272,19 @@ function createCostGrid(grid: CostGridPoint[], line: string[], polygons : Featur
 
 function findStartAndEndPoints(line: [string, string, string, ...string[]], grid: CostGridPoint[]) : {start: CostGridPoint, end: CostGridPoint} {
 	//get points inside first polygon
-	const startPoints = lowestEdgeProximity(grid, line[0]);
-	const endPoints = lowestEdgeProximity(grid, line[line.length - 1]!);
-	console.log("found start and end points", startPoints, endPoints)
-	return {start: startPoints, end: endPoints};
+	const startPoint = lowestEdgeProximity(grid, line[0]);
+	const endPoint = lowestEdgeProximity(grid, line[line.length - 1]!);
+	console.log("found start and end points", startPoint, endPoint)
+	return {start: startPoint, end: endPoint};
 }
 
 function lowestEdgeProximity(grid: CostGridPoint[], polygonName: string) : CostGridPoint {
 	const polygonNodes = grid.filter(node => node.polygonName === polygonName);
+	console.log("lowest edge finding for", polygonName, polygonNodes.length, "possible nodes");
 	return polygonNodes.reduce((acc, node) => {
 		if(node.edgeProximity < acc?.edgeProximity) return node;
 		return acc;
-	}, grid[0]!);
+	}, polygonNodes[0]!);
 }
 
 function pathFinding(start: CostGridPoint, end: CostGridPoint) : CostGridPoint[] {
@@ -246,17 +312,24 @@ function pathFinding(start: CostGridPoint, end: CostGridPoint) : CostGridPoint[]
 
 		//for each neighbour of current node
 		for(let i = 0; i < currentNode.neighbours.length; i++){
-			const neighbour = currentNode.neighbours[i];
+			const neighbour = currentNode.neighbours[i]?.node;
 			if(!neighbour) continue;
 			if(neighbour.obstacle) continue;
 			if(closedList.includes(neighbour)) continue;
-			let neighbourCostThisPath = currentNode.costFromStart + neighbour.toll; //TODO: add turn penalty
+			
+			const priorDirection = currentNode.directions && currentNode.directions[currentNode.directions.length - 1];
+			const direction = currentNode.neighbours[i]!.direction;
+			const turning = priorDirection && direction !== priorDirection ? 1 : 0;
+			if(turning > 0) console.log("turning", turning, priorDirection, direction);
+			let neighbourCostThisPath = currentNode.costFromStart + neighbour.toll + turning*(turnPenalityFactor/100)*(currentNode.directions?.length ?? 0)*turnPenaltyScaling; //penalise extra turns more
 			if(!neighbour.estimatedCost){
 				neighbour.estimatedCost = Heuristic(neighbour, end);
 				openList.push(neighbour);
 			} if (neighbourCostThisPath < neighbour.costFromStart || neighbour.parent === null) {
 				neighbour.parent = currentNode;
 				neighbour.costFromStart = neighbourCostThisPath;
+				if(!neighbour.directions) neighbour.directions = [];
+				neighbour.directions.push(direction);
 				neighbour.totalCost = neighbourCostThisPath + neighbour.estimatedCost; //TODO: Seems like we can combine h and g here to save a few calculations
 			}
 		}

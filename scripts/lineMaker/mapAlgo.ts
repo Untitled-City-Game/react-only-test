@@ -123,7 +123,7 @@ function findBestPath(startPoints: FeatureCollection<Point, GeoJsonProperties>, 
 
 const montrealGeojson = montreal as FeatureCollection<Polygon>;
 const testGeoGrid = () => createGeoGrid(montrealGeojson.features, 20);
-const testFindLines = () => findAllPaths(montrealGeojson.features, [["Westmount", "Downtown", "Le Plateau", "Hochelaga"]], 30);
+const testFindLines = () => findAllPaths(montrealGeojson.features, [["Parc Molson", "De Lorimer", "Hochelaga", "Jean Drapeau"], ["Westmount", "Downtown", "Le Plateau", "Hochelaga"]], 30);
 export function bestLine(){
 	return findBestPolyline(
 		["Westmount", "Downtown", "Old Port", "Hochelaga"],
@@ -133,3 +133,6 @@ export function bestLine(){
 
 export { montrealGeojson, testFindLines, testGeoGrid };
 
+// ["Westmount", "Downtown", "Old Port", "Hochelaga"]
+// ["CDN", "Outremont", "Mile End", "De Lorimer"]
+// ["Parc Molson", "De Lorimer", "Hochelaga", "Jean Drapeau"]
