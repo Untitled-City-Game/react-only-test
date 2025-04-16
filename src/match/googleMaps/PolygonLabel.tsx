@@ -9,9 +9,10 @@ export default function PolygonLabel(props : PolygonLabelProps){
 	return (
 		<AdvancedMarker 
 		position={position}
-
+		zIndex={5}
 		>
-			<Span bg={"white"} fw="500">{label}</Span>
+			{/* <Span fw="500" fz="xl" w="min-content" bg="grey" ta="center" style={{WebkitTextStroke:"1px white"}}>{label}</Span> */}
+			<Span fw="400" fz="xs" w="min-content" ta="center">{label}</Span>
 		</AdvancedMarker>
 	)
 }

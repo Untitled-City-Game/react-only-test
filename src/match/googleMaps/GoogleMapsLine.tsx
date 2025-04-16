@@ -31,7 +31,7 @@ export default function MapLine({
 							key={"marker"+index}
 							visible={lineVisibility}
 							clickable={false}
-							zIndex={5}
+							zIndex={10}
 							icon = {{
 								strokeColor: `${theme.black}`,
 								path: "M 0, 0 m 5, 0 a 5,5 0 1,0 -10,0 a 5,5 0 1,0  10, 0 ",

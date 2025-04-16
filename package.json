@@ -5,6 +5,7 @@
   "source": "src/index.html",
   "scripts": {
     "start": "cross-env APP_ENVIRONMENT=dev parcel --no-cache",
+    "test-map": "parcel testmap/testmap.html",
     "build": "parcel build ./src/index.html --no-optimize --no-cache",
     "deploy": "cross-env APP_ENVIRONMENT=prod npm run build && firebase deploy --project=prod",
     "stage": "cross-env APP_ENVIRONMENT=stage npm run build && firebase deploy",
@@ -17,6 +18,7 @@
     "@mantine/hooks": "^7.17.2",
     "@mantine/modals": "^7.17.2",
     "@tmcw/togeojson": "^7.0.0",
+    "@turf/turf": "^7.2.0",
     "@types/lodash": "^4.17.16",
     "@types/point-in-polygon": "^1.1.5",
     "@types/polylabel": "^1.1.3",

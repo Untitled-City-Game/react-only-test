@@ -26,6 +26,7 @@ export default function ZonePolygon({
 	zoneGameData,
 }: ZonePolygonProps) {
 	const amCurrentZone = zone.featureName === currentZone?.name;
+	const amHighlighted = highlightedZones[zone.featureName];
 	const coordsAsArray = zone.coords.map((coord) => [coord.lat, coord.lng]);
 	const polygonCenter = polylabel([coordsAsArray], 0.0000001);
 	const [showLabels, setShowLabels] = useState(true);
@@ -59,13 +60,13 @@ export default function ZonePolygon({
 				paths={zone.coords}
 				key={zone.featureName}
 				strokeColor={
-					amCurrentZone ? "purple" : zoneGameData.controlTeam || "black"
+					amCurrentZone ? "orange" : zoneGameData.controlTeam || "black"
 				}
-				strokeOpacity={0.8}
-				strokeWeight={amCurrentZone ? 4 : 3}
+				strokeOpacity={1}
+				strokeWeight={amHighlighted ? 5 : 2}
 				fillColor={
 					zoneGameData.controlTeam ||
-					(amCurrentZone ? "purple" : "#FFFFFF00")
+					("#FFFFFF00")
 				}
 				fillOpacity={0.15}
 				onClick={() =>
@@ -73,7 +74,7 @@ export default function ZonePolygon({
 				}
 				zIndex={amCurrentZone ? 10 : zoneGameData.controlTeam ? 1 : 0}
 			/>
-			{showLabels && (
+			{showLabels &&  (
 			<PolygonLabel
 				label={zone.featureName}
 				position={{ lat: polygonCenter[0], lng: polygonCenter[1] }}

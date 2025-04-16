@@ -1,6 +1,9 @@
 import { gameLocationCenters } from "@/scripts/consts";
+import { getBoundingBoxLiteral } from "@/scripts/mapsHelpers";
 import { City, ZoneData } from "@/scripts/types";
 import { APIProvider, Map } from "@vis.gl/react-google-maps";
+import { Feature, Polygon } from "geojson";
+import React from "react";
 
 type MapElementProps = {
 	setLineVisibility: React.Dispatch<
@@ -23,10 +26,31 @@ const testCoordsLatLng = coordsarr.map((coord) => {
 	}
 })
 
+export function TestMapElement(props: {bbox: Feature<Polygon>, children?: React.ReactNode}) {
+	return (
+		<APIProvider 
+		apiKey="AIzaSyCG6Ouy-lsuiGpNCcibChoSxW6f0zupHNc"
+		libraries={["geometry"]}
+		onError={(e) => console.error(e)}
+		>
+			<Map 
+							mapId = "5eaa0d345956e4f1"
+							streetViewControl={false}
+							fullscreenControl={false}
+							mapTypeControl={false}
+							disableDefaultUI={true}
+							defaultBounds={getBoundingBoxLiteral(props.bbox)}
+
+			>
+				{props.children}
+			</Map>
+		</APIProvider>
+
+	)
+}
 
 export default function VisGlMapElement(props: MapElementProps) {
 	console.log("rendering visglmapelement")
-	const center = gameLocationCenters[props.city];
 	return (
 		<APIProvider 
 		apiKey="AIzaSyCG6Ouy-lsuiGpNCcibChoSxW6f0zupHNc"
