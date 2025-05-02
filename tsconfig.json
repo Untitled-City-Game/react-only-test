@@ -23,6 +23,7 @@
 
     /* Type Checking */
     "strict": true,
+    "strictNullChecks": true,
     "noUncheckedIndexedAccess": true,
 
     /* Completeness */

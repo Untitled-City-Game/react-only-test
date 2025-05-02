@@ -13,7 +13,7 @@ import {
 import { TestMapElement } from "@/src/match/googleMaps/MapElement";
 import { Polygon } from "@/src/match/googleMaps/shapes/Polygon";
 import { Polyline } from "@/src/match/googleMaps/shapes/PolyLine";
-import { AdvancedMarker, AdvancedMarkerAnchorPoint } from "@vis.gl/react-google-maps";
+import { AdvancedMarker, AdvancedMarkerAnchorPoint, Pin } from "@vis.gl/react-google-maps";
 import type { Feature, FeatureCollection, GeoJsonProperties, LineString, Point, Polygon as PolygonType } from "geojson";
 import { useEffect, useState } from "react";
 import { createRoot } from "react-dom/client";
@@ -105,7 +105,7 @@ function TestMap() {
 			<h1>Test Map</h1>
 			<div style={mapStyles}>
 				<TestMapElement bbox={montrealGeojson.features[0]!}>
-					{start && <AdvancedMarker position={toLatLong(start.coords)}/>}
+					{start && <AdvancedMarker position={toLatLong(start.coords)} ><Pin background={"green"}/></AdvancedMarker>}
 					{end && <AdvancedMarker position={toLatLong(end.coords)}/>}
 					{/* {paths && (
 						<Polyline
@@ -163,12 +163,13 @@ function CostGridMarker({point}: {point: CostGridPoint}) {
 			<div style={{border: "1px solid black", padding: "5px", backgroundColor: "orange",  display: show ? "none" : "block", borderRadius: "100%"}}></div>
 			<div style={{border: "1px solid black", padding: "5px", backgroundColor: "orange", width: "min-content", fontSize: "12px", display: show ? "block" : "none"}}>
 			<span>
-					<p>x: {point.x}</p>
-					<p>y: {point.y}</p>
-					<p>polygon: {point.polygonName}</p>	
+					{/* <p>x: {point.x}</p>
+					<p>y: {point.y}</p> */}
+					{/* <p>polygon: {point.polygonName}</p>	 */}
 					<p>edgeProximity: {point.edgeProximity}</p>
 					<p>Toll: {point.toll}</p>
-					<div>Neighbours: {point.neighbours.map((node, i) => <p key={i}>{node.x + ", " + node.y}</p>)}</div>
+					<p>Centrality: {point.centrality}</p>
+					{/* <div>Neighbours: {point.neighbours.map((point, i) => <p key={i}>{point.node.x + ", " + point.node.y}</p>)}</div> */}
 			</span>
 			</div>
 		</AdvancedMarker>
