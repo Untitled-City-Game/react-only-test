@@ -1,9 +1,9 @@
 import { ClaimStateMoves } from "@/scripts/games/connect_four";
 import { GameState, LogMetadata, MetroGameBoardProps, PlayerData } from "@/scripts/types";
 import { GameContext } from "@/src/match/boardGame/Board";
-import Header from "@/src/userInterface/Header";
 import ImageMantine from "@/src/userInterface/ImageMantine";
 import Span from "@/src/userInterface/Span";
+import StatusBar from "@/src/userInterface/StatusBar";
 import { Alert, Button, Container, Group, Stack } from "@mantine/core";
 import { LogEntry } from "boardgame.io";
 import { LobbyClient } from "boardgame.io/client";
@@ -24,14 +24,14 @@ export default function LogTab() {
 	}
 	return (
 		<>
-			<Header>
+			<StatusBar>
 				<h1>Game Log</h1>
 				<p>Game will end at {props.G.endTime && new Date(props.G.endTime).toLocaleTimeString("en-US", {timeStyle: "short"})}</p>
 				<Group>
 					<Button variant="outline">Pause Game</Button>
 					<Button onClick={handleEndGame}>End Game</Button>
 				</Group>
-			</Header>
+			</StatusBar>
 			<Container mih="0" w="100%">
 				<Stack align="flex-start" mb="md">
 					{props.log

@@ -1,7 +1,7 @@
 import { ClaimStateMoves } from "@/scripts/games/connect_four";
 import { MetroGameBoardProps } from "@/scripts/types";
 import { GameContext } from "@/src/match/boardGame/Board";
-import Header from "@/src/userInterface/Header";
+import StatusBar from "@/src/userInterface/StatusBar";
 import { Button, Container, Group, Paper, Stack } from "@mantine/core";
 import { useContext } from "react";
 
@@ -23,13 +23,13 @@ export default function ChallengesTab() {
 	}
 	return (
 		<>
-			<Header>
+			<StatusBar>
 				<h1>Challenges</h1>
 				<Group>
 						<Button onClick={handleDiscarHand}>Discard Hand</Button>
 					</Group>
 
-			</Header>
+			</StatusBar>
 			<Container mih="0">
 				<Stack pb="md">
 				<Paper>{challengeDeck.length} challenges left in deck</Paper>

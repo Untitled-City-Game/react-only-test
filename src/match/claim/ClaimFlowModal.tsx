@@ -5,7 +5,7 @@ import { GameContext } from "@/src/match/boardGame/Board";
 import { ChooseChallenge } from "@/src/match/claim/ChooseChallenge";
 import ConfirmClaim from "@/src/match/claim/ConfirmClaim";
 import { Evidence } from "@/src/match/claim/Evidence";
-import Header from "@/src/userInterface/Header";
+import StatusBar from "@/src/userInterface/StatusBar";
 import {
 	Button,
 	Center,
@@ -96,9 +96,9 @@ export default function ClaimFlowModal({
 			title={`Claim ${zoneName}`}
 			fullScreen
 			radius={0}>
-			<Header>
+			<StatusBar>
 				<h1>Claiming {zoneName}</h1>
-			</Header>
+			</StatusBar>
 			<Center>
 				<LoadingOverlay visible={loading} />
 				<Stack pb="md">

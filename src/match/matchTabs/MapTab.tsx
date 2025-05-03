@@ -5,7 +5,7 @@ import MapLine from "@/src/match/googleMaps/GoogleMapsLine";
 import VisGlMapElement from "@/src/match/googleMaps/MapElement";
 import SelectedZonePopup from "@/src/match/googleMaps/SelectedZonePopup";
 import ZonePolygon from "@/src/match/googleMaps/ZonePolygon";
-import Header from "@/src/userInterface/Header";
+import StatusBar from "@/src/userInterface/StatusBar";
 import { theme } from "@/styles/theme";
 import { useContext, useState } from "react";
 
@@ -74,10 +74,10 @@ export default function MapTab() {
 
 	return (
 		<>
-			<Header>
+			<StatusBar>
 				<h1>Map</h1>
 				<span>Version 1.0.6</span>
-			</Header>
+			</StatusBar>
 			<div id="map" style={mapStyles}>
 			<SelectedZonePopup currentZone={currentZone} style={selectedZonePopupStyles}/>
 			<VisGlMapElement

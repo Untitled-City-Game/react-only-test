@@ -1,34 +1,13 @@
-import { GameContext } from "@/src/match/boardGame/Board";
 import { theme } from "@/styles/theme";
-import { Container, Group } from "@mantine/core";
-import { useContext } from "react";
-import Countdown from 'react-countdown';
-import Span from "./Span";
+import { Center } from "@mantine/core";
 
-export default function Header({ children }: { children: React.ReactNode }) {
-	const {G, playerData} = useContext(GameContext);
-	const claimedZones = G.zoneData.filter(zone => zone.controlTeam === playerData.data.teamColor).length
+export default function Header({ children, color }: { children: React.ReactNode, color: string }) {
 	return (
-			<Container style={headerStyles} className="header">
-				<Group justify="center" align="center">
-					<Span size="xs">{claimedZones} neighbourhood{claimedZones === 1 ? "" : "s"} claimed</Span>
-					<Span size="xs">Time remaining: <Countdown 
-					date={new Date(G.endTime || 0)} 
-					renderer={
-						props => <span>{props.hours}h {props.minutes}m {props.seconds}s</span>
-					}
-					/></Span>
-				</Group>
-				{children}
-			</Container>
+		<Center bg={`${color}.1`} p="0" style={{
+			borderBottom: `2px solid ${theme.colors[color]?.[6] || theme.colors.gray[6]}`,
+			borderTop: `2px solid ${theme.colors[color]?.[6] || theme.colors.gray[6]}`
+		}}>
+			<h1>{children}</h1>
+		</Center>
 	);
 }
-
-const headerStyles = {
-	position: "sticky" as const,
-	top: 0,
-	backgroundColor: theme.white,
-	width: "100%",
-	zIndex: 1,
-	padding: "1rem",
-};
