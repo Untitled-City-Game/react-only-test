@@ -1,17 +1,25 @@
-import { Button, Center, Group, Paper, Radio, Stack, TextInput } from "@mantine/core";
+import { Button, Radio, Stack, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { LobbyAPI } from "boardgame.io";
 import { LobbyClient } from "boardgame.io/client";
 import { useNavigate, useParams } from "react-router";
 
+import { games } from "@/scripts/consts";
 import { joinMatch } from "@/scripts/joinMatch";
 import { NamedColor } from "@/scripts/types";
 import Loading from "@/src/match/boardGame/Loading";
+import { ListButton } from "@/src/userInterface/ListButton";
 import Span from "@/src/userInterface/Span";
 import { useEffect, useMemo, useState } from "react";
 
 export default function JoinMatch() {
-	const { matchID } = useParams() as { matchID: string };
+	const matchID = useParams().matchID;
+	const gameCode = useParams().gameCode;
+	if(!matchID || !gameCode){
+		throw new Error("Invalid match ID or game code");
+	}
+		const game = games.find((game) => game.code === gameCode);
+	
 	const lobbyClient = useMemo(
 		() => new LobbyClient({ server: process.env.GAME_SERVER }),
 		[]
@@ -65,49 +73,50 @@ export default function JoinMatch() {
 		];
 		//Render radio options for teams
 		const teamCards = teamOptions.map((item) => (
-			<Radio.Card radius="md" value={item.value} key={item.value}>
-				<Paper radius="md" p="md">
-					<Group wrap="nowrap" align="center">
-						<Radio.Indicator color={item.label} size="lg" />
+			<ListButton component={Radio.Card}
+			value={item.value} key={item.value}
+			color={item.value}
+			>
+			
+						<Radio.Indicator color={item.value} 					iconColor='white'
+ size="lg" />
 						<div>
 							<Span>{item.label}</Span>
 							<Span>
 								{item.members?.length
-									? `Current members: ${item.members.join(
+									? `Members: ${item.members.join(
 											", "
 									  )}`
-									: "Empty"}
+									: "None"}
 							</Span>
 						</div>
-					</Group>
-				</Paper>
-			</Radio.Card>
+			</ListButton>
 		));
 		return (
-			<Center>
-				<Stack>
-					<h1>Join Game</h1>
-					<p>Match ID: {matchID}</p>
+				<>
+					<h1>Join a Match</h1>
+					<Stack gap={0} mb="sm">
+					<strong>Fun_game_name</strong>
+					<span>Match ID: {matchID}</span>
+					</Stack>
 					<form onSubmit={joinGameForm.onSubmit(handleJoinGame)} id="joingame">
-						<h2>Join a Game</h2>
 						<TextInput
 							label="Your name"
 							key={joinGameForm.key("PlayerName")}
 							{...joinGameForm.getInputProps("PlayerName")}
 						/>
 						<Radio.Group
+							pt="md"
 							label="Choose a team"
 							key={joinGameForm.key("teamColor")}
 							{...joinGameForm.getInputProps("teamColor")}>
-							<Stack pt="md" gap="xs">
+							<Stack gap="xs">
 								{teamCards}
 							</Stack>
 						</Radio.Group>
 					</form>
 					<Button type="submit" form="joingame" >Join Game</Button>
-					<Button variant="outline" onClick={() => navigate("/lobby/choose-match")}>Back</Button>
-				</Stack>
-			</Center>
+				</>
 		);
 	}
 

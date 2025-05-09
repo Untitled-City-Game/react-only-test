@@ -57,7 +57,7 @@ export const games = [
 		code: "connect_four",
 		active: true,
 		description: "Connect four neighbourhoods in your city before the other team!",
-		color: "yellow",
+		color: "purple",
 		icon: MdGrid4X4
 	},
 	{
@@ -65,7 +65,7 @@ export const games = [
 		code: "tag",
 		active: false,
 		description: "Explore the city and dodge the taggers - or chase your friends to the end of the line!",
-		color: "green",
+		color: "yellow",
 		icon: PiPersonSimpleRunBold 
 	},
 	{

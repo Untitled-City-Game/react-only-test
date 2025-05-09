@@ -1,16 +1,19 @@
 import { games } from "@/scripts/consts";
 import Header from "@/src/userInterface/Header";
 import { theme } from "@/styles/theme";
+import { RiArrowLeftBoxLine } from "react-icons/ri";
+
 import {
-	Center,
+	ActionIcon,
 	Container,
 	MantineProvider,
 	mergeMantineTheme,
-	Stack
+	Stack,
 } from "@mantine/core";
-import { Outlet, useParams } from "react-router";
+import { Outlet, useNavigate, useParams } from "react-router";
 
 export default function LobbyLayout() {
+	const navigate = useNavigate();
 	const gameCode = useParams().gameCode;
 	const game = games.find((game) => game.code === gameCode);
 	const lobbyTheme = mergeMantineTheme(theme, {
@@ -20,15 +23,26 @@ export default function LobbyLayout() {
 	console.timeLog("load", "lobby layout");
 	return (
 		<MantineProvider theme={lobbyTheme}>
-			<Header color={game?.color || "white"}>{game?.name} Lobby</Header>
-			<Container pb="md">
-			<Center>
-				<Stack gap="0" w="100%">
-
-			<Outlet />
+			<Stack w="100%" mih="100%" gap={0}>
+				<Header color={game?.color || "white"}>
+					{game?.name} Lobby
+				</Header>
+				<Container maw="500px" w="100%" style={{flexGrow: 10}}  mb="md" pl="md" pr="md">
+					<Stack w="100%" gap={0}>
+					<Outlet />
+					</Stack>
+				</Container>
+				<Container w="100%" mb="md" pl="md" pr="md">
+					<ActionIcon
+						size="lg"
+						aria-label="Back"
+						variant="filled"
+						autoContrast
+						onClick={() => navigate(-1)}>
+						<RiArrowLeftBoxLine size={100} />
+					</ActionIcon>
+				</Container>
 			</Stack>
-			</Center>
-			</Container>
 		</MantineProvider>
 	);
 }

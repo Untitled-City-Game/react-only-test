@@ -45,7 +45,18 @@ const themeOverride = createTheme({
       "#0bae4a",
       "#00973c"
     ],
-    blue: colorsTuple("#0076C0"),
+    blue: [
+      "#e5f8ff",
+      "#d0edff",
+      "#9fd8fd",
+      "#6cc3fb",
+      "#47b1fa",
+      "#32a6fa",
+      "#26a0fb",
+      "#188be0",
+      "#007cc9",
+      "#006bb2"
+    ],
     grey: [
       "#eef7ee",
       "#e4e9e4",
@@ -69,6 +80,18 @@ const themeOverride = createTheme({
       "#e39500",
       "#cb8400",
       "#b07100"
+    ],
+    purple: [
+      "#f3edff",
+      "#e0d7fa",
+      "#beabf0",
+      "#9a7de6",
+      "#7c55de",
+      "#693cd9",
+      "#5f30d8",
+      "#4f23c0",
+      "#461eac",
+      "#3b1898"
     ],
     water: [
       "#e4f8ff",

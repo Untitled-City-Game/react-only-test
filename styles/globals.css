@@ -29,9 +29,9 @@ h3 {
 	margin: 0.25rem 0;
 }
 
-label {
+label, .mantine-RadioGroup-label {
 	font-size : 1rem !important;
-	margin-bottom: 0.25rem !important;
+	margin-bottom: 0rem !important;
 }
 
 input.mantine-Select-input, input.mantine-TextInput-input, div.mantine-Select-option {

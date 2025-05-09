@@ -23,11 +23,11 @@ export default function ChooseGame() {
 		);
 	});
 	return (
-		<Container>
-			<Stack>
+			<Stack
+				maw="500px"
+			>
 				<h2>Choose a game</h2>
 				{gameListItems}
 			</Stack>
-		</Container>
 	);
 }

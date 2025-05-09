@@ -3,7 +3,7 @@ import { StrictMatch } from "@/scripts/types";
 import Loading from "@/src/match/boardGame/Loading";
 import { ListButton } from "@/src/userInterface/ListButton";
 import Span from "@/src/userInterface/Span";
-import { Button, Center, Container, Radio, Stack } from "@mantine/core";
+import { Button, Radio, Stack } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { LobbyClient } from "boardgame.io/client";
 import { useEffect, useMemo, useState } from "react";
@@ -122,8 +122,6 @@ export default function ChooseMatch() {
 		);
 
 	return (
-		<Container pb="md">
-			<Center>
 				<Stack gap="0" w="100%">
 					<div>
 						<h2>Create</h2>
@@ -143,7 +141,5 @@ export default function ChooseMatch() {
 						chooseMatchFormElement
 					)}
 				</Stack>
-			</Center>
-		</Container>
 	);
 }
