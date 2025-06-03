@@ -11,7 +11,7 @@ export default function Match() {
 	const { height, width } = useWindowDimensions();
 	console.log("rendering match");
 	return (
-			<Tabs defaultValue={"map"} variant="pills" radius={0} style={MatchContainerStyles} h={height} id="matchContainer">
+			<Tabs defaultValue={"map"} variant="pills" radius={0} style={MatchContainerStyles} h={`min(100vh, ${height}px)`} id="matchContainer">
 				<TabsPanel value="challenges" style={panelLayout} h={height}>
 					<ErrorBoundary
 						fallback={<span>Something went wrong.</span>}>
@@ -53,7 +53,6 @@ const MatchContainerStyles: React.CSSProperties = {
 	flexDirection: "column",
 	alignItems: "stretch",
 	overflow: "clip",
-	maxHeight: "100vh"
 };
 
 //this contains the header and tab contents
