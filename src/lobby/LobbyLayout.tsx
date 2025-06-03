@@ -4,6 +4,7 @@ import Header from "@/src/userInterface/Header/Header";
 import { RiArrowLeftBoxLine } from "react-icons/ri";
 
 import useWindowDimensions from "@/scripts/useWindowDimensions";
+import FullHeightLayout from "@/src/userInterface/Layout";
 import {
 	ActionIcon,
 	Container,
@@ -25,7 +26,7 @@ export default function LobbyLayout() {
 	const { height } = useWindowDimensions();
 	return (
 		<MantineProvider theme={lobbyTheme}>
-			<Stack w="100%"  gap={0} mih={`min(100vh, ${height}px`}>
+			<FullHeightLayout>
 				<Header color={game?.color || "white"}>
 					{game?.name} Lobby
 				</Header>
@@ -44,7 +45,7 @@ export default function LobbyLayout() {
 						<RiArrowLeftBoxLine size={100} />
 					</ActionIcon>
 				</Container>
-			</Stack>
+			</FullHeightLayout>
 		</MantineProvider>
 	);
 }

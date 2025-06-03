@@ -8,18 +8,18 @@ import { games } from "@/scripts/consts";
 import { joinMatch } from "@/scripts/joinMatch";
 import { NamedColor } from "@/scripts/types";
 import Loading from "@/src/match/boardGame/Loading";
-import { ListButton } from "@/src/userInterface/ListButton";
 import Span from "@/src/userInterface/Span";
 import { useEffect, useMemo, useState } from "react";
+import { ListButton } from "../userInterface/ListButton";
 
 export default function JoinMatch() {
 	const matchID = useParams().matchID;
 	const gameCode = useParams().gameCode;
-	if(!matchID || !gameCode){
+	if (!matchID || !gameCode) {
 		throw new Error("Invalid match ID or game code");
 	}
-		const game = games.find((game) => game.code === gameCode);
-	
+	const game = games.find((game) => game.code === gameCode);
+
 	const lobbyClient = useMemo(
 		() => new LobbyClient({ server: process.env.GAME_SERVER }),
 		[]
@@ -43,8 +43,10 @@ export default function JoinMatch() {
 			teamColor: "red" as NamedColor,
 		},
 		validate: {
-			PlayerName: (value) => value.length > 0 ? null : "Player name is required",
-			teamColor: (value) => value.length > 0 ? null : "Team is required",
+			PlayerName: (value) =>
+				value.length > 0 ? null : "Player name is required",
+			teamColor: (value) =>
+				value.length > 0 ? null : "Team is required",
 		},
 	});
 
@@ -73,50 +75,53 @@ export default function JoinMatch() {
 		];
 		//Render radio options for teams
 		const teamCards = teamOptions.map((item) => (
-			<ListButton component={Radio.Card}
-			value={item.value} key={item.value}
-			color={item.value}
-			>
-			
-						<Radio.Indicator color={item.value} 					iconColor='white'
- size="lg" />
-						<div>
-							<Span>{item.label}</Span>
-							<Span>
-								{item.members?.length
-									? `Members: ${item.members.join(
-											", "
-									  )}`
-									: "None"}
-							</Span>
-						</div>
+			<ListButton
+				component={Radio.Card}
+				value={item.value}
+				key={item.value}
+				color={item.value}>
+				<Radio.Indicator
+					color={item.value}
+					iconColor="white"
+					size="lg"
+				/>
+				<div>
+					<Span>{item.label}</Span>
+					<Span>
+						{item.members?.length
+							? `Members: ${item.members.join(", ")}`
+							: "None"}
+					</Span>
+				</div>
 			</ListButton>
 		));
 		return (
-				<>
-					<h1>Join a Match</h1>
-					<Stack gap={0} mb="sm">
+			<>
+				<h1>Join a Match</h1>
+				<Stack gap={0} mb="sm">
 					<strong>Fun_game_name</strong>
 					<span>Match ID: {matchID}</span>
-					</Stack>
-					<form onSubmit={joinGameForm.onSubmit(handleJoinGame)} id="joingame">
-						<TextInput
-							label="Your name"
-							key={joinGameForm.key("PlayerName")}
-							{...joinGameForm.getInputProps("PlayerName")}
-						/>
-						<Radio.Group
-							pt="md"
-							label="Choose a team"
-							key={joinGameForm.key("teamColor")}
-							{...joinGameForm.getInputProps("teamColor")}>
-							<Stack gap="xs">
-								{teamCards}
-							</Stack>
-						</Radio.Group>
-					</form>
-					<Button type="submit" form="joingame" >Join Game</Button>
-				</>
+				</Stack>
+				<form
+					onSubmit={joinGameForm.onSubmit(handleJoinGame)}
+					id="joingame">
+					<TextInput
+						label="Your name"
+						key={joinGameForm.key("PlayerName")}
+						{...joinGameForm.getInputProps("PlayerName")}
+					/>
+					<Radio.Group
+						pt="md"
+						label="Choose a team"
+						key={joinGameForm.key("teamColor")}
+						{...joinGameForm.getInputProps("teamColor")}>
+						<Stack gap="xs">{teamCards}</Stack>
+					</Radio.Group>
+				</form>
+				<Button type="submit" form="joingame">
+					Join Game
+				</Button>
+			</>
 		);
 	}
 

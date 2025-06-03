@@ -1,9 +1,8 @@
+import DashedCard from "@/src/userInterface/DashedCard";
 import {
-	Card,
 	createPolymorphicComponent,
-	Group,
 	UnstyledButton,
-	UnstyledButtonProps,
+	UnstyledButtonProps
 } from "@mantine/core";
 import { forwardRef } from "react";
 
@@ -19,19 +18,9 @@ export const ListButton = createPolymorphicComponent<
 	forwardRef<HTMLButtonElement, CustomButtonProps>(
 		({ children, color, ...others }, ref) => (
 			<UnstyledButton {...others} ref={ref} bd="none">
-				<Card
-					m="0"
-					py="sm"
-					px="lg"
-					bd={`1.5px dashed ${color}`}
-					shadow="lg"
-					style={{
-						borderRadius: "10px",
-					}}>
-					<Group align="center" wrap="nowrap" gap="lg">
-						{children}
-					</Group>
-				</Card>
+				<DashedCard color={color}>
+					{children}
+				</DashedCard>
 			</UnstyledButton>
 		)
 	)

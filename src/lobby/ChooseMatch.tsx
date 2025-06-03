@@ -1,13 +1,13 @@
 import { games } from "@/scripts/consts";
 import { StrictMatch } from "@/scripts/types";
 import Loading from "@/src/match/boardGame/Loading";
-import { ListButton } from "@/src/userInterface/ListButton";
 import Span from "@/src/userInterface/Span";
 import { Button, Radio, Stack } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { LobbyClient } from "boardgame.io/client";
 import { useEffect, useMemo, useState } from "react";
 import { Link, useNavigate, useParams } from "react-router";
+import { ListButton } from "../userInterface/ListButton";
 
 export default function ChooseMatch() {
 	const gameCode = useParams().gameCode;

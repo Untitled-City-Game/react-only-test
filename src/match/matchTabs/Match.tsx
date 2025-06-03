@@ -58,7 +58,7 @@ const MatchContainerStyles: React.CSSProperties = {
 };
 
 //this contains the header and tab contents
-const panelLayout: React.CSSProperties = {
+export const panelLayout: React.CSSProperties = {
 	display: "flex",
 	minHeight: "0",
 	flexDirection: "column",

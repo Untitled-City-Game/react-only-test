@@ -1,8 +1,8 @@
 //Set of button links to choose game from list in consts.ts. Inactive games are marked "coming soon". Choosing a game will redirect to the choose match page.
 import { games } from "@/scripts/consts";
-import { ListButton } from "@/src/userInterface/ListButton";
 import { Container, Stack, Text } from "@mantine/core";
 import { Link } from "react-router";
+import { ListButton } from "../userInterface/ListButton";
 
 export default function ChooseGame() {
 	const gameListItems = games.map((game, index) => {

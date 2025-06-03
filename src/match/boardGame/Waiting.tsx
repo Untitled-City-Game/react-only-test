@@ -1,29 +1,62 @@
 import { games } from "@/scripts/consts";
-import { MetroGameBoardProps } from "@/scripts/types";
+import { GameState, MetroGameBoardProps, PlayerData } from "@/scripts/types";
 import { GameContext } from "@/src/match/boardGame/Board";
+import DashedCard from "@/src/userInterface/DashedCard";
 import Header from "@/src/userInterface/Header/Header";
+import FullHeightLayout, { VerticalSpread } from "@/src/userInterface/Layout";
+import Span from "@/src/userInterface/Span";
 import { Button, Center, Container, Stack } from "@mantine/core";
 import { useContext } from "react";
 
 export default function Waiting() {
-	console.log("rendering waiting page")
+	console.log("rendering waiting page");
 	const props: MetroGameBoardProps = useContext(GameContext);
 	const game = games.find((game) => game.code === props.gameCode);
-	const playerData = props.G.allPlayersData
+	const playerData = props.G.allPlayersData;
+	if(!game){
+		return <h1>Game not found</h1>
+	}
 	return (
 		<Center>
-			<Stack>
-				<Header color={game?.color || "white"}>Connect 4</Header>
-				<h2>Your game is waiting to start</h2>
-				<p>Players can still join.</p>
-				{Object.values(playerData).map((player, index) => {
-					return <Container key={index}>{player.name}, {player.teamColor} team</Container>
-				})}
-				<Button onClick={() => {
-					props.moves.startGame()
-				}
-				}>Start the Game</Button>
-			</Stack>
+			<FullHeightLayout>
+				<Header color={props.playerData.data.teamColor || "white"}>Connect 4</Header>
+				<VerticalSpread>
+					<div></div>
+					<div>
+						{/* TODO: Replace with game name */}
+					<h2>Your game [game name goes here] is waiting to start.</h2>
+					<p>Players can still join.</p>
+					<TeamSummary gameData={props.G}/>
+					</div>
+					<Button
+						onClick={() => {
+							props.moves.startGame();
+						}}>
+						Start the Game
+					</Button>
+				</VerticalSpread>
+			</FullHeightLayout>
 		</Center>
+	);
+}
+
+function TeamSummary({gameData} : {gameData: GameState}){ 
+	const teams = Object.keys(gameData.allTeamsData).map((team) => {
+		return Object.values(gameData.allPlayersData).filter((player : PlayerData) => player.teamColor === team);
+	})
+
+	return (
+		<Container>
+			<Stack>
+			{teams.map((team, index) => (
+				<DashedCard key={index} color={team[0].teamColor}>
+					<Container ta="left" w="100%">
+					<Span style={{textTransform: "capitalize"}}>{team[0].teamColor}</Span>
+					<p>{team.map((player) => player.name).join(", ")}</p>
+					</Container>
+				</DashedCard>
+			))}
+			</Stack>
+		</Container>
 	)
 }
