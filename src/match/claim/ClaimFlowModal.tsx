@@ -5,15 +5,15 @@ import { GameContext } from "@/src/match/boardGame/Board";
 import { ChooseChallenge } from "@/src/match/claim/ChooseChallenge";
 import ConfirmClaim from "@/src/match/claim/ConfirmClaim";
 import { Evidence } from "@/src/match/claim/Evidence";
-import StatusBar from "@/src/userInterface/StatusBar";
+import { ComplexHeader } from "@/src/userInterface/Header/Header";
+import FullHeightLayout, { VerticalSpread } from "@/src/userInterface/Layout";
 import {
+	Box,
 	Button,
-	Center,
 	Group,
 	LoadingOverlay,
 	Modal,
-	Stack,
-	Stepper,
+	Stepper
 } from "@mantine/core";
 import { UseFormReturnType, useForm } from "@mantine/form";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
@@ -54,11 +54,13 @@ export default function ClaimFlowModal({
 			console.log("validating claim form", values);
 			if (step === 0) {
 				return {
-					challenge: values.challenge ? null : "Select a challenge to claim this zone",
+					challenge: values.challenge
+						? null
+						: "Select a challenge to claim this zone",
 				};
 			}
 			return {};
-		}
+		},
 	});
 	const zoneName = claimedZone?.name;
 	async function claimZone(zone: number, challenge: string, evidence: File) {
@@ -89,78 +91,123 @@ export default function ClaimFlowModal({
 	}
 
 	return claimedZone ? (
-		<Modal
+		<Modal.Root
 			opened={open}
 			onClose={closeClaim}
-			size="xl"
-			title={`Claim ${zoneName}`}
 			fullScreen
+			padding={0}
 			radius={0}>
-			<StatusBar>
-				<h1>Claiming {zoneName}</h1>
-			</StatusBar>
-			<Center>
-				<LoadingOverlay visible={loading} />
-				<Stack pb="md">
-					<Stepper
-						active={step}
-						styles={{
-							steps: { display: "none" },
-						}}>
-						<Stepper.Step>
-							<ChooseChallenge
-								props={props}
-								claimForm={claimForm}
-							/>
-						</Stepper.Step>
-						<Stepper.Step>
-							<Evidence props={props} claimForm={claimForm} />
-						</Stepper.Step>
-						<Stepper.Completed>
-							<ConfirmClaim
-								claimForm={claimForm}
-								claimedZone={claimedZone}
-							/>
-						</Stepper.Completed>
-					</Stepper>
-					<Group justify="center" mt="xl">
-						{step !== 2 ? (
-							<>
-								<Button onClick={() => {
-									if(claimForm.validate().hasErrors) return;
-									setStep(step + 1)
-									}}>
-									Next step
-								</Button>
-								{step === 0 ? (
-									<Button onClick={closeClaim}>Back</Button>
-								) : (
-									<Button onClick={() => setStep(step - 1)}>
+			<Modal.Overlay />
+			<Modal.Content>
+				<FullHeightLayout>
+					<LoadingOverlay visible={loading} />
+					<Modal.Header>
+						<ComplexHeader
+							color={props.playerData.data.teamColor}
+							w="100%">
+							<Group
+								w="100%"
+								justify="space-between"
+								align="flex-start"
+								wrap="nowrap"
+								gap="0">
+								<Box flex="1 1 30px"></Box>
+								<Box flex="1 0 auto" ta="center">
+									<h1>{`Claim ${zoneName}`}</h1>
+								</Box>
+								<Box flex="1 1 30px" ta="right">
+									<Modal.CloseButton
+										size={"lg"}
+										mt="5px"
+										mr="5px"
+									/>
+								</Box>
+							</Group>
+						</ComplexHeader>
+					</Modal.Header>
+					<VerticalSpread>
+						<div></div>
+						<Stepper
+							active={step}
+							styles={{
+								steps: { display: "none" },
+							}}>
+							<Stepper.Step>
+								<ChooseChallenge
+									props={props}
+									claimForm={claimForm}
+								/>
+							</Stepper.Step>
+							<Stepper.Step>
+								<Evidence
+									props={props}
+									claimForm={claimForm}
+								/>
+							</Stepper.Step>
+							<Stepper.Completed>
+								<ConfirmClaim
+									claimForm={claimForm}
+									claimedZone={claimedZone}
+								/>
+							</Stepper.Completed>
+						</Stepper>
+						<Group justify="center" mt="xl">
+							{step !== 2 ? (
+								<>
+									{step === 0 ? (
+										<Button
+											variant="outline"
+											onClick={closeClaim}>
+											Back
+										</Button>
+									) : (
+										<Button
+											variant="outline"
+											onClick={() =>
+												setStep(step - 1)
+											}>
+											Back
+										</Button>
+									)}
+									<Button
+										onClick={() => {
+											if (
+												claimForm.validate()
+													.hasErrors
+											)
+												return;
+											setStep(step + 1);
+										}}>
+										Next step
+									</Button>
+								</>
+							) : (
+								<>
+									<Button
+										variant="outline"
+										onClick={() =>
+											setStep(step - 1)
+										}>
 										Back
 									</Button>
-								)}
-							</>
-						) : (
-							<>
-								<Button
-									onClick={() =>
-										claimZone(
-											claimedZone.id,
-											claimForm.getValues().challenge,
-											claimForm.getValues()
-												.evidence as unknown as File
-										)
-									}>
-									Claim
-								</Button>
-								<Button onClick={() => setStep(step - 1)}>
-									Back
-								</Button>
-							</>
-						)}
-					</Group>
-				</Stack>
-			</Center>
-		</Modal>
+									<Button
+										onClick={() =>
+											claimZone(
+												claimedZone.id,
+												claimForm.getValues()
+													.challenge,
+												claimForm.getValues()
+													.evidence as unknown as File
+											)
+										}>
+										Claim
+									</Button>
+								</>
+							)}
+						</Group>
+					</VerticalSpread>
+				</FullHeightLayout>
+			</Modal.Content>
+		</Modal.Root>
 	) : null;
 }

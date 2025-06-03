@@ -1,8 +1,10 @@
 import { ClaimStateMoves } from "@/scripts/games/connect_four";
 import { MetroGameBoardProps } from "@/scripts/types";
 import { GameContext } from "@/src/match/boardGame/Board";
+import DashedCard from "@/src/userInterface/DashedCard";
+import { ComplexHeader } from "@/src/userInterface/Header/Header";
 import StatusBar from "@/src/userInterface/StatusBar";
-import { Button, Container, Group, Paper, Stack } from "@mantine/core";
+import { Box, Button, Container, Stack } from "@mantine/core";
 import { useContext } from "react";
 
 export default function ChallengesTab() {
@@ -23,27 +25,32 @@ export default function ChallengesTab() {
 	}
 	return (
 		<>
-			<StatusBar>
-				<h1>Challenges</h1>
-				<Group>
-						<Button onClick={handleDiscarHand}>Discard Hand</Button>
-					</Group>
+		<Box pos="sticky" top={0} style={{zIndex: 10000}}>
+			<StatusBar />
+			<ComplexHeader color={props.playerData.data.teamColor}>
+				<Container w="100%">
+								<Stack gap="0" ta="center" align="stretch" w="100%">
 
-			</StatusBar>
-			<Container mih="0">
+				<h1>Challenges</h1>
+				<Button onClick={handleDiscarHand}>Discard Hand</Button>
+				<p>{challengeDeck.length} challenges left in deck</p>
+				</Stack>
+				</Container>
+			</ComplexHeader>
+			</Box>
+			<Container mih="0" mt="md">
 				<Stack pb="md">
-				<Paper>{challengeDeck.length} challenges left in deck</Paper>
 				{challengeHand.map((challenge, index) => {
 					return (
-						<Paper
+						<DashedCard
 							key={index}
-							shadow="xs"
-							withBorder
-							p="md"
-							radius="md">
+							color={props.playerData.data.teamColor}
+							>
+								<Container w="100%">
 							<h3>{challenge.title}</h3>
 							<p>{challenge.description}</p>
-						</Paper>
+							</Container>
+						</DashedCard>
 					);
 				})}
 				</Stack>

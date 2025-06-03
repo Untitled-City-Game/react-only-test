@@ -1,6 +1,6 @@
 import { ZoneData } from "@/scripts/types";
 import ClaimFlowModal from "@/src/match/claim/ClaimFlowModal";
-import { Button, Center, Container, Paper } from "@mantine/core";
+import { Button, Center, Container } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 
 export default function SelectedZonePopup({
@@ -17,13 +17,11 @@ export default function SelectedZonePopup({
 				style={style}
 				display={currentZone ? "initial" : "none"}>
 				<Container style={selectedStyles}>
-					<Paper>
 						<Center>
-						<Button onClick={open}>
-							Claim {currentZone?.name}
+						<Button onClick={open} size="lg">
+							<span>Claim {currentZone?.name}</span>
 						</Button>
 						</Center>
-					</Paper>
 				</Container>
 			</Center>
 			<ClaimFlowModal 

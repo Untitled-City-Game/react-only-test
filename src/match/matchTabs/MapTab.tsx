@@ -5,7 +5,6 @@ import MapLine from "@/src/match/googleMaps/GoogleMapsLine";
 import VisGlMapElement from "@/src/match/googleMaps/MapElement";
 import SelectedZonePopup from "@/src/match/googleMaps/SelectedZonePopup";
 import ZonePolygon from "@/src/match/googleMaps/ZonePolygon";
-import { theme } from "@/src/styles/theme";
 import Header from "@/src/userInterface/Header/Header";
 import StatusBar from "@/src/userInterface/StatusBar";
 import { useContext, useState } from "react";
@@ -103,6 +102,6 @@ const mapStyles: React.CSSProperties = {
 const selectedZonePopupStyles: React.CSSProperties = {
 	zIndex: 10,
 	position: "absolute",
-	backgroundColor : theme.white,
+	bottom: 5,
 	width: "100%",
 };

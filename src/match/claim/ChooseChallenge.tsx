@@ -1,8 +1,9 @@
 ;
 import type { MetroGameBoardProps } from "@/scripts/types";
 import type { Form } from "@/src/match/claim/ClaimFlowModal";
+import { ListButton } from "@/src/userInterface/ListButton";
 import Span from "@/src/userInterface/Span";
-import { Container, Group, Paper, Radio } from "@mantine/core";
+import { Container, Group, Radio } from "@mantine/core";
 
 export function ChooseChallenge({
 	props, claimForm,
@@ -19,8 +20,7 @@ export function ChooseChallenge({
 	}
 	const challengeCards = challengeHand.map((challenge, index) => {
 		return (
-			<Radio.Card value={challenge.title} key={index}>
-				<Paper radius="md" p="md">
+			<ListButton component={Radio.Card} value={challenge.title} key={index} color={myTeam}>
 					<Group wrap="nowrap" align="center">
 						<Radio.Indicator size="lg" />
 						<div>
@@ -28,8 +28,7 @@ export function ChooseChallenge({
 							{/* <Span>{challenge.description}</Span> */}
 						</div>
 					</Group>
-				</Paper>
-			</Radio.Card>
+			</ListButton>
 		);
 	});
 	return (
