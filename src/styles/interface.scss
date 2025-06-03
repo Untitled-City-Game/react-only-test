@@ -15,8 +15,8 @@ h1, h2, h3, h4, h5, h6 {
 	font-family: 'underground', sans-serif;
 }
 h1 {
-	font-size: 2rem;
 	margin: 1rem 0;
+	font-size: 2rem;
 }
 
 h2 {
@@ -51,4 +51,10 @@ input.mantine-Select-input, input.mantine-TextInput-input, div.mantine-Select-op
 
  .capitalize {
 	text-transform: capitalize;
+ }
+
+ .header {
+	h1 {
+		margin: .5rem;
+	}
  }

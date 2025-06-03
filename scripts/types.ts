@@ -99,6 +99,7 @@ export type ClientSetupData = {
 		setter: Dispatch<SetStateAction<PlayerData | undefined>>
 	};
 	matchID: string;
+	gameCode: string;
 	playerID : `${number}`;
 	credentials?: string;
 }

@@ -1,6 +1,6 @@
 import { LineData } from "@/scripts/types";
 import { Polyline } from "@/src/match/googleMaps/shapes/PolyLine";
-import { theme } from "@/styles/theme";
+import { theme } from "@/src/styles/theme";
 import { Marker } from "@vis.gl/react-google-maps";
 import { Fragment } from "react";
 

@@ -2,7 +2,7 @@ import { ConnectFour } from "@/scripts/games/connect_four";
 import type { ClientSetupData, PlayerData } from "@/scripts/types";
 import Board from "@/src/match/boardGame/Board";
 import Loading from "@/src/match/boardGame/Loading";
-import { theme } from "@/styles/theme";
+import { theme } from "@/src/styles/theme";
 import { MantineProvider, mergeMantineTheme } from "@mantine/core";
 import { SocketIO } from "boardgame.io/multiplayer";
 import { Client } from "boardgame.io/react";
@@ -63,6 +63,7 @@ export default function ClientContainer(props: { children: React.ReactNode }) {
 					}>
 					<GameClient
 						matchID={playerData.matchID || "default"}
+						gameCode="connect_four"
 						playerData={{ data: playerData, setter: setPlayerData }}
 						playerID={playerData.playerID}
 						credentials={playerData.playerCredentials}

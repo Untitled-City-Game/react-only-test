@@ -1,7 +1,6 @@
-import { theme } from "@/styles/theme";
+import { theme } from "@/src/styles/theme";
 import { ColorSchemeScript } from '@mantine/core';
 import '@mantine/core/styles.css';
-import "@styles/globals.css";
 import { ErrorBoundary } from "react-error-boundary";
 import { Outlet } from "react-router";
 

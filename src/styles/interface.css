@@ -1,0 +1,61 @@
+@font-face {
+  font-family: "underground";
+  src: url("underground.otf");
+}
+html {
+  font-size: 18px;
+}
+
+body {
+  font-family: "Hanken Grotesk", sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: "underground", sans-serif;
+}
+
+h1 {
+  margin: 1rem 0;
+  font-size: 2rem;
+}
+
+h2 {
+  font-size: 1.5rem;
+  margin: 1rem 0;
+}
+
+h3 {
+  font-size: 1rem;
+  margin: 0.25rem 0;
+}
+
+label, .mantine-RadioGroup-label {
+  font-size: 1rem !important;
+  margin-bottom: 0rem !important;
+}
+
+input.mantine-Select-input, input.mantine-TextInput-input, div.mantine-Select-option {
+  font-size: 1rem !important;
+  text-transform: capitalize;
+  font-family: "Hanken Grotesk", sans-serif;
+}
+
+#capture {
+  height: 360px;
+  width: 480px;
+  overflow: hidden;
+  float: left;
+  background-color: #ECECFB;
+  border: thin solid #333;
+  border-left: none;
+}
+
+.capitalize {
+  text-transform: capitalize;
+}
+
+.header h1 {
+  margin: 0.5rem;
+}
+
+/*# sourceMappingURL=interface.css.map */

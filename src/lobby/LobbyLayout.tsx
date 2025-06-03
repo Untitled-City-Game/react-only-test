@@ -1,8 +1,9 @@
 import { games } from "@/scripts/consts";
-import Header from "@/src/userInterface/Header";
-import { theme } from "@/styles/theme";
+import { theme } from "@/src/styles/theme";
+import Header from "@/src/userInterface/Header/Header";
 import { RiArrowLeftBoxLine } from "react-icons/ri";
 
+import useWindowDimensions from "@/scripts/useWindowDimensions";
 import {
 	ActionIcon,
 	Container,
@@ -21,9 +22,10 @@ export default function LobbyLayout() {
 		primaryShade: 6,
 	});
 	console.timeLog("load", "lobby layout");
+	const { height } = useWindowDimensions();
 	return (
 		<MantineProvider theme={lobbyTheme}>
-			<Stack w="100%" mih="100%" gap={0}>
+			<Stack w="100%"  gap={0} mih={`min(100vh, ${height}px`}>
 				<Header color={game?.color || "white"}>
 					{game?.name} Lobby
 				</Header>

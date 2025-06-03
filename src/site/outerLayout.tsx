@@ -1,5 +1,5 @@
-import Header from "@/src/userInterface/Header";
-import { theme } from "@/styles/theme";
+import { theme } from "@/src/styles/theme";
+import Header from "@/src/userInterface/Header/Header";
 import { Center, Container, MantineProvider } from "@mantine/core";
 import { Outlet } from "react-router";
 

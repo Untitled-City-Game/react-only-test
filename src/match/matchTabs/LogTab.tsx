@@ -1,6 +1,7 @@
 import { ClaimStateMoves } from "@/scripts/games/connect_four";
 import { GameState, LogMetadata, MetroGameBoardProps, PlayerData } from "@/scripts/types";
 import { GameContext } from "@/src/match/boardGame/Board";
+import { ComplexHeader } from "@/src/userInterface/Header/Header";
 import ImageMantine from "@/src/userInterface/ImageMantine";
 import Span from "@/src/userInterface/Span";
 import StatusBar from "@/src/userInterface/StatusBar";
@@ -24,14 +25,17 @@ export default function LogTab() {
 	}
 	return (
 		<>
-			<StatusBar>
-				<h1>Game Log</h1>
-				<p>Game will end at {props.G.endTime && new Date(props.G.endTime).toLocaleTimeString("en-US", {timeStyle: "short"})}</p>
-				<Group>
-					<Button variant="outline">Pause Game</Button>
-					<Button onClick={handleEndGame}>End Game</Button>
-				</Group>
-			</StatusBar>
+			<StatusBar />
+			<ComplexHeader color={props.playerData.data.teamColor}>
+				<Stack gap="0" ta="center">
+					<h1>Log</h1>
+					<p style={{margin: 0}}>Game will end at {props.G.endTime && new Date(props.G.endTime).toLocaleTimeString("en-US", {timeStyle: "short"})}</p>
+					<Group>
+						<Button variant="outline">Pause Game</Button>
+						<Button onClick={handleEndGame}>End Game</Button>
+					</Group>
+				</Stack>
+			</ComplexHeader>
 			<Container mih="0" w="100%">
 				<Stack align="flex-start" mb="md">
 					{props.log
