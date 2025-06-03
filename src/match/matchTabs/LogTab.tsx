@@ -50,7 +50,7 @@ export default function LogTab() {
 				</ComplexHeader>
 			</Box>
 			<Container mih="0" w="100%" mt="md">
-				<Stack align="flex-start" mb="md">
+				<Stack align="flex-start" pb="md">
 					{props.log.map((entry, index) => (
 						<ErrorBoundary
 							key={index}

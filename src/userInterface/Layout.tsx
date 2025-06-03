@@ -5,9 +5,19 @@ import React from "react";
 export default function FullHeightLayout({ children, ...rest }: { children: React.ReactNode }) {
 	const { height } = useWindowDimensions();
 	return (
-			<Stack w="100%" gap={0} mih={`min(100vh, ${height}px`} {...rest}>
-				{children}
+		<>
+			<div style={{
+			height: height,
+			width: "100%",
+			// backgroundColor: "rgba(255, 0, 255, 0.5)",
+			// border: "5px solid red",
+			overflow: "scroll"
+		}}>
+			<Stack mih="100%">
+			{children}
 			</Stack>
+		</div>
+			</>
 	);
 }
 

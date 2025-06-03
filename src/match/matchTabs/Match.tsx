@@ -12,7 +12,7 @@ export default function Match() {
 	console.log("rendering match");
 	return (
 			<Tabs defaultValue={"map"} variant="pills" radius={0} style={MatchContainerStyles} h={`min(100vh, ${height}px)`} id="matchContainer">
-				<TabsPanel value="challenges" style={panelLayout} h={height}>
+				<TabsPanel value="challenges" style={panelLayout}>
 					<ErrorBoundary
 						fallback={<span>Something went wrong.</span>}>
 						<ChallengesTab />

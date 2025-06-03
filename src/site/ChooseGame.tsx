@@ -1,5 +1,6 @@
 //Set of button links to choose game from list in consts.ts. Inactive games are marked "coming soon". Choosing a game will redirect to the choose match page.
 import { games } from "@/scripts/consts";
+import useWindowDimensions from "@/scripts/useWindowDimensions";
 import { Container, Stack, Text } from "@mantine/core";
 import { Link } from "react-router";
 import { ListButton } from "../userInterface/ListButton";
@@ -22,12 +23,17 @@ export default function ChooseGame() {
 			</ListButton>
 		);
 	});
+
+	const { height, width } = useWindowDimensions();
+	
 	return (
 			<Stack
 				maw="500px"
 			>
 				<h2>Choose a game</h2>
+				{height}
 				{gameListItems}
+				
 			</Stack>
 	);
 }
