@@ -14,10 +14,10 @@ export function ComplexHeader({ children, color, ...rest }: { children: React.Re
 	return (
 		<Center 
 		className="header"
-		bg={`${color}.1`} 
 		style={{
-			borderBottom: `2px solid ${theme.colors[color]?.[6] || theme.colors.gray[6]}`,
-			borderTop: `2px solid ${theme.colors[color]?.[6] || theme.colors.gray[6]}`,
+			background: color === "rainbow" ? rainbowBackground : theme.colors[color][1],
+			borderBottom: color === "rainbow" ? "none" : `2px solid ${theme.colors[color][6]}`,
+			textShadow: "white 1px 0 3px"
 		}}
 		{...rest}
 		>
@@ -25,3 +25,13 @@ export function ComplexHeader({ children, color, ...rest }: { children: React.Re
 		</Center>
 	);
 }
+
+const rainbowWidth = 20;
+const rainbowColors = [
+	theme.colors["red"][3],
+	theme.colors["yellow"][6],
+	theme.colors["green"][6],
+	theme.colors["water"][3],
+	theme.colors["purple"][3]
+]
+const rainbowBackground = `repeating-linear-gradient(100deg, ${rainbowColors.map((color, index) => `${color} ${index*rainbowWidth}px, ${color} ${index*rainbowWidth + rainbowWidth}px`).join(",")})`

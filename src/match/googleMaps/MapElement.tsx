@@ -1,6 +1,9 @@
 import { gameLocationCenters } from "@/scripts/consts";
 import { City, ZoneData } from "@/scripts/types";
+import { GameContext } from "@/src/match/boardGame/Board";
+import LocationMarker from "@/src/match/googleMaps/Location";
 import { APIProvider, Map } from "@vis.gl/react-google-maps";
+import { useContext } from "react";
 
 type MapElementProps = {
 	setLineVisibility: React.Dispatch<
@@ -27,6 +30,7 @@ const testCoordsLatLng = coordsarr.map((coord) => {
 export default function VisGlMapElement(props: MapElementProps) {
 	console.log("rendering visglmapelement")
 	const center = gameLocationCenters[props.city];
+	const gameData = useContext(GameContext);
 	return (
 		<APIProvider 
 		apiKey="AIzaSyCG6Ouy-lsuiGpNCcibChoSxW6f0zupHNc"
@@ -48,6 +52,7 @@ export default function VisGlMapElement(props: MapElementProps) {
 					props.setHighlightedZones({});
 				}}
 			>
+			<LocationMarker initialPosition={center} color={gameData.playerData.data.teamColor} />
 			<>{props.zoneElements}</>
 			<>{props.lineElements}</>
 			</Map>

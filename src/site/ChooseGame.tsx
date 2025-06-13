@@ -31,7 +31,6 @@ export default function ChooseGame() {
 				maw="500px"
 			>
 				<h2>Choose a game</h2>
-				{height}
 				{gameListItems}
 				
 			</Stack>

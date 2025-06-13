@@ -17,7 +17,7 @@ export default function MapLine({
 			<Polyline
 				path={line.coords}
 				visible={lineVisibility}
-				strokeColor = {theme.colors.red[0]}
+				strokeColor = {theme.colors.purple[6]}
 				strokeOpacity = {1}
 				strokeWeight = {4}
 				clickable={false}
@@ -40,29 +40,7 @@ export default function MapLine({
 								strokeWeight: 2,
 
 							}}
-
 						/>
-						{/* <Circle
-							center={coord}
-							radius={200}
-							visible={lineVisibility}
-							key={"circle"+index}
-							strokeColor = {"red"}
-							strokeOpacity={1}
-							strokeWeight = {12}
-							zIndex = {2}
-						/> */}
-						{/* <Circle
-							center={coord}
-							radius={200}
-							visible={lineVisibility}
-							key={"innercircle"+index}
-							strokeColor={"white"}
-							strokeOpacity={1}
-							strokeWeight = {6}
-							zIndex = {3}
-
-						/> */}
 					</Fragment>
 				);
 			})}

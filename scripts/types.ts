@@ -1,3 +1,4 @@
+import { UseFormReturnType } from '@mantine/form';
 import { LobbyAPI } from 'boardgame.io';
 import { BoardProps } from 'boardgame.io/react';
 import { LineString } from 'geojson';
@@ -156,5 +157,16 @@ export type keysOf<o> = o extends readonly unknown[]
       }[keyof o]
 
 export const keysOf = <o extends object>(o: o) => Object.keys(o) as keysOf<o>[]
+export type ClaimZoneFormValues = UseFormReturnType<
+	{
+		zone: number;
+		challenge: string;
+		evidence: string;
+	}, (values: { challenge: string; evidence: string; }) => {
+		zone: number;
+		challenge: string;
+		evidence: string;
+	}
+>;
 
 

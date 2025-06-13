@@ -32,5 +32,5 @@ const statusBarStyles = {
 	backgroundColor: theme.white,
 	width: "100%",
 	zIndex: 1,
-	padding: "1rem",
+	padding: "0.4rem",
 };

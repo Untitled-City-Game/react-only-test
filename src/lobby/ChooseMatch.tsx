@@ -1,8 +1,9 @@
 import { games } from "@/scripts/consts";
 import { StrictMatch } from "@/scripts/types";
 import Loading from "@/src/match/boardGame/Loading";
+import { scrollParent, scrollSacrifice } from "@/src/userInterface/Layout";
 import Span from "@/src/userInterface/Span";
-import { Button, Radio, Stack } from "@mantine/core";
+import { Box, Button, Radio, Stack } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { LobbyClient } from "boardgame.io/client";
 import { useEffect, useMemo, useState } from "react";
@@ -80,11 +81,10 @@ export default function ChooseMatch() {
 				size="lg"
 				color={game?.color || "gray"}
 				iconColor="white"
-				
 			/>
 			<div>
+				<Span fw="bold" fz="lg">fun_game_name</Span>
 				<Span tt="capitalize">{match.setupData.city}</Span>
-				<Span>fun_game_name</Span>
 				{/* <Span>Gameover: {match.setupData.gameover}</Span> */}
 				{/* <Span>
 						{ match.players?.length ? `Current players: ${match.players.map(player => player.name).filter(name => name).join(", ")}` : 'Empty' }
@@ -106,15 +106,19 @@ export default function ChooseMatch() {
 
 	const chooseMatchFormElement =
 		matches.length > 0 ? (
-			<form onSubmit={joinGameForm.onSubmit(handleJoinGame)}>
-				<Stack>
+			<form
+				onSubmit={joinGameForm.onSubmit(handleJoinGame)}
+				style={scrollParent}>
+				<Stack style={scrollParent}>
 					<Radio.Group
+						style={scrollSacrifice}
 						key={joinGameForm.key("MatchID")}
 						{...joinGameForm.getInputProps("MatchID")}>
 						<Stack>{matchCards}</Stack>
 					</Radio.Group>
-					<Button fz="md"
-						fw="normal" type="submit">Join</Button>
+					<Button fz="md" fw="normal" type="submit" disabled={joinGameForm.getValues().MatchID ? false : true}>
+						Join
+					</Button>
 				</Stack>
 			</form>
 		) : (
@@ -122,24 +126,24 @@ export default function ChooseMatch() {
 		);
 
 	return (
-				<Stack gap="0" w="100%">
-					<div>
-						<h2>Create</h2>
-						{/* <p>Create and host a new game of Connect Four</p> */}
-					</div>
-					<Button
-						fz="md"
-						fw="normal"
-						component={Link}
-						to={`/lobby/${game?.code}/create-match`}>
-						Create a new match
-					</Button>
-					<h2>Join</h2>
-					{loadingMatches ? (
-						<Loading message="Loading matches" />
-					) : (
-						chooseMatchFormElement
-					)}
-				</Stack>
+		<>
+			<Stack gap="0">
+				<h2>Create a match</h2>
+				{/* <p>Create and host a new game of Connect Four</p> */}
+				<Button
+					fz="md"
+					fw="normal"
+					component={Link}
+					to={`/lobby/${game?.code}/create-match`}>
+					Create
+				</Button>
+			</Stack>
+			<h2>Join a match</h2>
+			{loadingMatches ? (
+				<Loading message="Loading matches" />
+			) : (
+				<Box style={scrollParent}>{chooseMatchFormElement}</Box>
+			)}
+		</>
 	);
 }

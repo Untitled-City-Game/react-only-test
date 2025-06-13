@@ -6,7 +6,7 @@ import { Outlet } from "react-router";
 export default function OuterLayout() {
 	return (
 		<MantineProvider theme={theme}>
-			<Header color="white">Outside: The Game</Header>
+			<Header color="rainbow">Outside: The Game</Header>
 			<Container>
 				<Center>
 					<Outlet />
