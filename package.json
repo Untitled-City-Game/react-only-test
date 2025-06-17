@@ -26,6 +26,7 @@
     "bgio-firebase": "^0.5.0",
     "boardgame.io": "^0.50.2",
     "cross-env": "^7.0.3",
+    "csvjson-csv2json": "^5.0.6",
     "firebase": "^11.5.0",
     "lodash": "^4.17.21",
     "node-persist": "^4.0.4",
@@ -57,6 +58,6 @@
     "postcss-simple-vars": "^7.0.1",
     "process": "^0.11.10",
     "tailwindcss": "^4.0.15",
-    "tsx": "^4.19.3"
+    "tsx": "^4.20.3"
   }
 }

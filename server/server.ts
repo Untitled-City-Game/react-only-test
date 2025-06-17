@@ -14,7 +14,6 @@ const database = new Firestore({
   });
   
 
-//This is a comment
 
 async function fetchAllData(){
 	const allData : Record<string, MatchMapData> = {};

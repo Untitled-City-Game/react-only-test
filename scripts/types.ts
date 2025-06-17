@@ -39,6 +39,7 @@ export interface GameState {
 	gameOver : boolean,
 	startTime? : number,
 	endTime? : number,
+	challengeDeck: AllChallengeData
 }
 
 export type ZoneData = {
@@ -65,6 +66,10 @@ export type AllChallengeData = Challenge[]
 export type Challenge = {
 	title: string,
 	description: string,
+	evidence_text: string,
+	emoji: string,
+	hard: string,
+	[key:string] : string
 }
 
 export type AllTeamsData = {

@@ -13,14 +13,11 @@ import {
 } from "@/scripts/types";
 import type { Ctx, DefaultPluginAPIs, Game } from "boardgame.io";
 import { LogAPI } from "boardgame.io/dist/types/src/plugins/plugin-log";
-import challengeDataJSON from "data/challenges.json";
+import challengeDataGeneric from 'data/challenges/challenges_generic.json';
+import challengeDataMelbourne from 'data/challenges/challenges_melbourne.json';
 import { remove } from "lodash";
-const challengeData: AllChallengeData = challengeDataJSON;
-// function functionMove({G, ctx, playerID}: FnContext<GameState>, claimId: number, teamID: zoneNames, ...args: unknown[]){
-// 	G.zones[claimId] = teamID;
-// 	console.log(playerID);
-// 	return { ...G };
-// }
+const challengeDataMontreal : AllChallengeData = []
+const challengeDataLondon : AllChallengeData = []
 
 type MoveContext = DefaultPluginAPIs & { G: GameState; ctx: Ctx; playerID: string };
 
@@ -176,7 +173,7 @@ function teamSetup(context: MoveContext) {
 	console.log("setting up teams");
 	//extract team colors from players
 	for (const [teamColor, team] of Object.entries(G.allTeamsData)) {
-		const shuffledDeck = random.Shuffle(challengeData);
+		const shuffledDeck = random.Shuffle(G.challengeDeck);
 		team.challengeDeck = shuffledDeck;
 		team.challengeHand = [];
 		team.challengeDiscard = [];
@@ -254,9 +251,10 @@ function isGameSetupData (data : unknown) : string | undefined {
 }
 
 function gameSetup(ctx: Ctx, setupData: MatchMapData): GameState {
-	console.log("Setting up game of metromayhem");
+	console.log("Setting up game of connect four");
 	console.log("players: ", ctx.numPlayers);
 	console.log("currentplayer ", ctx.currentPlayer);
+	console.log("city", setupData.city);
 	console.log("getting map data");
 	
 	return {
@@ -267,6 +265,7 @@ function gameSetup(ctx: Ctx, setupData: MatchMapData): GameState {
 		allPlayersData: {} as AllPlayersData,
 		//declare allteamsdata as AllTeamsData object
 		allTeamsData: {} as AllTeamsData,
+		challengeDeck: createChallengeDeck(setupData.city)
 	};
 }
 
@@ -286,3 +285,18 @@ type StripContext<T> = {
 		? (...args: A) => R
 		: never;
 };
+
+function createChallengeDeck(city: string) {
+	const challengeData = challengeDataGeneric as AllChallengeData
+	switch (city) {
+		case "melbourne":
+			return challengeData.concat(challengeDataMelbourne)
+		case "montreal":
+			return challengeData.concat(challengeDataMontreal)
+		case "london":
+			return challengeData.concat(challengeDataLondon)
+		default:
+			return challengeData
+	}
+}
+
