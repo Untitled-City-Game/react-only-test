@@ -24,7 +24,7 @@ export default function Waiting() {
 					<div></div>
 					<div>
 						{/* TODO: Replace with game name */}
-					<h2>Your game [game name goes here] is waiting to start.</h2>
+					<h2>Your game {props.G.gameName} is waiting to start.</h2>
 					<p>Players can still join.</p>
 					<TeamSummary gameData={props.G}/>
 					</div>

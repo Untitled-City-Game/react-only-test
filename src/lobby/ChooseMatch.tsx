@@ -83,8 +83,8 @@ export default function ChooseMatch() {
 				iconColor="white"
 			/>
 			<div>
-				<Span fw="bold" fz="lg">fun_game_name</Span>
-				<Span tt="capitalize">{match.setupData.city}</Span>
+				<Span fw="bold" fz="lg">{match?.setupData?.gameName || "game_name"}</Span>
+				<Span tt="capitalize">{match?.setupData?.mapSetupData?.city}</Span>
 				{/* <Span>Gameover: {match.setupData.gameover}</Span> */}
 				{/* <Span>
 						{ match.players?.length ? `Current players: ${match.players.map(player => player.name).filter(name => name).join(", ")}` : 'Empty' }

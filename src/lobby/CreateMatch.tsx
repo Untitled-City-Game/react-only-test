@@ -102,10 +102,10 @@ export default function CreateGame() {
 		console.log("setting up match")
 		const { matchID } = await lobbyClient.createMatch("connect-four", {
 			numPlayers: 20,
-			// setupData: {
-			// 	mapSetupData,
-			// 	gameName: values.gameName
-			// },
+			setupData: {
+				mapSetupData,
+				gameName: values.gameName
+			},
 		});
 		console.log("joining match")
 		//join match

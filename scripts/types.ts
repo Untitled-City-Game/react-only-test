@@ -116,7 +116,7 @@ export type ClientSetupData = {
 	credentials?: string;
 }
 
-export type StrictMatch = Omit<LobbyAPI.Match, 'gameover' | 'setupData'> & { gameover: boolean, setupData: MatchMapData };
+export type StrictMatch = Omit<LobbyAPI.Match, 'gameover' | 'setupData'> & { gameover: boolean, setupData: GameSetupData };
 
 
 export type MetroGameBoardProps = MetroGameContext & {

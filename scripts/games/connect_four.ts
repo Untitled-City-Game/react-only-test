@@ -209,7 +209,7 @@ const claimStateMoves = {
 export const ConnectFour: Game<GameState> = {
 	name: `connect-four`,
 	//set up game board using map json info
-	validateSetupData: (data) => isGameSetupData(data),
+	// validateSetupData: (data) => isGameSetupData(data),
 	setup: ({ ctx }, setupData : GameSetupData) => gameSetup(ctx, setupData),
 	endIf: ({ G }) => {
 		console.log("gameover check", G.gameOver);
