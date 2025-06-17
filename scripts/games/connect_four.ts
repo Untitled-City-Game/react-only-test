@@ -3,9 +3,9 @@ import {
 	AllChallengeData,
 	AllPlayersData,
 	AllTeamsData,
+	GameSetupData,
 	GameState,
 	LogMetadata,
-	MatchMapData,
 	MatchTeamColor,
 	PlayerData,
 	PolyData,
@@ -210,7 +210,7 @@ export const ConnectFour: Game<GameState> = {
 	name: `connect-four`,
 	//set up game board using map json info
 	validateSetupData: (data) => isGameSetupData(data),
-	setup: ({ ctx }, setupData : MatchMapData) => gameSetup(ctx, setupData),
+	setup: ({ ctx }, setupData : GameSetupData) => gameSetup(ctx, setupData),
 	endIf: ({ G }) => {
 		console.log("gameover check", G.gameOver);
 		return G.gameOver ? "Game ended" : null;
@@ -250,22 +250,23 @@ function isGameSetupData (data : unknown) : string | undefined {
 	if(!('zonePolygons' in data) || !('winningLines' in data) || !data.zonePolygons || !data.zonePolygons) return('Game setup data is missing map data');
 }
 
-function gameSetup(ctx: Ctx, setupData: MatchMapData): GameState {
+function gameSetup(ctx: Ctx, setupData: GameSetupData): GameState {
 	console.log("Setting up game of connect four");
 	console.log("players: ", ctx.numPlayers);
 	console.log("currentplayer ", ctx.currentPlayer);
-	console.log("city", setupData.city);
+	console.log("city", setupData.mapSetupData.city);
 	console.log("getting map data");
 	
 	return {
-		zoneData: createBoardFromMapJson(setupData.zonePolygons),
-		MatchMapData: setupData,
+		gameName: setupData.gameName,
+		zoneData: createBoardFromMapJson(setupData.mapSetupData.zonePolygons),
+		MatchMapData: setupData.mapSetupData,
 		active: false,
 		gameOver: false,
 		allPlayersData: {} as AllPlayersData,
 		//declare allteamsdata as AllTeamsData object
 		allTeamsData: {} as AllTeamsData,
-		challengeDeck: createChallengeDeck(setupData.city)
+		challengeDeck: createChallengeDeck(setupData.mapSetupData.city)
 	};
 }
 

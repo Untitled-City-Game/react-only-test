@@ -31,6 +31,7 @@ export interface PolygonFeature extends GeoJSON.Feature {
 
 //Game state
 export interface GameState {
+	gameName: string;
 	zoneData: ZoneData[],
 	MatchMapData: MatchMapData,
 	active: boolean,
@@ -90,6 +91,11 @@ export interface MapData {
 }
 
 export type City = typeof cities[number];
+
+export type GameSetupData = {
+	mapSetupData: MatchMapData,
+	gameName: string,
+}
 
 export interface MatchMapData extends MapData {
 	city : City;

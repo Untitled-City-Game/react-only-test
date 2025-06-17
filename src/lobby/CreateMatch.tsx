@@ -6,7 +6,7 @@ import {
 	isCity,
 	MatchMapData,
 	NamedColor,
-	PlayerData,
+	PlayerData
 } from "@/scripts/types";
 import Span from "@/src/userInterface/Span";
 import {
@@ -16,7 +16,7 @@ import {
 	Radio,
 	Select,
 	Stack,
-	TextInput,
+	TextInput
 } from "@mantine/core";
 import { hasLength, useForm } from "@mantine/form";
 import { LobbyClient } from "boardgame.io/client";
@@ -60,7 +60,7 @@ export default function CreateGame() {
 			city: "melbourne" as City,
 			teamColor: "blue" as NamedColor,
 			//numPlayers: numPlayers,
-			GameName: "",
+			gameName: "",
 		},
 		validate: {
 			PlayerName: hasLength(
@@ -73,7 +73,7 @@ export default function CreateGame() {
 				teamOptions.map((option) => option.value).includes(teamColor)
 					? null
 					: "Invalid team",
-			GameName: hasLength(
+			gameName: hasLength(
 				{ min: 2, max: 20 },
 				"Game name must be between 2 and 20 characters"
 			),
@@ -85,7 +85,7 @@ export default function CreateGame() {
 		PlayerName: string;
 		city: City;
 		teamColor: NamedColor;
-		GameName: string;
+		gameName: string;
 		// numPlayers: number;
 	};
 	const handleCreateGame = async (values: FormValues) => {
@@ -94,20 +94,20 @@ export default function CreateGame() {
 		if (!isCity(values.city)) {
 			throw new Error("Invalid city");
 		}
-		// const mapDataRes = await fetch(process.env.GAME_SERVER + "/map-data/" + values.city).catch(e => {
-		// 	throw new Error("Error fetching map data");
-		// });
-		// const mapDataResJSON = await mapDataRes.json();
 
 		//match setup
-		const setupData: MatchMapData = await fetchMapData(values.city);
+		const mapSetupData: MatchMapData = await fetchMapData(values.city);
 
 		//create match
+		console.log("setting up match")
 		const { matchID } = await lobbyClient.createMatch("connect-four", {
 			numPlayers: 20,
-			setupData: setupData,
+			// setupData: {
+			// 	mapSetupData,
+			// 	gameName: values.gameName
+			// },
 		});
-
+		console.log("joining match")
 		//join match
 		const playerData: PlayerData = await joinMatch(
 			lobbyClient,
@@ -139,8 +139,8 @@ export default function CreateGame() {
 				<TextInput
 					label="Game name"
 					placeholder="My Connect Four Game"
-					key={createGameForm.key("GameName")}
-					{...createGameForm.getInputProps("GameName")}
+					key={createGameForm.key("gameName")}
+					{...createGameForm.getInputProps("gameName")}
 				/>
 				<Radio.Group
 					label="Choose a team"

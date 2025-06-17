@@ -99,7 +99,7 @@ export default function JoinMatch() {
 			<>
 				<h1>Join a Match</h1>
 				<Stack gap={0} mb="sm">
-					<strong>Fun_game_name</strong>
+					<strong>Joining {matchData.setupData.gameName}</strong>
 					<span>Match ID: {matchID}</span>
 				</Stack>
 				<form
