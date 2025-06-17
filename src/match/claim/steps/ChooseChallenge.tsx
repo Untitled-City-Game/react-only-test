@@ -1,15 +1,13 @@
-;
 import type { MetroGameBoardProps } from "@/scripts/types";
-import type { Form } from "@/src/match/claim/ClaimFlowModal";
 import { ListButton } from "@/src/userInterface/ListButton";
 import Span from "@/src/userInterface/Span";
 import { Container, Group, Radio } from "@mantine/core";
 
 export function ChooseChallenge({
-	props, claimForm,
+	props, radioGroupProps,
 }: {
 	props: MetroGameBoardProps;
-	claimForm: Form;
+	radioGroupProps: Record<string, unknown>
 }) {
 	const { allTeamsData, allPlayersData } = props.G;
 	const playerData = allPlayersData[props.playerData.data.playerID];
@@ -25,7 +23,6 @@ export function ChooseChallenge({
 						<Radio.Indicator size="lg" />
 						<div>
 							<Span fz="lg" fw="bold">{challenge.title}</Span>
-							{/* <Span>{challenge.description}</Span> */}
 						</div>
 					</Group>
 			</ListButton>
@@ -35,8 +32,8 @@ export function ChooseChallenge({
 		<Container>
 			<Radio.Group
 				label="Choose a challenge"
-				key={claimForm.key("challenge")}
-				{...claimForm.getInputProps("challenge")}>
+				{...radioGroupProps}
+				>
 				<Group>
 					{challengeCards}
 				</Group>

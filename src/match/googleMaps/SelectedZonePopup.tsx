@@ -27,7 +27,7 @@ export default function SelectedZonePopup({
 			<ClaimFlowModal 
 			open={opened}
 			close={close}
-			claimedZone={currentZone} 
+			claimedZone={currentZone}
 			/>
 		</>
 	);

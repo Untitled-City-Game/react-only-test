@@ -5,7 +5,6 @@ import MapLine from "@/src/match/googleMaps/GoogleMapsLine";
 import VisGlMapElement from "@/src/match/googleMaps/MapElement";
 import SelectedZonePopup from "@/src/match/googleMaps/SelectedZonePopup";
 import ZonePolygon from "@/src/match/googleMaps/ZonePolygon";
-import Header from "@/src/userInterface/Header/Header";
 import StatusBar from "@/src/userInterface/StatusBar";
 import { useContext, useState } from "react";
 
@@ -75,9 +74,9 @@ export default function MapTab() {
 	return (
 		<>
 			<StatusBar />
-			<Header color={props.playerData.data.teamColor}>
+			{/* <Header color={props.playerData.data.teamColor}>
 			Map
-			</Header>
+			</Header> */}
 			<div id="map" style={mapStyles}>
 			<SelectedZonePopup currentZone={currentZone} style={selectedZonePopupStyles}/>
 			<VisGlMapElement

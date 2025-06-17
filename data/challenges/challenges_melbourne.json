@@ -1,0 +1,82 @@
+[
+    {
+        "title": "Look for Harold",
+        "description": "Spend ten minutes looking for Harold Holt in the ocean.\nYou must have a clear view of the Ocean the entire time you look.\nIf you find him, you immediately win the game.",
+        "evidence_text": "",
+        "evidence_file": "",
+        "evidence_text__1": "",
+        "evidence_text_long": "",
+        "emoji": "🏊",
+        "hard": ""
+    },
+    {
+        "title": "Cross the same river twice",
+        "description": "Cross a river twice.\nThe river must have a name.\nYou must cross the river at two different points, using two different methods of transport.\nAcceptable methods are: walking, cycling, tram, train, bus, or boat.\nYou may leave the neighbourhood during this challenge, but you must start and end the challenge in the neighbourhood you are claiming.",
+        "evidence_text": "",
+        "evidence_file": "",
+        "evidence_text__1": "",
+        "evidence_text_long": "",
+        "emoji": "🚣‍♀️",
+        "hard": ""
+    },
+    {
+        "title": "Be grateful for a bench",
+        "description": "Find a public bench which names the person or people who donated it.\nEnjoy the bench. Express gratitude to the donors.",
+        "evidence_text": "",
+        "evidence_file": "",
+        "evidence_text__1": "",
+        "evidence_text_long": "",
+        "emoji": "🪑",
+        "hard": ""
+    },
+    {
+        "title": "Learn at a museum",
+        "description": "Visit a free public museum. Learn something.",
+        "evidence_text": "",
+        "evidence_file": "",
+        "evidence_text__1": "",
+        "evidence_text_long": "",
+        "emoji": "🦖",
+        "hard": ""
+    },
+    {
+        "title": "Four seasons in one day",
+        "description": "",
+        "evidence_text": "",
+        "evidence_file": "",
+        "evidence_text__1": "",
+        "evidence_text_long": "",
+        "emoji": "",
+        "hard": ""
+    },
+    {
+        "title": "Wear the colours",
+        "description": "While in the territory of an AFL club, all team members must don items in the teams colours.",
+        "evidence_text": "Photos of all team members",
+        "evidence_file": "X",
+        "evidence_text__1": "",
+        "evidence_text_long": "",
+        "emoji": "",
+        "hard": ""
+    },
+    {
+        "title": "Find something for Kate",
+        "description": "Find an item specifically for a person named Kate. The item must feature the name \"Kate\".",
+        "evidence_text": "Photo of something for Kate",
+        "evidence_file": "X",
+        "evidence_text__1": "",
+        "evidence_text_long": "",
+        "emoji": "",
+        "hard": "X"
+    },
+    {
+        "title": "Find the mascot",
+        "description": "While in the territory of an AFL team with an animal mascot, find that animal.\nThe animal must be real and alive.",
+        "evidence_text": "Photo of the animal",
+        "evidence_file": "X",
+        "evidence_text__1": "",
+        "evidence_text_long": "",
+        "emoji": "",
+        "hard": "X"
+    }
+]

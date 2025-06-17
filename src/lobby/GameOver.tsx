@@ -10,7 +10,7 @@ export default function GameOver(){
 		<Center>
 			<Stack>
 				<h1>This game has ended</h1>
-					<Button component={Link} to="/lobby">Join another game</Button>
+					<Button component={Link} to="/">Join another game</Button>
 			</Stack>
 		</Center>
 	</Container>

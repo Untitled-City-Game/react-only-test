@@ -5,7 +5,7 @@
   "source": "src/index.html",
   "scripts": {
     "sass": "sass --watch src/styles/interface.scss src/styles/interface.css",
-    "start": "concurrently --kill-others \"npm run sass\" \"cross-env APP_ENVIRONMENT=dev parcel --no-cache --host 0.0.0.0\"",
+    "start": "concurrently --kill-others \"npm run sass\" \"cross-env APP_ENVIRONMENT=dev parcel --no-cache \"",
     "build": "parcel build ./src/index.html --no-optimize --no-cache",
     "deploy": "cross-env APP_ENVIRONMENT=prod npm run build && firebase deploy --project=prod",
     "stage": "cross-env APP_ENVIRONMENT=stage npm run build && firebase deploy",
@@ -26,6 +26,7 @@
     "bgio-firebase": "^0.5.0",
     "boardgame.io": "^0.50.2",
     "cross-env": "^7.0.3",
+    "csvjson-csv2json": "^5.0.6",
     "firebase": "^11.5.0",
     "lodash": "^4.17.21",
     "node-persist": "^4.0.4",
@@ -36,6 +37,7 @@
     "react-dom": "^19.0.0",
     "react-error-boundary": "^5.0.0",
     "react-firebase-hooks": "^5.1.1",
+    "react-geolocated": "^4.3.0",
     "react-icons": "^5.5.0",
     "react-router": "^7.4.0",
     "typescript": "^5.8.2",
@@ -56,6 +58,6 @@
     "postcss-simple-vars": "^7.0.1",
     "process": "^0.11.10",
     "tailwindcss": "^4.0.15",
-    "tsx": "^4.19.3"
+    "tsx": "^4.20.3"
   }
 }

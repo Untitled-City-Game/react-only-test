@@ -14,7 +14,6 @@ const database = new Firestore({
   });
   
 
-//This is a comment
 
 async function fetchAllData(){
 	const allData : Record<string, MatchMapData> = {};
@@ -34,7 +33,7 @@ async function buildServer(){
 	//const AllMapsData : Record<string, MatchMapData> = await fetchAllData();
 	const server = Server({
 		games: [ConnectFour],
-		origins: [process.env.GAME_ADDRESS ==='localhost' && Origins.LOCALHOST || process.env.GAME_ADDRESS || false],
+		origins: [Origins.LOCALHOST,  process.env.GAME_ADDRESS || false, "*"],
 		db: new FlatFile({
 			dir: process.cwd() + '/server/db',
 		})

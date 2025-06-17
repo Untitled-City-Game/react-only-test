@@ -4,13 +4,13 @@ import Header from "@/src/userInterface/Header/Header";
 import { RiArrowLeftBoxLine } from "react-icons/ri";
 
 import useWindowDimensions from "@/scripts/useWindowDimensions";
-import FullHeightLayout from "@/src/userInterface/Layout";
+import FullHeightLayout, { scrollParent } from "@/src/userInterface/Layout";
 import {
 	ActionIcon,
+	Box,
 	Container,
 	MantineProvider,
-	mergeMantineTheme,
-	Stack,
+	mergeMantineTheme
 } from "@mantine/core";
 import { Outlet, useNavigate, useParams } from "react-router";
 
@@ -27,15 +27,15 @@ export default function LobbyLayout() {
 	return (
 		<MantineProvider theme={lobbyTheme}>
 			<FullHeightLayout>
-				<Header color={game?.color || "white"}>
-					{game?.name} Lobby
-				</Header>
-				<Container maw="500px" w="100%" style={{flexGrow: 10}}  mb="md" pl="md" pr="md">
-					<Stack w="100%" gap={0}>
+				<Box>
+					<Header color={game?.color || "white"}>
+						{game?.name} Lobby
+					</Header>
+				</Box>
+				<Container maw="500px" w="100%" style={scrollParent}>
 					<Outlet />
-					</Stack>
 				</Container>
-				<Container w="100%" mb="md" pl="md" pr="md">
+				<Container w="100%" pb="md">
 					<ActionIcon
 						size="lg"
 						aria-label="Back"

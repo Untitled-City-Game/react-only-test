@@ -1,96 +1,85 @@
-import { storage } from "@/scripts/firebase";
-import { ClaimStateMoves } from "@/scripts/games/connect_four";
-import { MetroGameBoardProps, ZoneData } from "@/scripts/types";
+import {
+	MetroGameBoardProps,
+	ZoneData
+} from "@/scripts/types";
 import { GameContext } from "@/src/match/boardGame/Board";
-import { ChooseChallenge } from "@/src/match/claim/ChooseChallenge";
-import ConfirmClaim from "@/src/match/claim/ConfirmClaim";
-import { Evidence } from "@/src/match/claim/Evidence";
-import { ComplexHeader } from "@/src/userInterface/Header/Header";
+import claimZone from "@/src/match/claim/claimZone";
+import { ModalHeader } from "@/src/match/claim/ui/ModalHeader";
 import FullHeightLayout, { VerticalSpread } from "@/src/userInterface/Layout";
 import {
-	Box,
 	Button,
-	Group,
+	FileInput,
 	LoadingOverlay,
 	Modal,
-	Stepper
+	Select,
+	Stack
 } from "@mantine/core";
-import { UseFormReturnType, useForm } from "@mantine/form";
-import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
-import { useContext, useState } from "react";
+import { hasLength, useForm } from "@mantine/form";
+import { useContext, useEffect, useState } from "react";
 
-export type Form = UseFormReturnType<
-	{
-		challenge: string;
-		evidence: string;
-	},
-	(values: { challenge: string; evidence: string }) => {
-		challenge: string;
-		evidence: string;
-	}
->;
+const claimFormValues = {
+			zone: "",
+			challenge: "",
+			evidence: "",
+		}
+export type ClaimFormValues = typeof claimFormValues;
 
 export default function ClaimFlowModal({
 	open,
 	close,
 	claimedZone,
+	challengeTitle
 }: {
 	open: boolean;
 	close: () => void;
 	claimedZone?: ZoneData;
+	challengeTitle?: string;
 }) {
 	const props: MetroGameBoardProps = useContext(GameContext);
-	const moves = props.moves as ClaimStateMoves;
 	const [loading, setLoading] = useState(false);
-
 	const [step, setStep] = useState(0);
+	
 	const claimForm = useForm({
-		mode: "uncontrolled",
+		mode: "controlled",
 		initialValues: {
-			challenge: "",
-			evidence: "",
+			zone: claimedZone?.id ? String(claimedZone?.id) : claimFormValues.zone,
+			challenge: challengeTitle || claimFormValues.challenge,
+			evidence: claimFormValues.evidence,
 		},
-		validate: (values) => {
-			console.log("validating claim form", values);
-			if (step === 0) {
-				return {
-					challenge: values.challenge
-						? null
-						: "Select a challenge to claim this zone",
-				};
-			}
-			return {};
-		},
-	});
-	const zoneName = claimedZone?.name;
-	async function claimZone(zone: number, challenge: string, evidence: File) {
-		setLoading(true);
-		console.log("claiming zone on client", zone, challenge, evidence);
-		const imageRef = ref(
-			storage,
-			`images/zone${zone}player${props.playerID}${Date.now()}.jpg`
-		);
-		try {
-			const uploadTask = await uploadBytes(imageRef, evidence);
-			console.log("Uploaded bytes to: ", uploadTask.metadata.fullPath);
-		} catch (e) {
-			console.error("Error adding document: ", e);
+		validate: {
+			zone: hasLength({min: 1}, 'No zone included'),
+			challenge:hasLength({min: 1}, 'No challenge included'),
 		}
-		const evidenceURL = await getDownloadURL(imageRef);
+	});
 
-		moves.completeChallengeAndClaim(zone, challenge, evidenceURL);
-		closeClaim();
-		setLoading(false);
-	}
+	useEffect(()=>{
+		challengeTitle && claimForm.setValues({challenge: challengeTitle});
+	}, [challengeTitle]);
+	
+	useEffect(()=>{
+		claimedZone && claimForm.setValues({zone: String(claimedZone.id)});
+	}, [claimedZone]);
 
 	function closeClaim() {
-		console.log("closing claim form");
 		claimForm.reset();
-		setStep(0);
+		// setStep(0);
 		close();
 	}
+	
+	const { allTeamsData, allPlayersData } = props.G;
+	const playerData = allPlayersData[props.playerID];
+	const myTeam = playerData.teamColor;
+	const challengeHand = allTeamsData[myTeam]?.challengeHand.map(challenge => challenge.title);
+	const zoneSelectOptions = props.G.zoneData.map(zone => {return {value: `${zone.id}`, label: zone.name}});
 
-	return claimedZone ? (
+	async function handleSubmit(values: ClaimFormValues){
+		setLoading(true);
+		await claimZone(props.playerID, props.moves.completeChallengeAndClaim, Number(values.zone), values.challenge, values.evidence as unknown as File);
+		setLoading(false);
+		closeClaim();
+	}
+
+	return (
 		<Modal.Root
 			opened={open}
 			onClose={closeClaim}
@@ -101,113 +90,56 @@ export default function ClaimFlowModal({
 			<Modal.Content>
 				<FullHeightLayout>
 					<LoadingOverlay visible={loading} />
-					<Modal.Header>
-						<ComplexHeader
-							color={props.playerData.data.teamColor}
-							w="100%">
-							<Group
-								w="100%"
-								justify="space-between"
-								align="flex-start"
-								wrap="nowrap"
-								gap="0">
-								<Box flex="1 1 30px"></Box>
-								<Box flex="1 0 auto" ta="center">
-									<h1>{`Claim ${zoneName}`}</h1>
-								</Box>
-								<Box flex="1 1 30px" ta="right">
-									<Modal.CloseButton
-										size={"lg"}
-										mt="5px"
-										mr="5px"
-									/>
-								</Box>
-							</Group>
-						</ComplexHeader>
-					</Modal.Header>
+					{ModalHeader(props.playerData.data.teamColor)}
 					<VerticalSpread>
 						<div></div>
-						<Stepper
-							active={step}
-							styles={{
-								steps: { display: "none" },
-							}}>
-							<Stepper.Step>
-								<ChooseChallenge
-									props={props}
-									claimForm={claimForm}
+						<form onSubmit={claimForm.onSubmit(handleSubmit)}>
+							<Stack ta="left">
+							<Select label="Challenge" data={challengeHand} {...claimForm.getInputProps("challenge")} defaultValue={challengeTitle} />
+							<Select label="Neighbourhood" data={zoneSelectOptions} {...claimForm.getInputProps("zone")} defaultValue={String(claimedZone?.id || "")} />
+							<FileInput
+								label="Photo evidence"
+								// clearable = {claimForm.getValues().evidence !== undefined}
+								{...claimForm.getInputProps("evidence")}
 								/>
-							</Stepper.Step>
-							<Stepper.Step>
-								<Evidence
-									props={props}
-									claimForm={claimForm}
-								/>
-							</Stepper.Step>
-							<Stepper.Completed>
-								<ConfirmClaim
-									claimForm={claimForm}
-									claimedZone={claimedZone}
-								/>
-							</Stepper.Completed>
-						</Stepper>
-						<Group justify="center" mt="xl">
-							{step !== 2 ? (
-								<>
-									{step === 0 ? (
-										<Button
-											variant="outline"
-											onClick={closeClaim}>
-											Back
-										</Button>
-									) : (
-										<Button
-											variant="outline"
-											onClick={() =>
-												setStep(step - 1)
-											}>
-											Back
-										</Button>
-									)}
-									<Button
-										onClick={() => {
-											if (
-												claimForm.validate()
-													.hasErrors
-											)
-												return;
-											setStep(step + 1);
-										}}>
-										Next step
-									</Button>
-								</>
-							) : (
-								<>
-									<Button
-										variant="outline"
-										onClick={() =>
-											setStep(step - 1)
-										}>
-										Back
-									</Button>
-									<Button
-										onClick={() =>
-											claimZone(
-												claimedZone.id,
-												claimForm.getValues()
-													.challenge,
-												claimForm.getValues()
-													.evidence as unknown as File
-											)
-										}>
-										Claim
-									</Button>
-								</>
-							)}
-						</Group>
+								<Button type="submit">Submit</Button>
+							</Stack>
+						</form>
+												<div></div>
+
+						{/* {StepperControls(claimForm, step, setStep, closeClaim, setLoading, props)} */}
 					</VerticalSpread>
 				</FullHeightLayout>
 			</Modal.Content>
 		</Modal.Root>
-	) : null;
+	);
 }
+
+
+// <Stepper
+// 							active={step}
+// 							styles={{
+// 								steps: { display: "none" },
+// 							}}>
+// 							{!challengeTitle ? <Stepper.Step>
+// 								<ChooseChallenge
+// 									props={props}
+// 									radioGroupProps={{...claimForm.getInputProps('challenge')}}
+// 								/>
+// 							</Stepper.Step> : null}
+// 							{!claimedZone ? <Stepper.Step>
+// 								<ChooseZone
+// 									props={props}
+// 									radioGroupProps={{...claimForm.getInputProps('zone')}}
+// 								/>
+// 							</Stepper.Step> : null}
+// 							<Stepper.Step>
+// 								<Evidence props={props} radioGroupProps={{...claimForm.getInputProps('zone')}} />
+// 							</Stepper.Step>
+// 							<Stepper.Completed>
+// 								<ConfirmClaim
+// 									currentFormValues={claimForm.values}
+// 									zoneName={claimForm.values.zone ? props.G.zoneData[Number(claimForm.values.zone)]?.name : ""}
+// 								/>
+// 							</Stepper.Completed>
+// 						</Stepper>
