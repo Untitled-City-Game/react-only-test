@@ -48,6 +48,7 @@ export type ZoneData = {
 	status: zoneStatus;
 	name: string;
 	controlTeam: Color | null;
+	locked: boolean;
 }
 
 export type AllPlayersData = {

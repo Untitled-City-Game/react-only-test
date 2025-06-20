@@ -277,6 +277,7 @@ function createBoardFromMapJson(mapData: PolyData[]): ZoneData[] {
 			status: "empty",
 			name: zone.featureName,
 			controlTeam: null,
+			locked: false
 		};
 	});
 }

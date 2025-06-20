@@ -8,7 +8,7 @@ import { games } from "@/scripts/consts";
 import { joinMatch } from "@/scripts/joinMatch";
 import { NamedColor } from "@/scripts/types";
 import Loading from "@/src/match/boardGame/Loading";
-import Span from "@/src/userInterface/Span";
+import P from "@/src/userInterface/P";
 import { useEffect, useMemo, useState } from "react";
 import { ListButton } from "../userInterface/ListButton";
 
@@ -86,12 +86,12 @@ export default function JoinMatch() {
 					size="lg"
 				/>
 				<div>
-					<Span>{item.label}</Span>
-					<Span>
+					<P>{item.label}</P>
+					<P>
 						{item.members?.length
 							? `Members: ${item.members.join(", ")}`
 							: "None"}
-					</Span>
+					</P>
 				</div>
 			</ListButton>
 		));

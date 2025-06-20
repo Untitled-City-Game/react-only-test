@@ -4,11 +4,12 @@ import { GameContext } from "@/src/match/boardGame/Board";
 import ClaimFlowModal from "@/src/match/claim/ClaimFlowModal";
 import DashedCard from "@/src/userInterface/DashedCard";
 import { ComplexHeader } from "@/src/userInterface/Header/Header";
+import Span from "@/src/userInterface/Span";
 import StatusBar from "@/src/userInterface/StatusBar";
 import { Box, Button, Container, Stack } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useContext, useState } from "react";
-
+import { FaLock } from "react-icons/fa";
 export default function ChallengesTab() {
 	const props: MetroGameBoardProps = useContext(GameContext);
 	const moves = props.moves as ClaimStateMoves;
@@ -63,8 +64,12 @@ export default function ChallengesTab() {
 									cursor: "pointer",
 								}}>
 								<Container w="100%">
-									<h3>{challenge.title}</h3>
-									<p>{challenge.description}</p>
+									<h3>{challenge.emoji} {challenge.title}</h3>
+									<div>{challenge.description.split("\n").map(line => (<p>{line}</p>))}</div>
+									<div>
+										{challenge.hard ? <><FaLock color={props.playerData.data.teamColor} /> 
+<Span style={{fontStyle: "italic"}}>Hard - this challenge can lock or steal a zone</Span></>: null}
+									</div>
 								</Container>
 							</DashedCard>
 						);
