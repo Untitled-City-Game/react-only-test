@@ -30,7 +30,7 @@ export default function ChallengesTab() {
 	}
 	return (
 		<>
-			
+
 
 			<Box pos="sticky" top={0} style={{ zIndex: 10 }}>
 				<StatusBar />
@@ -55,20 +55,19 @@ export default function ChallengesTab() {
 							<DashedCard
 								key={index}
 								color={props.playerData.data.teamColor}
-								onClick={()=>{
+								bd={challenge.hard ? `4px double ${props.playerData.data.teamColor}` : `1.5px dashed ${props.playerData.data.teamColor}`}
+								onClick={() => {
 									setCurrentChallenge(challenge.title);
 									console.log("opening modal");
 									open();
 								}}
-								style={{
-									cursor: "pointer",
-								}}>
+							>
 								<Container w="100%">
 									<h3>{challenge.emoji} {challenge.title}</h3>
-									<div>{challenge.description.split("\n").map(line => (<p>{line}</p>))}</div>
+									<div>{challenge.description.split("\n").map((line, index) => (<p key={index}>{line}</p>))}</div>
 									<div>
-										{challenge.hard ? <><FaLock color={props.playerData.data.teamColor} /> 
-<Span style={{fontStyle: "italic"}}>Hard - this challenge can lock or steal a zone</Span></>: null}
+										{challenge.hard ? <><FaLock color={props.playerData.data.teamColor} />
+											<Span style={{ fontStyle: "italic" }}> Hard - this challenge can lock or steal a zone</Span></> : null}
 									</div>
 								</Container>
 							</DashedCard>

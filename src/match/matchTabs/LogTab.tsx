@@ -148,10 +148,10 @@ function ChallengeCompleted({ metadata }: { metadata: LogMetadata }) {
 	return (
 		<>
 			<p>
-				<span className="capitalize">{metadata.team}</span> team
-				completed challenge
+				<span className="capitalize">{metadata.team}</span> team 
+				completed challenge 
 				{metadata.challenge}
-				to claim {metadata.zoneName || metadata.zone}
+				to {metadata.claimType || "claim"} {metadata.zoneName || metadata.zone} {metadata.stealFrom ? `from ${metadata.stealFrom}` : null}
 			</p>
 			{metadata.evidence && (
 				<ImageMantine
