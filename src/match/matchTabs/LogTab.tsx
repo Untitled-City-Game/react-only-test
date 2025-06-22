@@ -6,8 +6,11 @@ import {
 	PlayerData,
 } from "@/scripts/types";
 import { GameContext } from "@/src/match/boardGame/Board";
+import { useAutoScrollToBottom } from "@/src/userInterface/chatScroll";
 import { ComplexHeader } from "@/src/userInterface/Header/Header";
 import ImageMantine from "@/src/userInterface/ImageMantine";
+import { scrollSacrifice } from "@/src/userInterface/Layout";
+import P from "@/src/userInterface/P";
 import Span from "@/src/userInterface/Span";
 import StatusBar from "@/src/userInterface/StatusBar";
 import { Alert, Box, Button, Container, Group, Stack } from "@mantine/core";
@@ -25,6 +28,9 @@ export default function LogTab() {
 		moves.endGame();
 		//props.playerData.setter(undefined);
 	}
+	
+	const containerRef = useAutoScrollToBottom<HTMLDivElement>([props.log]);
+
 	return (
 		<>
 			<Box pos="sticky" top={0} style={{ zIndex: 10000 }}>
@@ -49,8 +55,8 @@ export default function LogTab() {
 					</Stack>
 				</ComplexHeader>
 			</Box>
-			<Container mih="0" w="100%" mt="md">
-				<Stack align="flex-start" pb="md">
+			<Container mih="0" w="100%" mt="md" style={scrollSacrifice}>
+				<Stack align="flex-start" pb="md" ref={containerRef}>
 					{props.log.map((entry, index) => (
 						<ErrorBoundary
 							key={index}
@@ -85,15 +91,17 @@ function MessageBox({
 	const senderData = gameData.allPlayersData[entry.action.payload.playerID];
 	useEffect(() => {
 		if (metadata && metadata.date) {
-			console.log("metadata date", metadata.date);
 			const dateObj = new Date(metadata.date);
-			console.log("dateobj", dateObj);
-			const time = dateObj.toLocaleTimeString();
-			console.log("time", time);
+			//just hour and minute, plus am/pm
+			const time = dateObj.toLocaleTimeString("en-US", {
+				hour: "2-digit",
+				minute: "2-digit",
+				hour12: true,
+				});
 			setTimestamp(time);
 			return;
 		} else {
-			setTimestamp("no timestamp");
+			setTimestamp("Just now");
 			return;
 		}
 	}, [metadata]);
@@ -113,23 +121,25 @@ function MessageBox({
 				return <GameStarted senderData={senderData} />;
 
 			default:
-				return <span>{entry.action.payload.type}</span>;
+				return <P>{entry.action.payload.type}</P>;
 		}
 	};
 
 	return (
 		<Alert
-			maw="max-content"
+			maw="80%"
+			w="max-content"
 			miw="40%"
 			title={senderData.name}
 			color={senderData.teamColor}
 			bd="1px solid"
-			ml={senderData.playerID === playerData.playerID ? "auto" : "0"}>
-			<Span fs="italic" mt="0" size="xs">
-				<span className="capitalize">{senderData.teamColor}</span> team
-			</Span>
+			ml={senderData.playerID === playerData.playerID ? "auto" : "0"}
+			>
+			<P fs="italic" mt="0" size="xs">
+				<Span className="capitalize">{senderData.teamColor}</Span><Span>team</Span>
+			</P>
 			{Message()}
-			<Span>{timestamp}</Span>
+			<P fz="sm" >{timestamp}</P>
 		</Alert>
 	);
 }
@@ -137,12 +147,12 @@ function MessageBox({
 function ChallengeCompleted({ metadata }: { metadata: LogMetadata }) {
 	return (
 		<>
-			<Span>
-				<span className="capitalize">{metadata.team}</span> team
-				completed challenge {'"'}
+			<p>
+				<span className="capitalize">{metadata.team}</span> team 
+				completed challenge 
 				{metadata.challenge}
-				{'"'} to claim {metadata.zoneName || metadata.zone}
-			</Span>
+				to {metadata.claimType || "claim"} {metadata.zoneName || metadata.zone} {metadata.stealFrom ? `from ${metadata.stealFrom}` : null}
+			</p>
 			{metadata.evidence && (
 				<ImageMantine
 					src={metadata.evidence}
@@ -157,23 +167,18 @@ function ChallengeCompleted({ metadata }: { metadata: LogMetadata }) {
 
 function JoinedMatch({ senderData }: { senderData: PlayerData }) {
 	return (
-		<>
-			<Span>
-				<span className="capitalize">{senderData.name}</span> joined the
-				match on{" "}
-				<span className="capitalize">{senderData.teamColor}</span> team.
-			</Span>
-		</>
+		<p>
+			<Span fw="bold" fz={"md"}>{senderData.name}</Span> joined the
+			match on the <Span fw="bold">{senderData.teamColor}</Span> team.
+		</p>
 	);
 }
 
 function GameStarted({ senderData }: { senderData: PlayerData }) {
 	return (
-		<>
-			<Span>
-				<span className="capitalize">{senderData.name}</span> started
-				the game.
-			</Span>
-		</>
+		<p>
+			<Span fw="bold">{senderData.name}</Span> started
+			the game.
+		</p>
 	);
 }

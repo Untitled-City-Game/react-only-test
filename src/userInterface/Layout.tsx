@@ -17,6 +17,7 @@ export default function FullHeightLayout({
 				display: "flex",
 				flexDirection: "column",
 				justifyContent: "space-between",
+				alignItems: "stretch",
 				overflow: "scroll",
 			}}>
 			{children}
@@ -31,12 +32,15 @@ export function VerticalSpread({
 	children: React.ReactNode;
 }) {
 	return (
-		<Container style={FullHeight} {...rest} display="flex" mb="md">
+		<Container style={FullHeight} {...rest} display="flex" mb="md" w="100%">
 			<Stack
 				ta="center"
 				style={FullHeight}
 				mih="100%"
-				justify="space-between">
+				w="100%"
+				justify="space-between"
+				align="stretch"
+				>
 				{children}
 			</Stack>
 		</Container>

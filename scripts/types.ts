@@ -48,6 +48,7 @@ export type ZoneData = {
 	status: zoneStatus;
 	name: string;
 	controlTeam: Color | null;
+	locked: boolean;
 }
 
 export type AllPlayersData = {
@@ -132,6 +133,8 @@ export type LogMetadata = {
 	zone?: number;
 	zoneName?: string;
 	team: Color;
+	claimType?: "lock" | "claim" | "steal";
+	stealFrom?: Color;
 }
 
 type RGB = `rgb(${number}, ${number}, ${number})`;

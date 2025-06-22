@@ -127,6 +127,9 @@ export default function CreateGame() {
 					label="Choose a city"
 					placeholder="Melbourne"
 					data={cities}
+					style={{
+						textTransform: "capitalize"
+					}}
 					key={createGameForm.key("city")}
 					{...createGameForm.getInputProps("city")}
 				/>

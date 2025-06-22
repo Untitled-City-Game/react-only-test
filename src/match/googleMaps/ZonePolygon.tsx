@@ -1,9 +1,10 @@
 import { Color, PolyData, ZoneData } from "@/scripts/types";
-import PolygonLabel from "@/src/match/googleMaps/PolygonLabel";
 import { Polygon } from "@/src/match/googleMaps/shapes/Polygon";
-import { useMap } from "@vis.gl/react-google-maps";
+import { theme } from "@/src/styles/theme";
+import { AdvancedMarker, useMap } from "@vis.gl/react-google-maps";
 import polylabel from "polylabel";
 import { useEffect, useState } from "react";
+import { FaLock } from "react-icons/fa";
 
 type ZonePolygonProps = {
 	zone: PolyData;
@@ -52,33 +53,37 @@ export default function ZonePolygon({
 			)
 			.flat()
 	);
-	console.log("rendering zone");
 	return (
 		<>
 			<Polygon
 				paths={zone.coords}
 				key={zone.featureName}
 				strokeColor={
-					amCurrentZone ? "purple" : zoneGameData.controlTeam || "black"
+					amCurrentZone ? theme.colors.green[4] : zoneGameData.controlTeam || "black"
 				}
 				strokeOpacity={0.8}
-				strokeWeight={amCurrentZone ? 4 : 3}
+				strokeWeight={amCurrentZone ? 6 : zoneGameData.locked ? 3: 2}
 				fillColor={
 					zoneGameData.controlTeam ||
-					(amCurrentZone ? "purple" : "#FFFFFF00")
+					(amCurrentZone ? theme.colors.green[6] : "#FFFFFF00")
 				}
-				fillOpacity={0.15}
+				fillOpacity={zoneGameData.locked ? 0.3 : 0.15}
 				onClick={() =>
 					handleZoneClick(lineVisibilityTemp, highlightedZonesTemp)
 				}
 				zIndex={amCurrentZone ? 10 : zoneGameData.controlTeam ? 1 : 0}
 			/>
-			{showLabels && (
-			<PolygonLabel
-				label={zone.featureName}
-				position={{ lat: polygonCenter[0], lng: polygonCenter[1] }}
-			/>
-			)}
+			{/* {showLabels && (
+				<PolygonLabel
+					label={`${zone.featureName}`}
+					position={{ lat: polygonCenter[0], lng: polygonCenter[1] }}
+				/>
+			)} */}
+			{zoneGameData.locked ? <AdvancedMarker
+				position={{ lat: polygonCenter[0] - 0.004, lng: polygonCenter[1] }}
+			>
+				<FaLock size="1rem" color={theme.colors[zoneGameData.controlTeam || "yellow"][8] || undefined} />
+			</AdvancedMarker> : null}
 		</>
 	);
 }

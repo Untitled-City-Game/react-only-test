@@ -78,7 +78,7 @@ export default function MapTab() {
 			Map
 			</Header> */}
 			<div id="map" style={mapStyles}>
-			<SelectedZonePopup currentZone={currentZone} style={selectedZonePopupStyles}/>
+			<SelectedZonePopup currentZone={currentZone} setCurrentZone={setCurrentZone}/>
 			<VisGlMapElement
 				setLineVisibility={setLineVisibility}
 				setHighlightedZones={setHighlightedZones}
@@ -98,9 +98,3 @@ const mapStyles: React.CSSProperties = {
 	//flexShrink: 7,
 };
 
-const selectedZonePopupStyles: React.CSSProperties = {
-	zIndex: 10,
-	position: "absolute",
-	bottom: 5,
-	width: "100%",
-};

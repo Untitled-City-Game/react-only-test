@@ -3,6 +3,7 @@ import {
 	AllChallengeData,
 	AllPlayersData,
 	AllTeamsData,
+	Challenge,
 	GameSetupData,
 	GameState,
 	LogMetadata,
@@ -24,7 +25,6 @@ type MoveContext = DefaultPluginAPIs & { G: GameState; ctx: Ctx; playerID: strin
 const handSize = 5;
 
 function addLogMetadata({ log }: { log: LogAPI }, metadata: LogMetadata) {
-	console.log("adding metadata", metadata);
 	log.setMetadata({ ...metadata, date: new Date().toString() });
 }
 
@@ -36,7 +36,12 @@ function completeChallengeAndClaim(
 ) {
 	const { G, log, playerID } = context;
 	completeChallenge({ G, log, playerID }, challenge, evidence);
-	claimZone({ G, log, playerID }, zoneID);
+	const challengeInfo = G.challengeDeck.find(challengeInfo => challengeInfo.title === challenge);
+	if(challengeInfo === undefined){
+		throw new Error(`Challenge ${challenge} not found`);
+	}
+	console.log("complete challenge and claim move found challenge ", challengeInfo);
+	claimZone({ G, log, playerID}, zoneID, challengeInfo);
 	drawToFull(context);
 	addLogMetadata(
 		{ log },
@@ -44,7 +49,7 @@ function completeChallengeAndClaim(
 			zone: zoneID,
 			zoneName: G.zoneData[zoneID].name,
 			team: G.allPlayersData[playerID].teamColor,
-			challenge,
+			challenge: challengeInfo.title,
 			evidence,
 		}
 	);
@@ -52,13 +57,42 @@ function completeChallengeAndClaim(
 
 function claimZone(
 	{ G, log, playerID }: { G: GameState; log: LogAPI; playerID: string },
-	zoneID: number
+	zoneID: number,
+	challenge: Challenge
 ) {
 	const claimedZone = G.zoneData[zoneID];
-	claimedZone.controlTeam = G.allPlayersData[playerID].teamColor;
-	console.log("claiming zone", zoneID);
-	addLogMetadata({log}, {zone: zoneID, team: claimedZone.controlTeam});
+	console.log("claiming zone", challenge);
+	//regular claim
+	if(!challenge.hard && claimedZone.controlTeam === null){
+		console.log("regular claim")
+		claimedZone.controlTeam = G.allPlayersData[playerID].teamColor;
+		addLogMetadata({log}, {zone: zoneID, team: claimedZone.controlTeam, challenge: challenge.title});
+	}
+
+	//hard claim to lock
+	else if(challenge.hard && claimedZone.controlTeam === null){
+		console.log("locking claim")
+		claimedZone.controlTeam = G.allPlayersData[playerID].teamColor;
+		claimedZone.locked = true;
+		addLogMetadata({log}, {zone: zoneID, team: claimedZone.controlTeam, challenge: challenge.title, claimType: "lock"});
+	}
+
+	//steal
+	else if(challenge.hard && claimedZone.controlTeam !== null){
+		console.log("stealing claim")
+		const oldTeam = claimedZone.controlTeam;
+		claimedZone.controlTeam = G.allPlayersData[playerID].teamColor;
+		claimedZone.locked = true;
+		addLogMetadata({log}, {zone: zoneID, team: claimedZone.controlTeam, challenge: challenge.title, claimType: "steal", stealFrom: oldTeam});
+	}
+
+	//illegal claim
+	else if(!challenge.hard && claimedZone.controlTeam !== null){
+		console.log("invalid claim")
+		return "INVALID_MOVE";
+	}
 }
+
 
 function completeChallenge(
 	{ G, log, playerID }: { G: GameState; log: LogAPI; playerID: string },
@@ -277,6 +311,7 @@ function createBoardFromMapJson(mapData: PolyData[]): ZoneData[] {
 			status: "empty",
 			name: zone.featureName,
 			controlTeam: null,
+			locked: false
 		};
 	});
 }

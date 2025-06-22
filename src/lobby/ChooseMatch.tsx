@@ -2,6 +2,7 @@ import { games } from "@/scripts/consts";
 import { StrictMatch } from "@/scripts/types";
 import Loading from "@/src/match/boardGame/Loading";
 import { scrollParent, scrollSacrifice } from "@/src/userInterface/Layout";
+import P from "@/src/userInterface/P";
 import Span from "@/src/userInterface/Span";
 import { Box, Button, Radio, Stack } from "@mantine/core";
 import { useForm } from "@mantine/form";
@@ -83,12 +84,8 @@ export default function ChooseMatch() {
 				iconColor="white"
 			/>
 			<div>
-				<Span fw="bold" fz="lg">{match?.setupData?.gameName || "game_name"}</Span>
-				<Span tt="capitalize">{match?.setupData?.mapSetupData?.city}</Span>
-				{/* <Span>Gameover: {match.setupData.gameover}</Span> */}
-				{/* <Span>
-						{ match.players?.length ? `Current players: ${match.players.map(player => player.name).filter(name => name).join(", ")}` : 'Empty' }
-					</Span> */}
+				<P fw="bold" fz="lg">{match?.setupData?.gameName || "game_name"}</P>
+				<P tt="capitalize">{match?.setupData?.mapSetupData?.city}</P>
 				{match.gameover ? (
 					<Span fs="italic" opacity={0.6}>
 						This game has ended.

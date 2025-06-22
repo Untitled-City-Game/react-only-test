@@ -4,7 +4,6 @@ import { GameContext } from "@/src/match/boardGame/Board";
 import DashedCard from "@/src/userInterface/DashedCard";
 import Header from "@/src/userInterface/Header/Header";
 import FullHeightLayout, { VerticalSpread } from "@/src/userInterface/Layout";
-import Span from "@/src/userInterface/Span";
 import { Button, Center, Container, Stack } from "@mantine/core";
 import { useContext } from "react";
 
@@ -23,8 +22,7 @@ export default function Waiting() {
 				<VerticalSpread>
 					<div></div>
 					<div>
-						{/* TODO: Replace with game name */}
-					<h2>Your game {props.G.gameName} is waiting to start.</h2>
+					<h2 style={{fontWeight: "light"}}>Your game <br/><span style={{fontWeight: "bold"}}>{props.G.gameName}</span> <br/>is waiting to start.</h2>
 					<p>Players can still join.</p>
 					<TeamSummary gameData={props.G}/>
 					</div>
@@ -51,7 +49,7 @@ function TeamSummary({gameData} : {gameData: GameState}){
 			{teams.map((team, index) => (
 				<DashedCard key={index} color={team[0].teamColor}>
 					<Container ta="left" w="100%">
-					<Span style={{textTransform: "capitalize"}}>{team[0].teamColor}</Span>
+					<h3 style={{textTransform: "capitalize"}}>{team[0].teamColor} team</h3>
 					<p>{team.map((player) => player.name).join(", ")}</p>
 					</Container>
 				</DashedCard>
