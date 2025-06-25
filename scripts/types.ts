@@ -40,8 +40,11 @@ export interface GameState {
 	gameOver : boolean,
 	startTime? : number,
 	endTime? : number,
-	challengeDeck: AllChallengeData
+	challengeDeck: AllChallengeData,
+	gameStateLogs: GameStateLog[] 
 }
+
+export type GameStateLog = Omit<GameState, "gameStateLogs">
 
 export type ZoneData = {
 	id: number;
@@ -128,7 +131,7 @@ export type MetroGameContext = BoardProps<GameState> & ClientSetupData
 
 export type LogMetadata = {
 	date?: string;
-	evidence?: string;
+	evidence?: string[];
 	challenge?: string;
 	zone?: number;
 	zoneName?: string;
@@ -184,3 +187,8 @@ export type ClaimZoneFormValues = UseFormReturnType<
 >;
 
 
+export type StripContext<T> = {
+	[K in keyof T]: T[K] extends (context: infer C, ...args: infer A) => infer R
+		? (...args: A) => R
+		: never;
+};

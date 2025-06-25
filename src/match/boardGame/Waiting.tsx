@@ -26,12 +26,13 @@ export default function Waiting() {
 					<p>Players can still join.</p>
 					<TeamSummary gameData={props.G}/>
 					</div>
-					<Button
+					{props.playerID === '0' ? <Button
 						onClick={() => {
 							props.moves.startGame();
 						}}>
 						Start the Game
 					</Button>
+					:<div />}
 				</VerticalSpread>
 			</FullHeightLayout>
 		</Center>

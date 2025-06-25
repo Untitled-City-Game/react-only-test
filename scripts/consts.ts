@@ -5,7 +5,7 @@ import { PiPersonSimpleRunBold } from "react-icons/pi";
 export const highlightColor = "orange";
 
 export const numPlayers = 6;
-export const gameTimeMinutes = 300;
+export const gameTimeMinutes = 360;
 export const cities = [
 	"melbourne",
 	"montreal",

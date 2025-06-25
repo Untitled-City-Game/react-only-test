@@ -1,4 +1,4 @@
-import { ClaimStateMoves } from "@/scripts/games/connect_four";
+import { ClaimStateMoves } from "@/scripts/games/connect_four/connect_four";
 import {
 	GameState,
 	LogMetadata,
@@ -47,9 +47,11 @@ export default function LogTab() {
 								)}
 						</p>
 						<Group mb="sm">
-							<Button variant="outline" bg="white">
-								Pause Game
-							</Button>
+							{props.playerID === '0' ? 
+							<Button variant="outline" bg="white" onClick={() => props.moves.customUndo()}>
+								Undo last action
+							</Button> 
+							: null}
 							<Button onClick={handleEndGame}>End Game</Button>
 						</Group>
 					</Stack>
@@ -136,7 +138,7 @@ function MessageBox({
 			ml={senderData.playerID === playerData.playerID ? "auto" : "0"}
 			>
 			<P fs="italic" mt="0" size="xs">
-				<Span className="capitalize">{senderData.teamColor}</Span><Span>team</Span>
+				<Span className="capitalize">{senderData.teamColor}</Span><Span> team</Span>
 			</P>
 			{Message()}
 			<P fz="sm" >{timestamp}</P>
@@ -145,22 +147,23 @@ function MessageBox({
 }
 
 function ChallengeCompleted({ metadata }: { metadata: LogMetadata }) {
-	return (
-		<>
-			<p>
-				<span className="capitalize">{metadata.team}</span> team 
-				completed challenge 
-				{metadata.challenge}
-				to {metadata.claimType || "claim"} {metadata.zoneName || metadata.zone} {metadata.stealFrom ? `from ${metadata.stealFrom}` : null}
-			</p>
-			{metadata.evidence && (
-				<ImageMantine
-					src={metadata.evidence}
+	const evidenceImages = metadata.evidence?.map(imageLink => (
+		<ImageMantine
+					key={imageLink}
+					src={imageLink}
 					alt={`${metadata.team} team completed challenge ${metadata.challenge} to claim zone ${metadata.zone}`}
 					w={300}
 					h={300}
 				/>
-			)}
+	))
+	return (
+		<>
+			<p>
+				<span className="capitalize">{metadata.team} team</span> completed challenge <strong>{metadata.challenge}</strong> to {metadata.claimType || "claim"} <strong>{metadata.zoneName || metadata.zone}</strong> {metadata.stealFrom ? `from ${metadata.stealFrom}` : null}
+			</p>
+			<Stack>
+			{metadata.evidence && evidenceImages}
+			</Stack>
 		</>
 	);
 }

@@ -74,7 +74,7 @@ export default function ClaimFlowModal({
 
 	async function handleSubmit(values: ClaimFormValues){
 		setLoading(true);
-		await claimZone(props.playerID, props.moves.completeChallengeAndClaim, Number(values.zone), values.challenge, values.evidence as unknown as File);
+		await claimZone(props.playerID, props.moves.completeChallengeAndClaim, Number(values.zone), values.challenge, values.evidence as unknown as File[]);
 		setLoading(false);
 		closeClaim();
 	}
@@ -98,8 +98,8 @@ export default function ClaimFlowModal({
 							<Select label="Challenge" data={challengeHand} {...claimForm.getInputProps("challenge")} defaultValue={challengeTitle} />
 							<Select label="Neighbourhood" data={zoneSelectOptions} {...claimForm.getInputProps("zone")} defaultValue={String(claimedZone?.id || "")} />
 							<FileInput
-								label="Photo evidence"
-								// clearable = {claimForm.getValues().evidence !== undefined}
+								label="Evidence"
+								multiple
 								{...claimForm.getInputProps("evidence")}
 								/>
 								<Button type="submit">Submit</Button>

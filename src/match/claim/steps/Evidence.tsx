@@ -10,7 +10,8 @@ export function Evidence({
 }) {
 	return (
 		<FileInput
-			label="Photo evidence"
+			label="Evidence"
+			multiple
 			// clearable = {claimForm.getValues().evidence !== undefined}
 			{...radioGroupProps}
 			/>
