@@ -1,3 +1,4 @@
+import { UseFormReturnType } from '@mantine/form';
 import { LobbyAPI } from 'boardgame.io';
 import { BoardProps } from 'boardgame.io/react';
 import { LineString } from 'geojson';
@@ -30,6 +31,7 @@ export interface PolygonFeature extends GeoJSON.Feature {
 
 //Game state
 export interface GameState {
+	gameName: string;
 	zoneData: ZoneData[],
 	MatchMapData: MatchMapData,
 	active: boolean,
@@ -38,13 +40,18 @@ export interface GameState {
 	gameOver : boolean,
 	startTime? : number,
 	endTime? : number,
+	challengeDeck: AllChallengeData,
+	gameStateLogs: GameStateLog[] 
 }
+
+export type GameStateLog = Omit<GameState, "gameStateLogs">
 
 export type ZoneData = {
 	id: number;
 	status: zoneStatus;
 	name: string;
 	controlTeam: Color | null;
+	locked: boolean;
 }
 
 export type AllPlayersData = {
@@ -64,6 +71,10 @@ export type AllChallengeData = Challenge[]
 export type Challenge = {
 	title: string,
 	description: string,
+	evidence_text: string,
+	emoji: string,
+	hard: string,
+	[key:string] : string
 }
 
 export type AllTeamsData = {
@@ -85,6 +96,11 @@ export interface MapData {
 
 export type City = typeof cities[number];
 
+export type GameSetupData = {
+	mapSetupData: MatchMapData,
+	gameName: string,
+}
+
 export interface MatchMapData extends MapData {
 	city : City;
 }
@@ -99,11 +115,12 @@ export type ClientSetupData = {
 		setter: Dispatch<SetStateAction<PlayerData | undefined>>
 	};
 	matchID: string;
+	gameCode: string;
 	playerID : `${number}`;
 	credentials?: string;
 }
 
-export type StrictMatch = Omit<LobbyAPI.Match, 'gameover' | 'setupData'> & { gameover: boolean, setupData: MatchMapData };
+export type StrictMatch = Omit<LobbyAPI.Match, 'gameover' | 'setupData'> & { gameover: boolean, setupData: GameSetupData };
 
 
 export type MetroGameBoardProps = MetroGameContext & {
@@ -114,11 +131,13 @@ export type MetroGameContext = BoardProps<GameState> & ClientSetupData
 
 export type LogMetadata = {
 	date?: string;
-	evidence?: string;
+	evidence?: string[];
 	challenge?: string;
 	zone?: number;
 	zoneName?: string;
 	team: Color;
+	claimType?: "lock" | "claim" | "steal";
+	stealFrom?: Color;
 }
 
 type RGB = `rgb(${number}, ${number}, ${number})`;
@@ -155,5 +174,21 @@ export type keysOf<o> = o extends readonly unknown[]
       }[keyof o]
 
 export const keysOf = <o extends object>(o: o) => Object.keys(o) as keysOf<o>[]
+export type ClaimZoneFormValues = UseFormReturnType<
+	{
+		zone: number;
+		challenge: string;
+		evidence: string;
+	}, (values: { challenge: string; evidence: string; }) => {
+		zone: number;
+		challenge: string;
+		evidence: string;
+	}
+>;
 
 
+export type StripContext<T> = {
+	[K in keyof T]: T[K] extends (context: infer C, ...args: infer A) => infer R
+		? (...args: A) => R
+		: never;
+};

@@ -1,6 +1,7 @@
 {
   "compilerOptions": {
     /* Visit https://aka.ms/tsconfig to read more about this file */
+      "plugins": [{ "name": "typescript-plugin-css-modules" }],
     "target": "ES2020",
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "jsx": "react-jsx",
@@ -32,7 +33,7 @@
       "@scripts/*": ["scripts/*"],
       "@server/*": ["server/*"],
       "@data/*": ["./data/*"],
-      "@styles/*": ["styles/*"],
+      "@styles/*": ["src/styles/*"],
       "@match/*": ["src/match/*"],
       "react": ["next-app/node_modules/@types/react/index"],
     }

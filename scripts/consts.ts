@@ -1,7 +1,11 @@
+import { GiRadarSweep } from "react-icons/gi";
+import { MdGrid4X4 } from "react-icons/md";
+import { PiPersonSimpleRunBold } from "react-icons/pi";
+
 export const highlightColor = "orange";
 
 export const numPlayers = 6;
-export const gameTimeMinutes = 300;
+export const gameTimeMinutes = 360;
 export const cities = [
 	"melbourne",
 	"montreal",
@@ -52,17 +56,25 @@ export const games = [
 		name: "Connect Four",
 		code: "connect_four",
 		active: true,
-		description: "Connect four neighbourhoods in your city before the other team!"
+		description: "Connect four neighbourhoods in your city before the other team!",
+		color: "yellow",
+		icon: MdGrid4X4
 	},
 	{
 		name: "Tag",
 		code: "tag",
 		active: false,
+		description: "Explore the city and dodge the taggers - or chase your friends to the end of the line!",
+		color: "purple",
+		icon: PiPersonSimpleRunBold 
 	},
 	{
 		name: "Battleship",
 		code: "battleship",
 		active: false,
+		description: "Find and destroy the other team before they find you!",
+		color: "water",
+		icon: GiRadarSweep
 	}
 ]
 
