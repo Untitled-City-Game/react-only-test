@@ -1,3 +1,4 @@
+import { ConnectFour } from '@/scripts/games/connect_four/connect_four';
 import { Firestore } from 'bgio-firebase';
 import { Origins, Server } from 'boardgame.io/server';
 import admin from 'firebase-admin';
@@ -14,7 +15,7 @@ const database = new Firestore({
 async function buildServer(){
 	console.log("building server", process.env.GAME_ADDRESS, process.env.GAME_SERVER);
 	const server = Server({
-		games: [],
+		games: [ConnectFour],
 		origins: [process.env.GAME_ADDRESS ==='localhost' && Origins.LOCALHOST || process.env.GAME_ADDRESS || false],
 		db: database,
 	});
