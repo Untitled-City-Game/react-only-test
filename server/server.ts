@@ -15,14 +15,14 @@ async function buildServer(){
 	//const AllMapsData : Record<string, MatchMapData> = await fetchAllData();
 	const server = Server({
 		games: [ConnectFour],
-		origins: [Origins.LOCALHOST, process.env.GAME_ADDRESS || false],
+		origins: [Origins.LOCALHOST, "http://localhost:1234", process.env.GAME_ADDRESS || false],
 		db: new FlatFile({
 			dir: process.cwd() + '/server/db',
 		}),
 	});
 
 	server.router.get('/hello', (ctx) => {
-		ctx.body = 'Hello ee!';
+		ctx.body = `Hello! Running server for game at http://localhost:1234, ${Origins.LOCALHOST} and ${process.env.GAME_ADDRESS}`;
 	  });
 	server.router.get('/map-data/:citycode', async (ctx) => {
 		console.log("getting map data for city", ctx.params.citycode);
