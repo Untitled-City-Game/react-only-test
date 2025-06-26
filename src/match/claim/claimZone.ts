@@ -10,6 +10,7 @@ export default async function claimZone(playerId : `${number}`, completeChalleng
 }
 
 async function uploadEvidence(evidence: File[], zoneId: number, playerId: `${number}`) {
+	if(!evidence) return [];
 	const evidenceUrls = await Promise.all(evidence.map(file => uploadImage(file, zoneId, playerId)));
 	return evidenceUrls;
 }

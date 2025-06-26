@@ -1,3 +1,4 @@
+import { ClaimStateMoves } from "@/scripts/games/connect_four/connect_four";
 import {
 	MetroGameBoardProps,
 	ZoneData
@@ -47,8 +48,9 @@ export default function ClaimFlowModal({
 			evidence: claimFormValues.evidence,
 		},
 		validate: {
-			zone: hasLength({min: 1}, 'No zone included'),
-			challenge:hasLength({min: 1}, 'No challenge included'),
+			zone: hasLength({min: 1}, 'Please select a zone'),
+			challenge:hasLength({min: 1}, 'Please select a challenge'),
+			evidence: hasLength({min: 1}, 'No evidence included'),
 		}
 	});
 
@@ -73,8 +75,9 @@ export default function ClaimFlowModal({
 	const zoneSelectOptions = props.G.zoneData.map(zone => {return {value: `${zone.id}`, label: zone.name}});
 
 	async function handleSubmit(values: ClaimFormValues){
+		const moves = props.moves as ClaimStateMoves
 		setLoading(true);
-		await claimZone(props.playerID, props.moves.completeChallengeAndClaim, Number(values.zone), values.challenge, values.evidence as unknown as File[]);
+		await claimZone(props.playerID, moves.completeChallengeAndClaim, Number(values.zone), values.challenge, values.evidence as unknown as File[]);
 		setLoading(false);
 		closeClaim();
 	}
