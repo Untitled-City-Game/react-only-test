@@ -1,15 +1,13 @@
 import { ConnectFour } from '@/scripts/games/connect_four/connect_four';
-import { Firestore } from 'bgio-firebase';
-import { Origins, Server } from 'boardgame.io/server';
-import admin from 'firebase-admin';
+import { FlatFile, Origins, Server } from 'boardgame.io/server';
 
-const database = new Firestore({
-	app: process.env.FIREBASE,
-	config: {
-		credential: admin.credential.applicationDefault(),
-		databaseURL: `https://${process.env.FIREBASE}.firebaseio.com`,
-	},
-  });
+// const database = new Firestore({
+// 	app: process.env.FIREBASE,
+// 	config: {
+// 		credential: admin.credential.applicationDefault(),
+// 		databaseURL: `https://${process.env.FIREBASE}.firebaseio.com`,
+// 	},
+//   });
   
 
 async function buildServer(){
@@ -18,7 +16,9 @@ async function buildServer(){
 	const server = Server({
 		games: [ConnectFour],
 		origins: [process.env.GAME_ADDRESS ==='localhost' && Origins.LOCALHOST || process.env.GAME_ADDRESS || false],
-		db: database,
+		db: new FlatFile({
+			dir: process.cwd() + '/server/db',
+		}),
 	});
 
 	server.router.get('/hello', (ctx) => {
@@ -29,7 +29,7 @@ async function buildServer(){
 		const mapData = await fetch(`https://www.google.com/maps/d/u/0/kml?forcekml=1&mid=${ctx.params.citycode}`);
 		ctx.body = await mapData.text();
 	  });
-	const PORT = parseInt(process.env.PORT || "8080");
+	const PORT = parseInt(process.env.PORT || "8000");
 	server.run(PORT, () => console.log("server running..."));
 }
 
