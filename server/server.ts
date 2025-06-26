@@ -21,7 +21,7 @@ async function buildServer(){
 	});
 
 	server.router.get('/hello', (ctx) => {
-		ctx.body = 'Hello server test!';
+		ctx.body = 'Hello game test!';
 	  });
 	server.router.get('/map-data/:citycode', async (ctx) => {
 		console.log("getting map data for city", ctx.params.citycode);
