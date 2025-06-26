@@ -1,3 +1,3 @@
-GAME_SERVER=http://outside.funwebsite.fun
+GAME_SERVER=https://outside.funwebsite.fun
 GAME_ADDRESS=https://metro-game-474bc.web.app/
 STORAGE=gs://outside-2d699.firebasestorage.app
