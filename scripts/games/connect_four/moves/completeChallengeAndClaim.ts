@@ -2,7 +2,7 @@ import { MoveContext } from "@/scripts/games/connect_four/connect_four";
 import { createUndoPoint } from "@/scripts/games/undo";
 import { Challenge, GameState } from "@/scripts/types";
 import { LogAPI } from "boardgame.io/dist/types/src/plugins/plugin-log";
-import { discardChallenge } from "./handManagement";
+import { discardChallenge, drawToFull } from "./handManagement";
 import { addLogMetadata } from "./metadata";
 
 export function completeChallengeAndClaim(
@@ -12,7 +12,6 @@ export function completeChallengeAndClaim(
 	evidence: string[]
 ) {
 	const { G, log, playerID } = context;
-	completeChallenge({ G, log, playerID }, challenge, evidence);
 	const challengeInfo = G.challengeDeck.find(challengeInfo => challengeInfo.title === challenge);
 	if (challengeInfo === undefined) {
 		throw new Error(`Challenge ${challenge} not found`);
@@ -20,6 +19,8 @@ export function completeChallengeAndClaim(
 	console.log("complete challenge and claim move found challenge ", challengeInfo);
 	const claimData = claimZone({ G, log, playerID }, zoneID, challengeInfo);
 	if(claimData === "INVALID_MOVE") return claimData;
+	completeChallenge({ G, log, playerID }, challenge, evidence);
+	drawToFull(context);
 	createUndoPoint(G);
 	addLogMetadata(
 		{ log },
