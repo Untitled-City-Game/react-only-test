@@ -1,82 +1,142 @@
 [
-    {
-        "title": "Look for Harold",
-        "description": "Spend ten minutes looking for Harold Holt in the ocean.\nYou must have a clear view of the Ocean the entire time you look.\nIf you find him, you immediately win the game.",
-        "evidence_text": "",
-        "evidence_file": "",
-        "evidence_text__1": "",
-        "evidence_text_long": "",
-        "emoji": "🏊",
-        "hard": ""
-    },
-    {
-        "title": "Cross the same river twice",
-        "description": "Cross a river twice.\nThe river must have a name.\nYou must cross the river at two different points, using two different methods of transport.\nAcceptable methods are: walking, cycling, tram, train, bus, or boat.\nYou may leave the neighbourhood during this challenge, but you must start and end the challenge in the neighbourhood you are claiming.",
-        "evidence_text": "",
-        "evidence_file": "",
-        "evidence_text__1": "",
-        "evidence_text_long": "",
-        "emoji": "🚣‍♀️",
-        "hard": ""
-    },
-    {
-        "title": "Be grateful for a bench",
-        "description": "Find a public bench which names the person or people who donated it.\nEnjoy the bench. Express gratitude to the donors.",
-        "evidence_text": "",
-        "evidence_file": "",
-        "evidence_text__1": "",
-        "evidence_text_long": "",
-        "emoji": "🪑",
-        "hard": ""
-    },
-    {
-        "title": "Learn at a museum",
-        "description": "Visit a free public museum. Learn something.",
-        "evidence_text": "",
-        "evidence_file": "",
-        "evidence_text__1": "",
-        "evidence_text_long": "",
-        "emoji": "🦖",
-        "hard": ""
-    },
-    {
-        "title": "Four seasons in one day",
-        "description": "",
-        "evidence_text": "",
-        "evidence_file": "",
-        "evidence_text__1": "",
-        "evidence_text_long": "",
-        "emoji": "",
-        "hard": ""
-    },
-    {
-        "title": "Wear the colours",
-        "description": "While in the territory of an AFL club, all team members must don items in the teams colours.",
-        "evidence_text": "Photos of all team members",
-        "evidence_file": "X",
-        "evidence_text__1": "",
-        "evidence_text_long": "",
-        "emoji": "",
-        "hard": ""
-    },
-    {
-        "title": "Find something for Kate",
-        "description": "Find an item specifically for a person named Kate. The item must feature the name \"Kate\".",
-        "evidence_text": "Photo of something for Kate",
-        "evidence_file": "X",
-        "evidence_text__1": "",
-        "evidence_text_long": "",
-        "emoji": "",
-        "hard": "X"
-    },
-    {
-        "title": "Find the mascot",
-        "description": "While in the territory of an AFL team with an animal mascot, find that animal.\nThe animal must be real and alive.",
-        "evidence_text": "Photo of the animal",
-        "evidence_file": "X",
-        "evidence_text__1": "",
-        "evidence_text_long": "",
-        "emoji": "",
-        "hard": "X"
-    }
+  {
+    "title": "Pay too much for coffee",
+    "description": "Pay more than $8 for a coffee",
+    "evidence_description": "Evidence",
+    "evidence_file": "X",
+    "evidence_text": "",
+    "evidence_text_long": "",
+    "emoji": "🧉",
+    "hard": ""
+  },
+  {
+    "title": "Look for a sharehouse",
+    "description": "Go to an open home for a rental with at least two bedrooms.\nYou must spend at least 5 minutes looking around.",
+    "evidence_description": "Photos of the house",
+    "evidence_file": "X",
+    "evidence_text": "",
+    "evidence_text_long": "",
+    "emoji": "🏚️",
+    "hard": ""
+  },
+  {
+    "title": "Tim tam slam",
+    "description": "Successfully drink hot chocolate through a tim tam.",
+    "evidence_description": "Tim tam slam",
+    "evidence_file": "X",
+    "evidence_text": "",
+    "evidence_text_long": "",
+    "emoji": "☕",
+    "hard": ""
+  },
+  {
+    "title": "Look for Harold",
+    "description": "Spend ten minutes looking for Harold Holt in the ocean.\nYou must have a clear view of the Ocean the entire time you look.\nIf you find him, you immediately win the game.",
+    "evidence_description": "Evidence",
+    "evidence_file": "X",
+    "evidence_text": "",
+    "evidence_text_long": "",
+    "emoji": "🏊",
+    "hard": "X"
+  },
+  {
+    "title": "Cross the same river twice",
+    "description": "Cross a river twice.\nThe river must have a name.\nYou must cross the river at two different points, using two different methods of transport.\nAcceptable methods are: walking, cycling, tram, train, bus, or boat.\nYou may leave the neighbourhood during this challenge, but you must start and end the challenge in the neighbourhood you are claiming.",
+    "evidence_description": "Evidence",
+    "evidence_file": "X",
+    "evidence_text": "",
+    "evidence_text_long": "",
+    "emoji": "🚣‍♀️",
+    "hard": ""
+  },
+  {
+    "title": "Four seasons in one day",
+    "description": "",
+    "evidence_description": "",
+    "evidence_file": "X",
+    "evidence_text": "",
+    "evidence_text_long": "",
+    "emoji": "🌦️",
+    "hard": ""
+  },
+  {
+    "title": "Find something for Kate",
+    "description": "Find an item specifically for a person named Kate. The item must feature the name \"Kate\".",
+    "evidence_description": "Photo of something for Kate",
+    "evidence_file": "X",
+    "evidence_text": "",
+    "evidence_text_long": "",
+    "emoji": "👩",
+    "hard": "X"
+  },
+  {
+    "title": "See a goal",
+    "description": "Watch someone score an AFL.\nThe goal must be scored with real AFL goals by a real AFL ball.",
+    "evidence_description": "Video of the goal",
+    "evidence_file": "X",
+    "evidence_text": "",
+    "evidence_text_long": "",
+    "emoji": "🏉",
+    "hard": "X"
+  },
+  {
+    "title": "Sing happy birthday to a tree",
+    "description": "Visit a tree which was planted on today's date.\nSing happy birthday to the tree.\nUse the Urban Forest Tree Database.",
+    "evidence_description": "Video of your song",
+    "evidence_file": "X",
+    "evidence_text": "",
+    "evidence_text_long": "",
+    "emoji": "🌳",
+    "hard": ""
+  },
+  {
+    "title": "Predict the train doors",
+    "description": "Stand at the place where the train doors will open.\nOnly one team member may attempt this challenge at a time.\nIf any part of the train entryway is directly in front of your eyeline when the doors open, you succeed. If not, you may attempt again with another train.",
+    "evidence_description": "Video of train doors opening",
+    "evidence_file": "X",
+    "evidence_text": "",
+    "evidence_text_long": "",
+    "emoji": "🚈",
+    "hard": ""
+  },
+  {
+    "title": "Rhino on a skateboard",
+    "description": "Put a Rhino on a skateboard.\nThe Rhino must be a clear depiction of a rhino. You may not make your own rhino.\nThe skateboard must be something with wheels. It must be able to freely roll with the rhino on top.",
+    "evidence_description": "Video",
+    "evidence_file": "X",
+    "evidence_text": "",
+    "evidence_text_long": "",
+    "emoji": "🦏",
+    "hard": ""
+  },
+  {
+    "title": "Complete a Trainle",
+    "description": "Complete a Trainle in 6 guesses or less.\nYou may not use your phone to look at train stations.\nhttps://trainle.fun/",
+    "evidence_description": "Screenshot of trainle",
+    "evidence_file": "X",
+    "evidence_text": "",
+    "evidence_text_long": "",
+    "emoji": "🚉",
+    "hard": ""
+  },
+  {
+    "title": "Go one kilometre",
+    "description": "One team member must pick a random direction by spinning around with eyes closed.\nFind the point exactly 1km in that direction using google maps.\nGo to within 10 metres of that point.\nIf that point is in another neighbourhood, claim both neighbourhoods.\nIf the point is legally or practically inaccessible, spin again.",
+    "evidence_description": "Evidence",
+    "evidence_file": "",
+    "evidence_text": "",
+    "evidence_text_long": "",
+    "emoji": "📏",
+    "hard": ""
+  },
+  {
+    "title": "Try tricky train track trials",
+    "description": "Go to a metro station that has the same first letter as the first name of a member of your team.\nYou must use the team member's most commonly used name. \nDescribe the metro station using three adjectives which start with the same letter.",
+    "evidence_description": "Evidence",
+    "evidence_file": "X",
+    "evidence_text": "",
+    "evidence_text_long": "",
+    "emoji": "🅱️",
+    "hard": "X"
+  }
 ]

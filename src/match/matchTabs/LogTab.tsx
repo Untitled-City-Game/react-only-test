@@ -7,6 +7,7 @@ import {
 } from "@/scripts/types";
 import { GameContext } from "@/src/match/boardGame/Board";
 import { useAutoScrollToBottom } from "@/src/userInterface/chatScroll";
+import ConfirmButton from "@/src/userInterface/ConfirmModal";
 import { ComplexHeader } from "@/src/userInterface/Header/Header";
 import ImageMantine from "@/src/userInterface/ImageMantine";
 import { scrollSacrifice } from "@/src/userInterface/Layout";
@@ -48,9 +49,9 @@ export default function LogTab() {
 						</p>
 						<Group mb="sm">
 							{props.playerID === '0' ? 
-							<Button variant="outline" bg="white" onClick={() => props.moves.customUndo()}>
+							<ConfirmButton variant="outline" description="undo" action={() => props.moves.customUndo()}>
 								Undo last action
-							</Button> 
+							</ConfirmButton> 
 							: null}
 							<Button onClick={handleEndGame}>End Game</Button>
 						</Group>
