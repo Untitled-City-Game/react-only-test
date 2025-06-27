@@ -18,7 +18,7 @@ async function uploadEvidence(evidence: File[], zoneId: number, playerId: `${num
 async function uploadImage(image: File, zoneId: number, playerId: `${number}`) {
 	const imageRef = ref(
 		storage,
-		`images/zone${zoneId}player${playerId}${Date.now()}${image.name.split('.').pop()}`
+		`images/zone${zoneId}player${playerId}${Date.now()}.${image.name.split('.').pop()}`
 	);
 	try {
 		const uploadTask = await uploadBytes(imageRef, image);
