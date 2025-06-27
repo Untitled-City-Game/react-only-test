@@ -17,7 +17,7 @@ import { Alert, Box, Button, Container, Group, Stack } from "@mantine/core";
 import { LogEntry } from "boardgame.io";
 import { useContext, useEffect, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
-
+import ReactPlayer from 'react-player';
 export default function LogTab() {
 	const props: MetroGameBoardProps = useContext(GameContext);
 	const moves = props.moves as ClaimStateMoves;
@@ -147,15 +147,27 @@ function MessageBox({
 }
 
 function ChallengeCompleted({ metadata }: { metadata: LogMetadata }) {
-	const evidenceImages = metadata.evidence?.map(imageLink => (
+	const evidenceImages = metadata.evidence?.map(imageLink => {
+		const fileType = imageLink.split('?')[0].split(".").pop();
+		if(fileType && ["jpg", "png", "jpeg"].includes(fileType)){
+			return (
 		<ImageMantine
 					key={imageLink}
 					src={imageLink}
 					alt={`${metadata.team} team completed challenge ${metadata.challenge} to claim zone ${metadata.zone}`}
-					w={300}
-					h={300}
+					w="min(100%, 300px)"
+					
 				/>
-	))
+			)}
+		return (
+		<Box
+					key={imageLink}
+				>
+					<ReactPlayer controls width="100%" url={imageLink}/>
+				</Box>
+		)
+	});
+	
 	return (
 		<>
 			<p>
