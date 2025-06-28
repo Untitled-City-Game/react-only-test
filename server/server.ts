@@ -12,7 +12,6 @@ import { FlatFile, Origins, Server } from 'boardgame.io/server';
 
 async function buildServer(){
 	console.log("building server", process.env.GAME_ADDRESS, process.env.GAME_SERVER);
-	//const AllMapsData : Record<string, MatchMapData> = await fetchAllData();
 	const server = Server({
 		games: [ConnectFour],
 		origins: [Origins.LOCALHOST, "http://localhost:1234", process.env.GAME_ADDRESS || false],
@@ -29,7 +28,7 @@ async function buildServer(){
 		const mapData = await fetch(`https://www.google.com/maps/d/u/0/kml?forcekml=1&mid=${ctx.params.citycode}`);
 		ctx.body = await mapData.text();
 	  });
-	const PORT = parseInt(process.env.PORT || "8000");
+	const PORT = parseInt(process.env.PORT || "8080");
 	server.run(PORT, () => console.log("server running..."));
 }
 
