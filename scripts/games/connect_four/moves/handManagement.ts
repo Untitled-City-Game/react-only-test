@@ -78,6 +78,7 @@ export function drawToFull({ G, playerID }: MoveContext, team?: MatchTeamColor) 
 			break;
 		}
 	}
+	teamData.challengeHand.concat(drawnChallenges);
 	return drawnChallenges;
 }
 
