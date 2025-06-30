@@ -10,16 +10,15 @@ import { useAutoScrollToBottom } from "@/src/userInterface/chatScroll";
 import ConfirmButton from "@/src/userInterface/ConfirmModal";
 import { ComplexHeader } from "@/src/userInterface/Header/Header";
 import ImageMantine from "@/src/userInterface/ImageMantine";
-import { scrollSacrifice } from "@/src/userInterface/Layout";
 import P from "@/src/userInterface/P";
 import Span from "@/src/userInterface/Span";
 import StatusBar from "@/src/userInterface/StatusBar";
-import { Alert, Box, Button, Container, Group, Stack } from "@mantine/core";
+import { Alert, Box, Button, Group, ScrollAreaAutosize, Stack } from "@mantine/core";
 import { LogEntry } from "boardgame.io";
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import ReactPlayer from 'react-player';
-export default function LogTab() {
+export default function LogTab({active}: {active: string | null}) {
 	const props: MetroGameBoardProps = useContext(GameContext);
 	const moves = props.moves as ClaimStateMoves;
 	const playerData = props.playerData.data;
@@ -29,9 +28,19 @@ export default function LogTab() {
 		moves.endGame();
 		//props.playerData.setter(undefined);
 	}
+
+	useEffect(()=> {
+		console.log("active tab changed");
+		scrollToBottom();
+	}, [active, props.deltalog]);
 	
 	const containerRef = useAutoScrollToBottom<HTMLDivElement>([props.log]);
+	const viewport = useRef<HTMLDivElement>(null);
 
+	const scrollToBottom = () =>
+		viewport.current!.scrollTo({ top: viewport.current!.scrollHeight, behavior: 'instant' });
+	
+	
 	return (
 		<>
 			<Box pos="sticky" top={0} style={{ zIndex: 10000 }}>
@@ -54,11 +63,12 @@ export default function LogTab() {
 							</ConfirmButton> 
 							: null}
 							<Button onClick={handleEndGame}>End Game</Button>
+							<Button onClick={scrollToBottom}>Scroll to bottom</Button>
 						</Group>
 					</Stack>
 				</ComplexHeader>
 			</Box>
-			<Container mih="0" w="100%" mt="md" style={scrollSacrifice}>
+			<ScrollAreaAutosize mih="0" scrollbars="y" m="md" viewportRef={viewport}>
 				<Stack align="flex-start" pb="md" ref={containerRef}>
 					{props.log.map((entry, index) => (
 						<ErrorBoundary
@@ -73,7 +83,7 @@ export default function LogTab() {
 						</ErrorBoundary>
 					))}
 				</Stack>
-			</Container>
+			</ScrollAreaAutosize>
 		</>
 	);
 }

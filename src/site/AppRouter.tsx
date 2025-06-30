@@ -3,7 +3,7 @@ import ChooseMatch from "@/src/lobby/ChooseMatch";
 import CreateMatch from "@/src/lobby/CreateMatch";
 import JoinMatch from "@/src/lobby/JoinMatch";
 import LobbyLayout from "@/src/lobby/LobbyLayout";
-import Match from "@/src/match/matchTabs/Match";
+import Match from "@/src/match/matchTabs/TabSet";
 import ChooseGame from "@/src/site/ChooseGame";
 import ExampleMap from "@/src/site/ExampleMap";
 import OuterLayout from "@/src/site/outerLayout";

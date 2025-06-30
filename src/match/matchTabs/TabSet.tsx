@@ -3,15 +3,16 @@ import ChallengesTab from "@/src/match/matchTabs/ChallengesTab";
 import LogTab from "@/src/match/matchTabs/LogTab";
 import MapTab from "@/src/match/matchTabs/MapTab";
 import { Group, Tabs, TabsList, TabsPanel, TabsTab } from "@mantine/core";
-import { Suspense } from "react";
+import { Suspense, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { TbCards, TbMap, TbMessageChatbot } from "react-icons/tb";
 
 export default function Match() {
 	const { height, width } = useWindowDimensions();
 	console.log("rendering match");
+	const [activeTab, setActiveTab] = useState<string | null>(null);
 	return (
-			<Tabs defaultValue={"map"} variant="pills" radius={0} style={MatchContainerStyles} h={`min(100vh, ${height}px)`} id="matchContainer">
+			<Tabs defaultValue={"map"} variant="pills" radius={0} style={MatchContainerStyles} h={`min(100vh, ${height}px)`} id="matchContainer"  onChange={setActiveTab}>
 				<TabsPanel value="challenges" style={panelLayout}>
 					<ErrorBoundary
 						fallback={<span>Something went wrong.</span>}>
@@ -31,7 +32,7 @@ export default function Match() {
 				<TabsPanel value="log" style={panelLayout}>
 					<ErrorBoundary
 						fallback={<span>Something went wrong.</span>}>
-						<LogTab />
+						<LogTab active={activeTab}/>
 					</ErrorBoundary>
 				</TabsPanel>
 				<TabsList
