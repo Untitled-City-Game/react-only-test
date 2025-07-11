@@ -113,7 +113,8 @@ export default function CreateGame() {
 			lobbyClient,
 			matchID,
 			values.PlayerName,
-			values.teamColor
+			values.teamColor,
+			true
 		);
 		localStorage.setItem("localPlayerData", JSON.stringify(playerData));
 		navigate("/match");
