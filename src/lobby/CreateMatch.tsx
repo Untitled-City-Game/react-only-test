@@ -1,4 +1,4 @@
-import { cities } from "@/scripts/consts";
+import { cities, maps } from "@/scripts/consts";
 import { fetchMapData } from "@/scripts/fetchMapData";
 import { joinMatch } from "@/scripts/joinMatch";
 import {
@@ -127,10 +127,7 @@ export default function CreateGame() {
 				<Select
 					label="Choose a city"
 					placeholder="Melbourne"
-					data={cities}
-					style={{
-						textTransform: "capitalize"
-					}}
+					data={Object.values(maps).map(map => ({ label: map.name, value: map.code }))}
 					key={createGameForm.key("city")}
 					{...createGameForm.getInputProps("city")}
 				/>

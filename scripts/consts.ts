@@ -10,6 +10,7 @@ export const cities = [
 	"melbourne",
 	"montreal",
 	"london",
+	"nyc"
 ] as const;
 
 export const maps = {
