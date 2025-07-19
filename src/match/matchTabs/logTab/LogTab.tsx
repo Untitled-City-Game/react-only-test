@@ -58,7 +58,7 @@ export default function LogTab({ active }: { active: string | null }) {
 								</ConfirmButton>
 								: null}
 							<Button onClick={handleEndGame}>End Game</Button>
-							<Button onClick={scrollToBottom}>Scroll to bottom</Button>
+							{/* <Button onClick={scrollToBottom}>Scroll to bottom</Button> */}
 						</Group>
 					</Stack>
 				</ComplexHeader>

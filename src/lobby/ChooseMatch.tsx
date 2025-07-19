@@ -1,6 +1,7 @@
 import { games } from "@/scripts/consts";
 import { StrictMatch } from "@/scripts/types";
 import Loading from "@/src/match/boardGame/Loading";
+import { HelpButton } from "@/src/userInterface/help/HelpButton";
 import { scrollParent, scrollSacrifice } from "@/src/userInterface/Layout";
 import P from "@/src/userInterface/P";
 import Span from "@/src/userInterface/Span";
@@ -141,6 +142,7 @@ export default function ChooseMatch() {
 			) : (
 				<Box style={scrollParent}>{chooseMatchFormElement}</Box>
 			)}
+			<P ta="center"><HelpButton/></P>
 		</>
 	);
 }

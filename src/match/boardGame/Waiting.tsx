@@ -3,6 +3,7 @@ import { GameState, MetroGameBoardProps, PlayerData } from "@/scripts/types";
 import { GameContext } from "@/src/match/boardGame/Board";
 import DashedCard from "@/src/userInterface/DashedCard";
 import Header from "@/src/userInterface/Header/Header";
+import { HelpButton } from "@/src/userInterface/help/HelpButton";
 import FullHeightLayout, { VerticalSpread } from "@/src/userInterface/Layout";
 import { Button, Center, Container, Stack } from "@mantine/core";
 import { useContext } from "react";
@@ -12,7 +13,7 @@ export default function Waiting() {
 	const props: MetroGameBoardProps = useContext(GameContext);
 	const game = games.find((game) => game.code === props.gameCode);
 	const playerData = props.G.allPlayersData;
-	if(!game){
+	if (!game) {
 		return <h1>Game not found</h1>
 	}
 	return (
@@ -22,9 +23,10 @@ export default function Waiting() {
 				<VerticalSpread>
 					<div></div>
 					<div>
-					<h2 style={{fontWeight: "light"}}>Your game <br/><span style={{fontWeight: "bold"}}>{props.G.gameName}</span> <br/>is waiting to start.</h2>
-					<p>Players can still join.</p>
-					<TeamSummary gameData={props.G}/>
+						<h2 style={{ fontWeight: "light" }}>Your game <br /><span style={{ fontWeight: "bold" }}>{props.G.gameName}</span> <br />is waiting to start.</h2>
+						<p>Players can still join.</p>
+						<TeamSummary gameData={props.G} />
+						<p><HelpButton /></p>
 					</div>
 					{props.playerID === '0' ? <Button
 						onClick={() => {
@@ -32,29 +34,29 @@ export default function Waiting() {
 						}}>
 						Start the Game
 					</Button>
-					:<div />}
+						: <div />}
 				</VerticalSpread>
 			</FullHeightLayout>
 		</Center>
 	);
 }
 
-function TeamSummary({gameData} : {gameData: GameState}){ 
+function TeamSummary({ gameData }: { gameData: GameState }) {
 	const teams = Object.keys(gameData.allTeamsData).map((team) => {
-		return Object.values(gameData.allPlayersData).filter((player : PlayerData) => player.teamColor === team);
+		return Object.values(gameData.allPlayersData).filter((player: PlayerData) => player.teamColor === team);
 	})
 
 	return (
 		<Container>
 			<Stack>
-			{teams.map((team, index) => (
-				<DashedCard key={index} color={team[0].teamColor}>
-					<Container ta="left" w="100%">
-					<h3 style={{textTransform: "capitalize"}}>{team[0].teamColor} team</h3>
-					<p>{team.map((player) => player.name).join(", ")}</p>
-					</Container>
-				</DashedCard>
-			))}
+				{teams.map((team, index) => (
+					<DashedCard key={index} color={team[0].teamColor}>
+						<Container ta="left" w="100%">
+							<h3 style={{ textTransform: "capitalize" }}>{team[0].teamColor} team</h3>
+							<p>{team.map((player) => player.name).join(", ")}</p>
+						</Container>
+					</DashedCard>
+				))}
 			</Stack>
 		</Container>
 	)
