@@ -30,7 +30,7 @@ export const maps = {
 		kml_live_id: "1DWUN7rKm1FUFr0BiKme7f0NpqegZWos",
 	},
 	nyc: {
-		name: "New York City",
+		name: "Manhattan",
 		code: "nyc",
 		kml_live_id: "1L42PLDup2h_AiMSNTT1hAdBoyE5P6Ig"
 	}
@@ -49,6 +49,10 @@ export const gameLocationCenters = {
 		lat:  51.5073509,
 		lng: -0.1277583,
 	},
+	nyc : {
+		lat: 40.74807572237176,
+		lng: -73.98590688638745
+	}
 }
 
 //games
