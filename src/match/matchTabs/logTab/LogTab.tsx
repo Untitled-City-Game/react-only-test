@@ -9,13 +9,14 @@ import ConfirmButton from "@/src/userInterface/ConfirmModal";
 import { ComplexHeader } from "@/src/userInterface/Header/Header";
 import StatusBar from "@/src/userInterface/StatusBar";
 import { Box, Button, Group, ScrollAreaAutosize, Stack } from "@mantine/core";
-import { useContext, useEffect, useRef } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 
 export default function LogTab({ active }: { active: string | null }) {
 	const props: MetroGameBoardProps = useContext(GameContext);
 	const moves = props.moves as ClaimStateMoves;
 	const playerData = props.playerData.data;
+	const [worker, setWorker] = useState<ServiceWorkerRegistration>()
 	async function handleEndGame() {
 		console.log("ending game");
 		moves.endGame();
@@ -25,6 +26,16 @@ export default function LogTab({ active }: { active: string | null }) {
 		console.log("active tab changed");
 		scrollToBottom();
 	}, [active, props.deltalog]);
+
+	useEffect(() => {
+		if ('serviceWorker' in navigator) {
+			console.log("service workers in navigator");
+			navigator.serviceWorker.register(
+				new URL('service-worker.js', import.meta.url),
+				{ type: 'module' }
+			).then(worker => setWorker(worker));
+		}
+	}, []);
 
 
 	const containerRef = useAutoScrollToBottom<HTMLDivElement>([props.log]);
@@ -59,7 +70,7 @@ export default function LogTab({ active }: { active: string | null }) {
 								</ConfirmButton>
 								: null}
 							<Button onClick={handleEndGame}>End Game</Button>
-							<Button onClick={() => testNotifications()}>Test Notifications</Button>
+							<Button onClick={() => testNotifications(worker)}>Test Notifications</Button>
 							{/* <Button onClick={scrollToBottom}>Scroll to bottom</Button> */}
 						</Group>
 					</Stack>
@@ -88,16 +99,11 @@ export default function LogTab({ active }: { active: string | null }) {
 }
 
 
-async function testNotifications() {
+async function testNotifications(worker? : ServiceWorkerRegistration) {
 	console.warn("testing notifications");
-	if ('serviceWorker' in navigator){
-		console.log("service workers in navigator");
-		const worker = await navigator.serviceWorker.register(
-			new URL('service-worker.js', import.meta.url),
-			{ type: 'module' }
-		);
-		console.log("got worker", worker.active);
-		worker.showNotification("notified!")
+	if(worker){
+		worker.showNotification("someone pressed a button!")
+	} else {
+		console.warn("no service worker found")
 	}
-
 }
