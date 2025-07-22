@@ -7,7 +7,7 @@ import { HelpButton } from "@/src/userInterface/help/HelpButton";
 import FullHeightLayout, { VerticalSpread } from "@/src/userInterface/Layout";
 import P from "@/src/userInterface/P";
 import { Box, Button, Center, Container, Stack } from "@mantine/core";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 
 export default function Waiting() {
 	console.log("rendering waiting page");
@@ -17,6 +17,9 @@ export default function Waiting() {
 	if (!game) {
 		return <h1>Game not found</h1>
 	}
+	useEffect(() => {
+		Notification.requestPermission();
+	});
 	return (
 		<Center>
 			<FullHeightLayout>

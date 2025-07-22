@@ -3,6 +3,7 @@ import ChooseMatch from "@/src/lobby/ChooseMatch";
 import CreateMatch from "@/src/lobby/CreateMatch";
 import JoinMatch from "@/src/lobby/JoinMatch";
 import LobbyLayout from "@/src/lobby/LobbyLayout";
+import Loading from "@/src/match/boardGame/Loading";
 import Match from "@/src/match/matchTabs/TabSet";
 import ChooseGame from "@/src/site/ChooseGame";
 import ExampleMap from "@/src/site/ExampleMap";
@@ -21,6 +22,7 @@ const AppRouter = () => {
 		<Routes>
 			<Route element={<RootLayout />}>
 				<Route element={<OuterLayout />}>
+					<Route path="loading" element= {<Loading message="whee" />} />
 					<Route index element={<ChooseGame />} />
 					<Route path="map" element={<ExampleMap />} />
 				</Route>

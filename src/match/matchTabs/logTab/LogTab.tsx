@@ -58,6 +58,12 @@ export default function LogTab({ active }: { active: string | null }) {
 								</ConfirmButton>
 								: null}
 							<Button onClick={handleEndGame}>End Game</Button>
+							<Button onClick={()=> {
+								setTimeout(()=> {
+									const notification = new Notification("Connect 4", { body: "I'm a notification!" });
+
+								}, 2000);
+							}}>Test Notifications</Button>
 							{/* <Button onClick={scrollToBottom}>Scroll to bottom</Button> */}
 						</Group>
 					</Stack>
