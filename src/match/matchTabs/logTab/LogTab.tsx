@@ -26,6 +26,7 @@ export default function LogTab({ active }: { active: string | null }) {
 		scrollToBottom();
 	}, [active, props.deltalog]);
 
+
 	const containerRef = useAutoScrollToBottom<HTMLDivElement>([props.log]);
 	const viewport = useRef<HTMLDivElement>(null);
 
@@ -58,12 +59,7 @@ export default function LogTab({ active }: { active: string | null }) {
 								</ConfirmButton>
 								: null}
 							<Button onClick={handleEndGame}>End Game</Button>
-							<Button onClick={()=> {
-								setTimeout(()=> {
-									const notification = new Notification("Connect 4", { body: "I'm a notification!" });
-
-								}, 2000);
-							}}>Test Notifications</Button>
+							<Button onClick={() => testNotifications()}>Test Notifications</Button>
 							{/* <Button onClick={scrollToBottom}>Scroll to bottom</Button> */}
 						</Group>
 					</Stack>
@@ -92,3 +88,16 @@ export default function LogTab({ active }: { active: string | null }) {
 }
 
 
+async function testNotifications() {
+	console.warn("testing notifications");
+	if ('serviceWorker' in navigator){
+		console.log("service workers in navigator");
+		const worker = await navigator.serviceWorker.register(
+			new URL('service-worker.js', import.meta.url),
+			{ type: 'module' }
+		);
+		console.log("got worker", worker.active);
+		worker.showNotification("notified!")
+	}
+
+}
