@@ -4,6 +4,7 @@ import {
 	ZoneData
 } from "@/scripts/types";
 import { GameContext } from "@/src/match/boardGame/Board";
+import Loading from "@/src/match/boardGame/Loading";
 import claimZone from "@/src/match/claim/claimZone";
 import { ModalHeader } from "@/src/match/claim/ui/ModalHeader";
 import FullHeightLayout, { VerticalSpread } from "@/src/userInterface/Layout";
@@ -86,13 +87,12 @@ export default function ClaimFlowModal({
 		<Modal.Root
 			opened={open}
 			onClose={closeClaim}
-			fullScreen
 			padding={0}
 			radius={0}>
 			<Modal.Overlay />
 			<Modal.Content>
 				<FullHeightLayout>
-					<LoadingOverlay visible={loading} />
+					<LoadingOverlay visible={loading} loaderProps={{ children: <Loading message="Claiming neighbourhood..." /> }} />
 					{ModalHeader(props.playerData.data.teamColor)}
 					<VerticalSpread>
 						<div></div>
