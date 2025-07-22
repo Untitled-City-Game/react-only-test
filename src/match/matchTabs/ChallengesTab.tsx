@@ -2,7 +2,7 @@ import { ClaimStateMoves } from "@/scripts/games/connect_four/connect_four";
 import { MetroGameBoardProps } from "@/scripts/types";
 import { GameContext } from "@/src/match/boardGame/Board";
 import ClaimFlowModal from "@/src/match/claim/ClaimFlowModal";
-import { ChallengeCard } from "@/src/match/matchTabs/challengeTab/ChallengeCard";
+import { ChallengeButton } from "@/src/userInterface/challenges/ChallengePopup";
 import { ComplexHeader } from "@/src/userInterface/Header/Header";
 import StatusBar from "@/src/userInterface/StatusBar";
 import { Box, Button, Container, Stack } from "@mantine/core";
@@ -54,12 +54,14 @@ export default function ChallengesTab() {
 				<Stack pb="md">
 					{challengeHand.map((challenge, index) => {
 						return (
-							<ChallengeCard key={index} teamColor={props.playerData.data.teamColor} onClick={() => {
-								setCurrentChallenge(challenge.title);
-								console.log("opening modal");
-								open();
-							}
-							} challenge={challenge}></ChallengeCard>);
+							// <ChallengeCard key={index} teamColor={props.playerData.data.teamColor} onClick={() => {
+							// 	setCurrentChallenge(challenge.title);
+							// 	console.log("opening modal");
+							// 	open();
+							// }
+							// } challenge={challenge}></ChallengeCard>
+						<ChallengeButton challenge={challenge} key={index} team={props.playerData.data.teamColor}/>
+						);
 					})}
 				</Stack>
 			</Container>

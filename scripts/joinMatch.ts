@@ -13,7 +13,6 @@ export async function joinMatch(
 		matchID,
 		{
 			playerName: PlayerName,
-			playerID: '0',
 			data: {
 				teamColor: teamID,
 				admin

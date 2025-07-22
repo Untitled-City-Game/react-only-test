@@ -27,12 +27,16 @@ async function fetchAllData(){
 	return allData;
 }
 
+const authenticateCredentials = async () => {
+ return true;
+}
 
 async function buildServer(){
 	console.log("building server", process.env.GAME_ADDRESS, process.env.GAME_SERVER);
 	//const AllMapsData : Record<string, MatchMapData> = await fetchAllData();
 	const server = Server({
 		games: [ConnectFour],
+		authenticateCredentials,
 		origins: [Origins.LOCALHOST,  process.env.GAME_ADDRESS || false, "*"],
 		db: new FlatFile({
 			dir: process.cwd() + '/server/db',

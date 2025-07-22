@@ -1,4 +1,4 @@
-import ChallengesTab from "@/src/match/matchTabs/challengeTab/ChallengesTab";
+import ChallengesTab from "@/src/match/matchTabs/ChallengesTab";
 import LogTab from "@/src/match/matchTabs/logTab/LogTab";
 import MapTab from "@/src/match/matchTabs/MapTab";
 import { Group, Tabs, TabsList, TabsPanel, TabsTab } from "@mantine/core";

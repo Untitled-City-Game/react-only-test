@@ -28,7 +28,6 @@ export function ChallengeCompleted({ metadata }: { metadata: LogMetadata; }) {
 			<p>
 				<span className="capitalize">{metadata.team} team</span> completed challenge <strong>{metadata.challenge}</strong> to {metadata.claimType || "claim"} <strong>{metadata.zoneName || metadata.zone}</strong> {metadata.stealFrom ? `from ${metadata.stealFrom}` : null}
 			</p>
-			
 		</>
 	);
 }

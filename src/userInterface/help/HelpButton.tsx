@@ -21,7 +21,7 @@ export function HelpButton() {
 
 	return (
 		<>
-			<Button onClick={open}>How to play</Button>
+			<Button variant="outline" onClick={open}>How to play</Button>
 			<HelpModal opened={opened} close={close} />
 		</>
 	);

@@ -5,7 +5,8 @@ import DashedCard from "@/src/userInterface/DashedCard";
 import Header from "@/src/userInterface/Header/Header";
 import { HelpButton } from "@/src/userInterface/help/HelpButton";
 import FullHeightLayout, { VerticalSpread } from "@/src/userInterface/Layout";
-import { Button, Center, Container, Stack } from "@mantine/core";
+import P from "@/src/userInterface/P";
+import { Box, Button, Center, Container, Stack } from "@mantine/core";
 import { useContext } from "react";
 
 export default function Waiting() {
@@ -23,10 +24,18 @@ export default function Waiting() {
 				<VerticalSpread>
 					<div></div>
 					<div>
-						<h2 style={{ fontWeight: "light" }}>Your game <br /><span style={{ fontWeight: "bold" }}>{props.G.gameName}</span> <br />is waiting to start.</h2>
-						<p>Players can still join.</p>
+						<Stack gap="s" align="stretch">
+							<Box>
+														<h2 style={{ fontWeight: "light" }}><span style={{ fontWeight: "bold" }}>{props.G.gameName}</span> <br />is waiting to start.</h2>
+
+						<P><strong>Host: </strong> {playerData[0]?.name}</P>
+						<p><strong>Invite code: </strong>{props.matchID}</p>
+						</Box>
+												<GameInviteButton gameCode={props.gameCode} matchID={props.matchID} />
+						<HelpButton />
+
 						<TeamSummary gameData={props.G} />
-						<p><HelpButton /></p>
+						</Stack>
 					</div>
 					{props.playerID === '0' ? <Button
 						onClick={() => {
@@ -47,7 +56,6 @@ function TeamSummary({ gameData }: { gameData: GameState }) {
 	})
 
 	return (
-		<Container>
 			<Stack>
 				{teams.map((team, index) => (
 					<DashedCard key={index} color={team[0].teamColor}>
@@ -58,6 +66,13 @@ function TeamSummary({ gameData }: { gameData: GameState }) {
 					</DashedCard>
 				))}
 			</Stack>
-		</Container>
+	)
+}
+
+function GameInviteButton({ gameCode, matchID }: { gameCode: string, matchID: string}){
+	return(
+		<Button onClick={() => navigator.clipboard.writeText(`${process.env.GAME_ADDRESS}lobby/${gameCode}/join-match/${matchID}`)}>
+			Copy invite link
+		</Button>
 	)
 }
