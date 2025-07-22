@@ -6,6 +6,7 @@ export function playerSetup(
 	{ G, playerID, log }: { G: GameState; playerID: string; log: LogAPI; },
 	newPlayerData: PlayerData
 ) {
+	console.log("setting up player");
 	G.allPlayersData[playerID] = newPlayerData;
 	
 	//check if team color is already set up

@@ -64,6 +64,7 @@ export type PlayerData = {
 	teamColor: MatchTeamColor;
 	playerCredentials?: string;
 	matchID?: string;
+	admin?: boolean;
 }
 
 export type AllChallengeData = Challenge[]
@@ -116,7 +117,7 @@ export type ClientSetupData = {
 	};
 	matchID: string;
 	gameCode: string;
-	playerID : `${number}`;
+	playerID : string;
 	credentials?: string;
 }
 

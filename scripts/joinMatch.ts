@@ -5,7 +5,8 @@ export async function joinMatch(
 	lobbyClient: LobbyClient, 
 	matchID: string, 
 	PlayerName: string,
-	teamID: NamedColor
+	teamID: NamedColor,
+	admin: boolean = false
  	) {
 	const res = await lobbyClient.joinMatch(
 		'connect-four',
@@ -13,7 +14,8 @@ export async function joinMatch(
 		{
 			playerName: PlayerName,
 			data: {
-				teamColor: teamID
+				teamColor: teamID,
+				admin
 			}
 		}
 	);
@@ -25,6 +27,7 @@ export async function joinMatch(
 		matchID: matchID,
 		playerCredentials: res.playerCredentials,
 		teamColor: teamID as MatchTeamColor,
+		admin
 	};
 	return playerData;
 }
