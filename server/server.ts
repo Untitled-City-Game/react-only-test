@@ -12,11 +12,16 @@ const database = new Firestore({
   });
   
 
+const authenticateCredentials = async () => {
+ return true;
+}
+
 async function buildServer(){
 	console.log("building server", process.env.GAME_ADDRESS, process.env.GAME_SERVER);
 	const server = Server({
 		games: [ConnectFour],
-		origins: [Origins.LOCALHOST,  process.env.GAME_ADDRESS || false],
+		authenticateCredentials,
+		origins: [Origins.LOCALHOST,  process.env.GAME_ADDRESS || false, "*"],
 		db: database
 	});
 

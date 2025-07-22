@@ -2,14 +2,13 @@ import { ClaimStateMoves } from "@/scripts/games/connect_four/connect_four";
 import { MetroGameBoardProps } from "@/scripts/types";
 import { GameContext } from "@/src/match/boardGame/Board";
 import ClaimFlowModal from "@/src/match/claim/ClaimFlowModal";
-import DashedCard from "@/src/userInterface/DashedCard";
+import { ChallengeButton } from "@/src/userInterface/challenges/ChallengePopup";
 import { ComplexHeader } from "@/src/userInterface/Header/Header";
-import Span from "@/src/userInterface/Span";
 import StatusBar from "@/src/userInterface/StatusBar";
 import { Box, Button, Container, Stack } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { useContext, useState } from "react";
-import { FaLock } from "react-icons/fa";
+
 export default function ChallengesTab() {
 	const props: MetroGameBoardProps = useContext(GameContext);
 	const moves = props.moves as ClaimStateMoves;
@@ -48,29 +47,20 @@ export default function ChallengesTab() {
 					</Container>
 				</ComplexHeader>
 			</Box>
-			<Container mih="0" mt="md">
+			<Container mih="0" mt="md" style={{
+				flexGrow: 10,
+				overflowY: "scroll"
+			}}>
 				<Stack pb="md">
 					{challengeHand.map((challenge, index) => {
 						return (
-							<DashedCard
-								key={index}
-								color={props.playerData.data.teamColor}
-								bd={challenge.hard ? `4px double ${props.playerData.data.teamColor}` : `1.5px dashed ${props.playerData.data.teamColor}`}
-								onClick={() => {
-									setCurrentChallenge(challenge.title);
-									console.log("opening modal");
-									open();
-								}}
-							>
-								<Container w="100%">
-									<h3>{challenge.emoji} {challenge.title}</h3>
-									<div>{challenge.description.split("\n").map((line, index) => (<p key={index}>{line}</p>))}</div>
-									<div>
-										{challenge.hard ? <><FaLock color={props.playerData.data.teamColor} />
-											<Span style={{ fontStyle: "italic" }}> Hard - this challenge can lock or steal a zone</Span></> : null}
-									</div>
-								</Container>
-							</DashedCard>
+							// <ChallengeCard key={index} teamColor={props.playerData.data.teamColor} onClick={() => {
+							// 	setCurrentChallenge(challenge.title);
+							// 	console.log("opening modal");
+							// 	open();
+							// }
+							// } challenge={challenge}></ChallengeCard>
+						<ChallengeButton challenge={challenge} key={index} team={props.playerData.data.teamColor}/>
 						);
 					})}
 				</Stack>

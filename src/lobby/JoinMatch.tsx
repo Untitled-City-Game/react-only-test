@@ -6,7 +6,7 @@ import { useNavigate, useParams } from "react-router";
 
 import { games } from "@/scripts/consts";
 import { joinMatch } from "@/scripts/joinMatch";
-import { NamedColor } from "@/scripts/types";
+import { NamedColor, PlayerData } from "@/scripts/types";
 import Loading from "@/src/match/boardGame/Loading";
 import P from "@/src/userInterface/P";
 import { useEffect, useMemo, useState } from "react";
@@ -40,7 +40,7 @@ export default function JoinMatch() {
 		mode: "uncontrolled",
 		initialValues: {
 			PlayerName: "",
-			teamColor: "red" as NamedColor,
+			teamColor: "" as NamedColor,
 		},
 		validate: {
 			PlayerName: (value) =>
@@ -56,12 +56,26 @@ export default function JoinMatch() {
 	};
 	const handleJoinGame = async (values: FormValues) => {
 		console.log(values);
-		const playerData = await joinMatch(
-			lobbyClient,
-			matchID,
-			values.PlayerName,
-			values.teamColor
-		);
+		console.warn("looking for player", values.PlayerName)
+		const existingPlayer = matchData?.players.find(player => player.name === values.PlayerName);
+		let playerData : PlayerData
+		if (existingPlayer && existingPlayer.name && existingPlayer.data.teamColor) {
+			console.warn("Player already exists in the match");
+			playerData = {
+				playerID: `${Number(existingPlayer.id)}`,
+				name: existingPlayer.name,
+				matchID,
+				teamColor: existingPlayer.data.teamColor,
+				
+			}
+		} else {
+			playerData = await joinMatch(
+				lobbyClient,
+				matchID,
+				values.PlayerName,
+				values.teamColor
+			);
+		}
 		localStorage.setItem("localPlayerData", JSON.stringify(playerData));
 		navigate("/match");
 	};
@@ -97,10 +111,11 @@ export default function JoinMatch() {
 		));
 		return (
 			<>
-				<h1>Join a Match</h1>
+				<h1>{matchData.setupData.gameName}</h1>
+
 				<Stack gap={0} mb="sm">
-					<strong>Joining {matchData.setupData.gameName}</strong>
-					<span>Match ID: {matchID}</span>
+					<span><strong>Host:</strong> {matchData.players[0].name}</span>
+					<span><strong>Match ID:</strong> {matchID}</span>
 				</Stack>
 				<form
 					onSubmit={joinGameForm.onSubmit(handleJoinGame)}
@@ -110,6 +125,7 @@ export default function JoinMatch() {
 						key={joinGameForm.key("PlayerName")}
 						{...joinGameForm.getInputProps("PlayerName")}
 					/>
+					<P fs="italic" fz="xs">To rejoin, enter the same name you used to join the game.</P>
 					<Radio.Group
 						pt="md"
 						label="Choose a team"

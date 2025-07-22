@@ -1,10 +1,10 @@
 import { games } from "@/scripts/consts";
 import { StrictMatch } from "@/scripts/types";
-import Loading from "@/src/match/boardGame/Loading";
+import { HelpButton } from "@/src/userInterface/help/HelpButton";
 import { scrollParent, scrollSacrifice } from "@/src/userInterface/Layout";
 import P from "@/src/userInterface/P";
 import Span from "@/src/userInterface/Span";
-import { Box, Button, Radio, Stack } from "@mantine/core";
+import { Button, Group, Radio, Stack, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { LobbyClient } from "boardgame.io/client";
 import { useEffect, useMemo, useState } from "react";
@@ -124,23 +124,41 @@ export default function ChooseMatch() {
 
 	return (
 		<>
-			<Stack gap="0">
-				<h2>Create a match</h2>
-				{/* <p>Create and host a new game of Connect Four</p> */}
-				<Button
-					fz="md"
-					fw="normal"
-					component={Link}
-					to={`/lobby/${game?.code}/create-match`}>
-					Create
-				</Button>
+			<Stack>
+				<Stack gap="0">
+					<h2>Create a match</h2>
+					<Button
+						fz="md"
+						fw="normal"
+						component={Link}
+						to={`/lobby/${game?.code}/create-match`}>
+						Create
+					</Button>
+				</Stack>
+				<Stack gap="0">
+					<h2>Join a match</h2>
+					<JoinMatchCodeInput gameCode={gameCode || ""} />
+				</Stack>
+				<Stack gap="0">
+					<h2>Help</h2>
+					<HelpButton />
+				</Stack>
 			</Stack>
-			<h2>Join a match</h2>
-			{loadingMatches ? (
-				<Loading message="Loading matches" />
-			) : (
-				<Box style={scrollParent}>{chooseMatchFormElement}</Box>
-			)}
+
 		</>
 	);
+}
+
+function JoinMatchCodeInput({ gameCode }: { gameCode: string }) {
+	const [matchID, setMatchID] = useState('');
+	return (
+		<Group align="end">
+			<TextInput
+				label="Invite code"
+				value={matchID}
+				onChange={(event) => setMatchID(event.currentTarget.value)}
+			/>
+			<Button component="a" href={`${process.env.GAME_ADDRESS}/lobby/${gameCode}/join-match/${matchID}`}>Join</Button>
+		</Group>
+	)
 }

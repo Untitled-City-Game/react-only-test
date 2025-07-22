@@ -2,20 +2,20 @@ import { storage } from "@/scripts/firebase";
 import { ClaimStateMoves } from "@/scripts/games/connect_four/connect_four";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
-export default async function claimZone(playerId : `${number}`, completeChallengeAndClaim : ClaimStateMoves["completeChallengeAndClaim"], zoneId: number, challenge : string, evidence : File[] ) {
+export default async function claimZone(playerId : string, completeChallengeAndClaim : ClaimStateMoves["completeChallengeAndClaim"], zoneId: number, challenge : string, evidence : File[] ) {
 	console.log("claiming zone on client", zoneId, challenge, evidence);
 	const evidenceUrls = await uploadEvidence(evidence, zoneId, playerId)
 	completeChallengeAndClaim(zoneId, challenge, evidenceUrls);
 	return;
 }
 
-async function uploadEvidence(evidence: File[], zoneId: number, playerId: `${number}`) {
+async function uploadEvidence(evidence: File[], zoneId: number, playerId: string) {
 	if(!evidence) return [];
 	const evidenceUrls = await Promise.all(evidence.map(file => uploadImage(file, zoneId, playerId)));
 	return evidenceUrls;
 }
 
-async function uploadImage(image: File, zoneId: number, playerId: `${number}`) {
+async function uploadImage(image: File, zoneId: number, playerId: string) {
 	const imageRef = ref(
 		storage,
 		`images/zone${zoneId}player${playerId}${Date.now()}.${image.name.split('.').pop()}`
