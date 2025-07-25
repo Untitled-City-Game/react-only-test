@@ -70,7 +70,14 @@ export default function LogTab({ active }: { active: string | null }) {
 								</ConfirmButton>
 								: null}
 							<Button onClick={handleEndGame}>End Game</Button>
-							<Button onClick={() => testNotifications(worker)}>Test Notifications</Button>
+							<Button onClick={() => worker && testNotifications(worker, {
+								title: "Neighbourhood claimed!",
+								options: {
+									body: "Red team claimed Mont Royal",
+									image: `${process.env.GAME_ADDRESS}icon.png`,
+
+								}
+							})}>Test Notifications</Button>
 							{/* <Button onClick={scrollToBottom}>Scroll to bottom</Button> */}
 						</Group>
 					</Stack>
@@ -99,10 +106,10 @@ export default function LogTab({ active }: { active: string | null }) {
 }
 
 
-async function testNotifications(worker? : ServiceWorkerRegistration) {
-	console.warn("testing notifications");
+async function testNotifications(worker : ServiceWorkerRegistration, notification: {title: string, options: Record<string, any>}) {
+	console.warn("testing notifications", notification.options);
 	if(worker){
-		worker.showNotification("someone pressed a button!")
+		worker.showNotification(notification.title, notification.options);
 	} else {
 		console.warn("no service worker found")
 	}
