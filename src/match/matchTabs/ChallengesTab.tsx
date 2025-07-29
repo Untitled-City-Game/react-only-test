@@ -7,7 +7,9 @@ import { ComplexHeader } from "@/src/userInterface/Header/Header";
 import StatusBar from "@/src/userInterface/StatusBar";
 import { Box, Button, Container, Stack } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { useContext, useState } from "react";
+import { createContext, useContext, useState } from "react";
+
+export const ChallengeContext = createContext<any>(null);
 
 export default function ChallengesTab() {
 	const props: MetroGameBoardProps = useContext(GameContext);
@@ -23,7 +25,7 @@ export default function ChallengesTab() {
 	if (!challengeHand) {
 		return <h1>No challenges available</h1>;
 	}
-	function handleDiscarHand() {
+	function handleDiscardHand() {
 		console.log("discarding hand");
 		moves.discardHand();
 	}
@@ -37,7 +39,7 @@ export default function ChallengesTab() {
 					<Container w="100%">
 						<Stack gap="0" ta="center" align="stretch" w="100%">
 							<h1>Challenges</h1>
-							<Button onClick={handleDiscarHand}>
+							<Button onClick={handleDiscardHand}>
 								Discard Hand
 							</Button>
 							<p>
@@ -52,6 +54,7 @@ export default function ChallengesTab() {
 				overflowY: "scroll"
 			}}>
 				<Stack pb="md">
+					<ChallengeContext value={{open, setCurrentChallenge}}>
 					{challengeHand.map((challenge, index) => {
 						return (
 							// <ChallengeCard key={index} teamColor={props.playerData.data.teamColor} onClick={() => {
@@ -60,9 +63,10 @@ export default function ChallengesTab() {
 							// 	open();
 							// }
 							// } challenge={challenge}></ChallengeCard>
-						<ChallengeButton challenge={challenge} key={index} team={props.playerData.data.teamColor}/>
+						<ChallengeButton challenge={challenge} key={index} team={props.playerData.data.teamColor} claimButton={true} />
 						);
 					})}
+					</ChallengeContext>
 				</Stack>
 			</Container>
 			<ClaimFlowModal

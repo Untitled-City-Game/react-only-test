@@ -37,7 +37,7 @@ export function MessageBox({
 
 	return (
 		<Alert
-			maw="80%"
+			maw="80vw"
 			w="max-content"
 			miw="40%"
 			title={senderData.name}

@@ -63,7 +63,7 @@ export default function LogTab({ active }: { active: string | null }) {
 									{ timeStyle: "short" }
 								)}
 						</p>
-						<Group mb="sm">
+						<Group m="sm" justify="center">
 							{props.playerData.data.admin ?
 								<ConfirmButton variant="outline" description="undo" action={() => props.moves.customUndo()}>
 									Undo last action
