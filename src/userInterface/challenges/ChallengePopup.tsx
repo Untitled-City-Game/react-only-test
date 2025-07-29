@@ -9,13 +9,15 @@ export default function ChallengePopup({
 	close,
 	challengeInfo,
 	team,
-	completed
+	completed,
+	claimButton
 }: {
 	opened: boolean;
 	close: () => void;
 	challengeInfo: Challenge;
 	team: Color;
-	completed?: boolean
+	completed?: boolean;
+	claimButton?: boolean;
 }){
 	return (
 		<Modal.Root opened={opened}
@@ -27,7 +29,7 @@ export default function ChallengePopup({
 			        <Modal.Content
 					bg="none"
 					>
-			<ChallengeCard teamColor={team} challenge={challengeInfo} completed={completed}/>
+			<ChallengeCard teamColor={team} challenge={challengeInfo} completed={completed} claimButton={claimButton}/>
 			</Modal.Content>
 		</Modal.Root>
 	)
@@ -36,11 +38,13 @@ export default function ChallengePopup({
 export function ChallengeButton({
 	challenge,
 	team,
-	completed
+	completed,
+	claimButton
 } : {
 	challenge: Challenge;
 	team: Color;
 	completed?: boolean;
+	claimButton?: boolean;
 }){
 	const [opened, { open, close }] = useDisclosure(false);
 	
@@ -50,7 +54,7 @@ export function ChallengeButton({
 	>
 			<h3>{challenge.emoji} {challenge.title}</h3>
 	</DashedCard>
-	<ChallengePopup opened={opened} close={close} challengeInfo={challenge} team={team} completed={completed} />
+	<ChallengePopup opened={opened} close={close} challengeInfo={challenge} team={team} completed={completed} claimButton={claimButton}/>
 	</>
 	
 )

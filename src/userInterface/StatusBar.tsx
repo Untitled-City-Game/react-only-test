@@ -1,6 +1,7 @@
 import { GameContext } from "@/src/match/boardGame/Board";
 import { theme } from "@/src/styles/theme";
 import HelpIcon from "@/src/userInterface/help/HelpButton";
+import SettingsIcon from "@/src/userInterface/help/SettingsButton";
 import { Center, Group } from "@mantine/core";
 import { useContext } from "react";
 import Countdown from 'react-countdown';
@@ -20,6 +21,7 @@ export default function StatusBar({ children }: { children?: React.ReactNode }) 
 					}
 					/> remaining</Span>
 					<HelpIcon />
+					<SettingsIcon />
 				</Group>
 				{children}
 			</Center>

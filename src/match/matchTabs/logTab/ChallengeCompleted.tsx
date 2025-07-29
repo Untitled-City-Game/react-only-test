@@ -35,6 +35,11 @@ export function ChallengeCompleted({ metadata }: { metadata: LogMetadata; }) {
 export function ChallengeEvidence({ metadata }: { metadata: LogMetadata; }){
 		const evidenceImages = metadata.evidence?.map(imageLink => {
 		const fileType = imageLink.split('?')[0].split(".").pop();
+		if(!fileType){
+			return (
+				null
+			)
+		}
 		if (fileType && ["jpg", "png", "jpeg"].includes(fileType)) {
 			return (
 				<ImageMantine
@@ -56,7 +61,7 @@ export function ChallengeEvidence({ metadata }: { metadata: LogMetadata; }){
 	return (
 		<Stack>
 				{metadata.evidence && evidenceImages}
-			</Stack>
+		</Stack>
 		)
 
 }

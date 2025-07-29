@@ -19,14 +19,15 @@ export function Message({ entry, gameData, playerData }: { entry: LogEntry; game
 	switch (entry.action.payload.type) {
 		case "completeChallengeAndClaim":
 			return (
-				<>
-					<MessageBox entry={entry} gameData={gameData} playerData={playerData}>
+				<Box>
+					<MessageBox entry={entry} gameData={gameData} playerData={playerData} >
 						<ChallengeCompleted
 							metadata={entry.metadata as LogMetadata} />
 						{challenge ? <p><ChallengeButton
 							team={entry.metadata.team}
 							challenge={challenge}
 							completed={true}
+							claimButton={false}
 						/></p>
 							: null}
 					</MessageBox>
@@ -35,7 +36,7 @@ export function Message({ entry, gameData, playerData }: { entry: LogEntry; game
 					>
 						<ChallengeEvidence metadata={entry.metadata as LogMetadata} />
 					</Box>
-				</>
+				</Box>
 			);
 
 		case "playerSetup":

@@ -34,7 +34,7 @@ export default function Waiting() {
 						<P><strong>Host: </strong> {playerData[0]?.name}</P>
 						<p><strong>Invite code: </strong>{props.matchID}</p>
 						</Box>
-												<GameInviteButton gameCode={props.gameCode} matchID={props.matchID} />
+						<GameInviteButton gameCode={props.gameCode} matchID={props.matchID} />
 						<HelpButton />
 
 						<TeamSummary gameData={props.G} />
@@ -72,7 +72,7 @@ function TeamSummary({ gameData }: { gameData: GameState }) {
 	)
 }
 
-function GameInviteButton({ gameCode, matchID }: { gameCode: string, matchID: string}){
+export function GameInviteButton({ gameCode, matchID }: { gameCode: string, matchID: string}){
 	return(
 		<Button onClick={() => navigator.clipboard.writeText(`${process.env.GAME_ADDRESS}lobby/${gameCode}/join-match/${matchID}`)}>
 			Copy invite link
