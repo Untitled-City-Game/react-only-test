@@ -25,9 +25,7 @@ export function ChallengeCompleted({ metadata }: { metadata: LogMetadata; }) {
 	// });
 	return (
 		<>
-			<p>
 				<span className="capitalize">{metadata.team} team</span> completed challenge <strong>{metadata.challenge}</strong> to {metadata.claimType || "claim"} <strong>{metadata.zoneName || metadata.zone}</strong> {metadata.stealFrom ? `from ${metadata.stealFrom}` : null}
-			</p>
 		</>
 	);
 }
@@ -43,6 +41,9 @@ export function ChallengeEvidence({ metadata }: { metadata: LogMetadata; }){
 		if (fileType && ["jpg", "png", "jpeg"].includes(fileType)) {
 			return (
 				<ImageMantine
+					style={{
+						borderRadius: "10px",
+					}}
 					key={imageLink}
 					src={imageLink}
 					alt={`${metadata.team} team completed challenge ${metadata.challenge} to claim zone ${metadata.zone}`}

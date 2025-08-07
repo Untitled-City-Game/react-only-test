@@ -53,24 +53,27 @@ export function MessageBox({
 }
 
 export function MessageWrapper({
-	entry, gameData, playerData, children
+	entry, gameData, playerData, children, unstyled
 }: {
 	entry: LogEntry;
 	gameData: GameState;
 	playerData: PlayerData;
 	children: React.ReactNode;
+	unstyled?: boolean;
 }){
 	const senderData = gameData.allPlayersData[entry.action.payload.playerID];
+	//const borderStyle = unstyled ? "none" : `1px solid ${theme.colors[senderData.teamColor][2]}`
 	return (
 		<Box
 			maw="80vw"
 			w="max-content"
 			miw="40%"
-			bg={theme.colors[senderData.teamColor][0]}
+			mb="5px"
+			bg={unstyled? "none" : theme.colors[senderData.teamColor][0]}
 			style={{
-				border: `2px solid ${theme.colors[senderData.teamColor][5]}`,
+				// border: borderStyle,
 				borderRadius: "10px",
-				padding: "5px 8px",
+				padding: `${unstyled ? "0" :"10px 10px 10px 10px"}`,
 			}}
 			ml={senderData.playerID === playerData.playerID ? "auto" : "0"}
 		>{children}</Box>

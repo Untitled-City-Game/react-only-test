@@ -23,16 +23,16 @@ export function Message({ entry, gameData, playerData }: { entry: LogEntry; game
 					<MessageBox entry={entry} gameData={gameData} playerData={playerData} >
 						<ChallengeCompleted
 							metadata={entry.metadata as LogMetadata} />
-						{challenge ? <p><ChallengeButton
+						{challenge ? <ChallengeButton
 							team={entry.metadata.team}
 							challenge={challenge}
 							completed={true}
 							claimButton={false}
-						/></p>
+						/>
 							: null}
 					</MessageBox>
 			
-					<MessageWrapper entry={entry} gameData={gameData} playerData={playerData}>
+					<MessageWrapper entry={entry} gameData={gameData} playerData={playerData} unstyled={true}>
 						<ChallengeEvidence metadata={entry.metadata as LogMetadata} />
 					</MessageWrapper>
 				</Box>

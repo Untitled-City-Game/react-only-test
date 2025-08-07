@@ -12,7 +12,7 @@ async function buildServer(){
 		authenticateCredentials,
 		origins: [Origins.LOCALHOST,  process.env.GAME_ADDRESS || false],
 		db: new FlatFile({
-			dir: './db'
+			dir: 'server/db'
 		})
 	});
 
