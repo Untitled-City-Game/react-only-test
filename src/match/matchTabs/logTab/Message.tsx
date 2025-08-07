@@ -3,7 +3,7 @@ import { GameContext } from "@/src/match/boardGame/Board";
 import { ChallengeCompleted, ChallengeEvidence } from "@/src/match/matchTabs/logTab/ChallengeCompleted";
 import { GameStarted } from "@/src/match/matchTabs/logTab/GameStarted";
 import { JoinedMatch } from "@/src/match/matchTabs/logTab/JoinedMatch";
-import { MessageBox } from "@/src/match/matchTabs/logTab/MessageBox";
+import { MessageBox, MessageWrapper } from "@/src/match/matchTabs/logTab/MessageBox";
 import { ChallengeButton } from "@/src/userInterface/challenges/ChallengePopup";
 import P from "@/src/userInterface/P";
 import { Box } from "@mantine/core";
@@ -31,11 +31,10 @@ export function Message({ entry, gameData, playerData }: { entry: LogEntry; game
 						/></p>
 							: null}
 					</MessageBox>
-					<Box
-						ml={senderData.playerID === playerData.playerID ? "auto" : "0"}
-					>
+			
+					<MessageWrapper entry={entry} gameData={gameData} playerData={playerData}>
 						<ChallengeEvidence metadata={entry.metadata as LogMetadata} />
-					</Box>
+					</MessageWrapper>
 				</Box>
 			);
 

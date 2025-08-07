@@ -37,6 +37,31 @@ export function MessageBox({
 	}, [metadata]);
 
 	return (
+		<MessageWrapper
+			entry={entry}
+			gameData={gameData}
+			playerData={playerData}
+		>
+			<Group w="100%" justify="space-between">		
+				<P fz="sm"><Span fw="bold" c={theme.colors[senderData.teamColor][6]}>{senderData.name}</Span> | <Span fz="xs" fs="italic" className="capitalize">{senderData.teamColor}</Span>
+				</P>	
+				<P fz="sm">{timestamp}</P>
+			</Group>
+			{children}
+		</MessageWrapper>
+	);
+}
+
+export function MessageWrapper({
+	entry, gameData, playerData, children
+}: {
+	entry: LogEntry;
+	gameData: GameState;
+	playerData: PlayerData;
+	children: React.ReactNode;
+}){
+	const senderData = gameData.allPlayersData[entry.action.payload.playerID];
+	return (
 		<Box
 			maw="80vw"
 			w="max-content"
@@ -48,13 +73,6 @@ export function MessageBox({
 				padding: "5px 8px",
 			}}
 			ml={senderData.playerID === playerData.playerID ? "auto" : "0"}
-		>
-			<Group w="100%" justify="space-between">		
-				<P fz="sm"><Span fw="bold" c={theme.colors[senderData.teamColor][6]}>{senderData.name}</Span> | <Span fz="xs" fs="italic" className="capitalize">{senderData.teamColor}</Span>
-				</P>	
-				<P fz="sm">{timestamp}</P>
-			</Group>
-			{children}
-		</Box>
-	);
+		>{children}</Box>
+	)
 }
