@@ -4,9 +4,9 @@ import { Outlet } from "react-router";
 
 export default function MatchLayout() 
   {
-    console.log("rendering matchlayout")
 	 return (
     <ErrorBoundary fallback={<span>Something went wrong in matchlayout.</span>}>
+      <p>MatchLayout</p>
     <ClientContainer>
       <Outlet />
     </ClientContainer>

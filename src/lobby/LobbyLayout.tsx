@@ -22,8 +22,6 @@ export default function LobbyLayout() {
 		primaryColor: game?.color || "grey",
 		primaryShade: 6,
 	});
-	console.timeLog("load", "lobby layout");
-	const { height } = useWindowDimensions();
 	return (
 		<MantineProvider theme={lobbyTheme}>
 			<FullHeightLayout>

@@ -31,7 +31,6 @@ export default function JoinMatch() {
 	const [matchData, setMatchData] = useState<LobbyAPI.Match>();
 	useEffect(() => {
 		lobbyClient.getMatch("connect-four", matchID).then((res) => {
-			console.timeLog("load", "got match data " + matchID);
 			setMatchData(res);
 		});
 	}, [matchID, lobbyClient]);

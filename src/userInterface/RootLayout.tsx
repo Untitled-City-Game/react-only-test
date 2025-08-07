@@ -1,11 +1,9 @@
 import { theme } from "@/src/styles/theme";
-import { ColorSchemeScript } from '@mantine/core';
-import '@mantine/core/styles.css';
+import { ColorSchemeScript, MantineProvider } from "@mantine/core";
 import { ErrorBoundary } from "react-error-boundary";
 import { Outlet } from "react-router";
 
 export default function RootLayout() {
-	console.timeLog("load", "root layout");
 
   return (
     <>
@@ -20,11 +18,11 @@ export default function RootLayout() {
         <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🚇</text></svg>"></link>
         <ColorSchemeScript />
       </head>
-
-
       <body style={{ backgroundColor: theme.white }}>
+        <span>TEST 006</span>
         <ErrorBoundary fallback={<span>Something went wrong in rootlayout</span>}>
           <Outlet />
+
         </ErrorBoundary>
       </body>
       </>

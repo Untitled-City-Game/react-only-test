@@ -17,9 +17,9 @@ export default function Waiting() {
 	if (!game) {
 		return <h1>Game not found</h1>
 	}
-	useEffect(() => {
-		Notification.requestPermission();
-	});
+	// useEffect(() => {
+	// 	Notification.requestPermission();
+	// });
 	return (
 		<Center>
 			<FullHeightLayout>

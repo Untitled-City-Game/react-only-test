@@ -16,7 +16,7 @@ export default function LogTab({ active }: { active: string | null }) {
 	const props: MetroGameBoardProps = useContext(GameContext);
 	const moves = props.moves as ClaimStateMoves;
 	const playerData = props.playerData.data;
-	const [worker, setWorker] = useState<ServiceWorkerRegistration>()
+	// const [worker, setWorker] = useState<ServiceWorkerRegistration>()
 	async function handleEndGame() {
 		console.log("ending game");
 		moves.endGame();
@@ -27,15 +27,15 @@ export default function LogTab({ active }: { active: string | null }) {
 		scrollToBottom();
 	}, [active, props.deltalog]);
 
-	useEffect(() => {
-		if ('serviceWorker' in navigator) {
-			console.log("service workers in navigator");
-			navigator.serviceWorker.register(
-				new URL('service-worker.js', import.meta.url),
-				{ type: 'module' }
-			).then(worker => setWorker(worker));
-		}
-	}, []);
+	// useEffect(() => {
+	// 	if ('serviceWorker' in navigator) {
+	// 		console.log("service workers in navigator");
+	// 		navigator.serviceWorker.register(
+	// 			new URL('service-worker.js', import.meta.url),
+	// 			{ type: 'module' }
+	// 		).then(worker => setWorker(worker));
+	// 	}
+	// }, []);
 
 
 	const containerRef = useAutoScrollToBottom<HTMLDivElement>([props.log]);
@@ -70,14 +70,14 @@ export default function LogTab({ active }: { active: string | null }) {
 								</ConfirmButton>
 								: null}
 							<Button onClick={handleEndGame}>End Game</Button>
-							<Button onClick={() => worker && testNotifications(worker, {
+							{/* <Button onClick={() => worker && testNotifications(worker, {
 								title: "Neighbourhood claimed!",
 								options: {
 									body: "Red team claimed Mont Royal",
 									image: `${process.env.GAME_ADDRESS}icon.png`,
 
 								}
-							})}>Test Notifications</Button>
+							})}>Test Notifications</Button> */}
 							{/* <Button onClick={scrollToBottom}>Scroll to bottom</Button> */}
 						</Group>
 					</Stack>
@@ -106,11 +106,11 @@ export default function LogTab({ active }: { active: string | null }) {
 }
 
 
-async function testNotifications(worker : ServiceWorkerRegistration, notification: {title: string, options: Record<string, any>}) {
-	console.warn("testing notifications", notification.options);
-	if(worker){
-		worker.showNotification(notification.title, notification.options);
-	} else {
-		console.warn("no service worker found")
-	}
-}
+// async function testNotifications(worker : ServiceWorkerRegistration, notification: {title: string, options: Record<string, any>}) {
+// 	console.warn("testing notifications", notification.options);
+// 	if(worker){
+// 		worker.showNotification(notification.title, notification.options);
+// 	} else {
+// 		console.warn("no service worker found")
+// 	}
+// }

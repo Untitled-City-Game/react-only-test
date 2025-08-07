@@ -11,7 +11,6 @@ import { ErrorBoundary } from "react-error-boundary";
 import { useNavigate } from "react-router";
 
 export default function ClientContainer(props: { children: React.ReactNode }) {
-	console.log("rendering client container");
 	const [playerData, setPlayerData] = useState<PlayerData>();
 	const navigate = useNavigate();
 
@@ -36,9 +35,8 @@ export default function ClientContainer(props: { children: React.ReactNode }) {
 		}
 	}, [playerData]);
 
-	//Render game
+	// //Render game
 	if (playerData) {
-		console.log("rendering game client");
 		const GameClient = Client({
 			game: ConnectFour,
 			board: Board,
@@ -56,11 +54,15 @@ export default function ClientContainer(props: { children: React.ReactNode }) {
 		
 
 		return (
+			<>
+			<p>Client container</p>
 			<MantineProvider theme={clientTheme}>
+				<p>Mantine container</p>
 				<ErrorBoundary
 					fallback={
 						<span>Something went wrong with the game client.</span>
 					}>
+						<p>Game client</p>
 					<GameClient
 						matchID={playerData.matchID || "default"}
 						gameCode="connect_four"
@@ -71,6 +73,7 @@ export default function ClientContainer(props: { children: React.ReactNode }) {
 					/>
 				</ErrorBoundary>
 			</MantineProvider>
+			</>
 		);
 	} else {
 		console.log("no player data");
