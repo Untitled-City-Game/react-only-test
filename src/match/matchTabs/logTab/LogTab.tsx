@@ -70,7 +70,7 @@ export default function LogTab({ active }: { active: string | null }) {
 									Undo last action
 								</ConfirmButton>
 								: null}
-							<Button onClick={handleEndGame}>End Game</Button>
+							{props.playerData.data.admin ? <Button onClick={handleEndGame}>End Game</Button> : null}
 							{/* <Button onClick={() => worker && testNotifications(worker, {
 								title: "Neighbourhood claimed!",
 								options: {

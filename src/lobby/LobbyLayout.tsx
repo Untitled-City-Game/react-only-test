@@ -34,14 +34,14 @@ export default function LobbyLayout() {
 					<Outlet />
 				</Container>
 				<Container w="100%" pb="md">
-					<ActionIcon
+					{/* <ActionIcon
 						size="lg"
 						aria-label="Back"
 						variant="filled"
 						autoContrast
 						onClick={() => navigate(-1)}>
 						<RiArrowLeftBoxLine size={100} />
-					</ActionIcon>
+					</ActionIcon> */}
 				</Container>
 			</FullHeightLayout>
 		</MantineProvider>

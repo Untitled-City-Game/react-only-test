@@ -1,7 +1,8 @@
 import { GameState, LogMetadata, PlayerData } from "@/scripts/types";
+import { theme } from "@/src/styles/theme";
 import P from "@/src/userInterface/P";
 import Span from "@/src/userInterface/Span";
-import { Alert } from "@mantine/core";
+import { Alert, Box, Group } from "@mantine/core";
 import { LogEntry } from "boardgame.io";
 import React, { useEffect, useState } from "react";
 
@@ -36,20 +37,24 @@ export function MessageBox({
 	}, [metadata]);
 
 	return (
-		<Alert
+		<Box
 			maw="80vw"
 			w="max-content"
 			miw="40%"
-			title={senderData.name}
-			color={senderData.teamColor}
-			bd="1px solid"
+			bg={theme.colors[senderData.teamColor][0]}
+			style={{
+				border: `2px solid ${theme.colors[senderData.teamColor][5]}`,
+				borderRadius: "10px",
+				padding: "5px 8px",
+			}}
 			ml={senderData.playerID === playerData.playerID ? "auto" : "0"}
 		>
-			<P fs="italic" mt="0" size="xs">
-				<Span className="capitalize">{senderData.teamColor}</Span><Span> team</Span>
-			</P>
+			<Group w="100%" justify="space-between">		
+				<P fz="sm"><Span fw="bold" c={theme.colors[senderData.teamColor][6]}>{senderData.name}</Span> | <Span fz="xs" fs="italic" className="capitalize">{senderData.teamColor}</Span>
+				</P>	
+				<P fz="sm">{timestamp}</P>
+			</Group>
 			{children}
-			<P fz="sm">{timestamp}</P>
-		</Alert>
+		</Box>
 	);
 }

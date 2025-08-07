@@ -25,7 +25,7 @@ export default function Waiting() {
 	return (
 		<Center>
 			<FullHeightLayout>
-				<LoadingOverlay visible={loading} loaderProps={{ children: <Loading message="Claiming neighbourhood..." /> }} />
+				<LoadingOverlay visible={loading} loaderProps={{ children: <Loading message="Building trains..." /> }} />
 				<Header color={props.playerData.data.teamColor || "white"}>Connect 4</Header>
 				<VerticalSpread>
 					<div></div>

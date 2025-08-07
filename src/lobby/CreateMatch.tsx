@@ -123,7 +123,7 @@ export default function CreateGame() {
 	return (
 		<form style={{width: "100%"}} onSubmit={createGameForm.onSubmit(handleCreateGame)}>
 			<h2>Create a Connect Four Match</h2>
-			<Stack>
+			<Stack pb="sm">
 				<Select
 					label="Choose a city"
 					placeholder="Melbourne"

@@ -4,4 +4,4 @@ node_modules/
 .vscode/
 *.code-workspace
 *.cache
-server/db/
+server/db/*
