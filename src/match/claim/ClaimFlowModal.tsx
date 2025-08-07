@@ -10,6 +10,7 @@ import { ModalHeader } from "@/src/match/claim/ui/ModalHeader";
 import FullHeightLayout, { VerticalSpread } from "@/src/userInterface/Layout";
 import {
 	Button,
+	Container,
 	FileInput,
 	LoadingOverlay,
 	Modal,
@@ -39,7 +40,6 @@ export default function ClaimFlowModal({
 }) {
 	const props: MetroGameBoardProps = useContext(GameContext);
 	const [loading, setLoading] = useState(false);
-	const [step, setStep] = useState(0);
 	
 	const claimForm = useForm({
 		mode: "controlled",
@@ -65,7 +65,6 @@ export default function ClaimFlowModal({
 
 	function closeClaim() {
 		claimForm.reset();
-		// setStep(0);
 		close();
 	}
 	
@@ -88,18 +87,19 @@ export default function ClaimFlowModal({
 			opened={open}
 			onClose={closeClaim}
 			padding={0}
-			radius={0}>
+			radius={0}
+			centered>
 			<Modal.Overlay />
 			<Modal.Content>
-				<FullHeightLayout>
-					<LoadingOverlay visible={loading} loaderProps={{ children: <Loading message="Claiming neighbourhood..." /> }} />
+				<LoadingOverlay visible={loading} loaderProps={{ children: <Loading message="Claiming neighbourhood..." /> }} />
 					{ModalHeader(props.playerData.data.teamColor)}
-					<VerticalSpread>
-						<div></div>
+					<Modal.Body>
+						<Container pb="md">
 						<form onSubmit={claimForm.onSubmit(handleSubmit)}>
 							<Stack ta="left">
-							<Select label="Challenge" data={challengeHand} {...claimForm.getInputProps("challenge")} defaultValue={challengeTitle} />
-							<Select label="Neighbourhood" data={zoneSelectOptions} {...claimForm.getInputProps("zone")} defaultValue={String(claimedZone?.id || "")} />
+															<Select label="Claiming neighbourhood" data={zoneSelectOptions} {...claimForm.getInputProps("zone")} defaultValue={String(claimedZone?.id || "")} />
+
+							<Select label="With challenge" data={challengeHand} {...claimForm.getInputProps("challenge")} defaultValue={challengeTitle} />
 							<FileInput
 								label="Evidence"
 								multiple
@@ -108,11 +108,8 @@ export default function ClaimFlowModal({
 								<Button type="submit">Submit</Button>
 							</Stack>
 						</form>
-												<div></div>
-
-						{/* {StepperControls(claimForm, step, setStep, closeClaim, setLoading, props)} */}
-					</VerticalSpread>
-				</FullHeightLayout>
+						</Container>
+					</Modal.Body>
 			</Modal.Content>
 		</Modal.Root>
 	);

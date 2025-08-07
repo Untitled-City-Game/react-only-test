@@ -1,6 +1,7 @@
 import { Challenge, Color } from "@/scripts/types";
 import { ChallengeCard } from "@/src/userInterface/challenges/ChallengeCard";
 import DashedCard from "@/src/userInterface/DashedCard";
+import P from "@/src/userInterface/P";
 import { Modal } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 
@@ -52,7 +53,7 @@ export function ChallengeButton({
 	<><DashedCard color={team} bd={challenge.hard ? `4px double ${team}` : `1.5px dashed ${team}`}
 	onClick={open}
 	>
-			<h3>{challenge.emoji} {challenge.title}</h3>
+			<P>{challenge.emoji} {challenge.title}</P>
 	</DashedCard>
 	<ChallengePopup opened={opened} close={close} challengeInfo={challenge} team={team} completed={completed} claimButton={claimButton}/>
 	</>

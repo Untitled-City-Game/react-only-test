@@ -55,14 +55,11 @@ export default function ClientContainer(props: { children: React.ReactNode }) {
 
 		return (
 			<>
-			<p>Client container</p>
 			<MantineProvider theme={clientTheme}>
-				<p>Mantine container</p>
 				<ErrorBoundary
 					fallback={
 						<span>Something went wrong with the game client.</span>
 					}>
-						<p>Game client</p>
 					<GameClient
 						matchID={playerData.matchID || "default"}
 						gameCode="connect_four"

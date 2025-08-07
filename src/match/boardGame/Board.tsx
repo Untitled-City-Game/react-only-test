@@ -71,7 +71,6 @@ export function xBoard(props: MetroGameBoardProps) {
 	if (!props.G.active) {
 		return (
 			<GameContext.Provider value={{ ...boardGameContext }}>
-				<p>I'm waitin for the game to start... also hi leo.</p>
 				{/* <Waiting /> */}
 			</GameContext.Provider>
 		);
@@ -125,7 +124,6 @@ export default function Board(props: MetroGameBoardProps){
 	if (!props.G.active) {
 		return (
 			<GameContext.Provider value={{ ...boardGameContext }}>
-				<p>I'm waitin for the game to start... also hi leo.</p>
 				<Waiting />
 			</GameContext.Provider>
 		);
@@ -136,12 +134,12 @@ export default function Board(props: MetroGameBoardProps){
 
 	return (
 		<GameContext.Provider value={{ ...boardGameContext }}>
-			<p>Player ID: {playerID}</p>
+			{/* <p>Player ID: {playerID}</p>
 			<p>
 				Team: {playerID && props.G.allPlayersData[playerID].teamColor}
 			</p>
 			<p>Game state: {props.G.active ? "active" : "inactive"}</p>
-			<p>Gameover: {props.G.gameOver ? "true" : "false"}</p>
+			<p>Gameover: {props.G.gameOver ? "true" : "false"}</p> */}
 			<ErrorBoundary fallback={<span>Something went wrong inside the board element</span>}>
 			{children}
 			</ErrorBoundary>

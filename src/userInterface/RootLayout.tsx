@@ -19,7 +19,6 @@ export default function RootLayout() {
         <ColorSchemeScript />
       </head>
       <body style={{ backgroundColor: theme.white }}>
-        <span>TEST 006</span>
         <ErrorBoundary fallback={<span>Something went wrong in rootlayout</span>}>
           <Outlet />
 

@@ -5,7 +5,7 @@
   "source": "src/index.html",
   "scripts": {
     "sass": "sass --watch src/styles/interface.scss src/styles/interface.css",
-    "start": "concurrently --kill-others \"npm run sass\" \"cross-env APP_ENVIRONMENT=stage parcel --no-cache \"",
+    "start": "concurrently --kill-others \"npm run sass\" \"cross-env APP_ENVIRONMENT=dev parcel --no-cache \"",
     "dev": "cross-env APP_ENVIRONMENT=dev parcel --no-cache",
     "build": "parcel build ./src/index.html --no-optimize --no-cache",
     "deploy": "cross-env APP_ENVIRONMENT=prod npm run build && firebase deploy --project=prod",

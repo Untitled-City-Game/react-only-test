@@ -1,9 +1,12 @@
 import { ZoneData } from "@/scripts/types";
+import { GameContext } from "@/src/match/boardGame/Board";
 import ClaimFlowModal from "@/src/match/claim/ClaimFlowModal";
+import { theme } from "@/src/styles/theme";
 import P from "@/src/userInterface/P";
+import Span from "@/src/userInterface/Span";
 import { Button, Center, Container, Stack } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useContext } from "react";
 
 export default function SelectedZonePopup({
 	currentZone,
@@ -13,31 +16,37 @@ export default function SelectedZonePopup({
 	setCurrentZone: Dispatch<SetStateAction<ZoneData | undefined>>
 }) {
 	const [opened, { open, close }] = useDisclosure(false);
+	const props = useContext(GameContext)
 	console.log("selected zone popup", currentZone);
 	return (
 		<>
 			<Center
 				style={selectedZonePopupStyles}
 				display={currentZone ? "initial" : "none"}>
-				<Container style={selectedStyles} ta="center">
+				<Container style={selectedStyles} ta="center" bd={`2px solid ${theme.colors[props.playerData.data.teamColor][5]}`}>
 						<Stack gap="xs">
-						<h2 style={{
-							margin: 0
-						}}>{currentZone?.name}</h2>
-						<P style={{
-							margin: 0
-						}}>{
-						currentZone?.controlTeam !== null ? 
-						`${currentZone?.locked ? 
-							"Locked" : 
-							"Held"
-						} by ${currentZone?.controlTeam} team` : 
-						"Unclaimed"
-						}</P>
+						<P>
+							<Span style={{
+								margin: 0,
+								padding: 0,
+								fontWeight: "bold"
+							}}>{currentZone?.name} </Span>
+							<Span style={{
+								margin: 0,
+								padding: 0
+							}}>{
+							currentZone?.controlTeam !== null ? 
+							`${currentZone?.locked ? 
+								"Locked" : 
+								"Held"
+							} by ${currentZone?.controlTeam} team` : 
+							"Unclaimed"
+							}</Span>
+						</P>
 						<Button onClick={() => {
 							open();
 							setCurrentZone(undefined);
-						}} size="lg" disabled={currentZone?.locked}>
+						}} size="m" disabled={currentZone?.locked}>
 							<span>{currentZone?.controlTeam === null ? "Claim" : "Steal"}</span>
 						</Button>
 						</Stack>
@@ -58,7 +67,6 @@ const selectedStyles: React.CSSProperties = {
 	minWidth: "70%",
 	backgroundColor: "white",
 	borderRadius: "5px",
-	border: "2px solid black"
 };
 
 const selectedZonePopupStyles: React.CSSProperties = {

@@ -1,4 +1,4 @@
-import { Button, Center, Modal, UnstyledButton } from "@mantine/core";
+import { Button, Center, Container, Modal, ScrollArea, UnstyledButton } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { BsQuestionCircleFill } from "react-icons/bs";
 
@@ -38,11 +38,17 @@ export function HelpModal({
 		<Modal
 			opened={opened}
 			onClose={close}
+			centered
+			mah="70vh"
 			title={
 				<span style={{ fontSize: "1.5rem", fontWeight: "bold" }}>
 					How to play Connect 4
 				</span>
 			}>
+				<Container style={{
+					maxHeight: "60vh",
+					overflowY: "scroll",
+				}}>
 <p>Claim neighbourhoods by visiting them and completing a challenge.</p>
 <p>The first team to connect four neighbourhoods in a line win the game!</p>
 <h3 id="-challenges-"><strong>Challenges</strong></h3>
@@ -54,6 +60,9 @@ export function HelpModal({
 <p>When you do, you must freeze in place for ten minutes. You may not complete any challenges during that time.</p>
 <p>There is a limited number of challenges in the deck. If you run out, you can&#39;t claim any more neighbourhoods, so be careful!</p>
 <h3 id="-travel-"><strong>Travel</strong></h3>
+<h3 id="-travel-"><strong>Travel</strong></h3>
+<h3 id="-travel-"><strong>Travel</strong></h3>
+<h3 id="-travel-"><strong>Travel</strong></h3>
 <p>You can travel by public transit or on foot.</p>
 <p>Optionally, you may play with hybrid transit such as bikeshare, ferries or private bus services. Be sure to discuss and agree on what is allowed before playing.</p>
 <p>Including cars or private vehicles is strongly discouraged - a lot of the fun competition comes from transit logistics!</p>
@@ -63,6 +72,7 @@ export function HelpModal({
 <h4 id="-ties-"><strong>Ties</strong></h4>
 <p>If neither team completes a line within 4 hours, the team with the most neighbourhoods wins.</p>
 <p>If both teams have the same number of neighbourhoods, the team who controls the largest physical area wins.</p>
+</Container>
 		</Modal>
 	);
 }

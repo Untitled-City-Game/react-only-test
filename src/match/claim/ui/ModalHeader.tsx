@@ -2,7 +2,7 @@ import { ComplexHeader } from "@/src/userInterface/Header/Header";
 import { Box, Group, Modal } from "@mantine/core";
 
 export function ModalHeader(color: string) {
-	return <Modal.Header>
+	return <Modal.Header style={{gap: 0, padding: 0, justifyContent: "flex-start", alignItems: "flex-start"}} >
 		<ComplexHeader
 			color={color}
 			w="100%">

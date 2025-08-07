@@ -1,13 +1,14 @@
 import { games } from "@/scripts/consts";
 import { GameState, MetroGameBoardProps, PlayerData } from "@/scripts/types";
 import { GameContext } from "@/src/match/boardGame/Board";
+import Loading from "@/src/match/boardGame/Loading";
 import DashedCard from "@/src/userInterface/DashedCard";
 import Header from "@/src/userInterface/Header/Header";
 import { HelpButton } from "@/src/userInterface/help/HelpButton";
 import FullHeightLayout, { VerticalSpread } from "@/src/userInterface/Layout";
 import P from "@/src/userInterface/P";
-import { Box, Button, Center, Container, Stack } from "@mantine/core";
-import { useContext, useEffect } from "react";
+import { Box, Button, Center, Container, LoadingOverlay, Stack } from "@mantine/core";
+import { useContext, useEffect, useState } from "react";
 
 export default function Waiting() {
 	console.log("rendering waiting page");
@@ -17,22 +18,24 @@ export default function Waiting() {
 	if (!game) {
 		return <h1>Game not found</h1>
 	}
+	const [loading, setLoading] = useState(false);
 	// useEffect(() => {
 	// 	Notification.requestPermission();
 	// });
 	return (
 		<Center>
 			<FullHeightLayout>
+				<LoadingOverlay visible={loading} loaderProps={{ children: <Loading message="Claiming neighbourhood..." /> }} />
 				<Header color={props.playerData.data.teamColor || "white"}>Connect 4</Header>
 				<VerticalSpread>
 					<div></div>
 					<div>
-						<Stack gap="s" align="stretch">
+						<Stack gap="xs" align="stretch">
 							<Box>
 														<h2 style={{ fontWeight: "light" }}><span style={{ fontWeight: "bold" }}>{props.G.gameName}</span> <br />is waiting to start.</h2>
 
 						<P><strong>Host: </strong> {playerData[0]?.name}</P>
-						<p><strong>Invite code: </strong>{props.matchID}</p>
+						<P><strong>Invite code: </strong>{props.matchID}</P>
 						</Box>
 						<GameInviteButton gameCode={props.gameCode} matchID={props.matchID} />
 						<HelpButton />
@@ -42,6 +45,7 @@ export default function Waiting() {
 					</div>
 					{props.playerID === '0' ? <Button
 						onClick={() => {
+							setLoading(true);
 							props.moves.startGame();
 						}}>
 						Start the Game
@@ -64,7 +68,7 @@ function TeamSummary({ gameData }: { gameData: GameState }) {
 					<DashedCard key={index} color={team[0].teamColor}>
 						<Container ta="left" w="100%">
 							<h3 style={{ textTransform: "capitalize" }}>{team[0].teamColor} team</h3>
-							<p>{team.map((player) => player.name).join(", ")}</p>
+							<P>{team.map((player) => player.name).join(", ")}</P>
 						</Container>
 					</DashedCard>
 				))}

@@ -6,7 +6,6 @@ export default function MatchLayout()
   {
 	 return (
     <ErrorBoundary fallback={<span>Something went wrong in matchlayout.</span>}>
-      <p>MatchLayout</p>
     <ClientContainer>
       <Outlet />
     </ClientContainer>

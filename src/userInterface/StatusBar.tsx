@@ -13,7 +13,7 @@ export default function StatusBar({ children }: { children?: React.ReactNode }) 
 	return (
 			<Center style={statusBarStyles} className="header">
 				<Group justify="center" align="center" wrap="nowrap">
-					<Span size="xs">{claimedZones} neighbourhood{claimedZones === 1 ? "" : "s"} claimed</Span>
+					<Span size="xs">{claimedZones} area{claimedZones === 1 ? "" : "s"} claimed</Span>
 					<Span size="xs"><Countdown 
 					date={new Date(G.endTime || 0)} 
 					renderer={

@@ -7,6 +7,7 @@ import { Message } from "@/src/match/matchTabs/logTab/Message";
 import { useAutoScrollToBottom } from "@/src/userInterface/chatScroll";
 import ConfirmButton from "@/src/userInterface/ConfirmModal";
 import { ComplexHeader } from "@/src/userInterface/Header/Header";
+import P from "@/src/userInterface/P";
 import StatusBar from "@/src/userInterface/StatusBar";
 import { Box, Button, Group, ScrollAreaAutosize, Stack } from "@mantine/core";
 import { useContext, useEffect, useRef, useState } from "react";
@@ -54,15 +55,15 @@ export default function LogTab({ active }: { active: string | null }) {
 				<StatusBar />
 				<ComplexHeader color={props.playerData.data.teamColor}>
 					<Stack gap="0" ta="center">
-						<h1>Log</h1>
-						<p style={{ margin: 0 }}>
+						{/* <h1>Log</h1> */}
+						{/* <P fz="sm" style={{ margin: 0 }}>
 							Game will end at{" "}
 							{props.G.endTime &&
 								new Date(props.G.endTime).toLocaleTimeString(
 									"en-US",
 									{ timeStyle: "short" }
 								)}
-						</p>
+						</P> */}
 						<Group m="sm" justify="center">
 							{props.playerData.data.admin ?
 								<ConfirmButton variant="outline" description="undo" action={() => props.moves.customUndo()}>

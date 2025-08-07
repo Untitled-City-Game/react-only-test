@@ -1,16 +1,5 @@
 import { ConnectFour } from '@/scripts/games/connect_four/connect_four';
-import { Firestore } from 'bgio-firebase';
-import { Origins, Server } from 'boardgame.io/server';
-import admin from 'firebase-admin';
-
-const database = new Firestore({
-	app: process.env.FIREBASE,
-	config: {
-		credential: admin.credential.applicationDefault(),
-		databaseURL: `https://${process.env.FIREBASE}.firebaseio.com`,
-	},
-  });
-  
+import { FlatFile, Origins, Server } from 'boardgame.io/server';
 
 const authenticateCredentials = async () => {
  return true;
@@ -21,8 +10,10 @@ async function buildServer(){
 	const server = Server({
 		games: [ConnectFour],
 		authenticateCredentials,
-		origins: [Origins.LOCALHOST,  process.env.GAME_ADDRESS || false, "*"],
-		db: database
+		origins: [Origins.LOCALHOST,  process.env.GAME_ADDRESS || false],
+		db: new FlatFile({
+			dir: './db'
+		})
 	});
 
 	server.router.get('/hello', (ctx) => {

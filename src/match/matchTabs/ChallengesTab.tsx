@@ -4,8 +4,9 @@ import { GameContext } from "@/src/match/boardGame/Board";
 import ClaimFlowModal from "@/src/match/claim/ClaimFlowModal";
 import { ChallengeButton } from "@/src/userInterface/challenges/ChallengePopup";
 import { ComplexHeader } from "@/src/userInterface/Header/Header";
+import Span from "@/src/userInterface/Span";
 import StatusBar from "@/src/userInterface/StatusBar";
-import { Box, Button, Container, Stack } from "@mantine/core";
+import { Box, Button, Container, Group, Stack } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { createContext, useContext, useState } from "react";
 
@@ -38,22 +39,24 @@ export default function ChallengesTab() {
 				<ComplexHeader color={props.playerData.data.teamColor}>
 					<Container w="100%">
 						<Stack gap="0" ta="center" align="stretch" w="100%">
-							<h1>Challenges</h1>
-							<Button onClick={handleDiscardHand}>
+							{/* <h1>Challenges</h1> */}
+							<Group justify="center" m="xs">
+							<Span fz="sm">
+								{challengeDeck.length} challenges in deck
+							</Span>
+							<Button onClick={handleDiscardHand} display="inline-block" size="xs">
 								Discard Hand
 							</Button>
-							<p>
-								{challengeDeck.length} challenges left in deck
-							</p>
+							</Group>
 						</Stack>
 					</Container>
 				</ComplexHeader>
 			</Box>
-			<Container mih="0" mt="md" style={{
+			<Container mih="0" style={{
 				flexGrow: 10,
 				overflowY: "scroll"
 			}}>
-				<Stack pb="md">
+				<Stack pb="md" pt="md">
 					<ChallengeContext value={{open, setCurrentChallenge}}>
 					{challengeHand.map((challenge, index) => {
 						return (
