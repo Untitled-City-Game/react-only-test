@@ -9,11 +9,11 @@ import { Client } from "boardgame.io/react";
 import { useEffect, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { useNavigate } from "react-router";
-
+import { socket } from "@/scripts/socket"
 export default function ClientContainer(props: { children: React.ReactNode }) {
 	const [playerData, setPlayerData] = useState<PlayerData>();
 	const navigate = useNavigate();
-
+	
 	//Check if session is already part of a game
 	useEffect(() => {
 		console.log("running localstorage playerdata effect");
@@ -77,3 +77,4 @@ export default function ClientContainer(props: { children: React.ReactNode }) {
 		return <>No player data found.</>;
 	}
 }
+

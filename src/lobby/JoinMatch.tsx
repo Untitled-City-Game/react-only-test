@@ -1,4 +1,4 @@
-import { Button, Radio, Stack, TextInput } from "@mantine/core";
+import { Button, LoadingOverlay, Radio, Stack, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { LobbyAPI } from "boardgame.io";
 import { LobbyClient } from "boardgame.io/client";
@@ -15,6 +15,7 @@ import { ListButton } from "../userInterface/ListButton";
 export default function JoinMatch() {
 	const matchID = useParams().matchID;
 	const gameCode = useParams().gameCode;
+	const [loading, setLoading] = useState(false);
 	if (!matchID || !gameCode) {
 		throw new Error("Invalid match ID or game code");
 	}
@@ -54,6 +55,7 @@ export default function JoinMatch() {
 		teamColor: NamedColor;
 	};
 	const handleJoinGame = async (values: FormValues) => {
+		setLoading(true);
 		console.log(values);
 		console.warn("looking for player", values.PlayerName)
 		const existingPlayer = matchData?.players.find(player => player.name === values.PlayerName);
@@ -110,6 +112,7 @@ export default function JoinMatch() {
 		));
 		return (
 			<>
+				<LoadingOverlay visible={loading} loaderProps={{ children: <Loading message="Joining match..." /> }} />
 				<h1>{matchData.setupData.gameName}</h1>
 
 				<Stack gap={0} mb="sm">

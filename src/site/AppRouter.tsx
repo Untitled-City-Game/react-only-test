@@ -8,6 +8,7 @@ import Match from "@/src/match/matchTabs/TabSet";
 import ChooseGame from "@/src/site/ChooseGame";
 import ExampleMap from "@/src/site/ExampleMap";
 import OuterLayout from "@/src/site/outerLayout";
+import SocketTest from "@/src/site/SocketTest";
 import NotFound from "@/src/userInterface/NotFound";
 import RootLayout from "@/src/userInterface/RootLayout";
 import { BrowserRouter, Route, Routes } from "react-router";
@@ -17,6 +18,7 @@ export default function AppRouter(){
 	<BrowserRouter>
 		<Routes>
 			<Route element={<RootLayout />}>
+			<Route path="/location-test" element={<SocketTest />}></Route>
 				<Route element={<OuterLayout />}>
 					<Route index element={<ChooseGame />} />
 					<Route path="map" element={<ExampleMap />} />

@@ -1,5 +1,5 @@
 import { gameLocationCenters } from "@/scripts/consts";
-import LocationMarker from "@/src/match/googleMaps/Location";
+import LocationMarker from "@/src/match/googleMaps/useMyLocation";
 import { Container } from "@mantine/core";
 import { APIProvider, Map } from "@vis.gl/react-google-maps";
 

@@ -6,6 +6,7 @@ import { DOMParser } from "xmldom";
 import { City, LineData, MatchMapData, PolyData } from "./types";
 
 export async function fetchMapData(cityName: City = "melbourne") : Promise<MatchMapData> {
+  console.log("fetch map data")
   let zoneDataObj : GeoJSON.FeatureCollection;
   // try{
   // } catch (error) {
@@ -22,16 +23,24 @@ export async function fetchMapData(cityName: City = "melbourne") : Promise<Match
 }
 
 async function fetchKML(cityName: City = "melbourne"){
-  const res = await fetch(process.env.GAME_SERVER + `/map-data/${maps[cityName].kml_live_id}`);
-  //const res = await fetch(`https://www.google.com/maps/d/u/0/kml?forcekml=1&mid=${maps[cityName].kml_live_id}`);
-  console.log("res", res);
-  const kmlText = await res.text();
-  console.log("kml text", kmlText);
-  const kmlParsed = new DOMParser().parseFromString(kmlText, "text/xml");
-  console.log("parsed kml", kmlParsed);
-  const geoJson = toGeoJson.kml(kmlParsed);
-  if(!geoJson.features){
-    throw new Error("KML file did not contain features");
-  }
-  return geoJson as GeoJSON.FeatureCollection;
+  console.log("fetch kml")
+  try {
+    console.log(process.env.GAME_SERVER + `/map-data/${maps[cityName].kml_live_id}`)
+    const res = await fetch(process.env.GAME_SERVER + `/map-data/${maps[cityName].kml_live_id}`);
+    //const res = await fetch(`https://www.google.com/maps/d/u/0/kml?forcekml=1&mid=${maps[cityName].kml_live_id}`);
+    console.log("res", res);
+    const kmlText = await res.text();
+    console.log("kml text", kmlText);
+    const kmlParsed = new DOMParser().parseFromString(kmlText, "text/xml");
+    console.log("parsed kml", kmlParsed);
+    const geoJson = toGeoJson.kml(kmlParsed);
+    if(!geoJson.features){
+      throw new Error("KML file did not contain features");
+    }
+    return geoJson as GeoJSON.FeatureCollection;
+    }
+    catch (error) {
+      console.error("Error fetching KML", error);
+      throw new Error(`Error fetching KML: ${error}`);
+    }
 }

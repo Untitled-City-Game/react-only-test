@@ -1,6 +1,7 @@
 import { highlightColor } from "@/scripts/consts";
 import { MetroGameBoardProps, ZoneData } from "@/scripts/types";
 import { GameContext } from "@/src/match/boardGame/Board";
+import useTeamLocations from "@/src/match/boardGame/useTeamLocations";
 import MapLine from "@/src/match/googleMaps/GoogleMapsLine";
 import VisGlMapElement from "@/src/match/googleMaps/MapElement";
 import SelectedZonePopup from "@/src/match/googleMaps/SelectedZonePopup";
@@ -13,6 +14,7 @@ export default function MapTab() {
 	const props: MetroGameBoardProps = useContext(GameContext);
 	const G = props.G;
 	const { zonePolygons, winningLines, city } = G.MatchMapData;
+
 	const [lineVisibility, setLineVisibility] = useState(
 		winningLines
 			? winningLines.reduce((acc, line) => {

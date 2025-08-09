@@ -35,7 +35,7 @@ export function drawChallenge({ G, playerID }: { G: GameState; playerID: string;
 	//draw a challenge from deck
 	let drawnChallenge;
 	if (hardChallenges === 0) {
-		//draw first hard challenge
+		//draw hard challenge
 		const hardChallenge = teamData.challengeDeck.findIndex(challenge => challenge.hard);
 		if (hardChallenge !== -1) {
 			drawnChallenge = teamData.challengeDeck.splice(hardChallenge, 1)[0];
@@ -43,7 +43,8 @@ export function drawChallenge({ G, playerID }: { G: GameState; playerID: string;
 			drawnChallenge = teamData.challengeDeck.pop();
 		}
 	}
-	else if (hardChallenges >= 3) {
+	else if (hardChallenges >= 2) {
+		//draw a regular challenge
 		const normalChallenge = teamData.challengeDeck.findIndex(challenge => !challenge.hard);
 		if (normalChallenge !== -1) {
 			drawnChallenge = teamData.challengeDeck.splice(normalChallenge, 1)[0];

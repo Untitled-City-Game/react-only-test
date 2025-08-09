@@ -8,10 +8,12 @@ import {
 	NamedColor,
 	PlayerData
 } from "@/scripts/types";
+import Loading from "@/src/match/boardGame/Loading";
 import Span from "@/src/userInterface/Span";
 import {
 	Button,
 	Group,
+	LoadingOverlay,
 	Paper,
 	Radio,
 	Select,
@@ -20,11 +22,12 @@ import {
 } from "@mantine/core";
 import { hasLength, useForm } from "@mantine/form";
 import { LobbyClient } from "boardgame.io/client";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 
 export default function CreateGame() {
 	const gameCode = useParams().gameCode;
+	const [loading, setLoading] = useState(false);
 	const navigate = useNavigate();
 	const lobbyClient = useMemo(
 		() => new LobbyClient({ server: process.env.GAME_SERVER }),
@@ -122,6 +125,7 @@ export default function CreateGame() {
 
 	return (
 		<form style={{width: "100%"}} onSubmit={createGameForm.onSubmit(handleCreateGame)}>
+			<LoadingOverlay visible={loading} loaderProps={{ children: <Loading message="Joining match..." /> }} />
 			<h2>Create a Connect Four Match</h2>
 			<Stack pb="sm">
 				<Select
