@@ -1,6 +1,8 @@
 import { games } from "@/scripts/consts";
+import { theme } from "@/src/styles/theme";
 import { HelpButton } from "@/src/userInterface/help/HelpButton";
-import { Button, Group, Stack, TextInput } from "@mantine/core";
+import Segment from "@/src/userInterface/Segment";
+import { Button, Group, Stack, TextInput, useMantineTheme } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { LobbyClient } from "boardgame.io/client";
 import { useMemo, useState } from "react";
@@ -8,6 +10,7 @@ import { Link, useNavigate, useParams } from "react-router";
 
 export default function ChooseMatch() {
 	const gameCode = useParams().gameCode;
+	const theme = useMantineTheme();
 	const game = games.find((game) => game.code === gameCode);
 	let navigate = useNavigate();
 	//Setup mantine form
@@ -32,8 +35,9 @@ export default function ChooseMatch() {
 	return (
 		<>
 			<Stack>
+				<Segment color={theme.colors[theme.primaryColor][6] || "black"}>
 				<Stack gap="0">
-					<h2>Create a match</h2>
+					<h2 style={{margin: "0 0 0.5rem 0"}}>Create a match</h2>
 					<Button
 						fz="md"
 						fw="normal"
@@ -42,12 +46,14 @@ export default function ChooseMatch() {
 						Create
 					</Button>
 				</Stack>
+				</Segment>
+				<Segment color={theme.colors[theme.primaryColor][6] || "black"}>
 				<Stack gap="0">
-					<h2>Join a match</h2>
+					<h2 style={{margin: "0 0 0.5rem 0"}}>Join a match</h2>
 					<JoinMatchCodeInput gameCode={gameCode || ""} />
 				</Stack>
+				</Segment>
 				<Stack gap="0">
-					<h2>Help</h2>
 					<HelpButton />
 				</Stack>
 			</Stack>

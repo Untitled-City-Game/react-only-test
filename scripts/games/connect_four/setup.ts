@@ -1,5 +1,5 @@
-import { createChallengeDeck } from "@/scripts/games/connect_four/moves/handManagement";
-import { AllPlayersData, AllTeamsData, GameSetupData, GameState, PolyData, ZoneData } from "@/scripts/types";
+import { createChallengeDeck } from "@/scripts/games/shared_moves/handManagement";
+import { AllPlayersData, AllTeamsData, GameSetupData, ConnectFourGameState, PolyData, ZoneData } from "@/scripts/types";
 import type { Ctx } from "boardgame.io";
 
 function isGameSetupData(data: unknown): string | undefined {
@@ -9,7 +9,7 @@ function isGameSetupData(data: unknown): string | undefined {
 	if (!('zonePolygons' in data) || !('winningLines' in data) || !data.zonePolygons || !data.zonePolygons) return ('Game setup data is missing map data');
 }
 
-export function gameSetup(ctx: Ctx, setupData: GameSetupData): GameState {
+export function gameSetup(ctx: Ctx, setupData: GameSetupData): ConnectFourGameState {
 	console.log("Setting up game of connect four");
 	console.log("players: ", ctx.numPlayers);
 	console.log("currentplayer ", ctx.currentPlayer);

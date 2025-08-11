@@ -119,6 +119,7 @@ export default function JoinMatch() {
 					<span><strong>Host:</strong> {matchData.players[0].name}</span>
 					<span><strong>Match ID:</strong> {matchID}</span>
 				</Stack>
+				<Stack>
 				<form
 					onSubmit={joinGameForm.onSubmit(handleJoinGame)}
 					id="joingame">
@@ -139,6 +140,7 @@ export default function JoinMatch() {
 				<Button type="submit" form="joingame">
 					Join Game
 				</Button>
+				</Stack>
 			</>
 		);
 	}

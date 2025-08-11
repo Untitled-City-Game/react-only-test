@@ -1,4 +1,4 @@
-import { GameState, LogMetadata, PlayerData } from "@/scripts/types";
+import { ConnectFourGameState, LogMetadata, PlayerData } from "@/scripts/types";
 import { theme } from "@/src/styles/theme";
 import P from "@/src/userInterface/P";
 import Span from "@/src/userInterface/Span";
@@ -10,7 +10,7 @@ export function MessageBox({
 	entry, gameData, playerData, children
 }: {
 	entry: LogEntry;
-	gameData: GameState;
+	gameData: ConnectFourGameState;
 	playerData: PlayerData;
 	children: React.ReactNode;
 }) {
@@ -56,7 +56,7 @@ export function MessageWrapper({
 	entry, gameData, playerData, children, unstyled
 }: {
 	entry: LogEntry;
-	gameData: GameState;
+	gameData: ConnectFourGameState;
 	playerData: PlayerData;
 	children: React.ReactNode;
 	unstyled?: boolean;

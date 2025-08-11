@@ -30,7 +30,7 @@ export function ChallengeCard(props: { teamColor: Color; challenge: Challenge; c
 	</DashedCard>);
 }
 
-function ClaimButton(props: {title: string}){
+export function ClaimButton(props: {title: string}){
 	const {open, setCurrentChallenge} = useContext(ChallengeContext)
 	return(
 			<Button onClick={() => {

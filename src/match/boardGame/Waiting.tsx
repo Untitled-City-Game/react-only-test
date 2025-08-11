@@ -1,5 +1,5 @@
 import { games } from "@/scripts/consts";
-import { GameState, MetroGameBoardProps, PlayerData } from "@/scripts/types";
+import { ConnectFourGameState, MetroGameBoardProps, PlayerData } from "@/scripts/types";
 import { GameContext } from "@/src/match/boardGame/Board";
 import Loading from "@/src/match/boardGame/Loading";
 import DashedCard from "@/src/userInterface/DashedCard";
@@ -57,7 +57,7 @@ export default function Waiting() {
 	);
 }
 
-function TeamSummary({ gameData }: { gameData: GameState }) {
+function TeamSummary({ gameData }: { gameData: ConnectFourGameState }) {
 	const teams = Object.keys(gameData.allTeamsData).map((team) => {
 		return Object.values(gameData.allPlayersData).filter((player: PlayerData) => player.teamColor === team);
 	})

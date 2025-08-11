@@ -1,19 +1,23 @@
 import { completeChallenge, completeChallengeAndClaim } from "@/scripts/games/connect_four/moves/completeChallengeAndClaim";
-import { discardChallenge, discardHand } from "@/scripts/games/connect_four/moves/handManagement";
-import { endGame, startGame } from "@/scripts/games/connect_four/moves/manageGame";
-import { playerSetup } from "@/scripts/games/connect_four/moves/playerSetup";
+import { discardChallenge, discardHand } from "@/scripts/games/shared_moves/handManagement";
+import { endGame, startGame } from "@/scripts/games/shared_moves/manageGame";
+import { playerSetup } from "@/scripts/games/shared_moves/playerSetup";
 import { gameSetup } from "@/scripts/games/connect_four/setup";
-import customUndo from "@/scripts/games/undo";
+import customUndoTemplate from "@/scripts/games/undo";
 import {
 	GameSetupData,
-	GameState,
-	StripContext
+	ConnectFourGameState,
+	StripContext,
+	GameStateUniversal,
+	MoveContext
 } from "@/scripts/types";
 import type { Ctx, DefaultPluginAPIs, Game } from "boardgame.io";
 
-export type MoveContext = DefaultPluginAPIs & { G: GameState; ctx: Ctx; playerID: string };
-
 export const handSize = 5;
+
+const customUndo = (context : MoveContext<ConnectFourGameState>) => {
+	customUndoTemplate<ConnectFourGameState>(context)
+}
 
 const claimStateMoves = {
 	playerSetup,
@@ -26,7 +30,7 @@ const claimStateMoves = {
 };
 export type ClaimStateMoves = StripContext<typeof claimStateMoves>;
 
-export const ConnectFour: Game<GameState> = {
+export const ConnectFour: Game<ConnectFourGameState> = {
 	name: `connect-four`,
 	//set up game board using map json info
 	// validateSetupData: (data) => isGameSetupData(data),
@@ -39,8 +43,8 @@ export const ConnectFour: Game<GameState> = {
 		console.log("on end");
 	},
 	moves: {
-		startGame,
-		playerSetup,
+		startGame : (args: any) => startGame<ConnectFourGameState>(args),
+		playerSetup
 	},
 	turn: {
 		onBegin: ({ events }) => {
@@ -50,7 +54,7 @@ export const ConnectFour: Game<GameState> = {
 			join: {
 				moves: {
 					playerSetup,
-					startGame,
+					startGame : (args: any) => startGame<ConnectFourGameState>(args),
 				},
 			},
 			claim: {

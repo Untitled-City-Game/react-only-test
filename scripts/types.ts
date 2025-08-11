@@ -1,5 +1,5 @@
 import { UseFormReturnType } from '@mantine/form';
-import { LobbyAPI } from 'boardgame.io';
+import { Ctx, DefaultPluginAPIs, LobbyAPI } from 'boardgame.io';
 import { BoardProps } from 'boardgame.io/react';
 import { LineString } from 'geojson';
 import { Dispatch, ReactElement, SetStateAction } from 'react';
@@ -29,22 +29,28 @@ export interface PolygonFeature extends GeoJSON.Feature {
 		properties: GeoJSON.GeoJsonProperties & {Name: string};
 	}
 
-//Game state
-export interface GameState {
+export type GameStateUniversal = {
 	gameName: string;
-	zoneData: ZoneData[],
-	MatchMapData: MatchMapData,
-	active: boolean,
-	allPlayersData : AllPlayersData,
-	allTeamsData : AllTeamsData,
-	gameOver : boolean,
-	startTime? : number,
-	endTime? : number,
-	challengeDeck: AllChallengeData,
-	gameStateLogs: GameStateLog[] 
+	allPlayersData: AllPlayersData;
+	gameOver: boolean;
+	startTime?: number;
+	endTime?: number;
+	gameStateLogs: GameStateLog<any>[]
 }
 
-export type GameStateLog = Omit<GameState, "gameStateLogs">
+export type MoveContext<SomeGameState extends GameStateUniversal> = DefaultPluginAPIs & { G: SomeGameState; ctx: Ctx; playerID: string };
+
+//Game state
+export interface ConnectFourGameState extends GameStateUniversal {
+	zoneData: ZoneData[],
+	allTeamsData : AllTeamsData;
+	MatchMapData: MatchMapData,
+	active: boolean,
+	challengeDeck: AllChallengeData,
+	gameStateLogs: GameStateLog<ConnectFourGameState>[],
+}
+
+export type GameStateLog<GameState extends GameStateUniversal> = Omit<GameState, "gameStateLogs">
 
 export type ZoneData = {
 	id: number;
@@ -128,7 +134,7 @@ export type MetroGameBoardProps = MetroGameContext & {
 	children?: React.ReactNode;
 }
 
-export type MetroGameContext = BoardProps<GameState> & ClientSetupData
+export type MetroGameContext = BoardProps<ConnectFourGameState> & ClientSetupData
 
 export type LogMetadata = {
 	date?: string;
@@ -147,6 +153,8 @@ type HEX = `#${string}`;
 export type NamedColor = "red" | "blue" | "green" | "yellow" | "purple" | "orange" | "black" | "white"| "grey";
 
 export type Color = RGB | RGBA | HEX | NamedColor;
+
+export type coordSet = {lat: number, long: number}
 
 export function isCity(city: string) : city is City{
 	return cities.includes(city as City);

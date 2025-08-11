@@ -1,9 +1,9 @@
 import { MoveContext } from "@/scripts/games/connect_four/connect_four";
 import { createUndoPoint } from "@/scripts/games/undo";
-import { Challenge, GameState } from "@/scripts/types";
+import { Challenge, ConnectFourGameState } from "@/scripts/types";
 import { LogAPI } from "boardgame.io/dist/types/src/plugins/plugin-log";
-import { discardChallenge, drawToFull } from "./handManagement";
-import { addLogMetadata } from "./metadata";
+import { discardChallenge, drawToFull } from "../../shared_moves/handManagement";
+import { addLogMetadata } from "../../shared_moves/metadata";
 
 export function completeChallengeAndClaim(
 	context: MoveContext,
@@ -44,7 +44,7 @@ function removeChallenges(challengeHand: Challenge[], challengesToRemove: Challe
 }
 
 export function claimZone(
-	{ G, log, playerID }: { G: GameState; log: LogAPI; playerID: string; },
+	{ G, log, playerID }: { G: ConnectFourGameState; log: LogAPI; playerID: string; },
 	zoneID: number,
 	challenge: Challenge
 ) {
@@ -88,7 +88,7 @@ export function claimZone(
 }
 
 export function completeChallenge(
-	{ G, log, playerID }: { G: GameState; log: LogAPI; playerID: string; },
+	{ G, log, playerID }: { G: ConnectFourGameState; log: LogAPI; playerID: string; },
 	challenge: string,
 	evidence: string[]
 ) {

@@ -1,7 +1,7 @@
 import { GiRadarSweep } from "react-icons/gi";
 import { MdGrid4X4 } from "react-icons/md";
 import { PiPersonSimpleRunBold } from "react-icons/pi";
-
+import { VscSnake } from "react-icons/vsc";
 export const highlightColor = "orange";
 
 export const numPlayers = 6;
@@ -69,7 +69,7 @@ export const games = [
 		name: "Tag",
 		code: "tag",
 		active: false,
-		description: "Explore the city and dodge the taggers - or chase your friends to the end of the line!",
+		description: "Explore the city and dodge the taggers - or chase your friends!",
 		color: "purple",
 		icon: PiPersonSimpleRunBold 
 	},
@@ -80,6 +80,14 @@ export const games = [
 		description: "Find and destroy the other team before they find you!",
 		color: "water",
 		icon: GiRadarSweep
+	},
+	{
+		name: "Snake",
+		code: "snake",
+		active: false,
+		description: "Collect the fruit to grow your snake. Wrap around the other team to win!",
+		color: "green",
+		icon: VscSnake
 	}
 ]
 
