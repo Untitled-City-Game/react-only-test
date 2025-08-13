@@ -1,20 +1,22 @@
-import { discardChallenge, discardHand } from "@/scripts/games/shared_moves/handManagement";
-import { endGame } from "@/scripts/games/shared_moves/manageGame";
+import { endGame, startGame } from "@/scripts/games/shared_moves/manageGame";
 import { playerSetup } from "@/scripts/games/shared_moves/playerSetup";
 import { snakeGameSetup } from "@/scripts/games/snake/setup";
+import { snakePlayerSetup } from "@/scripts/games/snake/snakePlayerSetup";
 import { SnakeGameSetupData, SnakeGameState } from "@/scripts/games/snake/types";
-import customUndo from "@/scripts/games/undo";
-import { StripContext } from "@/scripts/types";
+import customUndoTemplate from "@/scripts/games/undo";
+import { MoveContext, StripContext } from "@/scripts/types/types";
 import type { Ctx, DefaultPluginAPIs, Game } from "boardgame.io";
 
+const customUndo = (context : MoveContext<SnakeGameState>) => {
+	customUndoTemplate(context)
+}
 const playStateMoves_Snake = {
-	playerSetup,
-	discardChallenge,
-	discardHand,
+	snakePlayerSetup,
 	endGame,
-	customUndo
+	customUndo,
+	playerSetup : snakePlayerSetup
 };
-export type PlayStateMoves_Snake = StripContext<typeof claimStateMoves>;
+export type PlayStateMoves_Snake = StripContext<typeof playStateMoves_Snake>;
 
 export const Snake: Game<SnakeGameState> = {
 	name: `snake`,
@@ -25,8 +27,8 @@ export const Snake: Game<SnakeGameState> = {
 	},
 	
 	moves: {
-		startGame,
-		playerSetup,
+		startGame : (args: any) => startGame<SnakeGameState>(args),
+		playerSetup: playerSetup,
 	},
 	
 	turn: {
@@ -36,8 +38,8 @@ export const Snake: Game<SnakeGameState> = {
 		stages: {
 			join: {
 				moves: {
-					playerSetup,
-					startGame,
+					playerSetup: snakePlayerSetup,
+					startGame : (args: any) => startGame<SnakeGameState>(args),
 				},
 			},
 			play: {

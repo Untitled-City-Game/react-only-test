@@ -1,15 +1,13 @@
 import { gameTimeMinutes } from "@/scripts/consts";
-import { teamSetup } from "@/scripts/games/shared_moves/teamSetup";
 import { createUndoPoint } from "@/scripts/games/undo";
-import { ConnectFourGameState, GameStateUniversal, MoveContext } from "@/scripts/types";
+import { GameStateUniversal, MoveContext } from "@/scripts/types/types";
 import { addLogMetadata } from "./metadata";
 
 export function startGame<GameState extends GameStateUniversal>(context: MoveContext<GameState>) {
 	console.log("starting game")
 	const { events, G, random, log } = context;
-	//shuffle and create decks
+	G.active = true;
 	events.setActivePlayers({ all: "claim" });
-	teamSetup(context);
 	startGameTimer<GameState>(G);
 	createUndoPoint<GameState>(G);
 	addLogMetadata(

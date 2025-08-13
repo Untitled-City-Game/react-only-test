@@ -6,8 +6,8 @@ import { useNavigate, useParams } from "react-router";
 
 import { games } from "@/scripts/consts";
 import { joinMatch } from "@/scripts/joinMatch";
-import { NamedColor, PlayerData } from "@/scripts/types";
-import Loading from "@/src/match/boardGame/Loading";
+import { NamedColor, PlayerData } from "@/scripts/types/types";
+import Loading from "@/src/match/screens/game_status/Loading";
 import P from "@/src/userInterface/P";
 import { useEffect, useMemo, useState } from "react";
 import { ListButton } from "../userInterface/ListButton";
@@ -31,7 +31,7 @@ export default function JoinMatch() {
 	//get match data
 	const [matchData, setMatchData] = useState<LobbyAPI.Match>();
 	useEffect(() => {
-		lobbyClient.getMatch("connect-four", matchID).then((res) => {
+		lobbyClient.getMatch(gameCode, matchID).then((res) => {
 			setMatchData(res);
 		});
 	}, [matchID, lobbyClient]);
@@ -72,6 +72,7 @@ export default function JoinMatch() {
 		} else {
 			playerData = await joinMatch(
 				lobbyClient,
+				gameCode,
 				matchID,
 				values.PlayerName,
 				values.teamColor

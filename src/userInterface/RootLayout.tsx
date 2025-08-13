@@ -21,7 +21,6 @@ export default function RootLayout() {
       <body style={{ backgroundColor: theme.white }}>
         <ErrorBoundary fallback={<span>Something went wrong in rootlayout</span>}>
           <Outlet />
-
         </ErrorBoundary>
       </body>
       </>

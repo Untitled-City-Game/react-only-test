@@ -1,6 +1,6 @@
 import { games } from "@/scripts/consts";
 import { theme } from "@/src/styles/theme";
-import { HelpButton } from "@/src/userInterface/help/HelpButton";
+import { HelpButton } from "@/src/match/components/help/HelpButton";
 import Segment from "@/src/userInterface/Segment";
 import { Button, Group, Stack, TextInput, useMantineTheme } from "@mantine/core";
 import { useForm } from "@mantine/form";

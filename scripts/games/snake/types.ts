@@ -1,12 +1,14 @@
-import { City, coordSet, GameStateUniversal, PlayerData } from "@/scripts/types";
+import { City, CoordSet, GameStateLog, GameStateUniversal, PlayerData } from "@/scripts/types/types";
 
 export interface SnakeGameState extends GameStateUniversal {
+	gameCode: "snake"
 	fruits: Fruit[];
-	allTeamsData: SnakeTeam[]
+	snakeTeamData: Record<string, SnakeTeam>
 	mapArea: {
-		center: coordSet,
+		center: CoordSet,
 		radius: number,
 	}
+	gameStateLogs: GameStateLog<SnakeGameState>[],
 }
 
 export type Fruit = {
@@ -37,7 +39,7 @@ export type SnakeSegment = {
 }
 
 export type SnakeGameSetupData = {
-	startingLocation: coordSet,
+	startingLocation: CoordSet,
 	gameRadius : number,
 	gameName: string
 }

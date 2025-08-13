@@ -1,4 +1,4 @@
-import { LogMetadata } from "@/scripts/types";
+import { LogMetadata } from "@/scripts/types/types";
 import { LogAPI } from "boardgame.io/dist/types/src/plugins/plugin-log";
 
 

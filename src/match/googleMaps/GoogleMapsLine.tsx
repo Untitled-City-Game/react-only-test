@@ -1,4 +1,4 @@
-import { LineData } from "@/scripts/types";
+import { LineData } from "@/scripts/types/types";
 import { Polyline } from "@/src/match/googleMaps/shapes/PolyLine";
 import { theme } from "@/src/styles/theme";
 import { Marker } from "@vis.gl/react-google-maps";

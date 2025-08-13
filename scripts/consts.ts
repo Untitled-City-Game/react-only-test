@@ -84,7 +84,7 @@ export const games = [
 	{
 		name: "Snake",
 		code: "snake",
-		active: false,
+		active: true,
 		description: "Collect the fruit to grow your snake. Wrap around the other team to win!",
 		color: "green",
 		icon: VscSnake

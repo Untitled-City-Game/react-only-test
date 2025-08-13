@@ -17,6 +17,7 @@ export function ComplexHeader({ children, color, ...rest }: { children: React.Re
 		style={{
 			background: color === "rainbow" ? rainbowBackground : theme.colors[color][1],
 			borderBottom: color === "rainbow" ? "none" : `2px solid ${theme.colors[color][6]}`,
+			borderTop: color === "rainbow" ? "none" : `2px solid ${theme.colors[color][6]}`,
 			textShadow: "white 1px 0 3px"
 		}}
 		{...rest}

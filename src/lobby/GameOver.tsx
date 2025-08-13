@@ -1,4 +1,4 @@
-import { GameContext } from "@/src/match/boardGame/Board";
+import { GameContext } from "@/src/match/Board";
 import { Button, Center, Container, Stack } from "@mantine/core";
 import { useContext } from "react";
 import { Link } from "react-router";

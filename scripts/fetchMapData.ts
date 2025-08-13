@@ -3,7 +3,8 @@ import makeLines from "@/scripts/geojson/makeLines";
 import makePolygons from "@/scripts/geojson/makePolygons";
 import toGeoJson from "@tmcw/togeojson";
 import { DOMParser } from "xmldom";
-import { City, LineData, MatchMapData, PolyData } from "./types";
+import { City, MatchMapData } from "./types/types";
+import { LineData, PolyData } from "@/scripts/types/googleMaps";
 
 export async function fetchMapData(cityName: City = "melbourne") : Promise<MatchMapData> {
   console.log("fetch map data")

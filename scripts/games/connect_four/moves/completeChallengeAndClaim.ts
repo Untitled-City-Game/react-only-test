@@ -1,12 +1,13 @@
-import { MoveContext } from "@/scripts/games/connect_four/connect_four";
 import { createUndoPoint } from "@/scripts/games/undo";
-import { Challenge, ConnectFourGameState } from "@/scripts/types";
+import { MoveContext } from "@/scripts/types/types";
 import { LogAPI } from "boardgame.io/dist/types/src/plugins/plugin-log";
-import { discardChallenge, drawToFull } from "../../shared_moves/handManagement";
+import { discardChallenge, drawToFull } from "../../challenge_deck/handManagement";
 import { addLogMetadata } from "../../shared_moves/metadata";
+import { ConnectFourGameState } from "@/scripts/games/connect_four/types";
+import { Challenge } from "@/scripts/games/challenge_deck/challenge_deck_types";
 
 export function completeChallengeAndClaim(
-	context: MoveContext,
+	context: MoveContext<ConnectFourGameState>,
 	zoneID: number,
 	challenge: string,
 	evidence: string[]

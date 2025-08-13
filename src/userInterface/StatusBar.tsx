@@ -1,19 +1,18 @@
-import { GameContext } from "@/src/match/boardGame/Board";
 import { theme } from "@/src/styles/theme";
-import HelpIcon from "@/src/userInterface/help/HelpButton";
-import SettingsIcon from "@/src/userInterface/help/SettingsButton";
+import HelpIcon from "@/src/match/components/help/HelpButton";
+import SettingsIcon from "@/src/match/components/help/SettingsButton";
 import { Center, Group } from "@mantine/core";
 import { useContext } from "react";
 import Countdown from 'react-countdown';
 import Span from "./Span";
+import { GameContext } from "@/src/match/Board";
 
 export default function StatusBar({ children }: { children?: React.ReactNode }) {
-	const {G, playerData} = useContext(GameContext);
-	const claimedZones = G.zoneData.filter(zone => zone.controlTeam === playerData.data.teamColor).length
+	const {G} = useContext(GameContext);
 	return (
 			<Center style={statusBarStyles} className="header">
 				<Group justify="center" align="center" wrap="nowrap">
-					<Span size="xs">{claimedZones} area{claimedZones === 1 ? "" : "s"} claimed</Span>
+					<Span size="xs">{children}</Span>
 					<Span size="xs"><Countdown 
 					date={new Date(G.endTime || 0)} 
 					renderer={
@@ -23,14 +22,12 @@ export default function StatusBar({ children }: { children?: React.ReactNode }) 
 					<HelpIcon />
 					<SettingsIcon />
 				</Group>
-				{children}
 			</Center>
 	);
 }
 
 const statusBarStyles = {
 	position: "sticky" as const,
-	top: 0,
 	backgroundColor: theme.white,
 	width: "100%",
 	zIndex: 1,

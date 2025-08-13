@@ -5,11 +5,14 @@ export function snakeGameSetup(ctx: Ctx, setupData: SnakeGameSetupData): SnakeGa
 	console.log("Setting up game of snake");
 	const gameData : SnakeGameState = {
 		gameName: setupData.gameName,
+		gameCode: 'snake',
 		fruits: [],
-		allTeamsData: [],
+		allTeamsData: {},
+		snakeTeamData: {},
 		allPlayersData: {},
 		gameOver: false,
 		gameStateLogs: [],
+		active: false,
 		mapArea: {
 			center: setupData.startingLocation,
 			radius: setupData.gameRadius

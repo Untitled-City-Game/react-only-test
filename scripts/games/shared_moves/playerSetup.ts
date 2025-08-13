@@ -1,23 +1,20 @@
-import { ConnectFourGameState, PlayerData } from "@/scripts/types";
-import { LogAPI } from "boardgame.io/dist/types/src/plugins/plugin-log";
-import { addLogMetadata } from "./metadata";
+import {  GameStateGeneric, MoveContext, PlayerData } from "@/scripts/types/types";
+import { addLogMetadata } from "../shared_moves/metadata";
 
 export function playerSetup(
-	{ G, playerID, log }: { G: ConnectFourGameState; playerID: string; log: LogAPI; },
+	context: MoveContext<GameStateGeneric>,
 	newPlayerData: PlayerData
 ) {
-	console.log("setting up player");
+	const {G, playerID, log} = context
+	console.log("setting up player", playerID);
 	G.allPlayersData[playerID] = newPlayerData;
 	
 	//check if team color is already set up
-	G.allTeamsData[newPlayerData.teamColor];
 	if (!G.allTeamsData[newPlayerData.teamColor]) {
 		console.log("adding missing team data for", newPlayerData.teamColor);
-		G.allTeamsData[newPlayerData.teamColor] = {
-			challengeDeck: [],
-			challengeHand: [],
-			challengeDiscard: [],
-		};
+		G.allTeamsData[newPlayerData.teamColor] = [newPlayerData.playerID]
+	} else {
+		G.allTeamsData[newPlayerData.teamColor].push(newPlayerData.playerID)
 	}
 	console.log(
 		"added player data for",
@@ -30,5 +27,5 @@ export function playerSetup(
 		{ log },
 		{ team: G.allPlayersData[0].teamColor }
 	);
-
 }
+

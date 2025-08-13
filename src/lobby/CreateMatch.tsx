@@ -1,4 +1,4 @@
-import { cities, maps } from "@/scripts/consts";
+import { cities, games, maps } from "@/scripts/consts";
 import { fetchMapData } from "@/scripts/fetchMapData";
 import { joinMatch } from "@/scripts/joinMatch";
 import {
@@ -7,8 +7,8 @@ import {
 	MatchMapData,
 	NamedColor,
 	PlayerData
-} from "@/scripts/types";
-import Loading from "@/src/match/boardGame/Loading";
+} from "@/scripts/types/types";
+import Loading from "@/src/match/screens/game_status/Loading";
 import Span from "@/src/userInterface/Span";
 import {
 	Button,
@@ -92,6 +92,7 @@ export default function CreateGame() {
 		// numPlayers: number;
 	};
 	const handleCreateGame = async (values: FormValues) => {
+		if(!gameCode){throw new Error("No game code provided")}
 		console.log("creating game", values);
 		//get map data
 		if (!isCity(values.city)) {
@@ -103,7 +104,7 @@ export default function CreateGame() {
 
 		//create match
 		console.log("setting up match")
-		const { matchID } = await lobbyClient.createMatch("connect-four", {
+		const { matchID } = await lobbyClient.createMatch(gameCode, {
 			numPlayers: 20,
 			setupData: {
 				mapSetupData,
@@ -114,6 +115,7 @@ export default function CreateGame() {
 		//join match
 		const playerData: PlayerData = await joinMatch(
 			lobbyClient,
+			gameCode,
 			matchID,
 			values.PlayerName,
 			values.teamColor,
@@ -126,7 +128,7 @@ export default function CreateGame() {
 	return (
 		<form style={{width: "100%"}} onSubmit={createGameForm.onSubmit(handleCreateGame)}>
 			<LoadingOverlay visible={loading} loaderProps={{ children: <Loading message="Joining match..." /> }} />
-			<h2>Create a Connect Four Match</h2>
+			<h2>Create a {games.filter(game => game.code === gameCode)[0].name} match</h2>
 			<Stack pb="sm">
 				<Select
 					label="Choose a city"

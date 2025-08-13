@@ -1,6 +1,6 @@
-import { ConnectFourGameState, GameStateUniversal, MoveContext } from "@/scripts/types";
+import { MoveContext, GameStateUniversal } from "@/scripts/types/types";
 
-export default function customUndoTemplate<GameState extends GameStateUniversal>(context: MoveContext<GameState>){
+export default function customUndoTemplate(context: MoveContext<GameStateUniversal>){
 	console.log("custom undo activated");
 	let G = context.G;
 	const gameStateLogs = G.gameStateLogs;
