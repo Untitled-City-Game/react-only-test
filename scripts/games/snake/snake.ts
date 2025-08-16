@@ -1,20 +1,25 @@
 import { endGame, startGame } from "@/scripts/games/shared_moves/manageGame";
-import { playerSetup } from "@/scripts/games/shared_moves/playerSetup";
+import { eatFruit } from "@/scripts/games/snake/moves/eatFruit";
+import { addSegment } from "@/scripts/games/snake/moves/manageSnakeBody";
+import {updateFruit} from "@/scripts/games/snake/moves/spawnFruit";
 import { snakeGameSetup } from "@/scripts/games/snake/setup";
 import { snakePlayerSetup } from "@/scripts/games/snake/snakePlayerSetup";
-import { SnakeGameSetupData, SnakeGameState } from "@/scripts/games/snake/types";
+import { SnakeGameState, SnakeGameSetupData } from "@/scripts/games/snake/types";
 import customUndoTemplate from "@/scripts/games/undo";
 import { MoveContext, StripContext } from "@/scripts/types/types";
-import type { Ctx, DefaultPluginAPIs, Game } from "boardgame.io";
+import { Game } from "boardgame.io";
+
 
 const customUndo = (context : MoveContext<SnakeGameState>) => {
 	customUndoTemplate(context)
 }
 const playStateMoves_Snake = {
-	snakePlayerSetup,
 	endGame,
 	customUndo,
-	playerSetup : snakePlayerSetup
+	playerSetup : snakePlayerSetup,
+	addSegment,
+	updateFruit,
+	eatFruit,
 };
 export type PlayStateMoves_Snake = StripContext<typeof playStateMoves_Snake>;
 
@@ -28,7 +33,7 @@ export const Snake: Game<SnakeGameState> = {
 	
 	moves: {
 		startGame : (args: any) => startGame<SnakeGameState>(args),
-		playerSetup: playerSetup,
+		playerSetup: snakePlayerSetup,
 	},
 	
 	turn: {

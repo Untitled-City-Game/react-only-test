@@ -1,0 +1,51 @@
+import { SnakeContext } from "@/src/match/Board";
+import LocationPig from "@/src/match/googleMaps/LocationPig";
+import { Circle } from "@/src/match/googleMaps/shapes/Circle";
+import { Polygon } from "@/src/match/googleMaps/shapes/Polygon";
+import VisGlMapElement from "@/src/match/googleMaps/VisGLMapElement";
+import useMyLocation from "@/src/match/interfaces/useMyLocation";
+import { useContext } from "react";
+import * as turf from '@turf/turf';
+import { Polyline } from "@/src/match/googleMaps/shapes/PolyLine";
+import FruitManager from "@/src/match/components/snake/FruitManager";
+const boxSize = 10
+const innerBoxSize = 0.01
+
+export default function SnakeMap(){
+	const SnakeGameState = useContext(SnakeContext)
+
+	const {gameLocation, gameRadius} = SnakeGameState.mapArea
+	const outerCoords = [
+		{lat: gameLocation.lat - boxSize, lng: gameLocation.lng - boxSize},
+		{lat: gameLocation.lat - boxSize, lng: gameLocation.lng + boxSize},
+		{lat: gameLocation.lat + boxSize, lng: gameLocation.lng + boxSize},
+		{lat: gameLocation.lat + boxSize, lng: gameLocation.lng - boxSize}
+	]
+	const circle = turf.circle([gameLocation.lng, gameLocation.lat], gameRadius, { steps: 500, units: "meters"});
+	console.log("circle geometry", circle)
+	const innerCoords = circle.geometry.coordinates[0].map(([lng, lat]) => ({
+		lat,
+		lng
+	}));
+
+	const snakeBodies = Object.keys(SnakeGameState.snakeTeamData).map(teamName => {
+		const teamData = SnakeGameState.snakeTeamData[teamName]
+		return <Polyline key={teamName} path={teamData.snakeBody.segments} strokeColor={teamName}/>
+	})
+
+	return (
+		<>
+		<VisGlMapElement center={SnakeGameState.mapArea.gameLocation}>
+			<LocationPig initialPosition={{lat: 45.45325550549896, lng: 9.168425264500426}} />
+			<Polygon
+				paths={[
+					outerCoords,
+					innerCoords.reverse()
+				]}
+			/>
+			{snakeBodies}
+			<FruitManager />
+		</VisGlMapElement>
+		</>
+	)
+}

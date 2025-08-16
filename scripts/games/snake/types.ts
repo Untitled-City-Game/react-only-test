@@ -1,18 +1,16 @@
 import { City, CoordSet, GameStateLog, GameStateUniversal, PlayerData } from "@/scripts/types/types";
+import { MapAreaSelectorValue } from "@/src/lobby/CreateMatch/MapAreaSelector";
 
 export interface SnakeGameState extends GameStateUniversal {
 	gameCode: "snake"
 	fruits: Fruit[];
 	snakeTeamData: Record<string, SnakeTeam>
-	mapArea: {
-		center: CoordSet,
-		radius: number,
-	}
+	mapArea: MapAreaSelectorValue
 	gameStateLogs: GameStateLog<SnakeGameState>[],
 }
 
 export type Fruit = {
-	coords: {lat: number, long: number} 
+	coords: {lat: number, lng: number} 
 	challenge: SnakeChallenge
 }
 
@@ -34,12 +32,9 @@ export type SnakeBody = {
 	segments: SnakeSegment[]
 }
 
-export type SnakeSegment = {
-	coords: {lat: number, long: number}
-}
+export type SnakeSegment = {lat: number, lng: number, timecode: number}
 
 export type SnakeGameSetupData = {
-	startingLocation: CoordSet,
-	gameRadius : number,
+	mapArea : MapAreaSelectorValue
 	gameName: string
 }

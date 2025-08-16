@@ -2,12 +2,13 @@ import { gameTimeMinutes } from "@/scripts/consts";
 import { createUndoPoint } from "@/scripts/games/undo";
 import { GameStateUniversal, MoveContext } from "@/scripts/types/types";
 import { addLogMetadata } from "./metadata";
+import spawnFruit from "@/scripts/games/snake/moves/spawnFruit";
 
 export function startGame<GameState extends GameStateUniversal>(context: MoveContext<GameState>) {
 	console.log("starting game")
 	const { events, G, random, log } = context;
 	G.active = true;
-	events.setActivePlayers({ all: "claim" });
+	events.setActivePlayers({ all: "play" });
 	startGameTimer<GameState>(G);
 	createUndoPoint<GameState>(G);
 	addLogMetadata(

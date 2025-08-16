@@ -66,6 +66,14 @@ export const games = [
 		icon: MdGrid4X4
 	},
 	{
+		name: "Snake",
+		code: "snake",
+		active: true,
+		description: "Collect the fruit to grow your snake. Wrap around the other team to win!",
+		color: "green",
+		icon: VscSnake
+	},
+	{
 		name: "Tag",
 		code: "tag",
 		active: false,
@@ -81,14 +89,6 @@ export const games = [
 		color: "water",
 		icon: GiRadarSweep
 	},
-	{
-		name: "Snake",
-		code: "snake",
-		active: true,
-		description: "Collect the fruit to grow your snake. Wrap around the other team to win!",
-		color: "green",
-		icon: VscSnake
-	}
 ]
 
    //Montreal

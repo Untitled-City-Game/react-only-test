@@ -19,7 +19,7 @@ export default function useMyLocation(initialPosition: google.maps.LatLngLiteral
 			return;
 		}
 		if(coords.latitude === position.lat && coords.longitude === position.lng){
-			console.log('no change in coords detected')
+			//console.log('no change in coords detected')
 			return;
 		}
 		const latlongcoords : google.maps.LatLngLiteral = {lat: coords.latitude, lng: coords.longitude}

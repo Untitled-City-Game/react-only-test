@@ -1,6 +1,5 @@
 // App.tsx
 import ChooseMatch from "@/src/lobby/ChooseMatch";
-import CreateMatch from "@/src/lobby/CreateMatch";
 import JoinMatch from "@/src/lobby/JoinMatch";
 import LobbyLayout from "@/src/lobby/LobbyLayout";
 import ChooseGame from "@/src/site/ChooseGame";
@@ -10,6 +9,7 @@ import NotFound from "@/src/match/screens/game_status/NotFound";
 import RootLayout from "@/src/userInterface/RootLayout";
 import { BrowserRouter, Route, Routes } from "react-router";
 import Match from "@/src/match/Match";
+import CreateMatch from "@/src/lobby/CreateMatch/CreateMatch";
 
 export default function AppRouter(){
 	return (

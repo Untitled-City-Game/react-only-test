@@ -53,7 +53,7 @@ export default function MatchClient() {
 					}>
 					<GameClient
 						matchID={playerData.matchID || "default"}
-						gameCode="connect_four"
+						gameCode={playerData.gameCode || "default"}
 						playerData={{ data: playerData, setter: setPlayerData }}
 						credentials={playerData.playerCredentials}
 						playerID={playerData.playerID}

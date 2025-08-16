@@ -1,4 +1,4 @@
-import { gameLocationCenters, highlightColor } from "@/scripts/consts";
+import { cities, gameLocationCenters, highlightColor } from "@/scripts/consts";
 import { GameBoardContext, GameBoardContextSpecific } from "@/scripts/types/types";
 import MapLine from "@/src/match/googleMaps/GoogleMapsLine";
 import VisGlMapElement from "@/src/match/googleMaps/VisGLMapElement";
@@ -7,11 +7,15 @@ import ZonePolygon from "@/src/match/components/regions/ZonePolygon";
 import { useContext, useState } from "react";
 import { ConnectFourGameState, ZoneData } from "@/scripts/games/connect_four/types";
 import { ConnectFourContext, GameContext } from "@/src/match/Board";
+import useMyLocation from "@/src/match/interfaces/useMyLocation";
+import LocationMarker from "@/src/match/googleMaps/LocationMarker";
 
 export default function ConnectFourMapTab() {
 	console.log("rendering mapboard");
-	const G = useContext(ConnectFourContext)
+	const {playerData} = useContext(GameContext)
+	const G = useContext(ConnectFourContext);
 	const { zonePolygons, winningLines, city } = G.MatchMapData;
+	const myLocation = useMyLocation(gameLocationCenters[city] || {lat: 0, lng: 0});
 
 	const [lineVisibility, setLineVisibility] = useState(
 		winningLines
@@ -88,6 +92,7 @@ export default function ConnectFourMapTab() {
 			>
 				<>{lineElements}</>
 				<>{zoneElements}</>
+				<LocationMarker position={myLocation} color={playerData.data.teamColor} />
 			</VisGlMapElement>
 			</div>
 		</>

@@ -3,19 +3,20 @@ import { GameContext } from "@/src/match/Board";
 import ConnectFourMapTab from "@/src/match/screens/connect_four/ConnectFourMap";
 import ChallengesTab from "@/src/match/screens/match_tabs/challenges/ChallengesTab";
 import LogTab from "@/src/match/screens/match_tabs/game_log/LogTab";
+import SnakeMap from "@/src/match/screens/snake/SnakeMapTab";
 import { Group, Tabs, TabsList, TabsPanel, TabsTab } from "@mantine/core";
 import { Suspense, useContext, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { TbCards, TbMap, TbMessageChatbot } from "react-icons/tb";
 
 const logTabData: TabData = {
-	name: "log",
+	name: "Log",
 	component: LogTab,
 	icon: TbMessageChatbot
 }
 
 const challengeTabData: TabData = {
-	name: "challenges",
+	name: "Challenges",
 	component: ChallengesTab,
 	icon: TbCards
 }
@@ -26,11 +27,18 @@ const connectFourMapData : TabData = {
 				icon: TbMap
 			}
 
+const snakeMapData : TabData = {
+	name: "Map",
+	component: SnakeMap,
+	icon: TbMap
+}
 const tabIndex = {
 	log: logTabData,
 	challenges: challengeTabData,
 	connect_four_map: connectFourMapData,
+	snake_map: snakeMapData
 }
+
 
 type TabCodes = keyof typeof tabIndex
 

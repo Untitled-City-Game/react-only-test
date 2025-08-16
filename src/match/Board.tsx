@@ -95,21 +95,22 @@ function ConnectFourGameplay(G:ConnectFourGameState, playerData : PlayerData){
 				<StatusBar>
 					{claimedZones} area{claimedZones === 1 ? "" : "s"} claimed
 				</StatusBar>
-			<TabSet tabCodes={["log", "connect_four_map", "challenges"]} />
+			<TabSet tabCodes={["challenges", "connect_four_map", "log"]} />
 			</ChallengeDeckContext.Provider>
 		</ConnectFourContext.Provider>
 	)
 }
 
 function SnakeGameplay(G: SnakeGameState, playerData : PlayerData){
-	const snakeLength = G.snakeTeamData[playerData.teamColor].snakeBody.maxLength
+	console.log("snake game state", G, playerData)
+	const snakeLength = G.snakeTeamData[playerData.teamColor]?.snakeBody.maxLength
 	return(
 		<SnakeContext.Provider value={G}>
 			<StatusBar>
 				Snake length: {snakeLength}m
 			</StatusBar>
 
-			<TabSet tabCodes={["log"]} />
+			<TabSet tabCodes={["snake_map", "log" ]} />
 		</SnakeContext.Provider>
 	)
 

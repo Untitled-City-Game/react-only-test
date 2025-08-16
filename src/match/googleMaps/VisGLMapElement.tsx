@@ -8,13 +8,10 @@ import { City, CoordSet } from "@/scripts/types/types";
 import { GameContext } from "@/src/match/Board";
 
 interface MapElementProps extends React.PropsWithChildren, React.HTMLAttributes<HTMLDivElement> {
-	center : google.maps.LatLngLiteral
+	center: google.maps.LatLngLiteral
 };
 
 export default function VisGlMapElement(props: MapElementProps) {
-	const gameData = useContext(GameContext);
-	const myLocation = useMyLocation(props.center);
-
 	//update my location with location server
 	// useEffect(()=> {
 	// 	console.log("emitting position change event")
@@ -40,7 +37,6 @@ export default function VisGlMapElement(props: MapElementProps) {
 				disableDefaultUI={true}
 				
 			>
-			<LocationMarker position={myLocation} color={gameData.playerData.data.teamColor} />
 			{/* {
 				teamLocations.map(teamLocation => {
 					// console.log("rendering team location marker", teamLocation)

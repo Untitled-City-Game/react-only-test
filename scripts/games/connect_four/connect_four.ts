@@ -27,6 +27,7 @@ const claimStateMoves = {
 	endGame,
 	customUndo
 };
+
 export type ClaimStateMoves = StripContext<typeof claimStateMoves>;
 
 export const ConnectFour: Game<ConnectFourGameState> = {
@@ -59,7 +60,7 @@ export const ConnectFour: Game<ConnectFourGameState> = {
 					},
 				},
 			},
-			claim: {
+			play: {
 				moves: claimStateMoves,
 			},
 		},
