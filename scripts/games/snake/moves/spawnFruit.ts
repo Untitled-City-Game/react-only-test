@@ -12,18 +12,23 @@ export function updateFruit(context: MoveContext<SnakeGameState>){
 }
 
 export function spawnFruit(fruits: Fruit[], mapArea: MapAreaSelectorValue){
-		while(fruits.length < config.numberOfFruits){
+	while(fruits.length < config.numberOfFruits){
 		//get a random location within the game area
 		const randomLocation = randomPointInCircle([mapArea.gameLocation.lng, mapArea.gameLocation.lat], mapArea.gameRadius);
+		const variantNum = Math.random()*3
+		console.log("variant num", variantNum)
+		const variant = variantNum < 1 ? "there" : variantNum < 2 ? "bring" : "go_come_back"
+		console.log("variant", variant)
 		fruits.push({
 			coords: {
 				lat: randomLocation.geometry.coordinates[1],
 				lng: randomLocation.geometry.coordinates[0],
 			},
 			challenge: {
-				title: "challenge",
+				title: "challenge_" + Math.random(),
 				description: "",
-				emoji: ""
+				emoji: "",
+				variant: variant
 			}
 		})
 	}

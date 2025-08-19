@@ -3,8 +3,8 @@ import { useEffect, useState } from "react";
 import { useGeolocated } from "react-geolocated";
 import { FaCircle } from "react-icons/fa";
 
-export default function useMyLocation(initialPosition: google.maps.LatLngLiteral) {
-	const [position, setPosition] = useState(initialPosition);
+export default function useMyLocation(initialPosition?: google.maps.LatLngLiteral) {
+	const [position, setPosition] = useState(initialPosition || {lat: 0, lng: 0});
 	const {coords} = useGeolocated({
 		positionOptions: {
 			enableHighAccuracy: true,

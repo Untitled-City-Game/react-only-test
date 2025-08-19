@@ -2,12 +2,22 @@ import { PlayStateMoves_Snake } from "@/scripts/games/snake/snake";
 import { CoordSet } from "@/scripts/types/types";
 import { GameContext } from "@/src/match/Board";
 import LocationMarker from "@/src/match/googleMaps/LocationMarker";
-import { useContext, useEffect, useState } from "react";
+import React, { createContext, SetStateAction, useContext, useEffect, useState, Dispatch } from "react";
+
+export type LocationPigContext = [
+	google.maps.LatLngLiteral,
+	Dispatch<SetStateAction<google.maps.LatLngLiteral>>
+]
+
+
+export const locationPigContext = createContext(undefined as unknown as LocationPigContext)
 
 export default function LocationPig({initialPosition} : {initialPosition : google.maps.LatLngLiteral}){
-	const [position, setPosition] = useState<google.maps.LatLngLiteral>(initialPosition);
+
 	const gameContext = useContext(GameContext)
 	const moves = gameContext.moves as unknown as PlayStateMoves_Snake
+	const [position, setPosition] = useContext(locationPigContext)
+
 	useEffect(()=> {
 		gameContext.moves.addSegment(position)
 	}, [position]);

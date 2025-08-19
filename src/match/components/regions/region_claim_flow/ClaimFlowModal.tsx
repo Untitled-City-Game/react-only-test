@@ -53,7 +53,7 @@ export default function ClaimFlowModal({
 		validate: {
 			zone: hasLength({min: 1}, 'Please select a zone'),
 			challenge:hasLength({min: 1}, 'Please select a challenge'),
-			evidence: hasLength({min: 1}, 'No evidence included'),
+			evidence: hasLength({min: 1}, 'Please include evidence!'),
 		}
 	});
 

@@ -1,5 +1,5 @@
 import { LogMetadata, PlayerData, GameStateGeneric, GameBoardContextSpecific, GameStateAnything } from "@/scripts/types/types";
-import { ChallengeCompleted, ChallengeEvidence } from "@/src/match/screens/match_tabs/game_log/messages/ChallengeCompleted";
+import { ClaimChallengeCompleted, ChallengeEvidence, FruitEaten } from "@/src/match/screens/match_tabs/game_log/messages/ChallengeCompleted";
 import { DiscardHand } from "@/src/match/screens/match_tabs/game_log/messages/DiscardHand";
 import { GameStarted } from "@/src/match/screens/match_tabs/game_log/messages/GameStarted";
 import { JoinedMatch } from "@/src/match/screens/match_tabs/game_log/messages/JoinedMatch";
@@ -22,7 +22,7 @@ export function Message({ entry, gameData, playerData }: { entry: LogEntry; game
 			return (
 				<Box>
 					<MessageBox entry={entry} gameData={gameData} playerData={playerData} >
-						<ChallengeCompleted
+						<ClaimChallengeCompleted
 							metadata={entry.metadata as LogMetadata} />
 						{challenge ? <ChallengeButton
 							team={entry.metadata.team}
@@ -58,6 +58,30 @@ export function Message({ entry, gameData, playerData }: { entry: LogEntry; game
 					<DiscardHand senderData={senderData} />
 				</MessageBox>
 			)
+		case "completeChallengeAndEatFruit":
+			return (
+				<Box>
+					<MessageBox entry={entry} gameData={gameData} playerData={playerData} >
+						<FruitEaten
+							metadata={entry.metadata as LogMetadata} />
+						{entry.metadata.challenge ? <ChallengeButton
+							team={entry.metadata.team}
+							challenge={entry.metadata.challenge}
+							completed={true}
+							claimButton={false}
+						/>
+							: null}
+					</MessageBox>
+			
+					<MessageWrapper entry={entry} gameData={gameData} playerData={playerData} unstyled={true}>
+						<ChallengeEvidence metadata={entry.metadata as LogMetadata} />
+					</MessageWrapper>
+				</Box>
+			)
+		case "addSegment":
+			break;
+		case "eatFruit":
+			break;
 		default:
 			return <P>{entry.action.payload.type}</P>;
 	}

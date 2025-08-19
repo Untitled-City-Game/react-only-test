@@ -3,13 +3,15 @@ import useTeamLocations from "@/src/match/interfaces/useTeamLocations";
 import useMyLocation from "@/src/match/interfaces/useMyLocation";
 import LocationMarker from "@/src/match/googleMaps/LocationMarker";
 import { APIProvider, Map } from "@vis.gl/react-google-maps";
-import React, { useContext, useEffect } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { City, CoordSet } from "@/scripts/types/types";
 import { GameContext } from "@/src/match/Board";
 
 interface MapElementProps extends React.PropsWithChildren, React.HTMLAttributes<HTMLDivElement> {
 	center: google.maps.LatLngLiteral
 };
+
+export const ZoomContext = createContext(12)
 
 export default function VisGlMapElement(props: MapElementProps) {
 	//update my location with location server
@@ -20,7 +22,9 @@ export default function VisGlMapElement(props: MapElementProps) {
 	// const [teamLocations] = useTeamLocations()
 	
 	// console.log("team locations", teamLocations)
+	const [zoom, setZoom] = useState(12)
 	return (
+		<>
 		<APIProvider 
 		apiKey="AIzaSyCG6Ouy-lsuiGpNCcibChoSxW6f0zupHNc"
 		libraries={["geometry"]}
@@ -35,7 +39,7 @@ export default function VisGlMapElement(props: MapElementProps) {
 				defaultZoom={12}
 				gestureHandling={'greedy'}
 				disableDefaultUI={true}
-				
+				onZoomChanged={(zoomEvent) => setZoom(prevZoom => zoomEvent.map.getZoom() || prevZoom)}
 			>
 			{/* {
 				teamLocations.map(teamLocation => {
@@ -45,11 +49,14 @@ export default function VisGlMapElement(props: MapElementProps) {
 					)
 				})
 			} */}
+			<ZoomContext value={zoom}>
 			{props.children}
+			</ZoomContext>
 			{/* <>{props.zoneElements}</>
 			<>{props.lineElements}</> */}
 			</Map>
 		</APIProvider>
+		</>
 	);
 }
 

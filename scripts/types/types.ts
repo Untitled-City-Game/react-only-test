@@ -105,6 +105,7 @@ export type LogMetadata = {
 	team: Color;
 	claimType?: "lock" | "claim" | "steal";
 	stealFrom?: Color;
+	growth?: number
 }
 
 type RGB = `rgb(${number}, ${number}, ${number})`;

@@ -4,21 +4,21 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
 export default async function claimZone(playerId : string, completeChallengeAndClaim : ClaimStateMoves["completeChallengeAndClaim"], zoneId: number, challenge : string, evidence : File[] ) {
 	console.log("claiming zone on client", zoneId, challenge, evidence);
-	const evidenceUrls = await uploadEvidence(evidence, zoneId, playerId)
+	const evidenceUrls = await uploadEvidence(evidence, playerId)
 	completeChallengeAndClaim(zoneId, challenge, evidenceUrls);
 	return;
 }
 
-async function uploadEvidence(evidence: File[], zoneId: number, playerId: string) {
+export async function uploadEvidence(evidence: File[], playerId: string) {
 	if(!evidence) return [];
-	const evidenceUrls = await Promise.all(evidence.map(file => uploadImage(file, zoneId, playerId)));
+	const evidenceUrls = await Promise.all(evidence.map(file => uploadImage(file, playerId)));
 	return evidenceUrls;
 }
 
-async function uploadImage(image: File, zoneId: number, playerId: string) {
+async function uploadImage(image: File, playerId: string) {
 	const imageRef = ref(
 		storage,
-		`images/zone${zoneId}player${playerId}${Date.now()}.${image.name.split('.').pop()}`
+		`images/player${playerId}${Date.now()}.${image.name.split('.').pop()}`
 	);
 	try {
 		const uploadTask = await uploadBytes(imageRef, image);

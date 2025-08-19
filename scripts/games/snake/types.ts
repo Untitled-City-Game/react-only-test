@@ -15,10 +15,13 @@ export type Fruit = {
 }
 
 export type SnakeChallenge = {
+	variant: FruitVariant
 	title: string,
 	description: string,
 	emoji: string,
 }
+export type FruitVariant =  "bring" | "there" | "go_come_back" 
+
 export type SnakeTeam = {
 	color: string,
 	name: string,

@@ -48,7 +48,7 @@ export default function TabSet({tabCodes} : {tabCodes : TabCodes[]}) {
 
 	const [activeTab, setActiveTab] = useState<string | null>(null);
 	return (
-		<Tabs defaultValue={"log"} variant="pills" radius={0} id="matchContainer" onChange={setActiveTab}>
+		<Tabs defaultValue={"Log"} variant="pills" radius={0} id="matchContainer" onChange={setActiveTab}>
 			{tabCodes.map(tabCode => {
 				const tab = tabIndex[tabCode]
 				return (

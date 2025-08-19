@@ -1,5 +1,5 @@
 import { endGame, startGame } from "@/scripts/games/shared_moves/manageGame";
-import { eatFruit } from "@/scripts/games/snake/moves/eatFruit";
+import { completeChallengeAndEatFruit } from "@/scripts/games/snake/moves/eatFruit";
 import { addSegment } from "@/scripts/games/snake/moves/manageSnakeBody";
 import {updateFruit} from "@/scripts/games/snake/moves/spawnFruit";
 import { snakeGameSetup } from "@/scripts/games/snake/setup";
@@ -19,7 +19,7 @@ const playStateMoves_Snake = {
 	playerSetup : snakePlayerSetup,
 	addSegment,
 	updateFruit,
-	eatFruit,
+	completeChallengeAndEatFruit,
 };
 export type PlayStateMoves_Snake = StripContext<typeof playStateMoves_Snake>;
 
