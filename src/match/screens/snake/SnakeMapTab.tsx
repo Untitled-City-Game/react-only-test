@@ -8,6 +8,7 @@ import { useContext, useState } from "react";
 import * as turf from '@turf/turf';
 import { Polyline } from "@/src/match/googleMaps/shapes/PolyLine";
 import FruitManager from "@/src/match/components/snake/FruitManager";
+import SnakeBody from "@/src/match/components/snake/SnakeBody";
 const boxSize = 10
 const innerBoxSize = 0.01
 export default function SnakeMap(){
@@ -26,10 +27,9 @@ export default function SnakeMap(){
 		lat,
 		lng
 	}));
-
 	const snakeBodies = Object.keys(SnakeGameState.snakeTeamData).map(teamName => {
 		const teamData = SnakeGameState.snakeTeamData[teamName]
-		return <Polyline key={teamName} path={teamData.snakeBody.segments} strokeColor={teamName}/>
+		return <SnakeBody key={teamName} teamData={teamData}/>
 	})
 
 	return (

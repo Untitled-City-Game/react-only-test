@@ -1,6 +1,7 @@
 import { PlayStateMoves_Snake } from "@/scripts/games/snake/snake";
 import { CoordSet } from "@/scripts/types/types";
 import { GameContext } from "@/src/match/Board";
+import SnakeHead from "@/src/match/components/snake/SnakeHead";
 import LocationMarker from "@/src/match/googleMaps/LocationMarker";
 import React, { createContext, SetStateAction, useContext, useEffect, useState, Dispatch } from "react";
 
@@ -54,6 +55,9 @@ export default function LocationPig({initialPosition} : {initialPosition : googl
 		return () => document.removeEventListener('keydown', handleKeyPress, false);
 	})
 	return (
+		<>
 		<LocationMarker position={position} color={"purple"} />
+		<SnakeHead position={position} />
+		</>
 	)
 }
