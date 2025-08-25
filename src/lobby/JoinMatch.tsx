@@ -149,53 +149,6 @@ export default function JoinMatch() {
 	return <Loading message="Loading..." />;
 }
 
-// 	return (
-// 		<Center>
-// 			<form
-// 				onSubmit={joinGameForm.onSubmit(async (values) => {
-// 					const { matches } = await lobbyClient.listMatches('metro-mayhem');
-// 					const activeMatches = matches.filter(match => !match.gameover);
-// 					let matchID = 'default';
-// 					if(activeMatches.length == 0){
-// 						const mapDataRes = await fetch(process.env.GAME_SERVER + "/map-data/" + 'melbourne')
-// 						const mapData : GameSetupData = await mapDataRes.json();
-// 						const res = await lobbyClient.createMatch('metro-mayhem', {
-// 							numPlayers: 20,
-// 							setupData: mapData
-// 						})
-// 						matchID = res.matchID;
-// 						setMatchData(mapData);
-// 					} else {
-// 						matchID = activeMatches[0].matchID;
-// 					}
-// 					const res = await lobbyClient.joinMatch(
-// 						'metro-mayhem',
-// 						matchID,
-// 						{
-// 							playerName: values.PlayerName,
-// 							data: {
-// 								teamColor: values.teamColor
-// 							}
-// 						}
-// 					)
-// 					console.log("res" , res);
-// 					const playerData : PlayerData = {
-// 						name: values.PlayerName,
-// 						playerID: res.playerID as `${number}`,
-// 						matchID: matchID,
-// 						playerCredentials: res.playerCredentials,
-// 						teamColor: values.teamColor as Color,
-// 					};
-// 					setPlayerData(playerData);
-// 				})}>
-// 				<Stack>
-
-// 				</Stack>
-// 			</form>
-// 		</Center>
-// 	);
-// }
-
 function sortTeamPlayers(matchData: LobbyAPI.Match | undefined) {
 	if (!matchData) {
 		return undefined;

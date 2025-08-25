@@ -33,7 +33,7 @@ export function ConnectFourGameSetup(ctx: Ctx, setupData: GameSetupData): Connec
 		challengeDeck: createChallengeDeck(setupData.mapSetupData.city),
 		allTeamsChallengeData: {},
 		gameStateLogs: [],
-		city: "melbourne",
+		city: setupData.mapSetupData.city,
 	};
 }
 

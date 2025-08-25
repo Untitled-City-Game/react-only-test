@@ -36,15 +36,15 @@ export default function SnakeMap(){
 		<>
 		<VisGlMapElement center={SnakeGameState.mapArea.gameLocation}>
 			<locationPigContext.Provider value={[playerLocation, setPlayerLocation]}>
-			<LocationPig initialPosition={{lat: 45.45325550549896, lng: 9.168425264500426}} />
-			<Polygon
-				paths={[
-					outerCoords,
-					innerCoords.reverse()
-				]}
-			/>
-			{snakeBodies}
-			<FruitManager playerLocation={playerLocation} />
+				<LocationPig initialPosition={{lat: 45.45325550549896, lng: 9.168425264500426}} />
+				<Polygon
+					paths={[
+						outerCoords,
+						innerCoords.reverse()
+					]}
+				/>
+				{snakeBodies}
+				<FruitManager playerLocation={playerLocation} />
 			</locationPigContext.Provider>
 		</VisGlMapElement>
 		</>

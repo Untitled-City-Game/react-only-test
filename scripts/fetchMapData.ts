@@ -6,7 +6,7 @@ import { DOMParser } from "xmldom";
 import { City, MatchMapData } from "./types/types";
 import { LineData, PolyData } from "@/scripts/types/googleMaps";
 
-export async function fetchMapData(cityName: City = "melbourne") : Promise<MatchMapData> {
+export async function fetchMapData(cityName: City = "london") : Promise<MatchMapData> {
   console.log("fetch map data")
   let zoneDataObj : GeoJSON.FeatureCollection;
   // try{
@@ -23,7 +23,7 @@ export async function fetchMapData(cityName: City = "melbourne") : Promise<Match
   };
 }
 
-async function fetchKML(cityName: City = "melbourne"){
+async function fetchKML(cityName: City = "london"){
   console.log("fetch kml")
   try {
     console.log(process.env.GAME_SERVER + `/map-data/${maps[cityName].kml_live_id}`)

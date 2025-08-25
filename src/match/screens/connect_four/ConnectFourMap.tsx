@@ -74,7 +74,7 @@ export default function ConnectFourMapTab() {
 			/>
 		);
 	});
-
+	console.warn("map center", G.city, gameLocationCenters[G.city])
 	return (
 		<>
 			{/* <Header color={props.playerData.data.teamColor}>
@@ -85,10 +85,10 @@ export default function ConnectFourMapTab() {
 			<VisGlMapElement 
 			center={gameLocationCenters[G.city]}
 			onClick={() => {
-								setCurrentZone(undefined);
-								setLineVisibility({});
-								setHighlightedZones({});
-							}}
+				setCurrentZone(undefined);
+				setLineVisibility({});
+				setHighlightedZones({});
+			}}
 			>
 				<>{lineElements}</>
 				<>{zoneElements}</>

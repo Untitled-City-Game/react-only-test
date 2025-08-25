@@ -10,7 +10,7 @@ export default function CreateMatchConnectFour() {
 	//Setup mantine form
 	const createGameForm = createGameFormConstructor(
 		{
-		city: "melbourne" as City,
+		city: "london" as City,
 		},
 		{
 		city: (city : string) => cities.includes(city as City) ? null : "Invalid city",
