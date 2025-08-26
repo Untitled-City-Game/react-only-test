@@ -34,6 +34,7 @@ export function ConnectFourGameSetup(ctx: Ctx, setupData: GameSetupData): Connec
 		allTeamsChallengeData: {},
 		gameStateLogs: [],
 		city: setupData.mapSetupData.city,
+		teamPhotoURLs: {},
 	};
 }
 

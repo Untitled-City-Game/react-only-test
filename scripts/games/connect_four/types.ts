@@ -1,5 +1,5 @@
 import { ChallengeDeck } from "@/scripts/games/challenge_deck/challenge_deck_types";
-import { GameStateUniversal, AllTeamsData, MatchMapData, GameStateLog, Color, zoneStatus, City } from "@/scripts/types/types";
+import { GameStateUniversal, MatchMapData, GameStateLog, Color, zoneStatus, City } from "@/scripts/types/types";
 
 //Game state
 

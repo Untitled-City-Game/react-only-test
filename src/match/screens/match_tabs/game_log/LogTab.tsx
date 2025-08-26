@@ -1,4 +1,4 @@
-import { ClaimStateMoves } from "@/scripts/games/connect_four/connect_four";
+import { ConnectFourMoves } from "@/scripts/games/connect_four/connect_four";
 import {
 	GameBoardContext,
 } from "@/scripts/types/types";
@@ -14,7 +14,7 @@ import { ErrorBoundary } from "react-error-boundary";
 
 export default function LogTab({ active }: { active: string | null }) {
 	const props: GameBoardContext = useContext(GameContext);
-	const moves = props.moves as ClaimStateMoves;
+	const moves = props.moves as ConnectFourMoves;
 	const playerData = props.playerData.data;
 	// const [worker, setWorker] = useState<ServiceWorkerRegistration>()
 	async function handleEndGame() {
@@ -68,7 +68,7 @@ export default function LogTab({ active }: { active: string | null }) {
 									Undo last action
 								</ConfirmButton>
 								: null}
-							{props.playerData.data.admin ? <Button onClick={handleEndGame}>End Game</Button> : null}
+							{props.playerData.data.admin ? <ConfirmButton action={handleEndGame} description="end the game">End Game</ConfirmButton> : null}
 							{/* <Button onClick={() => worker && testNotifications(worker, {
 								title: "Neighbourhood claimed!",
 								options: {

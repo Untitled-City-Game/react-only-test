@@ -1,5 +1,5 @@
 import { ChallengeDeck } from "@/scripts/games/challenge_deck/challenge_deck_types";
-import { ClaimStateMoves } from "@/scripts/games/connect_four/connect_four";
+import { ConnectFourMoves } from "@/scripts/games/connect_four/connect_four";
 import { ConnectFourGameState } from "@/scripts/games/connect_four/types";
 import { SnakeGameState } from "@/scripts/games/snake/types";
 import { GameBoardContext, GameBoardContextSpecific, GameStateGeneric, PlayerData } from "@/scripts/types/types";
@@ -27,7 +27,7 @@ export function SnakeBoard(props: GameBoardContextSpecific<SnakeGameState>){
 
 function Board(props: GameBoardContext){
 	const playerID = props.playerID;
-	const moves = props.moves as ClaimStateMoves
+	const moves = props.moves as ConnectFourMoves
 	const playerData = props.playerData;
 	let navigate = useNavigate();
 

@@ -1,4 +1,4 @@
-import { Challenge, ChallengeGameGameState, TeamChallengeData } from "@/scripts/games/challenge_deck/challenge_deck_types";
+import { Challenge, ChallengeGameGameState, RawChallenge, TeamChallengeData } from "@/scripts/games/challenge_deck/challenge_deck_types";
 import { handSize } from "@/scripts/games/connect_four/connect_four";
 import { addLogMetadata } from "@/scripts/games/shared_moves/metadata";
 import { createUndoPoint } from "@/scripts/games/undo";
@@ -104,15 +104,31 @@ export function discardHand(context: MoveContext<ChallengeGameGameState>) {
 }
 
 export function createChallengeDeck(city: string) {
-	const challengeData = challengeDataGeneric as Challenge[]
+	const challengeData = challengeDataGeneric as RawChallenge[]
+	const structuredChallengeData = structureChallenges(challengeData)
 	switch (city) {
 		case "melbourne":
-			return challengeData.concat(challengeDataMelbourne)
+			return structuredChallengeData.concat(structureChallenges(challengeDataMelbourne))
 		case "montreal":
-			return challengeData.concat(challengeDataMontreal)
+			return structuredChallengeData.concat(challengeDataMontreal)
 		case "london":
-			return challengeData.concat(challengeDataLondon)
+			return structuredChallengeData.concat(challengeDataLondon)
 		default:
-			return challengeData
+			return structuredChallengeData
 	}
+}
+
+function structureChallenges(challengeData : RawChallenge[]) : Challenge[]{
+	return challengeData.map(challenge => {
+		return {
+			title: challenge.title,
+			description: challenge.description,
+			hard : challenge.hard,
+			rules: [challenge.rule1, challenge.rule2, challenge.rule3, challenge.rule4],
+			link: {
+				name: challenge.link_name,
+				url: challenge.link
+			}
+		} as Challenge
+	})
 }

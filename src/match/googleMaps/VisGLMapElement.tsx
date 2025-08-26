@@ -1,11 +1,5 @@
-import { gameLocationCenters } from "@/scripts/consts";
-import useTeamLocations from "@/src/match/interfaces/useTeamLocations";
-import useMyLocation from "@/src/match/interfaces/useMyLocation";
-import LocationMarker from "@/src/match/googleMaps/LocationMarker";
 import { APIProvider, Map } from "@vis.gl/react-google-maps";
-import React, { createContext, useContext, useEffect, useState } from "react";
-import { City, CoordSet } from "@/scripts/types/types";
-import { GameContext } from "@/src/match/Board";
+import React, { createContext, useState } from "react";
 
 interface MapElementProps extends React.PropsWithChildren, React.HTMLAttributes<HTMLDivElement> {
 	center: google.maps.LatLngLiteral

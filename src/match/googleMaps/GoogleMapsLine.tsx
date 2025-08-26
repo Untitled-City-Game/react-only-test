@@ -23,6 +23,7 @@ export default function MapLine({
 				strokeOpacity = {1}
 				strokeWeight = {8}
 				clickable={false}
+				
 			/>
 			{/* <Fragment>
 				<Marker 

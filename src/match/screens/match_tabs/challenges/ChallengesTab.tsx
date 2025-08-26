@@ -1,10 +1,12 @@
-import { ClaimStateMoves } from "@/scripts/games/connect_four/connect_four";
+import { ConnectFourMoves } from "@/scripts/games/connect_four/connect_four";
 import { ChallengeDeckContext, GameContext } from "@/src/match/Board";
 import ClaimFlowModal from "@/src/match/components/regions/region_claim_flow/ClaimFlowModal";
 import { ClaimButton } from "@/src/match/screens/match_tabs/challenges/UI/ChallengeCard";
+import RuleBox from "@/src/match/screens/match_tabs/challenges/UI/RuleBox";
+import ConfirmButton from "@/src/userInterface/ConfirmModal";
 import { ComplexHeader } from "@/src/userInterface/Header/Header";
 import Span from "@/src/userInterface/Span";
-import { Box, Container, Stack, Group, Button, ScrollAreaAutosize, Accordion, ScrollArea } from "@mantine/core";
+import { Box, Container, Stack, Group, Button, ScrollAreaAutosize, Accordion, ScrollArea, Flex } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { createContext, useContext, useState } from "react";
 import { FaLock } from "react-icons/fa";
@@ -13,9 +15,9 @@ import { FaLock } from "react-icons/fa";
 export const ChallengeContext = createContext<any>(null);
 
 export default function ChallengesTab() {
-	const {allTeamsChallengeData,} = useContext(ChallengeDeckContext)
+	const { allTeamsChallengeData, } = useContext(ChallengeDeckContext)
 	const props = useContext(GameContext)
-	const moves = props.moves as ClaimStateMoves; //TODO: Make this generic / composite
+	const moves = props.moves as ConnectFourMoves; //TODO: Make this generic / composite
 	const { allPlayersData } = props.G;
 	const playerData = allPlayersData[props.playerData.data.playerID];
 	const myTeam = playerData.teamColor;
@@ -41,9 +43,9 @@ export default function ChallengesTab() {
 								<Span fz="sm">
 									{challengeDeck.length} challenges in deck
 								</Span>
-								<Button onClick={handleDiscardHand} display="inline-block" size="xs">
+								<ConfirmButton action={handleDiscardHand} description="discard all your challenges" display="inline-block" size="xs">
 									Discard Hand
-								</Button>
+								</ConfirmButton>
 							</Group>
 						</Stack>
 					</Container>
@@ -64,24 +66,28 @@ export default function ChallengesTab() {
 										// } challenge={challenge}></ChallengeCard>
 										// <ChallengeButton challenge={challenge} key={index} team={props.playerData.data.teamColor} claimButton={true} />
 										<Accordion.Item
-										bd={challenge.hard ? `4px double ${props.playerData.data.teamColor}` : `1.5px dashed ${props.playerData.data.teamColor}`}
-										style={{
-											borderRadius: "10px"
-										}}
-										bg={"white"}
-										key={index} 
-										value={challenge.title} >
+											bd={challenge.hard ? `4px double ${props.playerData.data.teamColor}` : `1.5px dashed ${props.playerData.data.teamColor}`}
+											style={{
+												borderRadius: "10px"
+											}}
+											bg={"white"}
+											key={index}
+											value={challenge.title} >
 											<Accordion.Control icon={challenge.emoji}>{challenge.title}</Accordion.Control>
 											<Accordion.Panel>
 												<div>{challenge.description.split("\n").map((line, index) => <p key={index}>{line}</p>)}</div>
+												<Stack mb="sm">
+													{challenge.rules.filter(rule => rule).map((rule, index) => { 
+														return (<RuleBox key={index}>{rule}</RuleBox>)})}
+												</Stack>
 													<ClaimButton title={challenge.title} />
-													<div>
-														{challenge.hard ? <>
+												<div>
+													{challenge.hard ? <>
 														<FaLock color={props.playerData.data.teamColor} />
-															<Span style={{
-																fontStyle: "italic"
-															}}> Hard - this challenge can lock or steal a zone</Span></> : null}
-													</div>
+														<Span style={{
+															fontStyle: "italic"
+														}}> Hard - this challenge can lock or steal a zone</Span></> : null}
+												</div>
 											</Accordion.Panel>
 										</Accordion.Item>
 									);

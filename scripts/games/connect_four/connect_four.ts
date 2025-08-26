@@ -11,6 +11,8 @@ import {
 import type { Ctx, DefaultPluginAPIs, Game } from "boardgame.io";
 import { ConnectFourGameState } from "@/scripts/games/connect_four/types";
 import { challengeDeckTeamSetup } from "@/scripts/games/challenge_deck/challenge_deck_team_setup";
+import { addTeamPhoto } from "@/scripts/games/shared_moves/addTeamPhoto";
+import { sharedMoves } from "@/scripts/games/shared_moves/sharedMoves";
 
 export const handSize = 5;
 
@@ -24,11 +26,11 @@ const claimStateMoves = {
 	discardHand,
 	completeChallenge,
 	completeChallengeAndClaim,
-	endGame,
-	customUndo
+	customUndo,
+	...sharedMoves
 };
 
-export type ClaimStateMoves = StripContext<typeof claimStateMoves>;
+export type ConnectFourMoves = StripContext<typeof claimStateMoves>;
 
 export const ConnectFour: Game<ConnectFourGameState> = {
 	name: `connect_four`,
@@ -58,6 +60,7 @@ export const ConnectFour: Game<ConnectFourGameState> = {
 						challengeDeckTeamSetup(args)
 						startGame<ConnectFourGameState>(args)
 					},
+					...sharedMoves
 				},
 			},
 			play: {

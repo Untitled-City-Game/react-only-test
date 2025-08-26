@@ -14,7 +14,8 @@ export function snakeGameSetup(ctx: Ctx, setupData: SnakeGameSetupData): SnakeGa
 		gameOver: false,
 		gameStateLogs: [],
 		active: false,
-		mapArea: setupData.mapArea
+		mapArea: setupData.mapArea,
+		teamPhotoURLs: {},
 	}
 	console.log(gameData)
 	return gameData;

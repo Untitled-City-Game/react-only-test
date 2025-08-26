@@ -64,7 +64,7 @@ export default function ZonePolygon({
 					amCurrentZone ? theme.colors.green[4] : zoneGameData.controlTeam || "black"
 				}
 				strokeOpacity={0.8}
-				strokeWeight={amCurrentZone ? 6 : zoneGameData.locked ? 3: 2}
+				strokeWeight={amCurrentZone ? 8 : zoneGameData.locked ? 6: 5}
 				fillColor={
 					zoneGameData.controlTeam ||
 					(amCurrentZone ? theme.colors.green[6] : "#FFFFFF00")

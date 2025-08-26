@@ -1,5 +1,5 @@
 import { PlayStateMoves_Snake } from "@/scripts/games/snake/snake";
-import { CoordSet } from "@/scripts/types/types";
+import { CoordSet, MatchTeamColor } from "@/scripts/types/types";
 import { GameContext } from "@/src/match/Board";
 import SnakeHead from "@/src/match/components/snake/SnakeHead";
 import LocationMarker from "@/src/match/googleMaps/LocationMarker";
@@ -56,7 +56,7 @@ export default function LocationPig({initialPosition} : {initialPosition : googl
 	})
 	return (
 		<>
-		<LocationMarker position={position} color={"purple"} />
+		<LocationMarker position={position} color={gameContext.playerData.data.teamColor} />
 		<SnakeHead position={position} />
 		</>
 	)

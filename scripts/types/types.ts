@@ -21,6 +21,8 @@ export type GameStateUniversal = {
 	endTime?: number;
 	gameStateLogs: GameStateLog<any>[]
 	active: boolean;
+	teamPhotoURLs: {[key in MatchTeamString] : string}
+	
 }
 
 export type GameStateGeneric = ConnectFourGameState | SnakeGameState

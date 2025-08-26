@@ -1,4 +1,4 @@
-import { ClaimStateMoves } from "@/scripts/games/connect_four/connect_four";
+import { ConnectFourMoves } from "@/scripts/games/connect_four/connect_four";
 import { ZoneData } from "@/scripts/games/connect_four/types";
 import { GameBoardContext } from "@/scripts/types/types";
 import { ChallengeDeckContext, GameContext } from "@/src/match/Board";
@@ -77,7 +77,7 @@ export default function ClaimFlowModal({
 	const zoneSelectOptions = props.G.zoneData.map(zone => {return {value: `${zone.id}`, label: zone.name}});
 
 	async function handleSubmit(values: ClaimFormValues){
-		const moves = props.moves as ClaimStateMoves
+		const moves = props.moves as ConnectFourMoves
 		setLoading(true);
 		await claimZone(props.playerData.data.playerID, moves.completeChallengeAndClaim, Number(values.zone), values.challenge, values.evidence as unknown as File[]);
 		setLoading(false);

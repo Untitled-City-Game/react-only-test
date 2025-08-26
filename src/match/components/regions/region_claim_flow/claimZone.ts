@@ -1,8 +1,8 @@
 import { storage } from "@/scripts/firebase";
-import { ClaimStateMoves } from "@/scripts/games/connect_four/connect_four";
+import { ConnectFourMoves } from "@/scripts/games/connect_four/connect_four";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 
-export default async function claimZone(playerId : string, completeChallengeAndClaim : ClaimStateMoves["completeChallengeAndClaim"], zoneId: number, challenge : string, evidence : File[] ) {
+export default async function claimZone(playerId : string, completeChallengeAndClaim : ConnectFourMoves["completeChallengeAndClaim"], zoneId: number, challenge : string, evidence : File[] ) {
 	console.log("claiming zone on client", zoneId, challenge, evidence);
 	const evidenceUrls = await uploadEvidence(evidence, playerId)
 	completeChallengeAndClaim(zoneId, challenge, evidenceUrls);
