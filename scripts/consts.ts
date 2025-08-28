@@ -85,12 +85,7 @@ export const games = [
 		active: false,
 		description: "Find and destroy the other team before they find you!",
 		color: "water",
-<<<<<<< HEAD
 	}
-=======
-		icon: GiRadarSweep
-	},
->>>>>>> dev
 ]
 
    //Montreal
