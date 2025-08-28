@@ -4,6 +4,10 @@ node_modules/
 .vscode/
 *.code-workspace
 *.cache
+<<<<<<< HEAD
 server/db/
 src/
 package-lock.json
+=======
+server/db/*
+>>>>>>> dev

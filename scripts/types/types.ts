@@ -1,58 +1,39 @@
 import { UseFormReturnType } from '@mantine/form';
-import { LobbyAPI } from 'boardgame.io';
+import { Ctx, DefaultPluginAPIs, LobbyAPI } from 'boardgame.io';
 import { BoardProps } from 'boardgame.io/react';
 import { LineString } from 'geojson';
-import { Dispatch, ReactElement, SetStateAction } from 'react';
-import { cities } from './consts';
+import { Dispatch, JSX, ReactElement, SetStateAction } from 'react';
+import { cities } from '../consts';
+import { SnakeGameState } from '@/scripts/games/snake/types';
+import { PolyData, LineData } from '@/scripts/types/googleMaps';
+import { ConnectFourGameState } from '@/scripts/games/connect_four/types';
+import { IconType } from 'react-icons/lib';
+import { Challenge } from '@/scripts/games/challenge_deck/challenge_deck_types';
 
-//Google maps
-export type geospatialFeature = {
-	featureName : string,
-	coords: { lat: number; lng: number; }[]
-};
 
-export interface PolyData extends geospatialFeature {
-	matchedLines : LineData[]
-	matchedLineElements?: ReactElement[]
-}
-
-export interface LineData extends geospatialFeature {
-	matchedPolygons : string[]
-}
-
-export interface LineFeature extends GeoJSON.Feature {
-			geometry: LineString;
-			properties: GeoJSON.GeoJsonProperties & {Name: string};
-		}
-export interface PolygonFeature extends GeoJSON.Feature {
-		geometry: GeoJSON.Polygon;
-		properties: GeoJSON.GeoJsonProperties & {Name: string};
-	}
-
-//Game state
-export interface GameState {
+export type GameStateUniversal = {
 	gameName: string;
-	zoneData: ZoneData[],
-	MatchMapData: MatchMapData,
-	active: boolean,
-	allPlayersData : AllPlayersData,
-	allTeamsData : AllTeamsData,
-	gameOver : boolean,
-	startTime? : number,
-	endTime? : number,
-	challengeDeck: AllChallengeData,
-	gameStateLogs: GameStateLog[] 
+	gameCode: string;
+	allPlayersData: AllPlayersData;
+	allTeamsData : {[key in MatchTeamString] : string[]}
+	gameOver: boolean;
+	startTime?: number;
+	endTime?: number;
+	gameStateLogs: GameStateLog<any>[]
+	active: boolean;
+	teamPhotoURLs: {[key in MatchTeamString] : string}
+	
 }
 
-export type GameStateLog = Omit<GameState, "gameStateLogs">
+export type GameStateGeneric = ConnectFourGameState | SnakeGameState
+interface GameStateEverything extends Omit<ConnectFourGameState, 'gameCode' | 'gameStateLogs'>, Omit<SnakeGameState, 'gameCode' | 'gameStateLogs'> {}
 
-export type ZoneData = {
-	id: number;
-	status: zoneStatus;
-	name: string;
-	controlTeam: Color | null;
-	locked: boolean;
-}
+export interface GameStateAnything extends GameStateUniversal, Partial<Omit<GameStateEverything, keyof GameStateUniversal>>{}
+
+export type MoveContext<SomeGameState extends GameStateUniversal> = DefaultPluginAPIs & { G: SomeGameState; ctx: Ctx; playerID: string };
+
+
+export type GameStateLog<GameState extends GameStateUniversal> = Omit<GameState, "gameStateLogs">
 
 export type AllPlayersData = {
 	[key:string] : PlayerData
@@ -64,29 +45,19 @@ export type PlayerData = {
 	teamColor: MatchTeamColor;
 	playerCredentials?: string;
 	matchID?: string;
+	gameCode?: string;
 	admin?: boolean;
 }
 
-export type AllChallengeData = Challenge[]
+// export type AllTeamsData = {
+// 	[key in MatchTeamString] : TeamData
+// }
 
-export type Challenge = {
-	title: string,
-	description: string,
-	evidence_text: string,
-	emoji: string,
-	hard: string,
-	[key:string] : string
-}
-
-export type AllTeamsData = {
-	[key in MatchTeamString] : TeamData
-}
-
-export type TeamData = {
-	challengeDeck : Challenge[];
-	challengeHand : Challenge[];
-	challengeDiscard : Challenge[];
-}
+// export type TeamData = {
+// 	challengeDeck : Challenge[];
+// 	challengeHand : Challenge[];
+// 	challengeDiscard : Challenge[];
+// }
 
 export type zoneStatus = Color | "empty";
 
@@ -115,20 +86,17 @@ export type ClientSetupData = {
 		data: PlayerData;
 		setter: Dispatch<SetStateAction<PlayerData | undefined>>
 	};
-	matchID: string;
+	matchID?: string;
 	gameCode: string;
-	playerID : string;
 	credentials?: string;
+	playerID: string;
 }
 
 export type StrictMatch = Omit<LobbyAPI.Match, 'gameover' | 'setupData'> & { gameover: boolean, setupData: GameSetupData };
 
+export type GameBoardContextSpecific<GameState> = BoardProps<GameState> & ClientSetupData
 
-export type MetroGameBoardProps = MetroGameContext & {
-	children?: React.ReactNode;
-}
-
-export type MetroGameContext = BoardProps<GameState> & ClientSetupData
+export type GameBoardContext = BoardProps<GameStateGeneric> & ClientSetupData
 
 export type LogMetadata = {
 	date?: string;
@@ -139,6 +107,7 @@ export type LogMetadata = {
 	team: Color;
 	claimType?: "lock" | "claim" | "steal";
 	stealFrom?: Color;
+	growth?: number
 }
 
 type RGB = `rgb(${number}, ${number}, ${number})`;
@@ -148,17 +117,19 @@ export type NamedColor = "red" | "blue" | "green" | "yellow" | "purple" | "orang
 
 export type Color = RGB | RGBA | HEX | NamedColor;
 
+export type CoordSet = {lat: number, long: number}
+
 export function isCity(city: string) : city is City{
 	return cities.includes(city as City);
 	}
 
-type AtLeastOneColor<T extends string> = {
-	[K in T]?: TeamData; // Values can be anything, change type as needed
-	} & {
-	[K in T]: TeamData;
-	}
+// type AtLeastOneColor<T extends string> = {
+// 	[K in T]?: TeamData; // Values can be anything, change type as needed
+// 	} & {
+// 	[K in T]: TeamData;
+// 	}
 
-type MatchTeamString = string & {__isMatchTeam: true};
+export type MatchTeamString = string & {__isMatchTeam: true};
 export type MatchTeamColor = NamedColor & {__isMatchTeam: true};
 
 /** Mimics the result of Object.keys(...) */
@@ -186,6 +157,14 @@ export type ClaimZoneFormValues = UseFormReturnType<
 		evidence: string;
 	}
 >;
+
+export type TabData = {
+	 name: string;
+    component: ({ active }: {
+        active: string | null;
+    }) => JSX.Element;
+    icon: IconType;
+}
 
 
 export type StripContext<T> = {

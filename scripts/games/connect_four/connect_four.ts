@@ -1,36 +1,42 @@
 import { completeChallenge, completeChallengeAndClaim } from "@/scripts/games/connect_four/moves/completeChallengeAndClaim";
-import { discardChallenge, discardHand } from "@/scripts/games/connect_four/moves/handManagement";
-import { endGame, startGame } from "@/scripts/games/connect_four/moves/manageGame";
-import { playerSetup } from "@/scripts/games/connect_four/moves/playerSetup";
-import { gameSetup } from "@/scripts/games/connect_four/setup";
-import customUndo from "@/scripts/games/undo";
+import { discardChallenge, discardHand } from "@/scripts/games/challenge_deck/handManagement";
+import { endGame, startGame } from "@/scripts/games/shared_moves/manageGame";
+import { ConnectFourGameSetup, connectFourPlayerSetup } from "@/scripts/games/connect_four/setup";
+import customUndoTemplate from "@/scripts/games/undo";
 import {
 	GameSetupData,
-	GameState,
-	StripContext
-} from "@/scripts/types";
+	StripContext,
+	MoveContext
+} from "@/scripts/types/types";
 import type { Ctx, DefaultPluginAPIs, Game } from "boardgame.io";
-
-export type MoveContext = DefaultPluginAPIs & { G: GameState; ctx: Ctx; playerID: string };
+import { ConnectFourGameState } from "@/scripts/games/connect_four/types";
+import { challengeDeckTeamSetup } from "@/scripts/games/challenge_deck/challenge_deck_team_setup";
+import { addTeamPhoto } from "@/scripts/games/shared_moves/addTeamPhoto";
+import { sharedMoves } from "@/scripts/games/shared_moves/sharedMoves";
 
 export const handSize = 5;
 
+const customUndo = (context : MoveContext<ConnectFourGameState>) => {
+	customUndoTemplate(context)
+}
+
 const claimStateMoves = {
-	playerSetup,
+	playerSetup: connectFourPlayerSetup,
 	discardChallenge,
 	discardHand,
 	completeChallenge,
 	completeChallengeAndClaim,
-	endGame,
-	customUndo
+	customUndo,
+	...sharedMoves
 };
-export type ClaimStateMoves = StripContext<typeof claimStateMoves>;
 
-export const ConnectFour: Game<GameState> = {
-	name: `connect-four`,
+export type ConnectFourMoves = StripContext<typeof claimStateMoves>;
+
+export const ConnectFour: Game<ConnectFourGameState> = {
+	name: `connect_four`,
 	//set up game board using map json info
 	// validateSetupData: (data) => isGameSetupData(data),
-	setup: ({ ctx }, setupData : GameSetupData) => gameSetup(ctx, setupData),
+	setup: ({ ctx }, setupData : GameSetupData) => ConnectFourGameSetup(ctx, setupData),
 	endIf: ({ G }) => {
 		console.log("gameover check", G.gameOver);
 		return G.gameOver ? "Game ended" : null;
@@ -39,8 +45,8 @@ export const ConnectFour: Game<GameState> = {
 		console.log("on end");
 	},
 	moves: {
-		startGame,
-		playerSetup,
+		startGame : (args: any) => startGame<ConnectFourGameState>(args),
+		playerSetup: connectFourPlayerSetup
 	},
 	turn: {
 		onBegin: ({ events }) => {
@@ -49,11 +55,15 @@ export const ConnectFour: Game<GameState> = {
 		stages: {
 			join: {
 				moves: {
-					playerSetup,
-					startGame,
+					playerSetup: connectFourPlayerSetup,
+					startGame : (args: any) => {
+						challengeDeckTeamSetup(args)
+						startGame<ConnectFourGameState>(args)
+					},
+					...sharedMoves
 				},
 			},
-			claim: {
+			play: {
 				moves: claimStateMoves,
 			},
 		},

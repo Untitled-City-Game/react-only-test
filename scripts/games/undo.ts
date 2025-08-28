@@ -1,7 +1,6 @@
-import { MoveContext } from "@/scripts/games/connect_four/connect_four";
-import { GameState } from "@/scripts/types";
+import { MoveContext, GameStateUniversal } from "@/scripts/types/types";
 
-export default function customUndo(context: MoveContext){
+export default function customUndoTemplate(context: MoveContext<GameStateUniversal>){
 	console.log("custom undo activated");
 	let G = context.G;
 	const gameStateLogs = G.gameStateLogs;
@@ -19,7 +18,7 @@ export default function customUndo(context: MoveContext){
 	}
 }
 
-export function createUndoPoint(G: GameState){
+export function createUndoPoint<GameState extends GameStateUniversal>(G: GameState){
 	const {gameStateLogs, ...rest} = G;
 	G.gameStateLogs.push(rest);
 }

@@ -1,23 +1,27 @@
 import { ConnectFour } from '@/scripts/games/connect_four/connect_four';
 import { FlatFile, Origins, Server } from 'boardgame.io/server';
-
-// const database = new Firestore({
-// 	app: process.env.FIREBASE,
-// 	config: {
-// 		credential: admin.credential.applicationDefault(),
-// 		databaseURL: `https://${process.env.FIREBASE}.firebaseio.com`,
-// 	},
-//   });
-  
+import express from 'express';
+import { createServer } from 'node:http';
+import * as socketIo from 'socket.io';
+import { fileURLToPath } from 'node:url';
+import { dirname, join } from 'node:path';
+import { Snake } from '@/scripts/games/snake/snake';
 
 const authenticateCredentials = async () => {
  return true;
 }
 
+const app = express();
+const location_server = createServer(app);
+const io = new socketIo.Server(location_server, {
+	path: "/location/"
+})
+
+
 async function buildServer(){
 	console.log("building server", process.env.GAME_ADDRESS, process.env.GAME_SERVER);
 	const server = Server({
-		games: [ConnectFour],
+		games: [ConnectFour, Snake],
 		authenticateCredentials,
 		origins: [Origins.LOCALHOST, "http://localhost:1234", process.env.GAME_ADDRESS || false],
 		db: new FlatFile({
