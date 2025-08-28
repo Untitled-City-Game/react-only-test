@@ -11,10 +11,10 @@ import { FaStar } from "react-icons/fa6";
 export function ChallengeCard(props: { teamColor: Color; challenge: Challenge; completed? : boolean; claimButton? : boolean } & CardProps & React.HTMLAttributes<HTMLDivElement>) {
 	return (<DashedCard 
 	color={props.teamColor} 
-	bd={props.challenge.hard ? `4px double ${props.teamColor}` : `1.5px dashed ${props.teamColor}`}
+	bd={props.challenge.hard ? `4px solid ${props.teamColor}` : `1.5px dashed ${props.teamColor}`}
 	>
 		<Container w="100%">
-			<h3>{props.challenge.emoji} {props.challenge.title}</h3>
+			<h3 style={{fontWeight: "bold"}}>{props.challenge.emoji} {props.challenge.title}</h3>
 			{props.completed ? <div style={punchStyle} >
 				<FaStar size="3rem" fill="white" />
 			</div> : null}

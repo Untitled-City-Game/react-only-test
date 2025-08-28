@@ -6,7 +6,7 @@ import RuleBox from "@/src/match/screens/match_tabs/challenges/UI/RuleBox";
 import ConfirmButton from "@/src/userInterface/ConfirmModal";
 import { ComplexHeader } from "@/src/userInterface/Header/Header";
 import Span from "@/src/userInterface/Span";
-import { Box, Container, Stack, Group, Button, ScrollAreaAutosize, Accordion, ScrollArea, Flex } from "@mantine/core";
+import { Box, Container, Stack, Group, Button, ScrollAreaAutosize, Accordion, ScrollArea, Flex, Divider } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { createContext, useContext, useState } from "react";
 import { FaLock } from "react-icons/fa";
@@ -28,6 +28,7 @@ export default function ChallengesTab() {
 	if (!challengeHand) {
 		return <h1>No challenges available</h1>;
 	}
+	console.warn("hand", challengeHand)
 	function handleDiscardHand() {
 		console.log("discarding hand");
 		moves.discardHand();
@@ -66,28 +67,31 @@ export default function ChallengesTab() {
 										// } challenge={challenge}></ChallengeCard>
 										// <ChallengeButton challenge={challenge} key={index} team={props.playerData.data.teamColor} claimButton={true} />
 										<Accordion.Item
-											bd={challenge.hard ? `4px double ${props.playerData.data.teamColor}` : `1.5px dashed ${props.playerData.data.teamColor}`}
+											bd={challenge.hard ? `2px solid ${props.playerData.data.teamColor}` : `1.5px dashed ${props.playerData.data.teamColor}`}
 											style={{
 												borderRadius: "10px"
 											}}
 											bg={"white"}
 											key={index}
 											value={challenge.title} >
-											<Accordion.Control icon={challenge.emoji}>{challenge.title}</Accordion.Control>
+											<Accordion.Control icon={challenge.emoji}><strong>{challenge.title}</strong></Accordion.Control>
 											<Accordion.Panel>
+												<div>
+													{challenge.hard ? <>
+														<FaLock color={props.playerData.data.teamColor} />
+														<Span fz="0.9rem"> This challenge can lock or steal a zone</Span></> : null}
+												</div>
+												< Divider />
 												<div>{challenge.description.split("\n").map((line, index) => <p key={index}>{line}</p>)}</div>
 												<Stack mb="sm">
 													{challenge.rules.filter(rule => rule).map((rule, index) => { 
 														return (<RuleBox key={index}>{rule}</RuleBox>)})}
 												</Stack>
+												< Divider />
+																									
+
 													<ClaimButton title={challenge.title} />
-												<div>
-													{challenge.hard ? <>
-														<FaLock color={props.playerData.data.teamColor} />
-														<Span style={{
-															fontStyle: "italic"
-														}}> Hard - this challenge can lock or steal a zone</Span></> : null}
-												</div>
+											
 											</Accordion.Panel>
 										</Accordion.Item>
 									);

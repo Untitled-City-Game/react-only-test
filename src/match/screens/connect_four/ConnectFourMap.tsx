@@ -11,7 +11,6 @@ import useMyLocation from "@/src/match/interfaces/useMyLocation";
 import LocationMarker from "@/src/match/googleMaps/LocationMarker";
 
 export default function ConnectFourMapTab() {
-	console.log("rendering mapboard");
 	const {playerData} = useContext(GameContext)
 	const G = useContext(ConnectFourContext);
 	const { zonePolygons, winningLines, city } = G.MatchMapData;
@@ -74,7 +73,6 @@ export default function ConnectFourMapTab() {
 			/>
 		);
 	});
-	console.warn("map center", G.city, gameLocationCenters[G.city])
 	return (
 		<>
 			{/* <Header color={props.playerData.data.teamColor}>

@@ -54,7 +54,7 @@ export function ChallengeButton({
 	<><DashedCard color={team} w="100%" bd={challenge.hard ? `4px double ${team}` : `1.5px dashed ${team}`}
 	onClick={open}
 	>
-			<P>{challenge.emoji} {challenge.title}</P>
+			<P fw="bold">{challenge.emoji} {challenge.title}</P>
 	</DashedCard>
 	<ChallengePopup opened={opened} close={close} challengeInfo={challenge} team={team} completed={completed} claimButton={claimButton}/>
 	</>

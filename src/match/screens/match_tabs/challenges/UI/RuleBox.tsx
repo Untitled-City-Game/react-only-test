@@ -1,22 +1,20 @@
 import P from "@/src/userInterface/P";
 import { Box } from "@mantine/core";
-import { PiWarningDiamondFill } from "react-icons/pi";
+import { CiBookmarkCheck } from "react-icons/ci";
 
 export default function RuleBox({children} : {children : React.ReactNode}){
 	return (
 		<Box style={{
-			border: "2px solid orange",
 			borderRadius: "10px",
-			padding: "1rem",
+			padding: "0rem",
 			display: "flex",
 			flexWrap: "nowrap",
 			justifyContent: "flex-start",
 			alignItems: "center",
-			gap: "1rem",
-			backgroundColor: "#fffbccff"
+			gap: "0.4rem",
 		}}>
-			<Box w="10%"><PiWarningDiamondFill size="2rem" color="orange"/></Box>
-			<P>{children}</P>
+			<Box w="10%"><CiBookmarkCheck size="2rem" color="black"/></Box>
+			<P fz="0.9rem">{children}</P>
 		</Box>
 	)
 }
