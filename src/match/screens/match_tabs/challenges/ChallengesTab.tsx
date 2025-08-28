@@ -5,6 +5,7 @@ import { ClaimButton } from "@/src/match/screens/match_tabs/challenges/UI/Challe
 import RuleBox from "@/src/match/screens/match_tabs/challenges/UI/RuleBox";
 import ConfirmButton from "@/src/userInterface/ConfirmModal";
 import { ComplexHeader } from "@/src/userInterface/Header/Header";
+import P from "@/src/userInterface/P";
 import Span from "@/src/userInterface/Span";
 import { Box, Container, Stack, Group, Button, ScrollAreaAutosize, Accordion, ScrollArea, Flex, Divider } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
@@ -74,22 +75,22 @@ export default function ChallengesTab() {
 											bg={"white"}
 											key={index}
 											value={challenge.title} >
-											<Accordion.Control icon={challenge.emoji}><strong>{challenge.title}</strong></Accordion.Control>
+											<Accordion.Control icon={challenge.emoji}><P fw="bold" tt="uppercase" className="mono">{challenge.title}</P></Accordion.Control>
 											<Accordion.Panel>
-												<div>
+											< Divider color={props.playerData.data.teamColor} />
+												<div style={{marginTop: "0.5rem"}}>
 													{challenge.hard ? <>
 														<FaLock color={props.playerData.data.teamColor} />
 														<Span fz="0.9rem"> This challenge can lock or steal a zone</Span></> : null}
 												</div>
-												< Divider />
 												<div>{challenge.description.split("\n").map((line, index) => <p key={index}>{line}</p>)}</div>
 												<Stack mb="sm">
 													{challenge.rules.filter(rule => rule).map((rule, index) => { 
 														return (<RuleBox key={index}>{rule}</RuleBox>)})}
-												</Stack>
-												< Divider />
-																									
+																									< Divider color={props.playerData.data.teamColor} />
 
+												</Stack>
+																								
 													<ClaimButton title={challenge.title} />
 											
 											</Accordion.Panel>
