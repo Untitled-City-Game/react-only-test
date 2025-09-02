@@ -124,6 +124,7 @@ function structureChallenges(challengeData : RawChallenge[]) : Challenge[]{
 			title: challenge.title,
 			description: challenge.description,
 			hard : challenge.hard,
+			emoji: challenge.emoji,
 			rules: [challenge.rule1, challenge.rule2, challenge.rule3, challenge.rule4],
 			link: {
 				name: challenge.link_name,
