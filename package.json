@@ -9,6 +9,7 @@
     "dev": "cross-env APP_ENVIRONMENT=dev parcel --no-cache",
     "build": "parcel build ./src/index.html --no-optimize --no-cache",
     "deploy": "cross-env APP_ENVIRONMENT=prod npm run build && firebase deploy --project=prod",
+    "deploy-dev": "cross-env APP_ENVIRONMENT=prod npm run build && firebase deploy --project=dev",
     "stage": "cross-env APP_ENVIRONMENT=stage npm run build && firebase deploy",
     "serve": "tsx --env-file .env --env-file .env.development server/server.ts",
     "location": "tsx server/locationserver.ts",

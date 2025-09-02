@@ -10,6 +10,7 @@ import { Client } from "boardgame.io/react";
 import { useEffect, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { useNavigate } from "react-router";
+
 export default function MatchClient() {
 	const [playerData, setPlayerData] = useState<PlayerData>();
 	const navigate = useNavigate();
