@@ -2,20 +2,22 @@ import { ConnectFourMoves } from "@/scripts/games/connect_four/connect_four";
 import { ChallengeDeckContext, GameContext } from "@/src/match/Board";
 import ClaimFlowModal from "@/src/match/components/regions/region_claim_flow/ClaimFlowModal";
 import { ClaimButton } from "@/src/match/screens/match_tabs/challenges/UI/ChallengeCard";
+import { ChallengeBody } from "@/src/match/screens/match_tabs/challenges/UI/ChallengePopup";
 import RuleBox from "@/src/match/screens/match_tabs/challenges/UI/RuleBox";
+import { TabAlertsContext } from "@/src/match/screens/match_tabs/TabSet";
 import ConfirmButton from "@/src/userInterface/ConfirmModal";
 import { ComplexHeader } from "@/src/userInterface/Header/Header";
 import P from "@/src/userInterface/P";
 import Span from "@/src/userInterface/Span";
 import { Box, Container, Stack, Group, Button, ScrollAreaAutosize, Accordion, ScrollArea, Flex, Divider } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { createContext, useContext, useState } from "react";
+import { createContext, useContext, useEffect, useState } from "react";
 import { FaLock } from "react-icons/fa";
 
 
 export const ChallengeContext = createContext<any>(null);
 
-export default function ChallengesTab() {
+export default function ChallengesTab({ active }: { active: string | null }) {
 	const { allTeamsChallengeData, } = useContext(ChallengeDeckContext)
 	const props = useContext(GameContext)
 	const moves = props.moves as ConnectFourMoves; //TODO: Make this generic / composite
@@ -29,11 +31,24 @@ export default function ChallengesTab() {
 	if (!challengeHand) {
 		return <h1>No challenges available</h1>;
 	}
-	console.warn("hand", challengeHand)
 	function handleDiscardHand() {
 		console.log("discarding hand");
 		moves.discardHand();
 	}
+
+	const { setTabAlertState } = useContext(TabAlertsContext)
+
+	useEffect(() => {
+		console.log("challenge hand changed");
+		setTabAlertState(oldValues => { return { ...oldValues, "challenges": true } });
+	}, [challengeHand]);
+
+	useEffect(() => {
+		if (active !== "Challenges") return
+		console.log("challenges tab activated!");
+		setTabAlertState(oldValues => { return { ...oldValues, "challenges": false } });
+	}, [active]);
+
 	return (
 		<>
 			<Box style={{ zIndex: 10 }}>
@@ -77,22 +92,9 @@ export default function ChallengesTab() {
 											value={challenge.title} >
 											<Accordion.Control icon={challenge.emoji}><P fw="bold" tt="uppercase" className="mono">{challenge.title}</P></Accordion.Control>
 											<Accordion.Panel>
-											< Divider color={props.playerData.data.teamColor} />
-												<div style={{marginTop: "0.5rem"}}>
-													{challenge.hard ? <>
-														<FaLock color={props.playerData.data.teamColor} />
-														<Span fz="0.9rem"> This challenge can lock or steal a zone</Span></> : null}
-												</div>
-												<div>{challenge.description.split("\n").map((line, index) => <p key={index}>{line}</p>)}</div>
-												<Stack mb="sm">
-													{challenge.rules.filter(rule => rule).map((rule, index) => { 
-														return (<RuleBox key={index}>{rule}</RuleBox>)})}
-																									< Divider color={props.playerData.data.teamColor} />
+												<ChallengeBody teamColor={props.playerData.data.teamColor} challenge={challenge}></ChallengeBody>
+												<ClaimButton title={challenge.title} />
 
-												</Stack>
-																								
-													<ClaimButton title={challenge.title} />
-											
 											</Accordion.Panel>
 										</Accordion.Item>
 									);

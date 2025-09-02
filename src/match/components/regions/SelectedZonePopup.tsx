@@ -17,7 +17,6 @@ export default function SelectedZonePopup({
 }) {
 	const [opened, { open, close }] = useDisclosure(false);
 	const props = useContext(GameContext)
-	console.log("selected zone popup", currentZone);
 	return (
 		<>
 			<Center

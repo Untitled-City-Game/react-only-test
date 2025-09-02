@@ -1,8 +1,10 @@
 import { LineData } from "@/scripts/types/googleMaps";
+import { Circle } from "@/src/match/googleMaps/shapes/Circle";
 import { Polyline } from "@/src/match/googleMaps/shapes/PolyLine";
+import { ZoomContext } from "@/src/match/googleMaps/VisGLMapElement";
 import { theme } from "@/src/styles/theme";
 import { Marker } from "@vis.gl/react-google-maps";
-import { Fragment } from "react";
+import { Fragment, useContext, useEffect } from "react";
 
 export default function MapLine({
 	line,
@@ -14,6 +16,10 @@ export default function MapLine({
 	index: number;
 }) {
 	const color = Object.values(theme.colors)[index]
+	const zoom = useContext(ZoomContext)
+	useEffect(()=> {
+		console.log("zoom changed!", zoom)
+	}, [zoom])
 	return (
 		<>
 			<Polyline
@@ -21,42 +27,34 @@ export default function MapLine({
 				visible={lineVisibility}
 				strokeColor = {color[6]}
 				strokeOpacity = {1}
-				strokeWeight = {8}
+				strokeWeight = {5}
 				clickable={false}
+				zIndex = {20}
 				
 			/>
-			{/* <Fragment>
-				<Marker 
-					position={line.coords[0]}
+			<Fragment>
+				<Circle 
+					center={line.coords[0]}
+					radius = {70}
+					fillColor = {`${theme.white}`}
+					fillOpacity = {1}
+					strokeColor = {"black"}
 					visible={lineVisibility}
-					clickable={false}
-					zIndex={5}
-					icon = {{
-						strokeColor: `${theme.black}`,
-						path: "M 0, 0 m 10, 0 a 10,10 0 2,0 -10,0 a 10,10 0 2,0  10, 0 ",
-						fillColor: `${theme.white}`,
-						fillOpacity: 1,
-						strokeWeight: 2,
-
-					}}
+					zIndex={21}
 				/>
 			</Fragment>
 			<Fragment>
-				<Marker 
-					position={line.coords[line.coords.length -1]}
+				<Circle 
+					center={line.coords[line.coords.length-1]}
+					radius = {70}
+					fillColor = {`${theme.white}`}
+					fillOpacity = {1}
+					strokeColor = {"black"}
 					visible={lineVisibility}
-					clickable={false}
-					zIndex={5}
-					icon = {{
-						strokeColor: `${theme.black}`,
-						path: "M 0, 0 m 10, 0 a 10,10 0 1,0 -10,0 a 10,10 0 1,0  10, 0 ",
-						fillColor: `${theme.white}`,
-						fillOpacity: 1,
-						strokeWeight: 5,
-
-					}}
+					zIndex={21}
 				/>
-			</Fragment> */}
+			</Fragment>
+			
 
 			{/* Make a circle at each vertex of the polyline */}
 			{/* {line.coords.map((coord, index) => {

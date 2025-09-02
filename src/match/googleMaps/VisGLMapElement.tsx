@@ -1,7 +1,7 @@
-import { APIProvider, Map } from "@vis.gl/react-google-maps";
+import { APIProvider, Map, MapProps } from "@vis.gl/react-google-maps";
 import React, { createContext, useState } from "react";
 
-interface MapElementProps extends React.PropsWithChildren, React.HTMLAttributes<HTMLDivElement> {
+interface MapElementProps extends React.PropsWithChildren, MapProps {
 	center: google.maps.LatLngLiteral
 };
 
@@ -34,6 +34,7 @@ export default function VisGlMapElement(props: MapElementProps) {
 				gestureHandling={'greedy'}
 				disableDefaultUI={true}
 				onZoomChanged={(zoomEvent) => setZoom(prevZoom => zoomEvent.map.getZoom() || prevZoom)}
+				onClick={props.onClick}
 			>
 			{/* {
 				teamLocations.map(teamLocation => {

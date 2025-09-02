@@ -83,6 +83,7 @@ export default function ConnectFourMapTab() {
 			<VisGlMapElement 
 			center={gameLocationCenters[G.city]}
 			onClick={() => {
+				console.log("map clicked!")
 				setCurrentZone(undefined);
 				setLineVisibility({});
 				setHighlightedZones({});

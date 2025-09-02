@@ -1,6 +1,7 @@
 import { Challenge } from "@/scripts/games/challenge_deck/challenge_deck_types";
 import { Color } from "@/scripts/types/types";
 import { ChallengeContext } from "@/src/match/screens/match_tabs/challenges/ChallengesTab";
+import { ChallengeBody } from "@/src/match/screens/match_tabs/challenges/UI/ChallengePopup";
 import DashedCard from "@/src/userInterface/DashedCard";
 import Span from "@/src/userInterface/Span";
 import { Button, CardProps, Container } from "@mantine/core";
@@ -15,18 +16,7 @@ export function ChallengeCard(props: { teamColor: Color; challenge: Challenge; c
 	>
 		<Container w="100%">
 			<h3 style={{fontWeight: "bold"}}>{props.challenge.emoji} {props.challenge.title}</h3>
-			{props.completed ? <div style={punchStyle} >
-				<FaStar size="3rem" fill="white" />
-			</div> : null}
-			<div>{props.challenge.description.split("\n").map((line, index) => <p key={index}>{line}</p>)}</div>
-			{props.claimButton ? <ClaimButton title={props.challenge.title} /> : null}
-			<div>
-				{props.challenge.hard ? <>
-				<FaLock color={props.teamColor} />
-					<Span style={{
-						fontStyle: "italic"
-					}}> Hard - this challenge can lock or steal a zone</Span></> : null}
-			</div>
+			<ChallengeBody challenge={props.challenge} teamColor={props.teamColor} />
 		</Container>
 	</DashedCard>);
 }

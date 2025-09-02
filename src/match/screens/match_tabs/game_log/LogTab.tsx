@@ -4,6 +4,7 @@ import {
 } from "@/scripts/types/types";
 import { GameContext } from "@/src/match/Board";
 import { Message } from "@/src/match/screens/match_tabs/game_log/Message";
+import { TabAlertsContext } from "@/src/match/screens/match_tabs/TabSet";
 import { useAutoScrollToBottom } from "@/src/userInterface/chatScroll";
 import ConfirmButton from "@/src/userInterface/ConfirmModal";
 import { ComplexHeader } from "@/src/userInterface/Header/Header";
@@ -14,6 +15,7 @@ import { ErrorBoundary } from "react-error-boundary";
 
 export default function LogTab({ active }: { active: string | null }) {
 	const props: GameBoardContext = useContext(GameContext);
+	const {setTabAlertState} = useContext(TabAlertsContext)
 	const moves = props.moves as ConnectFourMoves;
 	const playerData = props.playerData.data;
 	// const [worker, setWorker] = useState<ServiceWorkerRegistration>()
@@ -23,9 +25,23 @@ export default function LogTab({ active }: { active: string | null }) {
 	}
 
 	useEffect(() => {
-		console.log("active tab changed");
+		if(active !== "Log") return
+		console.log("log tab activated!");
+		setTabAlertState(oldValues => {return {...oldValues, "log" : false}});
 		scrollToBottom();
-	}, [active, props.deltalog]);
+	}, [active]);
+
+	useEffect(() => {
+		console.log("New log update, setting tab alert state");
+		if(active === "Log") {
+			scrollToBottom()
+			return;
+		}
+		if(props.G.allPlayersData[props.log[props.log.length -1].action.payload.playerID].teamColor == playerData.teamColor){
+			return;
+		}
+		setTabAlertState(oldValues => {return {...oldValues, "log" : true}})
+	}, [props.log])
 
 	// useEffect(() => {
 	// 	if ('serviceWorker' in navigator) {
@@ -47,9 +63,7 @@ export default function LogTab({ active }: { active: string | null }) {
 
 
 	return (
-		<
-
-			>
+		<>
 			<Box style={{ zIndex: 10000 }}>
 				<ComplexHeader color={props.playerData.data.teamColor}>
 					<Stack gap="0" ta="center">

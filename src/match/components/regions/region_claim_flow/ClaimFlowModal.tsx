@@ -37,7 +37,6 @@ export default function ClaimFlowModal({
 }) {
 	const props: GameBoardContext = useContext(GameContext);
 	const {allTeamsChallengeData} = useContext(ChallengeDeckContext)
-	console.log("all teams challenge data", allTeamsChallengeData)
 	if(props.G.gameCode !== "connect_four"){
 		throw new Error("no challenges, game code "+props.G.gameCode);
 	}

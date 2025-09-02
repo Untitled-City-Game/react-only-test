@@ -4,8 +4,8 @@ import ConnectFourMapTab from "@/src/match/screens/connect_four/ConnectFourMap";
 import ChallengesTab from "@/src/match/screens/match_tabs/challenges/ChallengesTab";
 import LogTab from "@/src/match/screens/match_tabs/game_log/LogTab";
 import SnakeMap from "@/src/match/screens/snake/SnakeMapTab";
-import { Group, Tabs, TabsList, TabsPanel, TabsTab } from "@mantine/core";
-import { Suspense, useContext, useState } from "react";
+import { Group, Indicator, Tabs, TabsList, TabsPanel, TabsTab } from "@mantine/core";
+import { createContext, Dispatch, SetStateAction, Suspense, useContext, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { TbCards, TbMap, TbMessageChatbot } from "react-icons/tb";
 
@@ -21,13 +21,13 @@ const challengeTabData: TabData = {
 	icon: TbCards
 }
 
-const connectFourMapData : TabData = {
-				name: "Map",
-				component: ConnectFourMapTab,
-				icon: TbMap
-			}
+const connectFourMapData: TabData = {
+	name: "Map",
+	component: ConnectFourMapTab,
+	icon: TbMap
+}
 
-const snakeMapData : TabData = {
+const snakeMapData: TabData = {
 	name: "Map",
 	component: SnakeMap,
 	icon: TbMap
@@ -41,13 +41,23 @@ const tabIndex = {
 
 
 type TabCodes = keyof typeof tabIndex
+type TabsAlert = {[key in TabCodes]? : boolean}
+const tabAlert =  Object.keys(tabIndex).reduce(addTab, {});
 
-export default function TabSet({tabCodes} : {tabCodes : TabCodes[]}) {
+function addTab(tabs : TabsAlert, newtab: string){
+	var tabset = tabs;
+	tabset[newtab as TabCodes] = false;
+	return tabset
+}
+export const TabAlertsContext = createContext<{setTabAlertState : Dispatch<SetStateAction<TabsAlert>>}>({} as any)
+
+export default function TabSet({ tabCodes }: { tabCodes: TabCodes[] }) {
+	const [tabAlertState, setTabAlertState] = useState(tabAlert);
 	console.log("rendering match");
-	const props: GameBoardContext = useContext(GameContext);
 
 	const [activeTab, setActiveTab] = useState<string | null>(null);
 	return (
+		<TabAlertsContext.Provider value={{setTabAlertState}}>
 		<Tabs defaultValue={"Log"} variant="pills" radius={0} id="matchContainer" onChange={setActiveTab}>
 			{tabCodes.map(tabCode => {
 				const tab = tabIndex[tabCode]
@@ -60,19 +70,28 @@ export default function TabSet({tabCodes} : {tabCodes : TabCodes[]}) {
 					</TabsPanel>
 				)
 			})}
-			<TabsList
-				style={TabListStyles}
-				p="0"
-				bg="white"
-				grow={true}>
-				{tabCodes.map(tabCode => {
-					const tab = tabIndex[tabCode]
-					return (
-						<TabsTab key={tab.name} value={tab.name} flex="1"><Group gap="0.2rem" fz="md" wrap="nowrap"><tab.icon size="1rem" /><span>{tab.name}</span></Group></TabsTab>
-					)
-				})}
-			</TabsList>
+				<TabsList
+					style={TabListStyles}
+					p="0"
+					bg="white"
+					grow={true}>
+					{tabCodes.map(tabCode => {
+						const tab = tabIndex[tabCode]
+						return (
+							<TabsTab key={tab.name} value={tab.name} flex="1">
+								<Indicator disabled={!tabAlertState || !tabAlertState[tabCode]} processing inline size="12" position="middle-start" offset={-10} color="red">
+									<Group gap="0.2rem" fz="md" wrap="nowrap"><tab.icon size="1rem" />
+										<span>{tab.name}</span>
+									</Group>
+								</Indicator>
+
+							</TabsTab>
+						)
+					})}
+				</TabsList>
 		</Tabs>
+	</TabAlertsContext.Provider>
+
 	);
 }
 
