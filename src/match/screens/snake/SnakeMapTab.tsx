@@ -1,16 +1,12 @@
 import { SnakeContext } from "@/src/match/Board";
 import LocationPig, { locationPigContext } from "@/src/match/googleMaps/LocationPig";
-import { Circle } from "@/src/match/googleMaps/shapes/Circle";
 import { Polygon } from "@/src/match/googleMaps/shapes/Polygon";
 import VisGlMapElement from "@/src/match/googleMaps/VisGLMapElement";
-import useMyLocation from "@/src/match/interfaces/useMyLocation";
 import { useContext, useState } from "react";
 import * as turf from '@turf/turf';
-import { Polyline } from "@/src/match/googleMaps/shapes/PolyLine";
 import FruitManager from "@/src/match/components/snake/FruitManager";
 import SnakeBody from "@/src/match/components/snake/SnakeBody";
 const boxSize = 10
-const innerBoxSize = 0.01
 export default function SnakeMap(){
 	const SnakeGameState = useContext(SnakeContext)
 	const {gameLocation, gameRadius} = SnakeGameState.mapArea

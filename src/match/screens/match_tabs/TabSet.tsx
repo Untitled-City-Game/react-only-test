@@ -3,10 +3,12 @@ import { GameContext } from "@/src/match/Board";
 import ConnectFourMapTab from "@/src/match/screens/connect_four/ConnectFourMap";
 import ChallengesTab from "@/src/match/screens/match_tabs/challenges/ChallengesTab";
 import LogTab from "@/src/match/screens/match_tabs/game_log/LogTab";
+import SnakeData from "@/src/match/screens/snake/SnakeDataTab";
 import SnakeMap from "@/src/match/screens/snake/SnakeMapTab";
 import { Group, Indicator, Tabs, TabsList, TabsPanel, TabsTab } from "@mantine/core";
 import { createContext, Dispatch, SetStateAction, Suspense, useContext, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
+import { GiSnake } from "react-icons/gi";
 import { TbCards, TbMap, TbMessageChatbot } from "react-icons/tb";
 
 const logTabData: TabData = {
@@ -32,11 +34,18 @@ const snakeMapData: TabData = {
 	component: SnakeMap,
 	icon: TbMap
 }
+
+const snakeData : TabData = {
+	name: "Snake",
+	component: SnakeData,
+	icon: GiSnake
+}
 const tabIndex = {
 	log: logTabData,
 	challenges: challengeTabData,
 	connect_four_map: connectFourMapData,
-	snake_map: snakeMapData
+	snake_map: snakeMapData,
+	snake_data: snakeData
 }
 
 

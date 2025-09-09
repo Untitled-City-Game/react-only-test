@@ -6,7 +6,7 @@ import { JoinedMatch } from "@/src/match/screens/match_tabs/game_log/messages/Jo
 import { MessageBox, MessageWrapper } from "@/src/match/screens/match_tabs/game_log/MessageBox";
 import { ChallengeButton } from "@/src/match/screens/match_tabs/challenges/UI/ChallengePopup";
 import P from "@/src/userInterface/P";
-import { Box } from "@mantine/core";
+import { Avatar, Box } from "@mantine/core";
 import { LogEntry } from "boardgame.io";
 import { useContext } from "react";
 import { GameContext } from "@/src/match/Board";
@@ -20,7 +20,7 @@ export function Message({ entry, gameData, playerData }: { entry: LogEntry; game
 		case "completeChallengeAndClaim":
 			const challenge = gameState.G.challengeDeck!.find(challenge => challenge.title === entry.metadata.challenge)
 			return (
-				<Box>
+				<Box>					
 					<MessageBox entry={entry} gameData={gameData} playerData={playerData} >
 						<ClaimChallengeCompleted
 							metadata={entry.metadata as LogMetadata} />
@@ -81,6 +81,8 @@ export function Message({ entry, gameData, playerData }: { entry: LogEntry; game
 		case "addSegment":
 			break;
 		case "eatFruit":
+			break;
+		case "addTeamPhoto":
 			break;
 		default:
 			return <P>{entry.action.payload.type}</P>;

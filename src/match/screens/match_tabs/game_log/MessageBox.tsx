@@ -3,7 +3,7 @@ import { GameStateAnything, LogMetadata, PlayerData } from "@/scripts/types/type
 import { theme } from "@/src/styles/theme";
 import P from "@/src/userInterface/P";
 import Span from "@/src/userInterface/Span";
-import { Alert, Box, Group } from "@mantine/core";
+import { Alert, Avatar, Box, Group } from "@mantine/core";
 import { LogEntry } from "boardgame.io";
 import React, { useEffect, useState } from "react";
 
@@ -38,6 +38,11 @@ export function MessageBox({
 	}, [metadata]);
 
 	return (
+		<Group w="100%" wrap="nowrap" gap="xs" align="flex-start"  style={{
+			flexDirection: senderData.playerID === playerData.playerID ? "row-reverse" : "row"
+		}}>
+		
+		<Avatar radius="sm" src={gameData.teamPhotoURLs[senderData.teamColor]} color={senderData.teamColor} name={`${senderData.teamColor} Team`} alt={`${senderData.teamColor} Team`} />
 		<MessageWrapper
 			entry={entry}
 			gameData={gameData}
@@ -50,6 +55,7 @@ export function MessageBox({
 			</Group>
 			{children}
 		</MessageWrapper>
+		</Group>
 	);
 }
 
@@ -76,7 +82,7 @@ export function MessageWrapper({
 				borderRadius: "10px",
 				padding: `${unstyled ? "0" :"10px 10px 10px 10px"}`,
 			}}
-			ml={senderData.playerID === playerData.playerID ? "auto" : "0"}
-		>{children}</Box>
+		>
+		{children}</Box>
 	)
 }

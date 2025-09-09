@@ -16,7 +16,7 @@ export function trimSnake(context: MoveContext<SnakeGameState>){
 	trimSnakeTime(teamSnakeBody);
 }
 
-function calculateSnakeLength(segments: SnakeSegment[]) {
+export function calculateSnakeLength(segments: SnakeSegment[]) {
 	const arrayPoints = segments.map(point => ([point.lng, point.lat]))
 	const distance = turf.length(turf.lineString(arrayPoints), {units : "meters"})
 	return distance

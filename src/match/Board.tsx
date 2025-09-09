@@ -110,7 +110,7 @@ function SnakeGameplay(G: SnakeGameState, playerData : PlayerData){
 				Snake length: {snakeLength}m
 			</StatusBar>
 
-			<TabSet tabCodes={["snake_map", "log" ]} />
+			<TabSet tabCodes={["snake_map", "snake_data", "log" ]} />
 		</SnakeContext.Provider>
 	)
 
