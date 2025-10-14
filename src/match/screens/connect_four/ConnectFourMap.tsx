@@ -9,12 +9,13 @@ import { ConnectFourGameState, ZoneData } from "@/scripts/games/connect_four/typ
 import { ConnectFourContext, GameContext } from "@/src/match/Board";
 import useMyLocation from "@/src/match/interfaces/useMyLocation";
 import LocationMarker from "@/src/match/googleMaps/LocationMarker";
+import AllTeamMarkers from "@/src/match/googleMaps/AllTeamMarkers";
 
 export default function ConnectFourMapTab() {
-	const {playerData} = useContext(GameContext)
+	const {playerData } = useContext(GameContext)
 	const G = useContext(ConnectFourContext);
 	const { zonePolygons, winningLines, city } = G.MatchMapData;
-	const myLocation = useMyLocation(gameLocationCenters[city] || {lat: 0, lng: 0});
+	const myLocation = useMyLocation(true, playerData.data.teamColor, gameLocationCenters[city] || {lat: 0, lng: 0});
 
 	const [lineVisibility, setLineVisibility] = useState(
 		winningLines
@@ -43,11 +44,14 @@ export default function ConnectFourMapTab() {
 			<MapLine
 				index={index}
 				line={line}
+				allLines={winningLines}
 				lineVisibility={lineVisibility[line.featureName]}
 				key={index}
 			/>
 		);
 	});
+
+	//render vertex node circles
 
 	//Render zone polygons
 	const zoneElements = zonePolygons?.map((zone, index) => {
@@ -92,6 +96,7 @@ export default function ConnectFourMapTab() {
 				<>{lineElements}</>
 				<>{zoneElements}</>
 				<LocationMarker position={myLocation} color={playerData.data.teamColor} />
+				<AllTeamMarkers />
 			</VisGlMapElement>
 			</div>
 		</>

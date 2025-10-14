@@ -8,10 +8,12 @@ import { Fragment, useContext, useEffect } from "react";
 
 export default function MapLine({
 	line,
+	allLines,
 	lineVisibility = false,
 	index,
 }: {
 	line: LineData;
+	allLines: LineData[]
 	lineVisibility: boolean;
 	index: number;
 }) {
@@ -32,7 +34,7 @@ export default function MapLine({
 				zIndex = {20}
 				
 			/>
-			<Fragment>
+			{/* <Fragment>
 				<Circle 
 					center={line.coords[0]}
 					radius = {70}
@@ -54,7 +56,7 @@ export default function MapLine({
 					zIndex={21}
 				/>
 			</Fragment>
-			
+			 */}
 
 			{/* Make a circle at each vertex of the polyline */}
 			{/* {line.coords.map((coord, index) => {

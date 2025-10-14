@@ -11,10 +11,11 @@ import { joinMatch } from "@/scripts/joinMatch";
 
 interface CreateGameFormUniversal extends UseFormReturnType<any> {}
 
-type FormValues = {
+export type FormValues = {
 	PlayerName: string;
 	teamColor: NamedColor;
 	gameName: string;
+	city?: City;
 	[key:string]: any;
 };
 

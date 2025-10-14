@@ -32,7 +32,7 @@ function Board(props: GameBoardContext){
 	let navigate = useNavigate();
 
 	useEffect(() => {
-	if (playerID && !props.G.allPlayersData[playerID]) {
+	if (playerID && props.G.allPlayersData && !props.G.allPlayersData[playerID]) {
 		console.log(
 			"setting up player ",
 			playerID,
@@ -52,6 +52,13 @@ function Board(props: GameBoardContext){
 	}
 
 	if (!props.G.active) {
+		// if(props.G.gameName === "connect_four_demo"){
+		// 	// props.moves.startGame();
+		// 	return <>
+		// 	<h1>Loading demo...</h1>
+		// 	<button onClick={props.moves.startGame}>Start game</button>
+		// 	</>
+		// }
 		return (
 			<GameContext.Provider value={{ ...props }}>
 				<Waiting />

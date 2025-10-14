@@ -1,8 +1,9 @@
 export type LocationData = {
-	teamName: string;
+	teamName: MatchTeamColor;
 	location: google.maps.LatLngLiteral
 }
-import { socket } from "@/scripts/socket"
+import { socket } from "@/scripts/socket";
+import { MatchTeamColor } from "@/scripts/types/types";
 import { useState, useEffect } from "react";
 
 export default function useTeamLocations(){
@@ -44,6 +45,6 @@ export default function useTeamLocations(){
 	}, []);
 
 
-	return [teamLocations]
+	return teamLocations
 }
 

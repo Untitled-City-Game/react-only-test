@@ -1,5 +1,5 @@
 import { APIProvider, Map, MapProps } from "@vis.gl/react-google-maps";
-import React, { createContext, useState } from "react";
+import React, { createContext, useEffect, useState } from "react";
 
 interface MapElementProps extends React.PropsWithChildren, MapProps {
 	center: google.maps.LatLngLiteral
@@ -8,12 +8,7 @@ interface MapElementProps extends React.PropsWithChildren, MapProps {
 export const ZoomContext = createContext(12)
 
 export default function VisGlMapElement(props: MapElementProps) {
-	//update my location with location server
-	// useEffect(()=> {
-	// 	console.log("emitting position change event")
-	// 	updateMyLocation(myLocation, gameData.playerData.data.teamColor)
-	// }, [myLocation])
-	// const [teamLocations] = useTeamLocations()
+
 	
 	// console.log("team locations", teamLocations)
 	const [zoom, setZoom] = useState(12)
@@ -55,9 +50,3 @@ export default function VisGlMapElement(props: MapElementProps) {
 	);
 }
 
-// function updateMyLocation(location: google.maps.LatLngLiteral, teamColor: string) {
-// 	socket.emit('locationUpdate', {
-// 		teamName: teamColor,
-// 		location
-// 	});
-// }

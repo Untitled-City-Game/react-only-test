@@ -37,7 +37,8 @@ export default function CreateMatchConnectFour() {
 	return (
 		<CreateMatchTemplate 
 			teamOptions={teamOptions}
-			gameCode={"connect_four"} getSetupData={ConnectFourSetupData} 
+			gameCode={"connect_four"} 
+			getSetupData={ConnectFourSetupData}
 			createGameForm={createGameForm}			
 		>
 		<Select label="Choose a city" placeholder="Melbourne" data={Object.values(maps).map(map => ({

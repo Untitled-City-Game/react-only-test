@@ -6,16 +6,10 @@ import * as socketIo from 'socket.io';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { Snake } from '@/scripts/games/snake/snake';
-
+//import { DummyGame } from '@/scripts/games/connect_four/dummy_game';
 const authenticateCredentials = async () => {
  return true;
 }
-
-const app = express();
-const location_server = createServer(app);
-const io = new socketIo.Server(location_server, {
-	path: "/location/"
-})
 
 
 async function buildServer(){
@@ -40,5 +34,31 @@ async function buildServer(){
 	const PORT = parseInt(process.env.PORT || "8080");
 	server.run(PORT, () => console.log("server running..."));
 }
+
+const httpServer = createServer()
+const io = new socketIo.Server(httpServer, {
+	  cors: {
+    	origin: "http://localhost:1234",
+   		methods: ["GET", "POST"]
+ 	 }
+})
+
+
+io.on('connection', (socket) => {
+  console.log('a user connected');
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+  });
+  socket.on("foo", (body) => {
+	console.log("someone said foo " + body);
+	io.emit("foo", body)
+  })
+  socket.on("locationUpdate", (body) => {
+	console.log("someone updated the location", body);
+	socket.broadcast.emit("locationUpdate", body)
+  })
+});
+
+io.listen(3000);
 
 buildServer();

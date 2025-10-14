@@ -18,10 +18,14 @@ import { SharedMoves } from "@/scripts/games/shared_moves/sharedMoves";
 export default function Waiting() {
 	console.log("rendering waiting page");
 	const props: GameBoardContext = useContext(GameContext);
+	console.log("waiting props", props.G)
 	const game = games.find((game) => game.code === props.gameCode);
 	const playerData = props.G.allPlayersData;
 	if (!game) {
 		return <h1>Game not found</h1>
+	}
+	if (!playerData) {
+		return <h1>allPlayersData data not found in Waiting!</h1>
 	}
 	const [loading, setLoading] = useState(false);
 	// useEffect(() => {

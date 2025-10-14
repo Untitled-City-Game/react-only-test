@@ -84,7 +84,7 @@ export type ConnectFourSetupData = {
 export type ClientSetupData = {
 	playerData: {
 		data: PlayerData;
-		setter: Dispatch<SetStateAction<PlayerData | undefined>>
+		setter?: Dispatch<SetStateAction<PlayerData | undefined>>
 	};
 	matchID?: string;
 	gameCode: string;

@@ -18,10 +18,10 @@ import { hasLength, useForm } from "@mantine/form";
 import { useContext, useEffect, useState } from "react";
 
 const claimFormValues = {
-			zone: "",
-			challenge: "",
-			evidence: "",
-		}
+	zone: "",
+	challenge: "",
+	evidence: "",
+}
 export type ClaimFormValues = typeof claimFormValues;
 
 export default function ClaimFlowModal({
@@ -36,12 +36,12 @@ export default function ClaimFlowModal({
 	challengeTitle?: string;
 }) {
 	const props: GameBoardContext = useContext(GameContext);
-	const {allTeamsChallengeData} = useContext(ChallengeDeckContext)
-	if(props.G.gameCode !== "connect_four"){
-		throw new Error("no challenges, game code "+props.G.gameCode);
+	const { allTeamsChallengeData } = useContext(ChallengeDeckContext)
+	if (props.G.gameCode !== "connect_four") {
+		throw new Error("no challenges, game code " + props.G.gameCode);
 	}
 	const [loading, setLoading] = useState(false);
-	
+
 	const claimForm = useForm({
 		mode: "controlled",
 		initialValues: {
@@ -50,32 +50,32 @@ export default function ClaimFlowModal({
 			evidence: claimFormValues.evidence,
 		},
 		validate: {
-			zone: hasLength({min: 1}, 'Please select a zone'),
-			challenge:hasLength({min: 1}, 'Please select a challenge'),
-			evidence: hasLength({min: 1}, 'Please include evidence!'),
+			zone: hasLength({ min: 1 }, 'Please select a zone'),
+			challenge: hasLength({ min: 1 }, 'Please select a challenge'),
+			evidence: hasLength({ min: 1 }, 'Please include evidence!'),
 		}
 	});
 
-	useEffect(()=>{
-		challengeTitle && claimForm.setValues({challenge: challengeTitle});
+	useEffect(() => {
+		challengeTitle && claimForm.setValues({ challenge: challengeTitle });
 	}, [challengeTitle]);
-	
-	useEffect(()=>{
-		claimedZone && claimForm.setValues({zone: String(claimedZone.id)});
+
+	useEffect(() => {
+		claimedZone && claimForm.setValues({ zone: String(claimedZone.id) });
 	}, [claimedZone]);
 
 	function closeClaim() {
 		claimForm.reset();
 		close();
 	}
-	
+
 	const { allPlayersData } = props.G;
 	const playerData = allPlayersData[props.playerData.data.playerID];
 	const myTeam = playerData.teamColor;
 	const challengeHand = allTeamsChallengeData[myTeam]?.challengeHand.map(challenge => challenge.title);
-	const zoneSelectOptions = props.G.zoneData.map(zone => {return {value: `${zone.id}`, label: zone.name}});
+	const zoneSelectOptions = props.G.zoneData.map(zone => { return { value: `${zone.id}`, label: zone.name } });
 
-	async function handleSubmit(values: ClaimFormValues){
+	async function handleSubmit(values: ClaimFormValues) {
 		const moves = props.moves as ConnectFourMoves
 		setLoading(true);
 		await claimZone(props.playerData.data.playerID, moves.completeChallengeAndClaim, Number(values.zone), values.challenge, values.evidence as unknown as File[]);
@@ -93,24 +93,24 @@ export default function ClaimFlowModal({
 			<Modal.Overlay />
 			<Modal.Content>
 				<LoadingOverlay visible={loading} loaderProps={{ children: <Loading message="Claiming neighbourhood..." /> }} />
-					{ModalHeader(props.playerData.data.teamColor)}
-					<Modal.Body>
-						<Container pb="md">
+				{ModalHeader(props.playerData.data.teamColor)}
+				<Modal.Body>
+					<Container pb="md">
 						<form onSubmit={claimForm.onSubmit(handleSubmit)}>
 							<Stack ta="left">
-															<Select label="Claiming neighbourhood" data={zoneSelectOptions} {...claimForm.getInputProps("zone")} defaultValue={String(claimedZone?.id || "")} />
+								<Select label="Claiming neighbourhood" data={zoneSelectOptions} {...claimForm.getInputProps("zone")} defaultValue={String(claimedZone?.id || "")} searchable />
 
-							<Select label="With challenge" data={challengeHand} {...claimForm.getInputProps("challenge")} defaultValue={challengeTitle} />
-							<FileInput
-								label="Evidence"
-								multiple
-								{...claimForm.getInputProps("evidence")}
+								<Select label="With challenge" data={challengeHand} {...claimForm.getInputProps("challenge")} defaultValue={challengeTitle} searchable />
+								<FileInput
+									label="Evidence"
+									multiple
+									{...claimForm.getInputProps("evidence")}
 								/>
 								<Button type="submit">Submit</Button>
 							</Stack>
 						</form>
-						</Container>
-					</Modal.Body>
+					</Container>
+				</Modal.Body>
 			</Modal.Content>
 		</Modal.Root>
 	);

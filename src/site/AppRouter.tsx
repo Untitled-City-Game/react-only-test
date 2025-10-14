@@ -12,12 +12,14 @@ import Match from "@/src/match/Match";
 import CreateMatch from "@/src/lobby/CreateMatch/CreateMatch";
 import MatchClient from "@/src/match/Client";
 import NotificationTest from "@/src/site/NotificationTest";
+import ConnectFourDemo from "@/src/match/demo/ConnectFourDemo";
 
 export default function AppRouter(){
 	return (
 	<BrowserRouter>
 		<Routes>
 			<Route element={<RootLayout />}>
+				<Route path="demo/connect4" element={<ConnectFourDemo />} />
 				<Route element={<OuterLayout />}>
 					<Route path="notification" element={<NotificationTest />} />
 					<Route index element={<ChooseGame />} />

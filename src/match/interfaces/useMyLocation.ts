@@ -1,9 +1,11 @@
+import { socket } from "@/scripts/socket";
+import { MatchTeamColor } from "@/scripts/types/types";
 import { AdvancedMarker } from "@vis.gl/react-google-maps";
 import { useEffect, useState } from "react";
 import { useGeolocated } from "react-geolocated";
 import { FaCircle } from "react-icons/fa";
 
-export default function useMyLocation(initialPosition?: google.maps.LatLngLiteral) {
+export default function useMyLocation(updateSocket : boolean, teamName: MatchTeamColor, initialPosition?: google.maps.LatLngLiteral) {
 	const [position, setPosition] = useState(initialPosition || {lat: 0, lng: 0});
 	const {coords} = useGeolocated({
 		positionOptions: {
@@ -24,6 +26,12 @@ export default function useMyLocation(initialPosition?: google.maps.LatLngLitera
 		}
 		const latlongcoords : google.maps.LatLngLiteral = {lat: coords.latitude, lng: coords.longitude}
 		setPosition(latlongcoords);
+		if(updateSocket){
+			socket.emit("locationUpdate", {
+				teamName,
+				location: position
+			})
+		}
 	}
 	, [coords])
 

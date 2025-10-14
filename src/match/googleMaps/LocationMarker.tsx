@@ -1,12 +1,16 @@
 import { MatchTeamColor } from "@/scripts/types/types";
 import { GameContext } from "@/src/match/Board";
 import { AdvancedMarker } from "@vis.gl/react-google-maps";
-import { useContext } from "react";
+import { useContext, useEffect } from "react";
 import { IoLocationSharp } from "react-icons/io5";
 import { FaCircle } from "react-icons/fa";
-export default function LocationMarker({position, color} : {position: google.maps.LatLngLiteral | google.maps.LatLng, color: MatchTeamColor}) {
-	const {G: gameData} = useContext(GameContext)
+import * as socketIo from 'socket.io';
+import useTeamLocations from "@/src/match/interfaces/useTeamLocations";
+export default function LocationMarker({position, color} : {position: google.maps.LatLngLiteral, color: MatchTeamColor}) {
+	const {G: gameData, playerData} = useContext(GameContext)
 	const iconSize = 30
+	//update my location with location server
+	const [teamLocations] = useTeamLocations()
 	return (
 	<AdvancedMarker position={position}>
 		<IoLocationSharp 
