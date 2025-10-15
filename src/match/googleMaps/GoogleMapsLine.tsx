@@ -1,4 +1,4 @@
-import { LineData } from "@/scripts/types/googleMaps";
+import { geospatialFeature, LineData } from "@/scripts/types/googleMaps";
 import { Circle } from "@/src/match/googleMaps/shapes/Circle";
 import { Polyline } from "@/src/match/googleMaps/shapes/PolyLine";
 import { ZoomContext } from "@/src/match/googleMaps/VisGLMapElement";
@@ -12,28 +12,34 @@ export default function MapLine({
 	lineVisibility = false,
 	index,
 }: {
-	line: LineData;
-	allLines: LineData[]
+	line: geospatialFeature & {color: string};
+	allLines: geospatialFeature[]
 	lineVisibility: boolean;
 	index: number;
 }) {
-	const color = Object.values(theme.colors)[index]
 	const zoom = useContext(ZoomContext)
 	useEffect(()=> {
 		console.log("zoom changed!", zoom)
-	}, [zoom])
+	}, [zoom]);
+
 	return (
 		<>
 			<Polyline
 				path={line.coords}
 				visible={lineVisibility}
-				strokeColor = {color[6]}
+				strokeColor = {line.color}
 				strokeOpacity = {1}
 				strokeWeight = {5}
 				clickable={false}
 				zIndex = {20}
 				
 			/>
+
+		</>
+	);
+}
+
+
 			{/* <Fragment>
 				<Circle 
 					center={line.coords[0]}
@@ -80,6 +86,3 @@ export default function MapLine({
 					</Fragment>
 				);
 			})} */}
-		</>
-	);
-}
