@@ -1,5 +1,5 @@
 import { maps } from "@/scripts/consts";
-import makeLines from "@/scripts/geojson/makeLines";
+import makeLines, { assignPolygons } from "@/scripts/geojson/makeLines";
 import makePolygons from "@/scripts/geojson/makePolygons";
 import toGeoJson from "@tmcw/togeojson";
 import { DOMParser } from "xmldom";
@@ -9,13 +9,13 @@ import { LineData, PolyData } from "@/scripts/types/googleMaps";
 export async function fetchMapData(cityName: City = "london") : Promise<MatchMapData> {
   console.log("fetch map data")
   let zoneDataObj : GeoJSON.FeatureCollection;
-  // try{
-  // } catch (error) {
-  //   throw new Error(`Error reading file: ${error}`);
-  // }
   zoneDataObj = await fetchKML(cityName);
-  const zoneLines: LineData[] = makeLines(zoneDataObj);
+
+  //Process data and assign lines to zones
+  let zoneLines: LineData[] = makeLines(zoneDataObj);
   const zonePolygons: PolyData[] = makePolygons(zoneDataObj, zoneLines);
+  zoneLines = assignPolygons(zoneLines, zonePolygons);
+  
   return {
     zonePolygons: zonePolygons,
     winningLines: zoneLines,

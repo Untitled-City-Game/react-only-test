@@ -88,15 +88,8 @@ export default function ConnectFourMapTab() {
 			console.log("current zone", currentZone)
 			//check if already selected
 			if(currentZone?.name === zone.featureName){
-				console.log("zones match")
-				const localWinningLines = winningLines.filter(line => line.matchedPolygons.includes(G.zoneData[index]?.name || ""))
-				let currentLineIndex = localWinningLines.findIndex(line => line.featureName === activeLine?.featureName);
-				console.log("current line index", currentLineIndex)
-				currentLineIndex += 1;
-				if(currentLineIndex >= winningLines.length){
-					currentLineIndex = 0;
-				}
-				setActiveLine(localWinningLines[currentLineIndex])
+				setCurrentZone(undefined)
+				setActiveLine(undefined)
 				return;
 			}
 			//set line visibility
@@ -130,11 +123,12 @@ export default function ConnectFourMapTab() {
 					onClick={() => {
 						console.log("map clicked!")
 						setCurrentZone(undefined);
+						setActiveLine(undefined);
 						setLineVisibility({});
 						setHighlightedZones({});
 					}}
 				>
-					<>{lineElements}</>
+					{/* <>{lineElements}</> */}
 					{/* <>{overlapLineElements}</> */}
 					{/* <>{connectionCirles}</> */}
 					<>{zoneElements}</>
