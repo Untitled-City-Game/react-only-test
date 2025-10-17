@@ -80,7 +80,7 @@ function TeamSummary({ gameData, playerTeam }: { gameData: GameStateGeneric, pla
 						<P>{team.map((player) => player.name).join(", ")}</P>
 					</Container>
 					{gameData.teamPhotoURLs[team[0].teamColor] ? <img style={{height: "80px", width: "80px", objectFit: "cover", borderRadius : "10px"}} src={gameData.teamPhotoURLs[team[0].teamColor]}  /> : 
-					team[0].teamColor === playerTeam ? null : <TeamFileUpload team={team} />}
+					team[0].teamColor === playerTeam ? <TeamFileUpload team={team} /> : null}
 				</DashedCard>
 			))}
 		</Stack>
