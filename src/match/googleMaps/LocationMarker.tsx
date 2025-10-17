@@ -10,7 +10,7 @@ export default function LocationMarker({position, color} : {position: google.map
 	const {G: gameData, playerData} = useContext(GameContext)
 	const iconSize = 30
 	//update my location with location server
-	const [teamLocations] = useTeamLocations()
+	const [teamLocations] = useTeamLocations();
 	return (
 	<AdvancedMarker position={position}>
 		<IoLocationSharp 

@@ -1,4 +1,5 @@
 import { ConnectFourMoves } from "@/scripts/games/connect_four/connect_four";
+import { SharedMoves } from "@/scripts/games/shared_moves/sharedMoves";
 import {
 	GameBoardContext,
 } from "@/scripts/types/types";
@@ -16,7 +17,7 @@ import { ErrorBoundary } from "react-error-boundary";
 export default function LogTab({ active }: { active: string | null }) {
 	const props: GameBoardContext = useContext(GameContext);
 	const {setTabAlertState} = useContext(TabAlertsContext)
-	const moves = props.moves as ConnectFourMoves;
+	const moves = props.moves as SharedMoves;
 	const playerData = props.playerData.data;
 	// const [worker, setWorker] = useState<ServiceWorkerRegistration>()
 	async function handleEndGame() {
@@ -64,38 +65,6 @@ export default function LogTab({ active }: { active: string | null }) {
 
 	return (
 		<>
-			<Box style={{ zIndex: 10000 }}>
-				<ComplexHeader color={props.playerData.data.teamColor}>
-					<Stack gap="0" ta="center">
-						{/* <h1>Log</h1> */}
-						{/* <P fz="sm" style={{ margin: 0 }}>
-							Game will end at{" "}
-							{props.G.endTime &&
-								new Date(props.G.endTime).toLocaleTimeString(
-									"en-US",
-									{ timeStyle: "short" }
-								)}
-						</P> */}
-						<Group m="sm" justify="center">
-							{props.playerData.data.admin ?
-								<ConfirmButton variant="outline" description="undo" action={() => props.moves.customUndo()}>
-									Undo last action
-								</ConfirmButton>
-								: null}
-							{props.playerData.data.admin ? <ConfirmButton action={handleEndGame} description="end the game">End Game</ConfirmButton> : null}
-							{/* <Button onClick={() => worker && testNotifications(worker, {
-								title: "Neighbourhood claimed!",
-								options: {
-									body: "Red team claimed Mont Royal",
-									image: `${process.env.GAME_ADDRESS}icon.png`,
-
-								}
-							})}>Test Notifications</Button> */}
-							{/* <Button onClick={scrollToBottom}>Scroll to bottom</Button> */}
-						</Group>
-					</Stack>
-				</ComplexHeader>
-			</Box>
 			<ScrollAreaAutosize scrollbars="y" viewportRef={viewport} style={{
 				flexGrow: 10
 			}}>

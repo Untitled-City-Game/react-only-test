@@ -49,7 +49,7 @@ export default function Waiting() {
 							<GameInviteButton gameCode={props.gameCode} matchID={props.matchID} />
 							<HelpButton />
 
-							<TeamSummary gameData={props.G} />
+							<TeamSummary gameData={props.G} playerTeam={props.playerData.data.teamColor} />
 						</Stack>
 					</div>
 					{props.playerData.data.admin ? <Button
@@ -66,7 +66,7 @@ export default function Waiting() {
 	);
 }
 
-function TeamSummary({ gameData }: { gameData: GameStateGeneric }) {
+function TeamSummary({ gameData, playerTeam }: { gameData: GameStateGeneric, playerTeam: string }) {
 	const teams = Object.keys(gameData.allTeamsData).map((team) => {
 		return Object.values(gameData.allPlayersData).filter((player: PlayerData) => player.teamColor === team);
 	})
@@ -79,7 +79,8 @@ function TeamSummary({ gameData }: { gameData: GameStateGeneric }) {
 						<h3 style={{ textTransform: "capitalize" }}>{team[0].teamColor} team</h3>
 						<P>{team.map((player) => player.name).join(", ")}</P>
 					</Container>
-					{gameData.teamPhotoURLs[team[0].teamColor] ? <img style={{height: "80px", width: "80px", objectFit: "cover", borderRadius : "10px"}} src={gameData.teamPhotoURLs[team[0].teamColor]}  /> : <TeamFileUpload team={team} />}
+					{gameData.teamPhotoURLs[team[0].teamColor] ? <img style={{height: "80px", width: "80px", objectFit: "cover", borderRadius : "10px"}} src={gameData.teamPhotoURLs[team[0].teamColor]}  /> : 
+					team[0].teamColor === playerTeam ? null : <TeamFileUpload team={team} />}
 				</DashedCard>
 			))}
 		</Stack>
@@ -88,7 +89,7 @@ function TeamSummary({ gameData }: { gameData: GameStateGeneric }) {
 
 export function GameInviteButton({ gameCode, matchID }: { gameCode: string, matchID: string }) {
 	return (
-		<Button onClick={() => navigator.clipboard.writeText(`${process.env.GAME_ADDRESS}lobby/${gameCode}/join-match/${matchID}`)}>
+		<Button onClick={() => navigator.clipboard.writeText(`${process.env.GAME_ADDRESS}/lobby/${gameCode}/join-match/${matchID}`)}>
 			Copy invite link
 		</Button>
 	)

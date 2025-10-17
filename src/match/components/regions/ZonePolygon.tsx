@@ -1,5 +1,5 @@
 import { ZoneData } from "@/scripts/games/connect_four/types";
-import { PolyData } from "@/scripts/types/googleMaps";
+import { LineData, PolyData } from "@/scripts/types/googleMaps";
 import { Color } from "@/scripts/types/types";
 import { Polygon } from "@/src/match/googleMaps/shapes/Polygon";
 import { theme } from "@/src/styles/theme";
@@ -18,6 +18,7 @@ type ZonePolygonProps = {
 	highlightedZones: { [key: string]: boolean };
 	highlightColor: Color;
 	zoneGameData: ZoneData;
+	activeLine?: LineData;
 };
 
 export default function ZonePolygon({
@@ -27,8 +28,10 @@ export default function ZonePolygon({
 	highlightedZones,
 	highlightColor,
 	zoneGameData,
+	activeLine
 }: ZonePolygonProps) {
 	const amCurrentZone = zone.featureName === currentZone?.name;
+	const amHighlighted = activeLine?.matchedPolygons.includes(zone.featureName)
 	const coordsAsArray = zone.coords.map((coord) => [coord.lat, coord.lng]);
 	const polygonCenter = polylabel([coordsAsArray], 0.0000001);
 	const [showLabels, setShowLabels] = useState(true);
@@ -55,19 +58,24 @@ export default function ZonePolygon({
 			)
 			.flat()
 	);
+	//console.log("i am ", zone.featureName, "and my highlight is", amHighlighted)
 	return (
 		<>
 			<Polygon
 				paths={zone.coords}
 				key={zone.featureName}
 				strokeColor={
-					amCurrentZone ? theme.colors.green[4] : zoneGameData.controlTeam || "black"
+					amCurrentZone ? theme.colors.green[4] : 
+					amHighlighted ? theme.colors.orange[7] :
+					zoneGameData.controlTeam || "black"
 				}
 				strokeOpacity={0.8}
 				strokeWeight={amCurrentZone ? 8 : zoneGameData.locked ? 6: 5}
 				fillColor={
 					zoneGameData.controlTeam ||
-					(amCurrentZone ? theme.colors.green[6] : "#FFFFFF00")
+					(amCurrentZone ? theme.colors.green[6] : 
+						amHighlighted ? theme.colors.green[6] :
+						"#FFFFFF00") 
 				}
 				fillOpacity={zoneGameData.locked ? 0.3 : 0.15}
 				onClick={() =>
