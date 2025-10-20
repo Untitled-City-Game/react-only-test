@@ -66,8 +66,9 @@ export default function JoinMatch() {
 				playerID: `${Number(existingPlayer.id)}`,
 				name: existingPlayer.name,
 				matchID,
+				gameCode,
 				teamColor: existingPlayer.data.teamColor,
-				
+				admin: existingPlayer.id === 0
 			}
 		} else {
 			playerData = await joinMatch(

@@ -38,7 +38,7 @@ async function buildServer(){
 const httpServer = createServer()
 const io = new socketIo.Server(httpServer, {
 	  cors: {
-    	origin: "http://localhost:1234",
+    	origin: [Origins.LOCALHOST,  process.env.GAME_ADDRESS || false],
    		methods: ["GET", "POST"]
  	 }
 })
