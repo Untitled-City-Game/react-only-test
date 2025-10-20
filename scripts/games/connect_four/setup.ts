@@ -15,6 +15,7 @@ function isGameSetupData(data: unknown): string | undefined {
 
 export function ConnectFourGameSetup(ctx: Ctx, setupData: GameSetupData): ConnectFourGameState {
 	console.log("Setting up game of connect four");
+	console.log("setup data", setupData)
 	console.log("players: ", ctx.numPlayers);
 	console.log("currentplayer ", ctx.currentPlayer);
 	console.log("city", setupData.mapSetupData.city);
@@ -29,7 +30,6 @@ export function ConnectFourGameSetup(ctx: Ctx, setupData: GameSetupData): Connec
 		gameOver: false,
 		allPlayersData: {} as AllPlayersData,
 		allTeamsData : {},
-		//declare allteamsdata as AllTeamsData object
 		challengeDeck: createChallengeDeck(setupData.mapSetupData.city),
 		allTeamsChallengeData: {},
 		gameStateLogs: [],

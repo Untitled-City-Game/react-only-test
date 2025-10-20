@@ -6,6 +6,7 @@ import { addLogMetadata } from "./metadata";
 export function startGame<GameState extends GameStateUniversal>(context: MoveContext<GameState>) {
 	console.log("starting game")
 	const { events, G, random, log } = context;
+	console.log("all players data", G.allPlayersData)
 	G.active = true;
 	events.setActivePlayers({ all: "play" });
 	startGameTimer<GameState>(G);
