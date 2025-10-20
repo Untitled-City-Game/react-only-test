@@ -20,10 +20,10 @@ export default function useMyLocation(updateSocket : boolean, teamName: MatchTea
 			console.warn("no coords for location hook");
 			return;
 		}
-		if(coords.latitude === position.lat && coords.longitude === position.lng){
-			//console.log('no change in coords detected')
-			return;
-		}
+		// if(coords.latitude === position.lat && coords.longitude === position.lng){
+		// 	//console.log('no change in coords detected')
+		// 	return;
+		// }
 		const latlongcoords : google.maps.LatLngLiteral = {lat: coords.latitude, lng: coords.longitude}
 		setPosition(latlongcoords);
 		if(updateSocket){
