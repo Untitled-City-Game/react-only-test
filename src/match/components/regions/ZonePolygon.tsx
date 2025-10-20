@@ -41,7 +41,6 @@ export default function ZonePolygon({
 	);
 	const map = useMap();
 	useEffect(() => {
-		console.log("map", map);
 		if (map) {
 			map.addListener("zoom_changed", () => {
 				setShowLabels((map.getZoom() ?? 0) < zoomThreshold);
