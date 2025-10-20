@@ -36,7 +36,9 @@ async function buildServer(){
 }
 
 const httpServer = createServer()
+
 const io = new socketIo.Server(httpServer, {
+	  path: "/teamlocations/",
 	  cors: {
     	origin: [Origins.LOCALHOST,  process.env.GAME_ADDRESS || false],
    		methods: ["GET", "POST"]
