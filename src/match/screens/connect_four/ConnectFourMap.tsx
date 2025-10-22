@@ -16,12 +16,12 @@ import ConnectionMarker from "@/src/match/googleMaps/ConnectionMarker";
 import { Polyline } from "@/src/match/googleMaps/shapes/PolyLine";
 import ConnectedSegment from "@/src/match/googleMaps/ConnectedSegment";
 import { LineData } from "@/scripts/types/googleMaps";
+import MyLocationMarker from "@/src/match/googleMaps/MyLocationMarker";
 
 export default function ConnectFourMapTab() {
 	const { playerData } = useContext(GameContext)
 	const G = useContext(ConnectFourContext);
 	const { zonePolygons, winningLines, city } = G.MatchMapData;
-	const myLocation = useMyLocation(true, playerData.data.teamColor, gameLocationCenters[city] || { lat: 0, lng: 0 });
 	const [activeLine, setActiveLine] = useState<LineData | undefined>()
 	const [lineVisibility, setLineVisibility] = useState(
 		winningLines
@@ -132,7 +132,7 @@ export default function ConnectFourMapTab() {
 					{/* <>{overlapLineElements}</> */}
 					{/* <>{connectionCirles}</> */}
 					<>{zoneElements}</>
-					<LocationMarker position={myLocation} color={playerData.data.teamColor} />
+					<MyLocationMarker color={playerData.data.teamColor} defaultLocation={gameLocationCenters[G.city]} />
 					<AllTeamMarkers />
 				</VisGlMapElement>
 			</div>

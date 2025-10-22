@@ -7,22 +7,19 @@ import { MatchTeamColor } from "@/scripts/types/types";
 import { useState, useEffect } from "react";
 
 export default function useTeamLocations(){
-	const [isConnected, setIsConnected] = useState(socket.connected);
   	const [teamLocations, setTeamLocations] = useState<LocationData[]>([]);
 	
 	useEffect(() => {
 		function onConnect() {
 			console.warn("socket.io location server is connected now")
-			setIsConnected(true);
 		}
 
 		function onDisconnect() {
 			console.warn("socket.io location server is disconnected now")
-			setIsConnected(false);
 		}
 
 		function onLocationUpdate(value : LocationData) {
-			// console.log("Received location update broadcast", value);
+			console.log("Received location update broadcast", value);
 			setTeamLocations(previous => {
 				const index = previous.findIndex(teamData => teamData.teamName === value.teamName);
 				if (index == -1){
@@ -31,10 +28,6 @@ export default function useTeamLocations(){
 				previous.splice(index, 1).push(value);
 				return previous;
 			});
-		}
-
-		if(socket.connected){
-			onConnect();
 		}
 
 		socket.on('connect', onConnect);

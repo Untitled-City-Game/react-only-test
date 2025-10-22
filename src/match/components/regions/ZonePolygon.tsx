@@ -68,7 +68,7 @@ export default function ZonePolygon({
 					amHighlighted ? theme.colors.orange[7] :
 					zoneGameData.controlTeam || "black"
 				}
-				strokeOpacity={0.8}
+				strokeOpacity={amCurrentZone || amHighlighted ? 1 : 0.8}
 				strokeWeight={amCurrentZone ? 8 : zoneGameData.locked ? 6: 5}
 				fillColor={
 					zoneGameData.controlTeam ||
@@ -80,7 +80,9 @@ export default function ZonePolygon({
 				onClick={() =>
 					handleZoneClick(lineVisibilityTemp, highlightedZonesTemp)
 				}
-				zIndex={amCurrentZone ? 10 : zoneGameData.controlTeam ? 1 : 0}
+				zIndex={amCurrentZone ? 25 :
+				amHighlighted ? 24 : 
+				zoneGameData.controlTeam ? 1 : 0}
 			/>
 			{/* {showLabels && (
 				<PolygonLabel
