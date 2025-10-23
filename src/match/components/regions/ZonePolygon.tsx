@@ -34,19 +34,20 @@ export default function ZonePolygon({
 	const amHighlighted = activeLine?.matchedPolygons.includes(zone.featureName)
 	const coordsAsArray = zone.coords.map((coord) => [coord.lat, coord.lng]);
 	const polygonCenter = polylabel([coordsAsArray], 0.0000001);
-	const [showLabels, setShowLabels] = useState(true);
 	const zoomThreshold = 13;
 	const lineVisibilityTemp = Object.fromEntries(
 		zone.matchedLines.map((line) => [line.featureName, true])
 	);
+
+	//const [zoom, setZoom] = useState(0);
 	const map = useMap();
-	useEffect(() => {
-		if (map) {
-			map.addListener("zoom_changed", () => {
-				setShowLabels((map.getZoom() ?? 0) < zoomThreshold);
-			});
-		}
-	}, [map]);
+	// useEffect(() => {
+	// 	if (map) {
+	// 		map.addListener("zoom_changed", () => {
+	// 			setZoom((map.getZoom() ?? 0));
+	// 		});
+	// 	}
+	// }, [map]);
 
 	const highlightedZonesTemp = Object.fromEntries(
 		zone.matchedLines
@@ -78,7 +79,11 @@ export default function ZonePolygon({
 				}
 				fillOpacity={zoneGameData.locked ? 0.3 : 0.15}
 				onClick={() =>
+				{
+					if((map?.getZoom() ?? 30) > zoomThreshold){return};
 					handleZoneClick(lineVisibilityTemp, highlightedZonesTemp)
+
+				}
 				}
 				zIndex={amCurrentZone ? 25 :
 				amHighlighted ? 24 : 
