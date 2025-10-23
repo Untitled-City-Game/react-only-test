@@ -7,6 +7,7 @@ import { FaCircle } from "react-icons/fa";
 
 export default function useMyLocation(updateSocket : boolean, teamName: MatchTeamColor, initialPosition?: google.maps.LatLngLiteral) {
 	const [position, setPosition] = useState(initialPosition || {lat: 0, lng: 0});
+	const [accuracy, setAccuracy] = useState<number | undefined>(undefined)
 	const {coords} = useGeolocated({
 		positionOptions: {
 			enableHighAccuracy: true,
@@ -26,15 +27,17 @@ export default function useMyLocation(updateSocket : boolean, teamName: MatchTea
 		// }
 		const latlongcoords : google.maps.LatLngLiteral = {lat: coords.latitude, lng: coords.longitude}
 		setPosition(latlongcoords);
+		setAccuracy(coords.accuracy)
 		if(updateSocket){
 			socket.emit("locationUpdate", {
 				teamName,
-				location: position
+				location: {lat: coords.latitude, lng: coords.longitude},
+				accuracy: coords.accuracy
 			})
 		}
 	}
 	, [coords])
 
 	
-	return position
+	return {position, accuracy}
 }

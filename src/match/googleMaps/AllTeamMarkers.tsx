@@ -8,7 +8,7 @@ export default function AllTeamMarkers(){
 	console.log("rendering all team markers")
 	return (
 		<>
-		{allTeamLocations.map((teamLocation, index) => <LocationMarker key={index} position={teamLocation.location} color={teamLocation.teamName} />)}
+		{allTeamLocations.map((teamLocation, index) => <LocationMarker key={index} position={teamLocation.location} color={teamLocation.teamName} accuracy={teamLocation.accuracy}/>)}
 		{/* <LocationMarker key="dummy" position={gameLocationCenters.montreal} color={"pink" as MatchTeamColor} /> */}
 		</>
 	)

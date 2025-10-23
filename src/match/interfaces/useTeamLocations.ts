@@ -1,6 +1,7 @@
 export type LocationData = {
 	teamName: MatchTeamColor;
-	location: google.maps.LatLngLiteral
+	location: google.maps.LatLngLiteral;
+	accuracy?: number;
 }
 import { socket } from "@/scripts/socket";
 import { MatchTeamColor } from "@/scripts/types/types";
