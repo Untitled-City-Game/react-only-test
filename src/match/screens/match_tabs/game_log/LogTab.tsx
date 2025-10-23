@@ -68,7 +68,7 @@ export default function LogTab({ active }: { active: string | null }) {
 			<ScrollAreaAutosize scrollbars="y" viewportRef={viewport} style={{
 				flexGrow: 10
 			}}>
-				<Stack align="flex-start" pb="md" ref={containerRef} ml="md" mr="md" pt="md" gap="4px">
+				<Stack align="flex-start" pb="md" ref={containerRef} ml="md" mr="md" pt="md" gap="sm">
 					{props.log.map((entry, index) => (
 						<ErrorBoundary
 							key={index}

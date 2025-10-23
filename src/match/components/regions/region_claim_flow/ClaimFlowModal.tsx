@@ -98,9 +98,9 @@ export default function ClaimFlowModal({
 					<Container pb="md">
 						<form onSubmit={claimForm.onSubmit(handleSubmit)}>
 							<Stack ta="left">
-								<Select label="Claiming neighbourhood" data={zoneSelectOptions} {...claimForm.getInputProps("zone")} defaultValue={String(claimedZone?.id || "")} searchable />
+								<Select label="Claiming neighbourhood" data={zoneSelectOptions} {...claimForm.getInputProps("zone")} defaultValue={String(claimedZone?.id || "")} />
 
-								<Select label="With challenge" data={challengeHand} {...claimForm.getInputProps("challenge")} defaultValue={challengeTitle} searchable />
+								<Select label="With challenge" data={challengeHand} {...claimForm.getInputProps("challenge")} defaultValue={challengeTitle} />
 								<FileInput
 									label="Evidence"
 									multiple

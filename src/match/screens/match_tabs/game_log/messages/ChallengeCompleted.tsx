@@ -37,7 +37,9 @@ export function ChallengeEvidence({ metadata, myMessage }: { metadata: LogMetada
 					key={imageLink}
 					src={imageLink}
 					alt={`${metadata.team} team completed challenge ${metadata.challenge} to claim zone ${metadata.zone}`}
-					w="min(100%, 300px)" />
+					w="min(80%, 300px)" 
+					mb="4px"
+					/>
 			);
 		}
 		return (

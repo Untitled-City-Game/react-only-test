@@ -4,7 +4,7 @@ import { ChallengeEvidence } from "@/src/match/screens/match_tabs/game_log/messa
 import { theme } from "@/src/styles/theme";
 import P from "@/src/userInterface/P";
 import Span from "@/src/userInterface/Span";
-import { Alert, Avatar, Box, Group } from "@mantine/core";
+import { Alert, Avatar, Box, Group, Stack } from "@mantine/core";
 import { LogEntry } from "boardgame.io";
 import React, { useEffect, useState } from "react";
 
@@ -57,25 +57,28 @@ export function MessageBox({
 	return (
 		<>
 		<MessageContainer myMessage={myMessage}>
-			<Avatar radius="sm" src={gameData.teamPhotoURLs[senderData.teamColor]} color={senderData.teamColor} name={`${senderData.teamColor} Team`} alt={`${senderData.teamColor} Team`} />
-			<MessageWrapper
-				entry={entry}
-				gameData={gameData}
-				playerData={playerData}
-				unstyled={unstyled}
-			>
-				<Group w="100%" justify="space-between">		
-					<P fz="sm"><Span fw="bold" c={theme.colors[senderData.teamColor][6]}>{senderData.name}</Span> | <Span fz="xs" fs="italic" className="capitalize">{senderData.teamColor}</Span>
-					</P>	
-					<P fz="sm">{timestamp}</P>
-				</Group>
-				{children}
-			</MessageWrapper>
+			<Avatar radius="sm" size="sm" src={gameData.teamPhotoURLs[senderData.teamColor]} color={senderData.teamColor} name={`${senderData.teamColor} Team`} alt={`${senderData.teamColor} Team`} />
+			<Stack gap="0" align={myMessage ? "flex-end" : "flex-start"}>
+				<MessageWrapper
+					entry={entry}
+					gameData={gameData}
+					playerData={playerData}
+					unstyled={unstyled}
+				>
+					<Group w="100%" justify="space-between">		
+						<P fz="sm"><Span fw="bold" c={theme.colors[senderData.teamColor][6]}>{senderData.name}</Span> | <Span fz="xs" fs="italic" className="capitalize">{senderData.teamColor}</Span>
+						</P>	
+						<P fz="sm">{timestamp}</P>
+					</Group>
+					{children}
+				</MessageWrapper>
+				{evidence ? 
+				<ChallengeEvidence metadata={entry.metadata as LogMetadata} myMessage={myMessage} /> 
+				: null
+				}
+			</Stack>
 		</MessageContainer>
-		{evidence ? 
-		<ChallengeEvidence metadata={entry.metadata as LogMetadata} myMessage={myMessage} /> 
-		: null
-		}
+
 		</>
 	);
 }
@@ -91,12 +94,10 @@ export function MessageWrapper({
 }){
 	const senderData = gameData.allPlayersData[entry.action.payload.playerID];
 	return (
-		<Box style={{
-			justifySelf: senderData.playerID === playerData.playerID ? "flex-end" : "flex-start"
-		}}>
+	
 			<Box
-				maw="80vw"
-				w="max-content"
+				maw="80%"
+				// w="max-content"
 				miw="40%"
 				mb="5px"
 				bg={unstyled? "none" : theme.colors[senderData.teamColor][0]}
@@ -104,10 +105,10 @@ export function MessageWrapper({
 					// border: borderStyle,
 					borderRadius: "10px",
 					padding: `${unstyled ? "0" :"10px 10px 10px 10px"}`,
+					justifySelf: senderData.playerID === playerData.playerID ? "flex-end" : "flex-start"
 				}}
 			>
 			{children}
 			</Box>
-		</Box>
 	)
 }
