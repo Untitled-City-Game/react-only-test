@@ -3,7 +3,7 @@ import { ClaimChallengeCompleted, ChallengeEvidence, FruitEaten } from "@/src/ma
 import { DiscardHand } from "@/src/match/screens/match_tabs/game_log/messages/DiscardHand";
 import { GameStarted } from "@/src/match/screens/match_tabs/game_log/messages/GameStarted";
 import { JoinedMatch } from "@/src/match/screens/match_tabs/game_log/messages/JoinedMatch";
-import { MessageBox, MessageWrapper } from "@/src/match/screens/match_tabs/game_log/MessageBox";
+import { MessageBox, MessageContainer, MessageWrapper } from "@/src/match/screens/match_tabs/game_log/MessageBox";
 import { ChallengeButton } from "@/src/match/screens/match_tabs/challenges/UI/ChallengePopup";
 import P from "@/src/userInterface/P";
 import { Avatar, Box } from "@mantine/core";
@@ -15,13 +15,12 @@ import { GameContext } from "@/src/match/Board";
 export function Message({ entry, gameData, playerData }: { entry: LogEntry; gameData: GameStateGeneric; playerData: PlayerData; }) {
 	const senderData = gameData.allPlayersData[entry.action.payload.playerID];
 	const gameState: GameBoardContextSpecific<GameStateAnything> = useContext(GameContext);
-
 	switch (entry.action.payload.type) {
 		case "completeChallengeAndClaim":
 			const challenge = gameState.G.challengeDeck!.find(challenge => challenge.title === entry.metadata.challenge)
 			return (
-				<Box>					
-					<MessageBox entry={entry} gameData={gameData} playerData={playerData} >
+				<>					
+					<MessageBox entry={entry} gameData={gameData} playerData={playerData} evidence={true}>
 						<ClaimChallengeCompleted
 							metadata={entry.metadata as LogMetadata} />
 						{challenge ? <ChallengeButton
@@ -32,11 +31,7 @@ export function Message({ entry, gameData, playerData }: { entry: LogEntry; game
 						/>
 							: null}
 					</MessageBox>
-			
-					<MessageWrapper entry={entry} gameData={gameData} playerData={playerData} unstyled={true}>
-						<ChallengeEvidence metadata={entry.metadata as LogMetadata} />
-					</MessageWrapper>
-				</Box>
+				</>
 			);
 
 		case "playerSetup":

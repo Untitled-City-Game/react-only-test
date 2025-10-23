@@ -20,7 +20,7 @@ export function FruitEaten({ metadata }: { metadata: LogMetadata; }){
 	);
 }
 
-export function ChallengeEvidence({ metadata }: { metadata: LogMetadata; }){
+export function ChallengeEvidence({ metadata, myMessage }: { metadata: LogMetadata; myMessage?: boolean }){
 		const evidenceImages = metadata.evidence?.map(imageLink => {
 		const fileType = imageLink.split('?')[0].split(".").pop();
 		if(!fileType){
@@ -50,7 +50,7 @@ export function ChallengeEvidence({ metadata }: { metadata: LogMetadata; }){
 	});
 
 	return (
-		<Stack>
+		<Stack align={myMessage? "flex-end" : "flex-start"}>
 				{metadata.evidence && evidenceImages}
 		</Stack>
 		)
