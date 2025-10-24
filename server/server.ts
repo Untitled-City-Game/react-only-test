@@ -56,7 +56,7 @@ io.on('connection', (socket) => {
 	io.emit("foo", body)
   })
   socket.on("locationUpdate", (body) => {
-	console.log("someone updated the location", body);
+	//console.log("someone updated the location", body);
 	socket.broadcast.emit("locationUpdate", body)
   })
 });
