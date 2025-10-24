@@ -5,6 +5,8 @@
   "scripts": {
     "prod": "tsx --env-file=.env server/server.ts",
     "staging": "tsx --env-file=.env.stage server/server.ts",
+    "location-prod": "tsx --env-file=.env server/locationServer.ts",
+    "location-staging": "tsx --env-file=.env.stage server/locationServer.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

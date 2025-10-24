@@ -1,12 +1,8 @@
 import { ConnectFour } from '@/scripts/games/connect_four/connect_four';
 import { FlatFile, Origins, Server } from 'boardgame.io/server';
-import express from 'express';
-import { createServer } from 'node:http';
-import * as socketIo from 'socket.io';
-import { fileURLToPath } from 'node:url';
-import { dirname, join } from 'node:path';
 import { Snake } from '@/scripts/games/snake/snake';
 //import { DummyGame } from '@/scripts/games/connect_four/dummy_game';
+
 const authenticateCredentials = async () => {
  return true;
 }
@@ -28,39 +24,24 @@ async function buildServer(){
 	  });
 	server.router.get('/map-data/:citycode', async (ctx) => {
 		console.log("getting map data for city", ctx.params.citycode);
-		const mapData = await fetch(`https://www.google.com/maps/d/u/0/kml?forcekml=1&mid=${ctx.params.citycode}`);
-		ctx.body = await mapData.text();
+		try {
+			const mapData = await fetch(`https://www.google.com/maps/d/u/0/kml?forcekml=1&mid=${ctx.params.citycode}`);
+			if (!mapData.ok) {
+      			console.error(`Failed to fetch map data: ${mapData.status} ${mapData.statusText}`);
+      			ctx.status = mapData.status === 404 ? 404 : 502;
+      			ctx.body = { error: 'Failed to retrieve map data' };
+      			return;
+   				 }
+			ctx.body = await mapData.text();
+			return;
+		} catch (error) {
+			console.error('Error fetching map data:', error);
+			ctx.status = 500;
+			ctx.body = { error: 'Internal server error' };
+		}
 	  });
 	const PORT = parseInt(process.env.SERVER_PORT || "8066");
 	server.run(PORT, () => console.log("server running..."));
 }
-
-const httpServer = createServer()
-
-const io = new socketIo.Server(httpServer, {
-	  path: process.env.LOCATION_SERVER_PATH,
-	  cors: {
-    	origin: [Origins.LOCALHOST, process.env.LAN_ADDRESS || false, process.env.GAME_ADDRESS || false],
-   		methods: ["GET", "POST"]
- 	 }
-})
-
-
-io.on('connection', (socket) => {
-  console.log('a user connected');
-  socket.on('disconnect', () => {
-    console.log('user disconnected');
-  });
-  socket.on("foo", (body) => {
-	console.log("someone said foo " + body);
-	io.emit("foo", body)
-  })
-  socket.on("locationUpdate", (body) => {
-	//console.log("someone updated the location", body);
-	socket.broadcast.emit("locationUpdate", body)
-  })
-});
-
-io.listen(parseInt(process.env.LOCATION_SERVER_PORT || "3000"));
 
 buildServer();
