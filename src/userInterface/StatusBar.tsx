@@ -13,12 +13,17 @@ export default function StatusBar({ children }: { children?: React.ReactNode }) 
 			<Center style={statusBarStyles} className="header">
 				<Group justify="center" align="center" wrap="nowrap">
 					<Span size="xs">{children}</Span>
-					<Span size="xs"><Countdown 
-					date={new Date(G.endTime || 0)} 
-					renderer={
-						props => <span>{props.hours}h {props.minutes}m {props.seconds}s</span>
-					}
-					/> remaining</Span>
+					{G.victory ? 
+					<Span size="xs"> <Span tt="capitalize">{G.victory}</Span> team victory!</Span>
+					
+					: <Span size="xs">
+						<Countdown 
+						date={new Date(G.endTime || 0)} 
+						renderer={
+							props => <span>{props.hours}h {props.minutes}m {props.seconds}s</span>
+						}
+						/> remaining
+					</Span>}
 					<HelpIcon />
 					<SettingsIcon />
 				</Group>

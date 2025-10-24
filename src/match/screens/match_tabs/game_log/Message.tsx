@@ -78,6 +78,8 @@ export function Message({ entry, gameData, playerData }: { entry: LogEntry; game
 			break;
 		case "addTeamPhoto":
 			break;
+		case "setStartingZone":
+			break;
 		default:
 			return <P>{entry.action.payload.type}</P>;
 	}

@@ -4,6 +4,7 @@ import { ConnectFourGameState } from "@/scripts/games/connect_four/types";
 import { SnakeGameState } from "@/scripts/games/snake/types";
 import { GameBoardContext, GameBoardContextSpecific, GameStateGeneric, PlayerData } from "@/scripts/types/types";
 import GameOver from "@/src/lobby/GameOver";
+import Victory from "@/src/match/components/Victory";
 import Loading from "@/src/match/screens/game_status/Loading";
 import Waiting from "@/src/match/screens/game_status/Waiting";
 import TabSet from "@/src/match/screens/match_tabs/TabSet";
@@ -75,6 +76,7 @@ function Board(props: GameBoardContext){
 	return (
 		<GameContext.Provider value={{ ...props }}>
 			<ErrorBoundary fallback={<span>Something went wrong inside the board element</span>}>
+				<Victory />
 				<MatchContext G={props.G}>
 					<MatchGameplay G={props.G} playerData={props.playerData.data} />
 				</MatchContext>
