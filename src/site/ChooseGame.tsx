@@ -4,6 +4,7 @@ import useWindowDimensions from "@/scripts/useWindowDimensions";
 import { Container, Stack, Text } from "@mantine/core";
 import { Link } from "react-router";
 import { ListButton } from "../userInterface/ListButton";
+import { useGeolocated } from "react-geolocated";
 
 export default function ChooseGame() {
 	const gameListItems = games.map((game, index) => {
@@ -24,13 +25,19 @@ export default function ChooseGame() {
 		);
 	});
 
-	const { height, width } = useWindowDimensions();
-	
-	return (
+    const { coords, isGeolocationAvailable, isGeolocationEnabled } = useGeolocated({
+            positionOptions: {
+                enableHighAccuracy: false,
+            },
+            userDecisionTimeout: 5000,
+        });
+		return (
 			<Stack
 				maw="500px"
 			>
 				<h2>Choose a game</h2>
+				<div>{isGeolocationAvailable ? "location available" : "location not available"}</div>
+				<div>{isGeolocationEnabled ? "location enabled" : "location not enabled"}</div>
 				{gameListItems}
 				
 			</Stack>

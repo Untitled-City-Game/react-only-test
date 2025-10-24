@@ -11,6 +11,7 @@ export interface ConnectFourGameState extends GameStateUniversal, ChallengeDeck 
 	MatchMapData: MatchMapData,
 	active: boolean,
 	gameStateLogs: GameStateLog<ConnectFourGameState>[],
+	startingZone?: string
 }
 
 export type ZoneData = {

@@ -14,6 +14,7 @@ import { storage } from "@/scripts/firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { ConnectFourMoves } from "@/scripts/games/connect_four/connect_four";
 import { SharedMoves } from "@/scripts/games/shared_moves/sharedMoves";
+import { StartingRegionButton } from "@/src/match/screens/game_status/StartingRegionModal";
 
 export default function Waiting() {
 	console.log("rendering waiting page");
@@ -28,9 +29,7 @@ export default function Waiting() {
 		return <h1>allPlayersData data not found in Waiting!</h1>
 	}
 	const [loading, setLoading] = useState(false);
-	// useEffect(() => {
-	// 	Notification.requestPermission();
-	// });
+	const [startDisabled, setStartDisabled] = useState(props.gameCode === "connect_four" ? true : false);
 	return (
 		<Center>
 			<FullHeightLayout>
@@ -52,13 +51,16 @@ export default function Waiting() {
 							<TeamSummary gameData={props.G} playerTeam={props.playerData.data.teamColor} />
 						</Stack>
 					</div>
-					{props.playerData.data.admin ? <Button
+					{props.playerData.data.admin ?<Stack> 
+					{props.gameCode === "connect_four" ? <StartingRegionButton setStartDisabled={setStartDisabled}/> : null}
+					<Button
+						disabled={startDisabled}
 						onClick={() => {
 							setLoading(true);
 							props.moves.startGame();
 						}}>
 						Start the Game
-					</Button>
+					</Button></Stack>
 						: <div />}
 				</VerticalSpread>
 			</FullHeightLayout>

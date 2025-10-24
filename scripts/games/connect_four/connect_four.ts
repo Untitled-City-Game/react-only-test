@@ -1,7 +1,7 @@
 import { completeChallenge, completeChallengeAndClaim } from "@/scripts/games/connect_four/moves/completeChallengeAndClaim";
 import { discardChallenge, discardHand } from "@/scripts/games/challenge_deck/handManagement";
 import { endGame, startGame } from "@/scripts/games/shared_moves/manageGame";
-import { ConnectFourGameSetup, connectFourPlayerSetup } from "@/scripts/games/connect_four/setup";
+import { ConnectFourGameSetup, connectFourPlayerSetup, setStartingZone } from "@/scripts/games/connect_four/setup";
 import customUndoTemplate from "@/scripts/games/undo";
 import {
 	GameSetupData,
@@ -27,6 +27,7 @@ const claimStateMoves = {
 	completeChallenge,
 	completeChallengeAndClaim,
 	customUndo,
+	setStartingZone,
 	...sharedMoves
 };
 
@@ -56,6 +57,7 @@ export const ConnectFour: Game<ConnectFourGameState> = {
 			join: {
 				moves: {
 					playerSetup: connectFourPlayerSetup,
+					setStartingZone,
 					startGame : (args: any) => {
 						challengeDeckTeamSetup(args)
 						startGame<ConnectFourGameState>(args)

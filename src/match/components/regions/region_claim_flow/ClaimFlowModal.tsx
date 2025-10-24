@@ -1,5 +1,5 @@
 import { ConnectFourMoves } from "@/scripts/games/connect_four/connect_four";
-import { ZoneData } from "@/scripts/games/connect_four/types";
+import { ConnectFourGameState, ZoneData } from "@/scripts/games/connect_four/types";
 import { GameBoardContext } from "@/scripts/types/types";
 import { ChallengeDeckContext, GameContext } from "@/src/match/Board";
 import claimZone from "@/src/match/components/regions/region_claim_flow/claimZone";
@@ -73,7 +73,8 @@ export default function ClaimFlowModal({
 	const playerData = allPlayersData[props.playerData.data.playerID];
 	const myTeam = playerData.teamColor;
 	const challengeHand = allTeamsChallengeData[myTeam]?.challengeHand.map(challenge => challenge.title);
-	const zoneSelectOptions = props.G.zoneData.map(zone => { return { value: `${zone.id}`, label: zone.name } });
+	const allZones = props.G.zoneData.map(zone => { return { value: `${zone.id}`, label: zone.name } });
+	const zoneSelectOptions = validZones(allZones, props.G)
 
 	async function handleSubmit(values: ClaimFormValues) {
 		const moves = props.moves as ConnectFourMoves
@@ -144,3 +145,28 @@ export default function ClaimFlowModal({
 // 								/>
 // 							</Stepper.Completed>
 // 						</Stepper>
+
+
+export function validZones(zones :  {
+    value: string;
+    label: string;
+}[], gameState: ConnectFourGameState){
+	
+	console.log("filtering zones", gameState.startingZone)
+	let validZones : {value: string, label: string}[] = [...zones]
+	
+	//remove starting zone if no zones are claimed
+	if(!isStartZoneClaimable(gameState.zoneData)){
+		console.log("nothing is claimed")
+		validZones = validZones.filter(zone => zone.label !== gameState.startingZone)
+	}
+	return validZones;
+}
+
+export function isStartZoneClaimable(zoneData: ZoneData[]){
+	return zoneData.some(zone => zone.controlTeam)
+}
+
+export function isZoneDisabled(zoneName: string, gameState: ConnectFourGameState){
+	return !isStartZoneClaimable(gameState.zoneData) && (zoneName === gameState.startingZone)
+}

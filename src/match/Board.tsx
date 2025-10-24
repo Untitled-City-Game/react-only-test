@@ -61,28 +61,29 @@ function Board(props: GameBoardContext){
 		// }
 		return (
 			<GameContext.Provider value={{ ...props }}>
-				<Waiting />
+				<MatchContext G={props.G}>
+					<Waiting />
+				</MatchContext>
 			</GameContext.Provider>
 		);
 	}
+
 	if (playerID && !props.G.allPlayersData[playerID]) {
 		return <Loading message="Looking for local player data" />;
 	}
 
-	const GameSpecificBoard = getMatchContext(props.G, props.playerData.data)
-
 	return (
 		<GameContext.Provider value={{ ...props }}>
 			<ErrorBoundary fallback={<span>Something went wrong inside the board element</span>}>
-			{GameSpecificBoard}
+				<MatchContext G={props.G}>
+					<MatchGameplay G={props.G} playerData={props.playerData.data} />
+				</MatchContext>
 			</ErrorBoundary>
 		</GameContext.Provider>
 	);
 }
 
-export const SnakeContext = createContext({} as SnakeGameState);
-
-function getMatchContext(G: GameStateGeneric, playerData : PlayerData){
+function MatchGameplay({G, playerData}:{G: GameStateGeneric, playerData : PlayerData}){
 	switch(G.gameCode){
 		case "connect_four":
 			return ConnectFourGameplay(G, playerData )
@@ -90,21 +91,48 @@ function getMatchContext(G: GameStateGeneric, playerData : PlayerData){
 			return SnakeGameplay(G, playerData )
 	}
 }
+function MatchContext({G, children}:{G: GameStateGeneric, children: React.ReactNode}){
+	switch(G.gameCode){
+		case "connect_four":
+			return <ConnectFourContextWrapper G={G}>{children}</ConnectFourContextWrapper>
+		case "snake":
+			return <SnakeContextWrapper G={G}>{children}</SnakeContextWrapper>
+	}
+}
 
+export const SnakeContext = createContext({} as SnakeGameState);
 export const ConnectFourContext= createContext({} as ConnectFourGameState);
 export const ChallengeDeckContext = createContext({} as ChallengeDeck)
+
+function ConnectFourContextWrapper({G, children} : {G:ConnectFourGameState, children: React.ReactNode}){
+		return(
+		<ConnectFourContext.Provider value={G}>
+			<ChallengeDeckContext.Provider value={{challengeDeck: G.challengeDeck, allTeamsChallengeData: G.allTeamsChallengeData}}>
+				{children}
+			</ChallengeDeckContext.Provider>
+		</ConnectFourContext.Provider>
+	)
+}
+
 
 function ConnectFourGameplay(G:ConnectFourGameState, playerData : PlayerData){
 	const claimedZones = G.zoneData.filter(zone => zone.controlTeam === playerData.teamColor).length
 	return(
-		<ConnectFourContext.Provider value={G}>
-			<ChallengeDeckContext.Provider value={{challengeDeck: G.challengeDeck, allTeamsChallengeData: G.allTeamsChallengeData}}>
-				<StatusBar>
-					{claimedZones} area{claimedZones === 1 ? "" : "s"} claimed
-				</StatusBar>
+		<>
+			<StatusBar>
+				{claimedZones} area{claimedZones === 1 ? "" : "s"} claimed
+			</StatusBar>
 			<TabSet tabCodes={["challenges", "connect_four_map", "log"]} />
-			</ChallengeDeckContext.Provider>
-		</ConnectFourContext.Provider>
+		</>
+	)
+}
+
+function SnakeContextWrapper({G, children} : {G:SnakeGameState, children: React.ReactNode}){
+		return(
+		<SnakeContext.Provider value={G}>
+			{children}
+		</SnakeContext.Provider>
+
 	)
 }
 
@@ -112,13 +140,12 @@ function SnakeGameplay(G: SnakeGameState, playerData : PlayerData){
 	console.log("snake game state", G, playerData)
 	const snakeLength = G.snakeTeamData[playerData.teamColor]?.snakeBody.maxLength
 	return(
-		<SnakeContext.Provider value={G}>
+		<>
 			<StatusBar>
 				Snake length: {snakeLength}m
 			</StatusBar>
-
 			<TabSet tabCodes={["snake_map", "snake_data", "log" ]} />
-		</SnakeContext.Provider>
+		</>
 	)
 
 }

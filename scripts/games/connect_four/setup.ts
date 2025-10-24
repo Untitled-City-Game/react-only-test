@@ -55,3 +55,6 @@ export function connectFourPlayerSetup(context: MoveContext<ConnectFourGameState
 	challengeDeckPlayerSetup(context, newPlayerData)
 }
 
+export function setStartingZone(context: MoveContext<ConnectFourGameState>, startingZone: string){
+	context.G.startingZone = startingZone
+}

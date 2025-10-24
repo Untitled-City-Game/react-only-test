@@ -17,74 +17,56 @@ import { Polyline } from "@/src/match/googleMaps/shapes/PolyLine";
 import ConnectedSegment from "@/src/match/googleMaps/ConnectedSegment";
 import { LineData } from "@/scripts/types/googleMaps";
 import MyLocationMarker from "@/src/match/googleMaps/MyLocationMarker";
+import { isStartZoneClaimable } from "@/src/match/components/regions/region_claim_flow/ClaimFlowModal";
 
 export default function ConnectFourMapTab() {
 	const { playerData } = useContext(GameContext)
 	const G = useContext(ConnectFourContext);
-	const { zonePolygons, winningLines, city } = G.MatchMapData;
-	const [activeLine, setActiveLine] = useState<LineData | undefined>()
-	const [lineVisibility, setLineVisibility] = useState(
-		winningLines
-			? winningLines.reduce((acc, line) => {
-				acc[line.featureName] = false;
-				return acc;
-			}, {} as { [key: string]: boolean })
-			: {}
-	);
-
-	const [highlightedZones, setHighlightedZones] = useState(
-		zonePolygons
-			? zonePolygons.reduce((acc, zone) => {
-				acc[zone.featureName] = false;
-				return acc;
-			}, {} as { [key: string]: boolean })
-			: {}
-	);
-
 	const [currentZone, setCurrentZone] = useState<ZoneData>();
+	const [activeLine, setActiveLine] = useState<LineData | undefined>()
+	// const [lineVisibility, setLineVisibility] = useState(
+	// 	winningLines
+	// 		? winningLines.reduce((acc, line) => {
+	// 			acc[line.featureName] = false;
+	// 			return acc;
+	// 		}, {} as { [key: string]: boolean })
+	// 		: {}
+	// );
 
-	const lineMemo = useMemo(() => processMetroLines(winningLines), [winningLines])
+	// const [highlightedZones, setHighlightedZones] = useState(
+	// 	zonePolygons
+	// 		? zonePolygons.reduce((acc, zone) => {
+	// 			acc[zone.featureName] = false;
+	// 			return acc;
+	// 		}, {} as { [key: string]: boolean })
+	// 		: {}
+	// );
 
-	//Render zone lines
-	const lineElements = lineMemo.offsetLines.map((line, index) => {
-		return (
-			<MapLine
-				index={index}
-				line={line}
-				allLines={winningLines}
-				lineVisibility={activeLine?.featureName === line.featureName}
-				key={index}
-			/>
-		);
-	});
-	//Render overlap lines
-	// const overlapLineElements = lineMemo.lineOverlaps.map((line, index) => {
+
+	// const lineMemo = useMemo(() => processMetroLines(winningLines), [winningLines])
+
+	// //Render zone lines
+	// const lineElements = lineMemo.offsetLines.map((line, index) => {
 	// 	return (
-	// 		<ConnectedSegment key={index} overlap={line} visibility={line.lines.map(line => lineVisibility[line.featureName] ?? false)} />
-	// 	)
-		
+	// 		<MapLine
+	// 			index={index}
+	// 			line={line}
+	// 			allLines={winningLines}
+	// 			lineVisibility={activeLine?.featureName === line.featureName}
+	// 			key={index}
+	// 		/>
+	// 	);
 	// });
 
-	// //render vertex node circles
-	// const connectionCirles = lineRef.current.connectionPoints.map((point, index) => {
-	// 	const isVisible = point.lineNames.every((lineName) => lineVisibility[lineName])
-	// 	return (
-	// 		<ConnectionMarker 
-	// 			point={point}
-	// 			index={index}
-	// 			lineVisibility={isVisible}
-	// 		/>
-	// 	)
-	// })
-
 	//Render zone polygons
+	const { zonePolygons, winningLines, city } = G.MatchMapData;
 	const zoneElements = zonePolygons?.map((zone, index) => {
 		const onClick = function (
-			lineVisibilityTemp: { [key: string]: boolean },
-			highlightedZonesTemp: { [key: string]: boolean }
+			// lineVisibilityTemp: { [key: string]: boolean },
+			// highlightedZonesTemp: { [key: string]: boolean }
 		) {
 			console.log("zone clicked", zone);
-			console.log("highlight zones", highlightedZonesTemp)
+			// console.log("highlight zones", highlightedZonesTemp)
 			console.log("current zone", currentZone)
 			//check if already selected
 			if(currentZone?.name === zone.featureName){
@@ -93,21 +75,20 @@ export default function ConnectFourMapTab() {
 				return;
 			}
 			//set line visibility
-			setLineVisibility(lineVisibilityTemp);
-			setHighlightedZones(highlightedZonesTemp);
+			// setLineVisibility(lineVisibilityTemp);
 			setCurrentZone(G.zoneData[index]);
 			setActiveLine(winningLines.filter(line => line.matchedPolygons.includes(G.zoneData[index]?.name || ""))[0])
 		};
+		const zoneDisabled = (zone.featureName === G.startingZone) && (!isStartZoneClaimable(G.zoneData))
 		return (
 			<ZonePolygon
 				zone={zone}
 				handleZoneClick={onClick}
 				currentZone={currentZone}
-				highlightedZones={highlightedZones}
-				highlightColor={highlightColor}
 				zoneGameData={G.zoneData[index]}
 				key={index}
 				activeLine={activeLine}
+				disabled={zoneDisabled}
 			/>
 		);
 	});
@@ -124,8 +105,8 @@ export default function ConnectFourMapTab() {
 						console.log("map clicked!")
 						setCurrentZone(undefined);
 						setActiveLine(undefined);
-						setLineVisibility({});
-						setHighlightedZones({});
+						// setLineVisibility({});
+						// setHighlightedZones({});
 					}}
 				>
 					{/* <>{lineElements}</> */}
@@ -146,3 +127,7 @@ const mapStyles: React.CSSProperties = {
 	//flexShrink: 7,
 };
 
+
+export function createZoneElements(G: ConnectFourGameState){
+	
+}

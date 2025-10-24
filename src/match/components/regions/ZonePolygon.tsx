@@ -15,20 +15,18 @@ type ZonePolygonProps = {
 		polygonVisibility: { [key: string]: boolean }
 	) => void;
 	currentZone: ZoneData | undefined;
-	highlightedZones: { [key: string]: boolean };
-	highlightColor: Color;
 	zoneGameData: ZoneData;
 	activeLine?: LineData;
+	disabled?: boolean;
 };
 
 export default function ZonePolygon({
 	zone,
 	handleZoneClick,
 	currentZone,
-	highlightedZones,
-	highlightColor,
 	zoneGameData,
-	activeLine
+	activeLine,
+	disabled
 }: ZonePolygonProps) {
 	const amCurrentZone = zone.featureName === currentZone?.name;
 	const amHighlighted = activeLine?.matchedPolygons.includes(zone.featureName)
@@ -74,14 +72,18 @@ export default function ZonePolygon({
 				fillColor={
 					zoneGameData.controlTeam ||
 					(amCurrentZone ? theme.colors.green[6] : 
-						amHighlighted ? theme.colors.green[6] :
+					amHighlighted ? theme.colors.green[6] :
+					disabled ? theme.colors.gray[6] :
 						"#FFFFFF00") 
 				}
-				fillOpacity={zoneGameData.locked ? 0.3 : 0.15}
+				fillOpacity={
+					zoneGameData.locked ? 0.3 :
+					disabled? 0.5 :
+					0.15}
 				onClick={() =>
 				{
 					if((map?.getZoom() ?? 30) > zoomThreshold){return};
-					handleZoneClick(lineVisibilityTemp, highlightedZonesTemp)
+					handleZoneClick(lineVisibilityTemp, highlightedZonesTemp);
 
 				}
 				}

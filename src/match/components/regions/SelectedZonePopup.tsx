@@ -1,7 +1,7 @@
 import { ZoneData } from "@/scripts/games/connect_four/types";
 import { LineData } from "@/scripts/types/googleMaps";
 import { ConnectFourContext, GameContext } from "@/src/match/Board";
-import ClaimFlowModal from "@/src/match/components/regions/region_claim_flow/ClaimFlowModal";
+import ClaimFlowModal, { isZoneDisabled } from "@/src/match/components/regions/region_claim_flow/ClaimFlowModal";
 import { theme } from "@/src/styles/theme";
 import P from "@/src/userInterface/P";
 import Span from "@/src/userInterface/Span";
@@ -53,7 +53,7 @@ export default function SelectedZonePopup({
 						<Button onClick={() => {
 							open();
 							setCurrentZone(undefined);
-						}} size="m" disabled={currentZone?.locked}>
+						}} size="m" disabled={currentZone?.locked ||(currentZone && isZoneDisabled(currentZone.name, G))}>
 							<span>{currentZone?.controlTeam === null ? "Claim" : "Steal"}</span>
 						</Button>
 						<LineStepper allZoneData={G.zoneData} lines={winningLines.filter(line => line.matchedPolygons.includes(currentZone?.name || ""))} activeLine={activeLine} setActiveLine={setActiveLine} />
