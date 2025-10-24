@@ -3,7 +3,8 @@
   "version": "0.0.0",
   "main": "server/server.ts",
   "scripts": {
-    "start": "tsx --env-file=.env.staging server/server.ts",
+    "prod": "tsx --env-file=.env server/server.ts",
+    "staging": "tsx --env-file=.env.staging server/server.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
