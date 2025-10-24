@@ -5,6 +5,7 @@ import { discardChallenge, drawToFull } from "../../challenge_deck/handManagemen
 import { addLogMetadata } from "../../shared_moves/metadata";
 import { ConnectFourGameState } from "@/scripts/games/connect_four/types";
 import { Challenge } from "@/scripts/games/challenge_deck/challenge_deck_types";
+import { checkVictory } from "@/scripts/games/connect_four/checkVictory";
 
 export function completeChallengeAndClaim(
 	context: MoveContext<ConnectFourGameState>,
@@ -22,6 +23,7 @@ export function completeChallengeAndClaim(
 	if(claimData === "INVALID_MOVE") return claimData;
 	completeChallenge({ G, log, playerID }, challenge, evidence);
 	drawToFull(context);
+	checkVictory(context);
 	createUndoPoint(G);
 	addLogMetadata(
 		{ log },

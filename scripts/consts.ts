@@ -42,8 +42,8 @@ export const gameLocationCenters = {
 		lng: 144.9631
 	},
 	montreal: {
-		lat:  45.529819917244254,
-		lng: -73.60361034602055,
+		lat:  45.5070113731678,
+		lng: -73.57570671343632,
 	},
 	london: {
 		lat:  51.5073509,

@@ -13,7 +13,7 @@ const authenticateCredentials = async () => {
 
 
 async function buildServer(){
-	console.log("building server", process.env.GAME_ADDRESS, process.env.GAME_SERVER);
+	console.log("building server", process.env.GAME_ADDRESS, process.env.LAN_ADDRESS, process.env.GAME_SERVER);
 	const server = Server({
 		games: [ConnectFour, Snake],
 		authenticateCredentials,
@@ -40,7 +40,7 @@ const httpServer = createServer()
 const io = new socketIo.Server(httpServer, {
 	  path: "/teamlocations/",
 	  cors: {
-    	origin: [Origins.LOCALHOST,  process.env.GAME_ADDRESS || false],
+    	origin: [Origins.LOCALHOST, process.env.LAN_ADDRESS || false, process.env.GAME_ADDRESS || false],
    		methods: ["GET", "POST"]
  	 }
 })
