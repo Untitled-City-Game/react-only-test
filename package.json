@@ -4,7 +4,7 @@
   "main": "server/server.ts",
   "scripts": {
     "prod": "tsx --env-file=.env server/server.ts",
-    "staging": "tsx --env-file=.env.staging server/server.ts",
+    "staging": "tsx --env-file=.env.stage server/server.ts",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
