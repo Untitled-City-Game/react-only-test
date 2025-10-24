@@ -31,7 +31,7 @@ async function buildServer(){
 		const mapData = await fetch(`https://www.google.com/maps/d/u/0/kml?forcekml=1&mid=${ctx.params.citycode}`);
 		ctx.body = await mapData.text();
 	  });
-	const PORT = parseInt(process.env.PORT || "8000");
+	const PORT = parseInt(process.env.SERVER_PORT || "8066");
 	server.run(PORT, () => console.log("server running..."));
 }
 
@@ -61,6 +61,6 @@ io.on('connection', (socket) => {
   })
 });
 
-io.listen(3000);
+io.listen(parseInt(process.env.LOCATION_SERVER_PORT || "3000"));
 
 buildServer();
