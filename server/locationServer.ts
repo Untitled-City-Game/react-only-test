@@ -5,12 +5,6 @@ const httpServer = createServer()
 
 const io = new socketIo.Server(httpServer, {
 	  path: process.env.LOCATION_SERVER_PATH,
-	  connectionStateRecovery: {
-		// the backup duration of the sessions and the packets
-		maxDisconnectionDuration: 2 * 60 * 1000,
-		// whether to skip middlewares upon successful recovery
-		skipMiddlewares: true,
-  		},
 	  cors: {
 		origin: [process.env.LAN_ADDRESS || false, process.env.GAME_ADDRESS || false],
 		methods: ["GET", "POST"]
