@@ -29,11 +29,11 @@ async function fetchKML(cityName: City = "london"){
     console.log(process.env.GAME_SERVER + `/map-data/${maps[cityName].kml_live_id}`)
     const res = await fetch(process.env.GAME_SERVER + `/map-data/${maps[cityName].kml_live_id}`);
     //const res = await fetch(`https://www.google.com/maps/d/u/0/kml?forcekml=1&mid=${maps[cityName].kml_live_id}`);
-    console.log("res", res);
+    //console.log("res", res);
     const kmlText = await res.text();
-    console.log("kml text", kmlText);
+    //console.log("kml text", kmlText);
     const kmlParsed = new DOMParser().parseFromString(kmlText, "text/xml");
-    console.log("parsed kml", kmlParsed);
+    //console.log("parsed kml", kmlParsed);
     const geoJson = toGeoJson.kml(kmlParsed);
     if(!geoJson.features){
       throw new Error("KML file did not contain features");

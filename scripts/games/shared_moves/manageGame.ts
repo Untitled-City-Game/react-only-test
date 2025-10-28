@@ -5,8 +5,7 @@ import { addLogMetadata } from "./metadata";
 
 export function startGame<GameState extends GameStateUniversal>(context: MoveContext<GameState>) {
 	console.log("starting game")
-	const { events, G, random, log } = context;
-	console.log("all players data", G.allPlayersData)
+	const { events, G, log } = context;
 	G.active = true;
 	events.setActivePlayers({ all: "play" });
 	startGameTimer<GameState>(G);
@@ -18,6 +17,7 @@ export function startGame<GameState extends GameStateUniversal>(context: MoveCon
 } 
 
 export function startGameTimer<SomeGameState extends GameStateUniversal>(G: SomeGameState) {
+	console.log("start game timer")
 	const startTime = Date.now();
 	G.startTime = startTime;
 	G.endTime = startTime + gameTimeMinutes * 60 * 1000;

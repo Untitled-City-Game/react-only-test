@@ -19,7 +19,6 @@ export function ConnectFourGameSetup(ctx: Ctx, setupData: GameSetupData): Connec
 	console.log("players: ", ctx.numPlayers);
 	console.log("currentplayer ", ctx.currentPlayer);
 	console.log("city", setupData.mapSetupData.city);
-	console.log("getting map data");
 
 	return {
 		gameCode: "connect_four",

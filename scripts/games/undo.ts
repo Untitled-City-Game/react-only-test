@@ -19,6 +19,11 @@ export default function customUndoTemplate(context: MoveContext<GameStateUnivers
 }
 
 export function createUndoPoint<GameState extends GameStateUniversal>(G: GameState){
+	console.log("create undo point");
 	const {gameStateLogs, ...rest} = G;
 	G.gameStateLogs.push(rest);
+	//remove undo points
+	if(G.gameStateLogs.length > 3){
+		G.gameStateLogs.shift();
+	}
 }
