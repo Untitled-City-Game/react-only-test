@@ -1,12 +1,9 @@
+import { MapAreaSelectorValue } from "@/scripts/types/googleMaps";
 import { Circle } from "@/src/match/googleMaps/shapes/Circle";
 import VisGlMapElement from "@/src/match/googleMaps/VisGLMapElement";
 import useMyLocation from "@/src/match/interfaces/useMyLocation";
 import { Input } from "@mantine/core";
 import { useEffect, useState } from "react";
-export type MapAreaSelectorValue = {
-	gameLocation: google.maps.LatLngLiteral,
-	gameRadius: number,
-}
 interface CustomInputProps {
   value?: MapAreaSelectorValue;
   defaultValue?: MapAreaSelectorValue;

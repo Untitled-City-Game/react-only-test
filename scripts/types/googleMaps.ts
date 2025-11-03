@@ -2,6 +2,12 @@ import { LineString } from "geojson";
 import { ReactElement } from "react";
 
 //Google maps
+
+export type MapAreaSelectorValue = {
+	gameLocation: google.maps.LatLngLiteral,
+	gameRadius: number,
+}
+
 export type geospatialFeature = {
 	featureName : string,
 	coords: { lat: number; lng: number; }[]

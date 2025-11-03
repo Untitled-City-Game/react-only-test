@@ -1,5 +1,5 @@
+import { MapAreaSelectorValue } from "@/scripts/types/googleMaps";
 import { City, CoordSet, GameStateLog, GameStateUniversal, PlayerData } from "@/scripts/types/types";
-import { MapAreaSelectorValue } from "@/src/lobby/CreateMatch/MapAreaSelector";
 
 export interface SnakeGameState extends GameStateUniversal {
 	gameCode: "snake"
