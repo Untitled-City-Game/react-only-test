@@ -1,1 +1,42 @@
-r":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1478087038494,"content":"the biggest issues uspol has are","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1478087031346,"content":"ooh ok so","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1478086921062,"content":"Like what? (This isn\'t me being sassy, idk anything abt USpol and would like to hear your opinion)","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1478086837803,"content":"and with a few tweaks could be running rly rly well in the 21st century","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1478086828597,"content":"but it\'s also a brilliant system","is_geoblocked_for_viewer":false,"is_unsent_image_by_mes
+{
+  "compilerOptions": {
+    /* Visit https://aka.ms/tsconfig to read more about this file */
+      "plugins": [{ "name": "typescript-plugin-css-modules" }],
+    "target": "ES2020",
+    "lib": ["ES2020", "DOM", "DOM.Iterable"],
+    "jsx": "react-jsx",
+    "useDefineForClassFields": true,
+
+    /* Modules */
+    "module": "ESNext",
+    "moduleResolution": "bundler",
+
+    /* Emit */
+    "noEmit": true,
+
+    /* Interop Constraints */
+    "isolatedModules": true,
+    "allowSyntheticDefaultImports": true,
+    "allowImportingTsExtensions": true,
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+
+    /* Type Checking */
+    "strict": true,
+
+    /* Completeness */
+    "skipLibCheck": true,
+    "baseUrl" : "./",
+    "paths": {
+      "@/*": ["./*"],
+      "@src/*": ["src/*"],
+      "@scripts/*": ["scripts/*"],
+      "@server/*": ["server/*"],
+      "@data/*": ["./data/*"],
+      "@styles/*": ["src/styles/*"],
+      "@match/*": ["src/match/*"],
+      "react": ["next-app/node_modules/@types/react/index"],
+    }
+
+  }
+}
