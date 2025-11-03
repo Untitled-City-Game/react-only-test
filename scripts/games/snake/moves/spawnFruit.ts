@@ -1,7 +1,6 @@
 import { config } from "@/scripts/games/snake/config";
-import { Fruit, SnakeGameState } from "@/scripts/games/snake/types";
+import { Fruit, MapAreaSelectorValue, SnakeGameState } from "@/scripts/games/snake/types";
 import { MoveContext } from "@/scripts/types/types";
-import { MapAreaSelectorValue } from "@/src/lobby/CreateMatch/MapAreaSelector";
 import { destination, point } from "@turf/turf";
 import { Point, Position } from "geojson";
 

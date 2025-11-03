@@ -1,17 +1,1 @@
-import { theme } from "@/src/styles/theme";
-import Header from "@/src/userInterface/Header/Header";
-import { Center, Container, MantineProvider } from "@mantine/core";
-import { Outlet } from "react-router";
-
-export default function OuterLayout() {
-	return (
-		<MantineProvider theme={theme}>
-			<Header color="rainbow">Playground City</Header>
-			<Container>
-				<Center>
-					<Outlet />
-				</Center>
-			</Container>
-		</MantineProvider>
-	);
-}
+:"And noises.","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1487422968902,"content":"Mostly I\'ve been better at dealing with constant stares","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1486476778385,"photos":[{"uri":"your_facebook_activity/messages/e2ee_cutover/jessdaswani_1015

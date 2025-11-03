@@ -1,4 +1,1 @@
-import { Image, ImageProps, PolymorphicComponentProps } from "@mantine/core";
-export default function ImageMantine(props: PolymorphicComponentProps<'img', ImageProps>) {
-	return <Image {...props} />;
-}
+OK nevermind I will just meet him there","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1482022644165,"content":"(just bc

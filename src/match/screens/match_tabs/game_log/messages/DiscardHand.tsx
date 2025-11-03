@@ -1,11 +1,1 @@
-import { PlayerData } from "@/scripts/types/types";
-import Span from "@/src/userInterface/Span";
-
-
-export function DiscardHand({ senderData }: { senderData: PlayerData; }) {
-	return (
-		<>
-			<Span fw="bold">{senderData.teamColor} team</Span> discarded their hand of challenges.
-		</>
-	);
-}
+nt_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1488890293853,"content":"yeah","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1488890268744,"content":"Because it\'s also ver

@@ -1,16 +1,1 @@
-import { calculateSnakeLength } from "@/scripts/games/snake/moves/manageSnakeBody"
-import { GameContext, SnakeContext } from "@/src/match/Board"
-import { useContext } from "react"
-
-export default function SnakeData(){
-	const snakeGameState = useContext(SnakeContext)
-	const gameContext = useContext(GameContext)
-	const teamColor = gameContext.playerData.data.teamColor
-	const teamData = snakeGameState.snakeTeamData[teamColor]
-	return (
-	<>
-		<p>Snake Max Length: {teamData.snakeBody.maxLength} meters</p>
-		<p>Snake Current Length: {Math.round(calculateSnakeLength(teamData.snakeBody.segments))} meters</p>
-		<p>Snake body timeout: {teamData.snakeBody.timeHorizon} minutes</p>
-	</>)
-}
+21808,"content":"Ok. Well as long as you\'re outside the building there shouldn\'t be a problem","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1488781021345,"content":"um if you\'re 30 minutes away I\'ll probably just be waiting outside","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1488781020533,"content":"So I might be flat before I arrive","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1488780948103,"content":"I am having some battery p

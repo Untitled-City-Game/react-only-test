@@ -1,5 +1,1 @@
-import { GameStateUniversal, MatchTeamString, MoveContext } from "@/scripts/types/types";
-
-export function addTeamPhoto<GameState extends GameStateUniversal>(context: MoveContext<GameState>, photoUrl: string, team: MatchTeamString) {
-	context.G.teamPhotoURLs[team] = photoUrl
-}
+"timestamp_ms":1504183002638,"content":"How dare","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1504182993919,"photos":[{"uri":"your_facebook_activity/messages/e2ee_cutover/jessdaswani_101534532991

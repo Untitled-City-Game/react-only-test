@@ -1,12 +1,1 @@
-import { PlayerData } from "@/scripts/types/types";
-import Span from "@/src/userInterface/Span";
-
-
-export function JoinedMatch({ senderData }: { senderData: PlayerData; }) {
-	return (
-		<>
-			<Span fw="bold" fz={"md"}>{senderData.name}</Span> joined the
-			match on the <Span fw="bold">{senderData.teamColor}</Span> team.
-		</>
-	);
-}
+ top for many years","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1488888670581,"content":"Idk","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1488888665170,"content":"and 

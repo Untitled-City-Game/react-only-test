@@ -1,10 +1,1 @@
-// service-worker.js
-self.addEventListener('push', event => {
-  const options = {
-    body: event.data.text(),
-    icon: '/static/icon.png', // Replace with your icon path
-  };
-  event.waitUntil(
-    self.registration.showNotification('Playground City', options)
-  );
-});
+_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1488435703922,"sticker":{"uri":"your_facebook_activity/messages/stickers_used/11409208_1457726247855421_804670608_n_1457726241188755.png","ai_stickers":[]},"is_geo

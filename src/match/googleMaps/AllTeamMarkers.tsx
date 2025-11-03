@@ -1,15 +1,1 @@
-import { gameLocationCenters } from "@/scripts/consts";
-import { MatchTeamColor } from "@/scripts/types/types";
-import LocationMarker from "@/src/match/googleMaps/LocationMarker";
-import useTeamLocations from "@/src/match/interfaces/useTeamLocations";
-
-export default function AllTeamMarkers(){
-	const allTeamLocations = useTeamLocations();
-	console.log("rendering all team markers")
-	return (
-		<>
-		{allTeamLocations.map((teamLocation, index) => <LocationMarker key={index} position={teamLocation.location} color={teamLocation.teamName} accuracy={teamLocation.accuracy}/>)}
-		{/* <LocationMarker key="dummy" position={gameLocationCenters.montreal} color={"pink" as MatchTeamColor} /> */}
-		</>
-	)
-}
+,{"sender_name":"Michael Page","timestamp_ms":1495096074165,"content":"for coffee","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1495096068761,"content":"For food? Because coffee costs more or less the same everywhere","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1495096036655,"content":"do you know COffee Lab prices","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1495096032094,"content":"hey","is_geoblocked_for_viewer":false,"is_unsent_image_by_messeng

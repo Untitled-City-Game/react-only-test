@@ -1,4 +1,1 @@
-import { Text, TextProps } from "@mantine/core";
-export default function P({ children, ...rest }: TextProps & { children: React.ReactNode }) {
-	return <Text {...rest}>{children}</Text>;
-}
+_cutover/jessdaswani_10153453299124550/photos/387502332_10160864786694550_9054859486358076420_n_10154370851619550.jpg","creation_timestamp":1478776693,"backup_uri":"https://scontent.fymq3

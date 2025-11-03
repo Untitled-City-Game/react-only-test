@@ -1,4 +1,1 @@
-import { Text, TextProps } from "@mantine/core";
-export default function Span({ children, ...rest }: TextProps & { children: React.ReactNode }) {
-	return <Text span {...rest}>{children}</Text>;
-}
+","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1478172904153,"content":"(my job)","is_geoblocked_for_viewer":fals

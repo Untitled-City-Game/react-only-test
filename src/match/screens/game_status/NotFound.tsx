@@ -1,15 +1,1 @@
-import { Center, Stack, Button } from "@mantine/core";
-import { Link } from "react-router";
-
-export default function NotFound() {
-	return (
-		<Center>
-			<Stack>
-				<h1>Page not found</h1>
-				<p>We're not sure what's meant to be here.</p>
-				<Button component={Link} to="/lobby">Back to lobby</Button>
-				<Button component={Link} to="/match">Back to game</Button>
-			</Stack>
-		</Center>
-	);
-}
+ent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1489744210272,"content":"but thats usually quite late","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1489744204815,"content":"although at some point a housemate will want to shower","is_geoblocked_for_viewer":false,"is_unsent_ima

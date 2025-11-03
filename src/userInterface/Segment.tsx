@@ -1,13 +1,1 @@
-import { CardProps } from "@mantine/core";
-
-export default function Segment({ children, color, ...rest }: { children: React.ReactNode, color: string } & React.HTMLAttributes<HTMLDivElement> & CardProps){
-	return (
-		<div style={{
-			border: `2px dashed ${color}`,
-			padding: '1rem',
-			borderRadius: `10px`
-		}}>
-			{children}
-		</div>
-	)
-}
+s_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1478218564480,"photos":[{"uri":"https://interncache-eag.fbcdn.net/v/t34.18173-12/13664678_1110009682375377_1049794596_n.gif?stp=dst-gif&ccb=1-7&_nc_sid=68f744&efg=eyJ1cmxnZW4iOiJwaHBfdXJsZ2VuX2NsaWVudC9pbW9nZW46RW50T

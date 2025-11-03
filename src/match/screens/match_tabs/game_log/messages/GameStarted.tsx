@@ -1,12 +1,1 @@
-import { PlayerData } from "@/scripts/types/types";
-import Span from "@/src/userInterface/Span";
-
-
-export function GameStarted({ senderData }: { senderData: PlayerData; }) {
-	return (
-		<>
-			<Span fw="bold">{senderData.name}</Span> started
-			the game.
-		</>
-	);
-}
+t hope I can do mostly OK things right now","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1488889829566,"content":"Hah","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_ki

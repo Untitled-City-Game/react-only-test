@@ -1,17 +1,1 @@
-import Span from "@/src/userInterface/Span";
-import { AdvancedMarker } from "@vis.gl/react-google-maps";
-type PolygonLabelProps = {
-	label : string,
-	position : {lat: number, lng: number},
-}
-export default function PolygonLabel(props : PolygonLabelProps){
-	const {label, position} = props;
-	return (
-		<AdvancedMarker 
-		position={position}
-
-		>
-			<Span bg={"white"} fw="500">{label}</Span>
-		</AdvancedMarker>
-	)
-}
+_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1493906261406,"content":"did i tell you that we got money?","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1493905852461,"content":"we\'re always getting better","is_geoblocked_for_viewer":false,"is_unsent_image_

@@ -1,11 +1,1 @@
-import { gameLocationCenters } from "@/scripts/consts";
-import { CoordSet, MatchTeamColor } from "@/scripts/types/types";
-import LocationMarker from "@/src/match/googleMaps/LocationMarker";
-import useMyLocation from "@/src/match/interfaces/useMyLocation";
-
-export default function MyLocationMarker({color, defaultLocation} : {color: MatchTeamColor, defaultLocation: google.maps.LatLngLiteral}){
-	const {position, accuracy} = useMyLocation(true, color, defaultLocation || { lat: 0, lng: 0 });
-	return (
-		<LocationMarker position={position || defaultLocation} color={color} accuracy={accuracy} />
-	)
-}
+_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1494333036118,"content":"I couldnt stop","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1494333033426,"content":"oh bless","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1494333029221,"content":"it was so good","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","tim

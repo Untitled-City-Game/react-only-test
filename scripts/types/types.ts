@@ -17,6 +17,7 @@ export type GameStateUniversal = {
 	allPlayersData: AllPlayersData;
 	allTeamsData : {[key in MatchTeamString] : string[]}
 	gameOver: boolean;
+	victory?: MatchTeamColor;
 	startTime?: number;
 	endTime?: number;
 	gameStateLogs: GameStateLog<any>[]

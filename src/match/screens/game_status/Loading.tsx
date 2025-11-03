@@ -1,12 +1,1 @@
-import { Center, Image, Stack } from "@mantine/core";
-
-export default function Loading({message = "Loading"} : {message? : string}) {
-	return (
-	<Center h="90vh">
-		<Stack align="center">
-	<Image w="50%" src='/train.gif'/>
-	<span>{message}</span>
-	</Stack>
-	</Center>
-	)
-}
+9829416356,"content":"helo","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1489797466330,"content":"Ye","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"send

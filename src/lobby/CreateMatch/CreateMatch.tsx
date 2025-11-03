@@ -1,13 +1,1 @@
-import CreateMatchConnectFour from "@/src/lobby/CreateMatch/CreateMatchConnectFour";
-import CreateMatchSnake from "@/src/lobby/CreateMatch/CreateMatchSnake";
-import { useParams } from "react-router";
-
-export default function CreateMatch(){
-	const gameCode = useParams().gameCode;
-	switch(gameCode){
-		case 'connect_four':
-			return <CreateMatchConnectFour />
-		case 'snake':
-			return <CreateMatchSnake />
-	}
-}
+ocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1502972389081,"content":"so uh","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1502847237218,"content":"rip","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess 
