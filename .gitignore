@@ -8,3 +8,4 @@ server/db/
 src/
 package-lock.json
 server/db/*
+build/*
