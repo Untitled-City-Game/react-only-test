@@ -3,23 +3,11 @@
   "version": "0.0.0",
   "main": "server/server.ts",
   "scripts": {
-<<<<<<< HEAD
     "prod": "tsx --env-file=.env server/server.ts",
     "staging": "tsx --env-file=.env.stage server/server.ts",
     "location-prod": "tsx --env-file=.env server/locationServer.ts",
     "location-staging": "tsx --env-file=.env.stage server/locationServer.ts",
     "build": "esbuild server/server.ts --bundle --platform=node --outfile=build/server.js --external:./node_modules/*",
-=======
-    "sass": "sass --watch src/styles/interface.scss src/styles/interface.css",
-    "start": "concurrently --kill-others \"npm run sass\" \"parcel --no-cache \"",
-    "start-stage": "concurrently --kill-others \"npm run sass\" \"parcel --no-cache \"",
-    "dev": "cross-env APP_ENVIRONMENT=dev parcel --no-cache",
-    "build": "parcel build ./src/index.html --no-cache",
-    "deploy": "cross-env APP_ENVIRONMENT=prod npm run build && firebase deploy --project=prod",
-    "deploy-dev": "cross-env APP_ENVIRONMENT=prod npm run build && firebase deploy --project=dev",
-    "stage": "npm run build && firebase deploy",
-    "serve": "tsx --env-file .env.development --inspect server/server.ts",
->>>>>>> staging
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {

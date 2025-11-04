@@ -1,9 +1,0 @@
-src/lobby/*.tsx merge=ours
-src/match/boardGame/*.tsx merge=ours
-src/match/matchTabs/*.tsx merge=ours
-src merge=ours
-src/ merge=ours
-src/* merge=ours
-src/** merge=ours
-src/lobby/ChooseMatch.tsx merge=ours
-package.json merge=ours
