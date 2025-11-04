@@ -42,7 +42,6 @@
     "cross-env": "^7.0.3",
     "csvjson-csv2json": "^5.0.6",
     "esbuild": "^0.25.12",
-    "express": "^5.1.0",
     "firebase": "^11.5.0",
     "geojson-equality-ts": "^1.0.2",
     "lodash": "^4.17.21",
@@ -68,6 +67,7 @@
     "xmldom": "^0.6.0"
   },
   "devDependencies": {
+    "@types/node": "^20.0.0",
     "@types/geojson": "^7946.0.16",
     "@types/google.maps": "^3.58.1",
     "@types/react": "^19.0.12",
