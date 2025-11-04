@@ -10,7 +10,7 @@
     "build": "parcel build ./src/index.html --no-cache",
     "deploy": "cross-env APP_ENVIRONMENT=prod npm run build && firebase deploy --project=prod",
     "deploy-dev": "cross-env APP_ENVIRONMENT=prod npm run build && firebase deploy --project=dev",
-    "stage": "npm run build && firebase deploy",
+    "stage": "cross-env APP_ENVIRONMENT=staging npm run build && firebase deploy",
     "serve": "tsx --env-file .env.development --inspect server/server.ts",
     "build-server": "esbuild server/server.ts --bundle --platform=node --outfile=build/server.js --packages=external",
     "start-server": "node --env-file=.env build/server.js",
@@ -53,12 +53,16 @@
     "xmldom": "^0.6.0"
   },
   "devDependencies": {
-    "@types/node": "^20.0.0",
+    "@parcel/transformer-sass": "^2.16.0",
     "@types/geojson": "^7946.0.16",
+    "@types/node": "^20.0.0",
     "@types/react": "^19.0.12",
     "@types/react-dom": "^19.0.4",
     "@types/xmldom": "^0.1.34",
+    "buffer": "^6.0.3",
     "parcel": "^2.14.1",
+    "parcel-reporter-static-files-copy": "^1.5.3",
+    "process": "^0.11.10",
     "tsx": "^4.20.3"
   }
 }
