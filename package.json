@@ -44,6 +44,7 @@
     "esbuild": "^0.25.12",
     "express": "^5.1.0",
     "firebase": "^11.5.0",
+    "geojson-equality-ts": "^1.0.2",
     "lodash": "^4.17.21",
     "node-persist": "^4.0.4",
     "paper": "^0.12.18",

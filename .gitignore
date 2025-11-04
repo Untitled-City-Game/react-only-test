@@ -10,3 +10,4 @@ dist/
 .vscode
 .parcelrc
 server/db/
+package-lock.json
