@@ -1,1 +1,21 @@
-03360089543568242_n.jpg?_nc_cat=109&ccb=1-7&_nc_sid=9f807c&_nc_ohc=jWWUmIIERn0Q7kNvgFEEFxD&_nc_zt=23&_nc_ht=scontent.fymq3-1.fna&oh=03_Q7cD1gETKvyytaF6rSTMO_myKXFm9hZr8PUglA3QCdoUcd8w1g&oe=67C701CA"}],"is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1504183764279,"content":"that sounds nice","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1504183748299,"content":"I\'ll treat you to lunch or coffee or something","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":f
+import { initializeApp } from "firebase/app";
+import { getFirestore } from "firebase/firestore";
+import { getStorage } from "firebase/storage";
+
+import 'firebase/firestore';
+const firebaseConfig = {
+	apiKey: "AIzaSyBQdAxW64FE0ZAOH1oiMhIk_jVQmVROqt4",
+	authDomain: "metro-game-474bc.firebaseapp.com",
+	projectId: "metro-game-474bc",
+	storageBucket: process.env.STORAGE,
+	messagingSenderId: "99015817585",
+	appId: "1:99015817585:web:e596628b1ff97745a3ded0"
+  };
+
+const fireBaseApp = initializeApp(firebaseConfig);
+const firestore = getFirestore(fireBaseApp);
+const storage = getStorage(fireBaseApp);
+
+
+export { firebaseConfig, firestore, storage };
+

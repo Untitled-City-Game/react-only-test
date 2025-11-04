@@ -1,1 +1,20 @@
-_n_10154791204459550.jpg","creation_timestamp":1489048288,"backup_uri":"https://scontent.fymq3-1.fna.fbcdn.net/v/t1.15752-9/403618822_10160876096639550_506279212539283419_n.jpg?_nc_cat=103&ccb=1-7&_nc_sid=9f807c&_nc_ohc=zQxmKgegEvsQ7kNvgGKAYTT&_nc_zt=23&_nc_ht=scontent.fymq3-1.fna&oh=03_Q7cD1gElsMfURK2-1DwW5aaGPgA_g-96dkpnop0-gV3hEw-WkA&oe=67C7016E"}],"is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1489048288324,"photos":[{"uri":
+import P from "@/src/userInterface/P";
+import { Box } from "@mantine/core";
+import { CiBookmarkCheck } from "react-icons/ci";
+
+export default function RuleBox({children} : {children : React.ReactNode}){
+	return (
+		<Box style={{
+			borderRadius: "10px",
+			padding: "0rem",
+			display: "flex",
+			flexWrap: "nowrap",
+			justifyContent: "flex-start",
+			alignItems: "center",
+			gap: "0.4rem",
+		}}>
+			<Box w="10%"><CiBookmarkCheck size="2rem" color="black"/></Box>
+			<P fz="0.9rem">{children}</P>
+		</Box>
+	)
+}

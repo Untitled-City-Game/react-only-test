@@ -1,1 +1,52 @@
-on dead trees, after rain, in autumn","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1493458846161,"content":"That\'s excellent","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1493458819273,"content":"it was v rewarding","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1493458815775,"content":"we spent a wholesome afternoon venturing around the arboretum looking for weird mushrooms","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1493448648892,"content":"They seem to like acorny trees","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1493448595067,"content":"that is an excellent number of mushrooms","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1493448533614,"content":"7 around the cork forest at the arboretum","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1493448520790,"content":"I found 10 different sorts of mushrooms today","is_geoblocke
+import { APIProvider, Map, MapProps } from "@vis.gl/react-google-maps";
+import React, { createContext, useEffect, useState } from "react";
+
+interface MapElementProps extends React.PropsWithChildren, MapProps {
+	center: google.maps.LatLngLiteral
+};
+
+export const ZoomContext = createContext(12)
+
+export default function VisGlMapElement(props: MapElementProps) {
+
+	
+	// console.log("team locations", teamLocations)
+	const [zoom, setZoom] = useState(12)
+	return (
+		<>
+		<APIProvider 
+		apiKey="AIzaSyCG6Ouy-lsuiGpNCcibChoSxW6f0zupHNc"
+		libraries={["geometry"]}
+		onError={(e) => console.error(e)}
+		>
+			<Map 
+				mapId = "5eaa0d345956e4f1"
+				streetViewControl={false}
+				fullscreenControl={false}
+				mapTypeControl={false}
+				defaultCenter={props.center}
+				defaultZoom={12}
+				gestureHandling={'greedy'}
+				disableDefaultUI={true}
+				onZoomChanged={(zoomEvent) => setZoom(prevZoom => zoomEvent.map.getZoom() || prevZoom)}
+				onClick={props.onClick}
+			>
+			{/* {
+				teamLocations.map(teamLocation => {
+					// console.log("rendering team location marker", teamLocation)
+					return (
+						<LocationMarker key={teamLocation.teamName} position={teamLocation.location} color={teamLocation.teamName} />
+					)
+				})
+			} */}
+			<ZoomContext value={zoom}>
+			{props.children}
+			</ZoomContext>
+			{/* <>{props.zoneElements}</>
+			<>{props.lineElements}</> */}
+			</Map>
+		</APIProvider>
+		</>
+	);
+}
+

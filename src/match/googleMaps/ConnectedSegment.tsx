@@ -1,1 +1,60 @@
-or_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1495031088789,"content":"I miss flirting, I like it so much","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1495031065624,"content":"Maaaaan","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1495031044155,"content":"Fite me","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1495031029481,"content":"It\'s you","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1495031001124,"content":"Hi","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1495023011259,"content":"It u","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1495023009894,"content":"No","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1495022304964,"content":"i\'m assuming you were holding that up to point to yourself","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1495022291927,"content":"hi!","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Da
+import { LineOverlap, offsetLine } from "@/src/match/googleMaps/offsets";
+import { Circle } from "@/src/match/googleMaps/shapes/Circle";
+import { Polyline } from "@/src/match/googleMaps/shapes/PolyLine";
+
+export default function ConnectedSegment({overlap, visibility} : {overlap: LineOverlap, visibility: boolean[]}){
+	console.log("rendering connected segment")
+	return (
+				<>
+				{/* <Polyline
+					path={overlap.coords}
+					visible={visibility[0] || visibility[1]}
+					strokeColor={"white"}
+					strokeOpacity={1}
+					strokeWeight={40}
+					clickable={false}
+					zIndex={22}
+				/> */}
+				<Polyline
+					path={offsetLine(overlap.coords, overlap.lines[1].reverseOffset)}
+					visible={visibility[0] || visibility[1]}
+					strokeColor={overlap.lines[1].color}
+					strokeOpacity={1}
+					strokeWeight={5}
+					clickable={false}
+					zIndex={23}
+				/>
+				<Polyline
+					path={offsetLine(overlap.coords, overlap.lines[0].reverseOffset)}
+					visible={visibility[0] || visibility[1]}
+					strokeColor={overlap.lines[0].color}
+					strokeOpacity={1}
+					strokeWeight={5}
+					clickable={false}
+					zIndex={23}
+				/>
+				
+				{/* <Circle 
+					center={overlap.coords[0]}
+					visible={visibility[0] && visibility[1]}
+					radius = {70}
+					fillOpacity = {1}
+		strokeColor = {"black"}
+					fillColor={"white"}
+					zIndex={25}
+	
+				/>
+				<Circle 
+					center={overlap.coords[overlap.coords.length-1]}
+										visible={visibility[0] && visibility[1]}
+					radius = {70}
+					fillColor={"white"}
+						fillOpacity = {1}
+		strokeColor = {"black"}
+					zIndex={25}
+	
+				/> */}
+	
+				</>
+			);
+}

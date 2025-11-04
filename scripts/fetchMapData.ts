@@ -1,1 +1,47 @@
-.15752-9/276167036_120332001173562824_5085691903102235809_n.gif?stp=dst-gif&_nc_cat=101&ccb=1-7&_nc_sid=9f807c&_nc_ohc=wxpssxLJTZ0Q7kNvgHMzUSK&_nc_zt=23&_nc_ht=scontent.fymq3-1.fna&oh=03_Q7cD1gGRtW0Ea8QY0SlTxMHmtW_4T7gHN6FpJJ6FDr-mpIahbg&oe=67C6F593"}],"ip":"124.171.211.37","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1504184217209,"content":"In one hour and 3 minutes, it will be the first day of spring ð£ð¦ð¹ðµï¸ð¥","reactions":[{"reaction":"ð®","actor":"Michael Page"}],"is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1504184192607,"content":"what","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1504184176117,"content":"What","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1504184173881,"content":"Hey, guess whay","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1504184140841,"content":"Yes helo it is me","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1504184126802,"photos":[{"uri":"https://interncache-eag.fbcdn.net/v/t34.18173-12/17793216_1286147258106884_816703762_n.gif?stp=dst-gif&ccb=1-7&_nc_sid=68f744&efg=eyJ1cmxnZW4iOiJwaHBfdXJsZ2VuX2NsaWVudC9pbW9nZW46RW50TWVzc2FnZUltYWdlLURZSU1lZGlhVXRpbHMtb3RoZXJfZGF0YV9tb2RlbCJ9&_nc_zt=23&_nc_gid=ANqaKaDHrzwFpU-E7DtbfGW&oh=00_AYAaXZQ4XgBzhPaluYPdb4y1tQGzC0y6-F7Yl09dvTP4Aw&oe=67A14686","creation_timestamp":1504184126,"backup_uri":"https://scontent.fymq3-1.fna.fbc
+import { maps } from "@/scripts/consts";
+import makeLines, { assignPolygons } from "@/scripts/geojson/makeLines";
+import makePolygons from "@/scripts/geojson/makePolygons";
+import toGeoJson from "@tmcw/togeojson";
+import { DOMParser } from "xmldom";
+import { City, MatchMapData } from "./types/types";
+import { LineData, PolyData } from "@/scripts/types/googleMaps";
+
+export async function fetchMapData(cityName: City = "london") : Promise<MatchMapData> {
+  console.log("fetch map data")
+  let zoneDataObj : GeoJSON.FeatureCollection;
+  zoneDataObj = await fetchKML(cityName);
+
+  //Process data and assign lines to zones
+  let zoneLines: LineData[] = makeLines(zoneDataObj);
+  const zonePolygons: PolyData[] = makePolygons(zoneDataObj, zoneLines);
+  zoneLines = assignPolygons(zoneLines, zonePolygons);
+  
+  return {
+    zonePolygons: zonePolygons,
+    winningLines: zoneLines,
+    city: cityName,
+  };
+}
+
+async function fetchKML(cityName: City = "london"){
+  console.log("fetch kml")
+  try {
+    console.log(process.env.GAME_SERVER + `/map-data/${maps[cityName].kml_live_id}`)
+    const res = await fetch(process.env.GAME_SERVER + `/map-data/${maps[cityName].kml_live_id}`);
+    //const res = await fetch(`https://www.google.com/maps/d/u/0/kml?forcekml=1&mid=${maps[cityName].kml_live_id}`);
+    console.log("res", res);
+    const kmlText = await res.text();
+    console.log("kml text", kmlText);
+    const kmlParsed = new DOMParser().parseFromString(kmlText, "text/xml");
+    console.log("parsed kml", kmlParsed);
+    const geoJson = toGeoJson.kml(kmlParsed);
+    if(!geoJson.features){
+      throw new Error("KML file did not contain features");
+    }
+    return geoJson as GeoJSON.FeatureCollection;
+    }
+    catch (error) {
+      console.error("Error fetching KML", error);
+      throw new Error(`Error fetching KML: ${error}`);
+    }
+}

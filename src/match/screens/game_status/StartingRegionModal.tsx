@@ -1,1 +1,86 @@
-_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1489743801528,"content":"that seems stressful","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1489743796562,"content":"um","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1489743796017,"content":"but i don\'t want to leave","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1489743791198,"content":"I want to want to leave","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1489743791009,"content":"o","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1489743784281,"content":"I was going to leave my house but then didnt lol","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1489743560913,"content":"http://www.yourdictionary.com/walk-the-line","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1489743552008,"content":"between being annoying and clever?","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1489743545116,"content":"like, the thin line between","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1489743535258,"content":"??????","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1489743523828,"content":"is a phrase","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1489743521646,"content":"walking the line?","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1489743517929,"content":"like as in","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1489743512915,"content":"walks?","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1489743511271,"content":"that was also my impression","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1489743508321,"content":"yeah","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1489743506523,"content":"it walks a lot of lines","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1489743504511,"content":"it\'s got some brilliant moments you don\'t get in other shows but also it\'s gimmicky and sometimes that bothers me","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1489
+import { gameLocationCenters } from "@/scripts/consts";
+import { ConnectFourMoves } from "@/scripts/games/connect_four/connect_four";
+import { GameBoardContext, MatchTeamColor } from "@/scripts/types/types";
+import { ConnectFourContext, GameContext } from "@/src/match/Board";
+import MyLocationMarker from "@/src/match/googleMaps/MyLocationMarker";
+import VisGlMapElement from "@/src/match/googleMaps/VisGLMapElement";
+import { GenericMapZones } from "@/src/match/screens/connect_four/GenericMapZones";
+import P from "@/src/userInterface/P";
+import { Box, Button, Container, Modal, Select, Stack } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
+import React, { useContext, useState } from "react";
+
+export function StartingRegionButton({setStartDisabled} : {setStartDisabled: React.Dispatch<React.SetStateAction<boolean>>}) {
+	const [opened, { open, close }] = useDisclosure(false);
+	const connectFourContext = useContext(ConnectFourContext);
+
+	return (
+		<>
+			<Button variant={connectFourContext.startingZone ? "light" : "outline"} onClick={open}>{connectFourContext.startingZone ? `Starting in: ${connectFourContext.startingZone}` : "Choose starting neighbourhood"}</Button>
+			<StartingRegionModal opened={opened} close={close} setStartDisabled={setStartDisabled} />
+		</>
+	);
+}
+
+export function StartingRegionModal({
+	opened,
+	close,
+	setStartDisabled
+}: {
+	opened: boolean;
+	close: () => void;
+	setStartDisabled: React.Dispatch<React.SetStateAction<boolean>>
+}) {
+	const connectFourContext = useContext(ConnectFourContext);
+	const gameContext = useContext(GameContext)
+	const zoneSelectOptions = connectFourContext.zoneData.map(zone => { return { value: zone.name, label: zone.name } });
+	const [selectedZone, setSelectedZone] = useState<string | null>("");
+	const moves = gameContext.moves as ConnectFourMoves
+	return (
+		<Modal
+			opened={opened}
+			onClose={close}
+			centered
+			mah="70vh"
+			title={
+				<span style={{ fontSize: "1.5rem", fontWeight: "bold" }}>
+					Select Starting Region
+				</span>
+			}>
+				<Container style={{
+					maxHeight: "90vh",
+					overflowY: "scroll",
+				}}>
+					<Stack>
+						<P>The starting neighbourhood cannot be claimed first. Both teams must leave the starting neighbourhood and claim another neighbourhood.</P>
+						<Select label="Starting neighbourhood" data={zoneSelectOptions} value={selectedZone} onChange={setSelectedZone}/>
+						<Box style={mapContainerStyle} >
+							<VisGlMapElement center={gameLocationCenters[connectFourContext.city]}>
+								<MyLocationMarker color={gameContext.playerData.data.teamColor} defaultLocation={gameLocationCenters[connectFourContext.city]} />
+								<GenericMapZones 
+									MapData={connectFourContext.MatchMapData} 
+									selectedZone={selectedZone ?? ""} 
+									onClick={(zoneName: string)=>setSelectedZone(zoneName)}
+									/>
+							</VisGlMapElement>
+						</Box>
+						<Button onClick={() => {
+							setStartDisabled(false);
+							moves.setStartingZone(selectedZone ?? "");
+							close();
+							}}>Confirm</Button>
+					</Stack>
+				</Container>
+		</Modal>
+	);
+}
+
+const mapContainerStyle : React.CSSProperties = {
+	minHeight: "40vh",
+	width: "100%",
+	display: "flex",
+	alignItems: "stretch",
+	justifyContent: "stretch",
+	position: "relative",
+	height: 0,
+}

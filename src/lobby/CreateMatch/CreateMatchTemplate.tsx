@@ -1,1 +1,150 @@
-der_name":"Michael Page","timestamp_ms":1502458731547,"content":"i find the opposite","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1502458729201,"content":"huh","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1502458653275,"content":"I prefer reading because following spoken stuff is hardn sometimes","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1502458626174,"content":"I want to","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1502458617150,"content":"i like podcasts","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1502458609188,"content":"I listen to musical soundtracks. Or go on long walks with my headphones on","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1502458575982,"content":"That\'s a pretty good one","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1502458561712,"content":"watch wholesome cartoons usually","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1502458555353,"content":"uh","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1502458317770,"content":"What do you do when you want to feel unambiguously pleased about existing?","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1502458245549,"content":"pretty much","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1502458238032,"content":"yep","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1502458199478,"content":"It\'s nice to be able to be happy about small things even if larger things are terrifying and awful","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1502458159383,"content":"Ahh.","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1502458154202,"content":"Ok, same","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1502458141716,"content":"Ohh","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1502458138535,"content":"i guess","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1502458137256,"content":"personal life","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1502458130567,"content":"more like","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1502458113257,"content":"That surprises me a little I\'ll admit. Though maybe if you\'re framing it in terms of health rather than material success I can get that","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1502458071878,"content":"The broad state?","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1502458061008,"content":"Really?","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Mich
+import { games } from "@/scripts/consts";
+import { City, NamedColor, PlayerData } from "@/scripts/types/types";
+import Loading from "@/src/match/screens/game_status/Loading";
+import Span from "@/src/userInterface/Span";
+import { Radio, Paper, Group, LoadingOverlay, Stack, TextInput, Button } from "@mantine/core";
+import { hasLength, useForm, UseFormReturnType } from "@mantine/form";
+import { useMemo, useState } from "react";
+import { useNavigate } from "react-router";
+import { LobbyClient } from "boardgame.io/client";
+import { joinMatch } from "@/scripts/joinMatch";
+
+interface CreateGameFormUniversal extends UseFormReturnType<any> {}
+
+export type FormValues = {
+	PlayerName: string;
+	teamColor: NamedColor;
+	gameName: string;
+	city?: City;
+	[key:string]: any;
+};
+
+export default function CreateMatchTemplate({
+	teamOptions,
+	gameCode,
+	getSetupData,
+	createGameForm,
+	children
+} : {
+	teamOptions : string[]
+	gameCode : string
+	getSetupData : (args : FormValues) => Record<string, unknown> | Promise<Record<string, unknown>>;
+	createGameForm : CreateGameFormUniversal;
+	children : React.ReactNode
+}){
+	const [loading, setLoading] = useState(false);
+	const teamCards = createTeamCards(teamOptions);
+	const navigate = useNavigate();
+	
+	const lobbyClient = useMemo(
+		() => new LobbyClient({ server: process.env.GAME_SERVER }),
+		[]
+	);
+
+	async function handleCreateGame(values: FormValues) {
+
+		if (!gameCode) { throw new Error("No game code provided"); }
+		const setupData = await getSetupData(values);
+		console.log("creating game", values, setupData);
+		//create match
+		console.log("setting up match");
+		const { matchID } = await lobbyClient.createMatch(gameCode, {
+			numPlayers: 20,
+			setupData
+		});
+		console.log("joining match");
+		//join match
+		const playerData: PlayerData = await joinMatch(
+			lobbyClient,
+			gameCode,
+			matchID,
+			values.PlayerName,
+			values.teamColor,
+			true
+		);
+		localStorage.setItem("localPlayerData", JSON.stringify(playerData));
+		navigate("/match");
+	}
+
+	
+	return (
+		<form style={{ width: "100%" }} onSubmit={createGameForm.onSubmit(handleCreateGame)}>
+			<LoadingOverlay visible={loading} loaderProps={{ children: <Loading message="Joining match..." /> }} />
+			<h2>Create a {games.filter(game => game.code === gameCode)[0].name} match</h2>
+			<Stack pb="sm">
+				<TextInput
+					fz="lg"
+					label="Your name"
+					key={createGameForm.key("PlayerName")}
+					{...createGameForm.getInputProps("PlayerName")}
+				/>
+				<TextInput
+					label="Game name"
+					placeholder="My Game"
+					key={createGameForm.key("gameName")}
+					{...createGameForm.getInputProps("gameName")}
+				/>
+				{children}
+				<Radio.Group
+					label="Choose a team"
+					key={createGameForm.key("teamColor")}
+					{...createGameForm.getInputProps("teamColor")}>
+					<Stack gap="xs">
+						{teamCards}
+					</Stack>
+				</Radio.Group>
+				<Button type="submit">Create and Join</Button>
+			</Stack>
+		</form>
+
+	)
+}
+
+function createTeamCards(teamOptions: string[]) {
+	return teamOptions.map((team) => (
+		<Radio.Card radius="md" value={team} key={team}>
+			<Paper radius="md" p="md">
+				<Group wrap="nowrap" align="center">
+					<Radio.Indicator
+						iconColor='white'
+						color={team}
+						size="lg" />
+					<div>
+						<Span>{team}</Span>
+					</div>
+				</Group>
+			</Paper>
+		</Radio.Card>
+	));
+}
+
+
+
+export function createGameFormConstructor(formValues : Record<string, any>, validators : Record<string, any>, teamOptions : string[]) {
+	return useForm({
+		mode: "uncontrolled",
+		initialValues: {
+			PlayerName: "",
+			teamColor: "blue" as NamedColor,
+			//numPlayers: numPlayers,
+			gameName: "",
+			...formValues
+		},
+		validate: {
+			PlayerName: hasLength(
+				{ min: 2, max: 20 },
+				"Player name must be between 2 and 20 characters"
+			),
+			teamColor: (teamColor) =>
+				teamOptions.map((option) => option).includes(teamColor)
+					? null
+					: "Invalid team",
+			gameName: hasLength(
+				{ min: 2, max: 20 },
+				"Game name must be between 2 and 20 characters"
+			),
+			...validators
+		},
+	});
+	
+}

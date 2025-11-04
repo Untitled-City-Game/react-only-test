@@ -1,1 +1,7 @@
-ame":"Michael Page","timestamp_ms":1504180135713,"content":"angery days","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1504180128926,"content":"getting your wisdom teeth removed sucks","is_geobloc
+import { LogMetadata } from "@/scripts/types/types";
+import { LogAPI } from "boardgame.io/dist/types/src/plugins/plugin-log";
+
+
+export function addLogMetadata({ log }: { log: LogAPI; }, metadata: LogMetadata) {
+	log.setMetadata({ ...metadata, date: new Date().toString() });
+}

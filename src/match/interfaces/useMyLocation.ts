@@ -1,1 +1,43 @@
-cked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1490499274832,"content":"ð°!","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1490499250013,"content":"then I went to parties","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1490499244023,"content":"fun!","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1490499216702,"content":"How was star wars?","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1490415368976,"sticker":{"uri":"your_facebook_activity/messages/stickers_used/851587_369239346556147_162929011_n_369239343222814.png","ai_stickers":[]},"ip":"124.168.211.127","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1490415306102,"content":"can\'t come to the thing. sorry","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1490415298830,"content":"4pm","is_geoblocked_for_viewer":false,"is_unsent_image_by_messe
+import { socket } from "@/scripts/socket";
+import { MatchTeamColor } from "@/scripts/types/types";
+import { AdvancedMarker } from "@vis.gl/react-google-maps";
+import { useEffect, useState } from "react";
+import { useGeolocated } from "react-geolocated";
+import { FaCircle } from "react-icons/fa";
+
+export default function useMyLocation(updateSocket : boolean, teamName: MatchTeamColor, initialPosition?: google.maps.LatLngLiteral) {
+	const [position, setPosition] = useState(initialPosition || {lat: 0, lng: 0});
+	const [accuracy, setAccuracy] = useState<number | undefined>(undefined)
+	const {coords} = useGeolocated({
+		positionOptions: {
+			enableHighAccuracy: true,
+		},
+		watchPosition: true,
+		userDecisionTimeout: 5000,
+	});
+
+	useEffect(() => {
+		if(!coords){
+			console.warn("no coords for location hook");
+			return;
+		}
+		// if(coords.latitude === position.lat && coords.longitude === position.lng){
+		// 	//console.log('no change in coords detected')
+		// 	return;
+		// }
+		const latlongcoords : google.maps.LatLngLiteral = {lat: coords.latitude, lng: coords.longitude}
+		setPosition(latlongcoords);
+		setAccuracy(coords.accuracy)
+		if(updateSocket){
+			socket.emit("locationUpdate", {
+				teamName,
+				location: {lat: coords.latitude, lng: coords.longitude},
+				accuracy: coords.accuracy
+			})
+		}
+	}
+	, [coords])
+
+	
+	return {position, accuracy}
+}

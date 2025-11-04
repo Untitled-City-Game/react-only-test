@@ -1,1 +1,12 @@
-der_name":"Michael Page","timestamp_ms":1501558504982,"content":"Hey","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1501508009183,"content":"hellooo","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_nam
+import MatchClient from "@/src/match/Client";
+import { ErrorBoundary } from "react-error-boundary";
+import { Outlet } from "react-router";
+
+export default function MatchLayout() 
+  {
+	 return (
+    <ErrorBoundary fallback={<span>Something went wrong in matchlayout.</span>}>
+    <MatchClient />
+    </ErrorBoundary>
+    )
+  }

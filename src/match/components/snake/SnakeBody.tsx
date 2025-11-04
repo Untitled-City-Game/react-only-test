@@ -1,1 +1,52 @@
-ent":false},{"sender_name":"Michael Page","timestamp_ms":1495381744611,"content":"Hmmm","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1495381731255,"content":"This","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1495381729321,"content":"I found a page mocking ppl in Canberra and I\'m trying to think of how to navigate thus","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1495381696073,"content":"also like if theyve gone and put something very political in their speech and they understand the internet I think they\'ve basically given permission","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1495381654655,"content":"age would be one","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1495381651468,"content":"but I would also say it depends on a few things","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1495381635771,"content":"I think my default is that you shouldn\'t mock them","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1495381610022,"content":"Ok. So like, if some random person off the street was in HoNY, what then?","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1495381582272,"content":"So I guess it depends on how much the people interviewed understand what they\'re
+import { SnakeTeam } from "@/scripts/games/snake/types";
+import { Polygon } from "@/src/match/googleMaps/shapes/Polygon";
+import { Polyline } from "@/src/match/googleMaps/shapes/PolyLine";
+import { bezierSpline, buffer, lineOffset, lineString } from "@turf/turf";
+import { Feature } from "geojson";
+
+export default function SnakeBody({teamData} : {teamData : SnakeTeam}){
+	const SnakeBodyPolygon = bufferedPolygon(teamData.snakeBody.segments, 30);
+	if(SnakeBodyPolygon){
+		return(
+			<Polygon 
+				paths={SnakeBodyPolygon}
+				fillColor="green"
+				strokeColor="darkgreen"
+			/>
+		)
+	}
+}
+
+function bufferedPolygon(  
+path: google.maps.LatLngLiteral[],
+  thicknessMeters: number
+): google.maps.LatLngLiteral[] | undefined {
+	 if (path.length < 2) {
+    return undefined
+  }
+  const bufferedPolygon = buffer(lineString(path.map(point => [point.lng, point.lat])), 30, {units: "meters"}) as Feature<GeoJSON.Polygon>
+  return bufferedPolygon?.geometry.coordinates.flat().map(point => {return {lat: point[1], lng: point[0]}})
+}
+
+function lineToPolygon(
+  path: google.maps.LatLngLiteral[],
+  thicknessMeters: number
+): google.maps.LatLngLiteral[] | undefined {
+  if (path.length < 2) {
+    return undefined
+  }
+
+  const half = thicknessMeters / 2;
+  
+  const leftPoints = lineOffset(lineString(path.map(point => [point.lng, point.lat])), half, {units: "meters"})
+  const rightPoints = lineOffset(lineString(path.map(point => [point.lng, point.lat])), -half, {units: "meters"}).geometry.coordinates
+
+  const leftPointsSplines = bezierSpline(leftPoints)
+
+  const pointList = [...leftPointsSplines.geometry.coordinates, ...rightPoints.reverse()]
+
+  const points = pointList.map(point => {return {lat: point[1], lng: point[0]}}) as google.maps.LatLngLiteral[]
+
+  // Build polygon path: left side + reversed right side
+  return points;
+}

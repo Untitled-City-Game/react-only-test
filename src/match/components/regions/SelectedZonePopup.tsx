@@ -1,1 +1,162 @@
-nt":false},{"sender_name":"Jess Daswani","timestamp_ms":1499775841661,"content":"....","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1499775817501,"content":"after I told her I wouldn\'t accept that argument she just said we couldn\'t be friends","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1499775798036,"content":"she wouldn\'t explain it to me","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1499775792679,"content":"I guess","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1499775786523,"content":"Or did she think she couldn\'t change?","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1499775786353,"content":"Yeah basically","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1499775773422,"content":"So she ended it rather than accept that she should change her own behaviour?","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1499775719580,"content":"she said that","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1499775714679,"content":"And like she knew it was wrong","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1499775709363,"content":"Why should you have to accept that??!","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1499775695979,"content":"That\'s...","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1499775688656,"content":"and that I wasn\'t obliged to let her","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1499775679055,"content":"and she didn\'t accept that that didn\'t give her license to treat me however","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1499775653872,"content":"She told me the way she was treating me was to do with broader problems, and it \\"wasn\'t about me\\"","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1499775606071,"content":"Yep","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1499775598382,"content":"But also confusing","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1499775595477,"content":"Yep","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1499775587635,"content":"That sounds shitty","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1499775520369,"content":"I was completely supportive and sensitive and reasonable. She explicitly told me that she knew she was demanding that I ignore my feelings or when she\'d hurt me, and she knew it wasn\'t ok. But she still told me I wasn\'t doing enough, and ended our friendship when I wouldn\'t agree to that.","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1499775414082,"content":"I don\'t even know what to say","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1499775406727,"content":"Had time to process, rather","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1499775396970,"content":"Sorry about timing. Do you want to talk about it some time when you\'ve had one to process?","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1499775358678,"content":"Thanks.","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1499775335798,"content":"so that\'s what matters","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1499775330184,"content":"Well it felt like that anyway","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent
+import { ZoneData } from "@/scripts/games/connect_four/types";
+import { LineData } from "@/scripts/types/googleMaps";
+import { ConnectFourContext, GameContext } from "@/src/match/Board";
+import ClaimFlowModal, { isZoneDisabled } from "@/src/match/components/regions/region_claim_flow/ClaimFlowModal";
+import { theme } from "@/src/styles/theme";
+import P from "@/src/userInterface/P";
+import Span from "@/src/userInterface/Span";
+import { Box, Button, Center, Container, Group, Stack } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
+import React, { Dispatch, SetStateAction, useContext, useEffect, useState } from "react";
+import { FaArrowCircleLeft, FaArrowCircleRight, FaCircle, FaGripLinesVertical, FaRegCircle } from "react-icons/fa";
+
+export default function SelectedZonePopup({
+	currentZone,
+	setCurrentZone,
+	activeLine,
+	setActiveLine
+}: {
+	currentZone: ZoneData | undefined;
+	setCurrentZone: Dispatch<SetStateAction<ZoneData | undefined>>;
+	activeLine: LineData | undefined;
+	setActiveLine: Dispatch<SetStateAction<LineData | undefined>>;
+}) {
+	const [opened, { open, close }] = useDisclosure(false);
+	const props = useContext(GameContext)
+	const G = useContext(ConnectFourContext);
+	const winningLines = G.MatchMapData.winningLines;
+	return (
+		<>
+			<Center
+				style={selectedZonePopupStyles}
+				display={currentZone ? "initial" : "none"}>
+				<Container style={selectedStyles} ta="center" bd={`2px solid ${theme.colors[props.playerData.data.teamColor][5]}`}>
+					<Stack gap="xs">
+						<P>
+							<Span style={{
+								margin: 0,
+								padding: 0,
+								fontWeight: "bold"
+							}}>{currentZone?.name} </Span>
+							<Span style={{
+								margin: 0,
+								padding: 0
+							}}>{
+									currentZone?.controlTeam !== null ?
+										`${currentZone?.locked ?
+											"Locked" :
+											"Held"
+										} by ${currentZone?.controlTeam} team` :
+										"Unclaimed"
+								}</Span>
+						</P>
+						<Button onClick={() => {
+							open();
+							setCurrentZone(undefined);
+						}} size="m" disabled={currentZone?.locked ||(currentZone && isZoneDisabled(currentZone.name, G))}>
+							<span>{currentZone?.controlTeam === null ? "Claim" : "Steal"}</span>
+						</Button>
+						<LineStepper allZoneData={G.zoneData} lines={winningLines.filter(line => line.matchedPolygons.includes(currentZone?.name || ""))} activeLine={activeLine} setActiveLine={setActiveLine} />
+					</Stack>
+				</Container>
+			</Center>
+			<ClaimFlowModal
+				open={opened}
+				close={close}
+				claimedZone={currentZone}
+			/>
+		</>
+	);
+}
+
+function LineStepper({ lines, activeLine, setActiveLine, allZoneData }: { lines: LineData[], activeLine: LineData | undefined, setActiveLine: Dispatch<SetStateAction<LineData | undefined>>, allZoneData: ZoneData[] }) {
+	const [lineIndex, setLineIndex] = useState(0);
+	function nextLine() {
+		if (lineIndex >= lines.length - 1) {
+			setLineIndex(0)
+			setActiveLine(lines[0])
+		} else {
+			setLineIndex(lineIndex + 1);
+			setActiveLine(lines[lineIndex + 1])
+		}
+	}
+	function prevLine() {
+		if (lineIndex == 0) {
+			setLineIndex(lines.length -1)
+			setActiveLine(lines[lines.length -1])
+		} else {
+			setLineIndex(lineIndex - 1);
+			setActiveLine(lines[lineIndex - 1])
+		}
+	}
+	useEffect(() => {
+		if (activeLine === undefined) { setActiveLine(lines[0]); }
+	}, [lines])
+
+	return (
+		<>
+		<Group wrap="nowrap" align="center" justify="center">
+		<Button onClick={prevLine}><FaArrowCircleLeft /></Button>
+		<h3 style={{margin: 0}}>Line {lineIndex+1} of {lines.length}</h3>
+		<Button onClick={nextLine}><FaArrowCircleRight /></Button>
+		</Group>
+		<Group wrap="nowrap" align="flex-start" justify="space-between" style={lineStyles}>
+			<div style={lineStartStyle} color="darkgrey"/>
+			{activeLine?.matchedPolygons.map((polygonName, index) =>
+				<Stack key={index} align="center">
+					<FaCircle style={stationPointStyle} color={allZoneData.find(zone => zone.name === polygonName)?.controlTeam || "white"} />
+					<FaRegCircle style={stationPointStyle}/>
+					<P fz="xs" >{polygonName}</P>
+				</Stack>
+			)}
+			<div style={lineEndStyle} />
+		</Group>
+		
+		</>
+	)
+}
+
+const lineStartStyle : React.CSSProperties = {
+	position: "absolute",
+	top: "-11px",
+	//left: "-10px",
+	height: "1rem",
+	width: "0.3rem",
+	backgroundColor: "darkgrey"
+}
+const lineEndStyle : React.CSSProperties = {
+	position: "absolute",
+	top: "-11px",
+	right: "0px",
+	height: "1rem",
+	width: "0.3rem",
+	backgroundColor: "darkgrey"
+}
+
+const stationPointStyle : React.CSSProperties = {
+	position: "absolute",
+	top: "-10px",
+
+}
+
+const lineStyles : React.CSSProperties = {
+	borderTop: "5px solid darkgrey",
+	paddingTop: "8px",
+	position: "relative"
+	
+}
+
+const selectedStyles: React.CSSProperties = {
+	padding: "0.5rem 1rem",
+	width: "90%",
+	backgroundColor: "white",
+	borderRadius: "5px",
+	minHeight: "220px"
+};
+
+const selectedZonePopupStyles: React.CSSProperties = {
+	zIndex: 10,
+	position: "absolute",
+	bottom: 10,
+	width: "100%",
+};

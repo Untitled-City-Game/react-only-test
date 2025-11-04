@@ -1,1 +1,31 @@
-nt_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1487675777092,"content":"Google: how to get a job in memes","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1487653432721,"content":"praise be sky doggo","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1487646372519,"content":"say \'praise be sky doggo\' and blessings come upon u","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1487646368160,"content":"He looks like he\'s made a mistake and is pretending to be cool with it","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1487646356448,"content":"he sk
+import { gameLocationCenters } from "@/scripts/consts";
+import LocationMarker from "@/src/match/interfaces/useMyLocation";
+import { Container } from "@mantine/core";
+import { APIProvider, Map } from "@vis.gl/react-google-maps";
+
+export default function ExampleMap() {
+	return (
+		<Container h="50vh">
+			<APIProvider
+				apiKey="AIzaSyCG6Ouy-lsuiGpNCcibChoSxW6f0zupHNc"
+				libraries={["geometry"]}
+				onError={(e) => console.error(e)}>
+				<Map
+					style={{
+						height: "50vh",
+						width: "100vw"
+					}}
+					mapId="5eaa0d345956e4f1"
+					streetViewControl={false}
+					fullscreenControl={false}
+					mapTypeControl={false}
+					defaultZoom={12}
+					gestureHandling={"greedy"}
+					defaultCenter={gameLocationCenters["melbourne"]}
+					disableDefaultUI={true}>
+						<LocationMarker initialPosition={gameLocationCenters["melbourne"]} color="red" />
+				</Map>
+			</APIProvider>
+		</Container>
+	);
+}

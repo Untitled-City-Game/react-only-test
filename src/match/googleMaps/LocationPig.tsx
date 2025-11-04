@@ -1,1 +1,63 @@
-":"are you up to the bit where they explain the nickname yet","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1494421552223,"content":"gotta admit it\'s  much less intimidating as far as nicknames go","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1494421519349,"content":"hahahha mumbles","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1494419738046,"content":"his new name is mumbles in my head","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1494419731937,"content":"sorry whispers, idk","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1494419458320,"content":"WATCHING MUMBLES SQUIRM","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1494419450898,"content":"EPISODE 2","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1494419445892,"content":"SENSE8 AAAAA","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1494340550232,"content":"and it was alright","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1494340545384,"content":"i just explained my rationale for leaving","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1494340538946,"content":"we didn\'t wade into issues","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1494
+import { PlayStateMoves_Snake } from "@/scripts/games/snake/snake";
+import { CoordSet, MatchTeamColor } from "@/scripts/types/types";
+import { GameContext } from "@/src/match/Board";
+import SnakeHead from "@/src/match/components/snake/SnakeHead";
+import LocationMarker from "@/src/match/googleMaps/LocationMarker";
+import React, { createContext, SetStateAction, useContext, useEffect, useState, Dispatch } from "react";
+
+export type LocationPigContext = [
+	google.maps.LatLngLiteral,
+	Dispatch<SetStateAction<google.maps.LatLngLiteral>>
+]
+
+
+export const locationPigContext = createContext(undefined as unknown as LocationPigContext)
+
+export default function LocationPig({initialPosition} : {initialPosition : google.maps.LatLngLiteral}){
+
+	const gameContext = useContext(GameContext)
+	const moves = gameContext.moves as unknown as PlayStateMoves_Snake
+	const [position, setPosition] = useContext(locationPigContext)
+
+	useEffect(()=> {
+		gameContext.moves.addSegment(position)
+	}, [position]);
+	
+	const offset = 0.0001
+	//listen for arrow key input
+	const handleKeyPress = (event : KeyboardEvent) => {
+		switch(event.key){
+			case 'w':
+				setPosition((prevPosition) => {
+					return {lat: prevPosition.lat + offset, lng: prevPosition.lng};
+				});
+				break;
+			case 'a':
+				setPosition((prevPosition) => {
+					return {lat: prevPosition.lat, lng: prevPosition.lng - offset};
+				});				
+				break;
+			case 's':
+				setPosition((prevPosition) => {
+					return {lat: prevPosition.lat - offset, lng: prevPosition.lng};
+				});					
+				break;
+			case 'd':
+				setPosition((prevPosition) => {
+					return {lat: prevPosition.lat, lng: prevPosition.lng + offset};
+				});	
+				break;
+		}
+	}
+
+	useEffect(() => {
+		 document.addEventListener("keydown", handleKeyPress);
+		return () => document.removeEventListener('keydown', handleKeyPress, false);
+	})
+	return (
+		<>
+		<LocationMarker position={position} color={gameContext.playerData.data.teamColor} />
+		<SnakeHead position={position} />
+		</>
+	)
+}

@@ -9,3 +9,4 @@ dist/
 .parcel-cache
 .vscode
 .parcelrc
+server/db/

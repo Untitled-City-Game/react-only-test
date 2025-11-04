@@ -1,1 +1,48 @@
-false},{"sender_name":"Jess Daswani","timestamp_ms":1488758829879,"sticker":{"uri":"your_facebook_activity/messages/stickers_used/39178562_1505197616293642_5411344281094848512_n_369239263222822.png","ai_stickers":[]},"is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1488758805655,"content":"we are launching the website for the newspaper","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1488758799392,"content":":) i think i\'ll come straight over if thats ok cos i have a very busy night","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1488758673070,"content":"Yeah, that should work","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1488758666431,"content":"So if you want to grab a coffee at Smith\'s we can get the bike from mine","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1488758662862,"content":"thats ok, i can wander by your place at like 5:30?","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1488758642671,"content":"Unfortunately it\'ll have to be after werk","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1488758635072,"content":"Yeah ofc","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1488758556169,"content":"hey can i pick up bike today?","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1488449390496,"s
+import { SnakeContext } from "@/src/match/Board";
+import LocationPig, { locationPigContext } from "@/src/match/googleMaps/LocationPig";
+import { Polygon } from "@/src/match/googleMaps/shapes/Polygon";
+import VisGlMapElement from "@/src/match/googleMaps/VisGLMapElement";
+import { useContext, useState } from "react";
+import * as turf from '@turf/turf';
+import FruitManager from "@/src/match/components/snake/FruitManager";
+import SnakeBody from "@/src/match/components/snake/SnakeBody";
+const boxSize = 10
+export default function SnakeMap(){
+	const SnakeGameState = useContext(SnakeContext)
+	const {gameLocation, gameRadius} = SnakeGameState.mapArea
+	const [playerLocation, setPlayerLocation] = useState(gameLocation)
+	const outerCoords = [
+		{lat: gameLocation.lat - boxSize, lng: gameLocation.lng - boxSize},
+		{lat: gameLocation.lat - boxSize, lng: gameLocation.lng + boxSize},
+		{lat: gameLocation.lat + boxSize, lng: gameLocation.lng + boxSize},
+		{lat: gameLocation.lat + boxSize, lng: gameLocation.lng - boxSize}
+	]
+	const circle = turf.circle([gameLocation.lng, gameLocation.lat], gameRadius, { steps: 500, units: "meters"});
+	console.log("circle geometry", circle)
+	const innerCoords = circle.geometry.coordinates[0].map(([lng, lat]) => ({
+		lat,
+		lng
+	}));
+	const snakeBodies = Object.keys(SnakeGameState.snakeTeamData).map(teamName => {
+		const teamData = SnakeGameState.snakeTeamData[teamName]
+		return <SnakeBody key={teamName} teamData={teamData}/>
+	})
+
+	return (
+		<>
+		<VisGlMapElement center={SnakeGameState.mapArea.gameLocation}>
+			<locationPigContext.Provider value={[playerLocation, setPlayerLocation]}>
+				<LocationPig initialPosition={{lat: 45.45325550549896, lng: 9.168425264500426}} />
+				<Polygon
+					paths={[
+						outerCoords,
+						innerCoords.reverse()
+					]}
+				/>
+				{snakeBodies}
+				<FruitManager playerLocation={playerLocation} />
+			</locationPigContext.Provider>
+		</VisGlMapElement>
+		</>
+	)
+}

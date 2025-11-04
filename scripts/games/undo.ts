@@ -1,1 +1,24 @@
-chael Page","timestamp_ms":1504174477698,"content":"in a bit of a slump","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1504174473608,"content":"just wanted to say hello","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1504174465570,"content":"Nothing special","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1504174265465,"content":"What\'s up","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1504174253424,"cont
+import { MoveContext, GameStateUniversal } from "@/scripts/types/types";
+
+export default function customUndoTemplate(context: MoveContext<GameStateUniversal>){
+	console.log("custom undo activated");
+	let G = context.G;
+	const gameStateLogs = G.gameStateLogs;
+	if(gameStateLogs.length <= 1){
+		console.log("Can't undo, no history")
+		return "INVALID_MOVE";
+	}
+	const lastState = G.gameStateLogs[G.gameStateLogs.length - 2];
+	if(!lastState){
+		throw new Error("Type of laststate was not expected");
+	}
+	return {
+		gameStateLogs: G.gameStateLogs.slice(0,-1),
+		...lastState,
+	}
+}
+
+export function createUndoPoint<GameState extends GameStateUniversal>(G: GameState){
+	const {gameStateLogs, ...rest} = G;
+	G.gameStateLogs.push(rest);
+}

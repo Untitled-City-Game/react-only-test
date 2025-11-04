@@ -1,1 +1,40 @@
-32157,"content":"ð","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1488285248926,"content":"deeply unsettling","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1488285245977,"content":"https://i.imgur.com/Hu9Lo6Q.gifv","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1488196107713,"content":"You\'re really smart and I bet it was a good paper","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1488196105865,"content":"They don\'t know your face or where u get coffee","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1488196105075,"content":"It\'s ok","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1488196103447,"content":"No;!!!","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1488195759607,"content":"then I realised everyone was reading my work and judging me so I had like 7093332929348 anxiety attacks","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1488195739672,"content":"I think u told me about this paper but I forgob","is_geoblock
+// App.tsx
+import ChooseMatch from "@/src/lobby/ChooseMatch";
+import JoinMatch from "@/src/lobby/JoinMatch";
+import LobbyLayout from "@/src/lobby/LobbyLayout";
+import ChooseGame from "@/src/site/ChooseGame";
+import ExampleMap from "@/src/site/ExampleMap";
+import OuterLayout from "@/src/site/outerLayout";
+import NotFound from "@/src/match/screens/game_status/NotFound";
+import RootLayout from "@/src/userInterface/RootLayout";
+import { BrowserRouter, Route, Routes } from "react-router";
+import Match from "@/src/match/Match";
+import CreateMatch from "@/src/lobby/CreateMatch/CreateMatch";
+import MatchClient from "@/src/match/Client";
+import NotificationTest from "@/src/site/NotificationTest";
+import ConnectFourDemo from "@/src/match/demo/ConnectFourDemo";
+
+export default function AppRouter(){
+	return (
+	<BrowserRouter>
+		<Routes>
+			<Route element={<RootLayout />}>
+				<Route path="demo/connect4" element={<ConnectFourDemo />} />
+				<Route element={<OuterLayout />}>
+					<Route path="notification" element={<NotificationTest />} />
+					<Route index element={<ChooseGame />} />
+					<Route path="map" element={<ExampleMap />} />
+				</Route>
+				<Route path="/match" element={<MatchClient />} />
+				<Route path="lobby" element={<LobbyLayout />}>
+					<Route path=":gameCode/join-match/:matchID" element={<JoinMatch />} />
+					<Route path=":gameCode/create-match" element={<CreateMatch />} />
+					<Route path=":gameCode/choose-match" element={<ChooseMatch />} />
+				</Route>
+				<Route path="*" element={<NotFound />} />
+			</Route>
+		</Routes>
+	</BrowserRouter>
+	)
+}
+

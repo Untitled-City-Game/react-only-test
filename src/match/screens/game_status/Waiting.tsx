@@ -1,1 +1,130 @@
-chael Page","timestamp_ms":1489743417340,"content":"thats great","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1489743416038,"content":"also amazing","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1489743414630,"content":"it\'s so high quality","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1489743411920,"content":"pls watch the anakin/obi wan fight scene","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1489743406709,"content":"last night","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1489743404370,"content":"btw I watched ALL of a series of unfortunate events","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1489743395798,"content":"mayank approves","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1489743365350,"content":"\\"friend you are crazy!\\"","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1489743360126,"content":"\\"to me, heroes is just bad person!\\"","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1489743307490,"content":"https://www.youtube.com/watch?v=9DI5WyiHQno","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1489729038496,"content":"I want to drink some things","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1489729031520,"content":"Yeah!","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1489728627325,"content":"Did you wanna hang out?","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1489727949217,"content":"Hi","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1489623585577,"content":"Cool :)","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1489623514384,"content":"Maybe- ask me again after work because it\'s hard to schedule while I\'m here","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1489623370732,"content":"friday night?","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1489621560345,"sticker":{"uri":"your_facebook_activity/messages/stickers_used/851587_369239346556147_162929011_n_369239343222814.png","ai_stickers":[]},"is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1489617183138,"content":"do things?","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1489617173461,"content":"weekend!","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1489585195873,"sticker":{"uri":"your_facebook_activity/messages/stickers_used/39178562_1505197616293642_5411344281094848512_n_369239263222822.png","ai_stickers":[]},"ip":"124.168.211.127","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1489585107821,"content":"What a charmer","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1489585036592,"content":"And didn\'t help","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1489585034233,"content":"And got mad at feminsits","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1489585028159,"content":"He just fucked around","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1489585023036,"content":"Nothing really","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1489585020144,"content":"Uh","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp
+import { games } from "@/scripts/consts";
+import { GameBoardContext, GameStateGeneric, PlayerData } from "@/scripts/types/types";
+import Loading from "@/src/match/screens/game_status/Loading";
+import DashedCard from "@/src/userInterface/DashedCard";
+import Header from "@/src/userInterface/Header/Header";
+import { HelpButton } from "@/src/match/components/help/HelpButton";
+import FullHeightLayout, { VerticalSpread } from "@/src/userInterface/Layout";
+import P from "@/src/userInterface/P";
+import { Box, Button, Center, Container, FileInput, LoadingOverlay, Stack } from "@mantine/core";
+import { useContext, useEffect, useState } from "react";
+import { GameContext } from "@/src/match/Board";
+import { ConnectFourGameState } from "@/scripts/games/connect_four/types";
+import { storage } from "@/scripts/firebase";
+import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { ConnectFourMoves } from "@/scripts/games/connect_four/connect_four";
+import { SharedMoves } from "@/scripts/games/shared_moves/sharedMoves";
+import { StartingRegionButton } from "@/src/match/screens/game_status/StartingRegionModal";
+
+export default function Waiting() {
+	console.log("rendering waiting page");
+	const props: GameBoardContext = useContext(GameContext);
+	console.log("waiting props", props.G)
+	const game = games.find((game) => game.code === props.gameCode);
+	const playerData = props.G.allPlayersData;
+	if (!game) {
+		return <h1>Game not found</h1>
+	}
+	if (!playerData) {
+		return <h1>allPlayersData data not found in Waiting!</h1>
+	}
+	const [loading, setLoading] = useState(false);
+	const [startDisabled, setStartDisabled] = useState(props.gameCode === "connect_four" ? true : false);
+	return (
+		<Center>
+			<FullHeightLayout>
+				<LoadingOverlay visible={loading} loaderProps={{ children: <Loading message="Building trains..." /> }} />
+				<Header color={props.playerData.data.teamColor || "white"}>{game.name}</Header>
+				<VerticalSpread>
+					<div></div>
+					<div>
+						<Stack gap="xs" align="stretch">
+							<Box>
+								<h2 style={{ fontWeight: "light" }}><span style={{ fontWeight: "bold" }}>{props.G.gameName}</span> <br />is waiting to start.</h2>
+
+								<P><strong>Host: </strong> {playerData[0]?.name}</P>
+								<P><strong>Invite code: </strong>{props.matchID}</P>
+							</Box>
+							<GameInviteButton gameCode={props.gameCode} matchID={props.matchID} />
+							<HelpButton />
+
+							<TeamSummary gameData={props.G} playerTeam={props.playerData.data.teamColor} />
+						</Stack>
+					</div>
+					{props.playerData.data.admin ?<Stack> 
+					{props.gameCode === "connect_four" ? <StartingRegionButton setStartDisabled={setStartDisabled}/> : null}
+					<Button
+						disabled={startDisabled}
+						onClick={() => {
+							setLoading(true);
+							props.moves.startGame();
+						}}>
+						Start the Game
+					</Button></Stack>
+						: <div />}
+				</VerticalSpread>
+			</FullHeightLayout>
+		</Center>
+	);
+}
+
+function TeamSummary({ gameData, playerTeam }: { gameData: GameStateGeneric, playerTeam: string }) {
+	const teams = Object.keys(gameData.allTeamsData).map((team) => {
+		return Object.values(gameData.allPlayersData).filter((player: PlayerData) => player.teamColor === team);
+	})
+
+	return (
+		<Stack>
+			{teams.map((team, index) => (
+				<DashedCard key={index} color={team[0].teamColor}>
+					<Container ta="left" w="100%">
+						<h3 style={{ textTransform: "capitalize" }}>{team[0].teamColor} team</h3>
+						<P>{team.map((player) => player.name).join(", ")}</P>
+					</Container>
+					{gameData.teamPhotoURLs[team[0].teamColor] ? <img style={{height: "80px", width: "80px", objectFit: "cover", borderRadius : "10px"}} src={gameData.teamPhotoURLs[team[0].teamColor]}  /> : 
+					team[0].teamColor === playerTeam ? <TeamFileUpload team={team} /> : null}
+				</DashedCard>
+			))}
+		</Stack>
+	)
+}
+
+export function GameInviteButton({ gameCode, matchID }: { gameCode: string, matchID: string }) {
+	return (
+		<Button onClick={() => navigator.clipboard.writeText(`${process.env.GAME_ADDRESS}/lobby/${gameCode}/join-match/${matchID}`)}>
+			Copy invite link
+		</Button>
+	)
+}
+
+function TeamFileUpload({team} : {team: PlayerData[]}){
+	const props = useContext(GameContext);
+	const moves = props.moves as SharedMoves
+	const gameData = props.G
+	async function addTeamPhoto(payload: File | null){
+		if(!payload){return}
+		const imageRef = ref(
+		storage,
+		`images/${gameData.gameName}/teampic${team[0].teamColor}${Date.now()}`
+		);
+			try {
+				const uploadTask = await uploadBytes(imageRef, payload);
+				console.log("Uploaded bytes to: ", uploadTask.metadata.fullPath);
+			} catch (e) {
+				console.error("Error adding document: ", e);
+			}
+			
+			let evidenceURL = "";
+		
+			try{
+				 evidenceURL = await getDownloadURL(imageRef);
+			} catch{
+				console.error("couldn't get download url");
+				return;
+			}
+			moves.addTeamPhoto(evidenceURL, team[0].teamColor)
+	}
+	return (
+		<FileInput label="Team photo" placeholder="Upload" miw="50%" onChange={addTeamPhoto}/>
+	)
+}

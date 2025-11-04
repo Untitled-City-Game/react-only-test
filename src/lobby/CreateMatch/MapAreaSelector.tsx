@@ -1,1 +1,76 @@
-n i pull back in and most things in the moment are ok","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1502458049013,"content":"and get very morose","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1502458044683,"content":"every now and then i get moments when i accidentally zoom back and look at the broad state of my life right now","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1502458027168,"content":"i am doing alright","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1502458015844,"content":"Possible my reception has died","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1502457789662,"content":"Are you looking after yourself ok?","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1502457787089,"content":"woah","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1502457775951,"content":"We\'re talking bath bombs AND bubble bath","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1502457760707,"content":"ð¦","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1502457753998,"content":"Although I admit my depression baths were very fancy","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1502457734845,"content":"Thanks though","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1502457725112,"content":"I take antidepressants and cook meals and don\'t cry much, which is pretty good","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1502457716208,"sticker":{"uri":"your_facebook_activity/messages/stickers_used/39178562_1505197616293642_5411344281094848512_n_369239263222822.png","ai_stickers":[]},"ip":"124.171.211.37","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1502457707944,"content":"Idk","is_geoblocked_for_
+import { Circle } from "@/src/match/googleMaps/shapes/Circle";
+import VisGlMapElement from "@/src/match/googleMaps/VisGLMapElement";
+import useMyLocation from "@/src/match/interfaces/useMyLocation";
+import { Input } from "@mantine/core";
+import { useEffect, useState } from "react";
+export type MapAreaSelectorValue = {
+	gameLocation: google.maps.LatLngLiteral,
+	gameRadius: number,
+}
+interface CustomInputProps {
+  value?: MapAreaSelectorValue;
+  defaultValue?: MapAreaSelectorValue;
+  onChange?: (value: MapAreaSelectorValue) => void;
+}
+export function MapAreaSelector({mapAreaCallback}: {mapAreaCallback: React.Dispatch<React.SetStateAction<MapAreaSelectorValue>>}){
+	const myLocation = useMyLocation({lat: 0, lng: 0});
+	//console.log("rendering areamap selector")
+	return(
+	<Input.Wrapper label="Game Area">
+		<div className="map-area-selector" style={{height: 400, width: "80%"}}>
+			{/* <AreaMap initialpos={{lat: 0, lng: 0}} mapAreaCallback={mapAreaCallback}/> */}
+			{myLocation.lat === 0 ? <span>Loading player location...</span> : 
+			<AreaMap initialpos={myLocation} mapAreaCallback={mapAreaCallback}/>
+			}
+		</div>
+	</Input.Wrapper>
+	)
+}
+
+function AreaMap({initialpos, mapAreaCallback} : {initialpos: google.maps.LatLngLiteral, mapAreaCallback: React.Dispatch<React.SetStateAction<MapAreaSelectorValue>>
+}){
+		const [gameLocation, setGameLocation] = useState(initialpos);
+		const [gameRadius, setGameRadius] = useState(3000);
+		const [offset, setOffset] = useState<google.maps.LatLngLiteral>()
+		useEffect(() => {
+			mapAreaCallback({gameLocation, gameRadius})
+		}, [])
+		 const changeRadius = (newRadius : number | null | undefined) => {
+			if (!newRadius) return;
+			setGameRadius(newRadius);
+			//updateFormValue({gameLocation, gameRadius})
+		 }
+
+		 const startDrag = (e: google.maps.MapMouseEvent) => {
+			if (!e) return;
+			if (!e.latLng) return;
+			setOffset({lat: e.latLng.lat() - gameLocation.lat, lng: e.latLng.lng() - gameLocation.lng});
+		 }
+
+		 const changeCenter = (e : google.maps.MapMouseEvent) => {
+   			 if (!e) return;
+			 if(!e.latLng) return;
+   			 setGameLocation({lat: e.latLng.lat() - (offset?.lat ?? 0), lng: e.latLng.lng() - (offset?.lng ?? 0)});
+			 mapAreaCallback({gameLocation, gameRadius})
+ 		 };
+		return (
+			<VisGlMapElement center={gameLocation}>
+						<Circle 
+							center={gameLocation}
+							radius={gameRadius}
+							onRadiusChanged={changeRadius}
+							onDragStart={startDrag}
+          					onDragEnd={changeCenter}
+							editable
+							draggable
+							strokeColor={'#008f58ff'}
+							strokeOpacity={1}
+							strokeWeight={3}
+							fillColor={'#009b4bff'}
+							fillOpacity={0.3}
+			/>
+
+			</VisGlMapElement>
+		)
+
+}

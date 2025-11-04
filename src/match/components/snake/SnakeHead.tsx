@@ -1,1 +1,11 @@
-amp_ms":1495379455368,"content":"i like concept","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1495379442490,"content":"These","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1495379440404,"content":"I like
+import { CoordSet } from "@/scripts/types/types";
+import { Circle } from "@/src/match/googleMaps/shapes/Circle";
+import { AdvancedMarker } from "@vis.gl/react-google-maps";
+
+export default function SnakeHead({position}: {position : google.maps.LatLngLiteral}){
+	return(
+		<>
+		<Circle center={position} radius={30} strokeWeight={0} fillColor="darkgreen"/>
+		</>
+	)
+}

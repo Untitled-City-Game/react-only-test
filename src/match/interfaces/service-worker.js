@@ -1,1 +1,13 @@
-senger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1490785474108,"content":"I know a few people who used to work there","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1490785387289,"content":"do you k
+// service-worker.js
+self.addEventListener('push', event => {
+  const options = {
+    body: event.data.text(),
+  };
+  event.waitUntil(
+    self.registration.showNotification('Connect Four', options)
+  );
+});
+
+self.addEventListener("install", (event) => {
+	console.warn("installed service worker")
+})

@@ -1,1 +1,19 @@
-s_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1487423515103,"content":"Who who who","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1487423513290,"content":"ð®","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1487423381787,"content":"with our new housemates","is_geoblocked_for_viewer":false,"is_unsent_image_by_m
+import { requestNotificationPerms, showNotification } from "@/src/notifications/useNotification";
+
+export default function NotificationTest(){
+	return(
+      <div id="notification-container">
+        <button
+          id="notification-permission-button"
+          onClick={() => requestNotificationPerms()}
+        >
+          Enable Notifications
+        </button>
+        <button
+          id="show-notification-button"
+          onClick={() => showNotification("Yes, it worked!")}
+        >
+          Show Notification
+        </button>
+      </div>	)
+}

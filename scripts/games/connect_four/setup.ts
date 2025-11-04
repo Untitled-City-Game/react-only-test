@@ -1,1 +1,60 @@
-0e1a0b718f48d1adf?domain=theaustralian.com.au","share_text":"The teenager who allegedly Â­attacked students with a baseball bat at the Australian National University had warned about his mental state, using social media to describe his loneliness and fear while also warning of a âpresence coming to destroy the worldâ."},"ip":"124.171.211.37","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1504183382354,"content":"Which one","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1504183380338,"content":"What","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1504183378599,"content":"Wait whay","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1504183358160,"content":"that Oz picked up","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1504183354261,"content":"Video one","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1504183345585,"content":"Which story tho","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1504183259023,"content":"You\'ll show em","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1504183251368,"content":"Ahh","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1504183204368,"content":"also they didn\'t pick up my story #rude","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1504183187013,"content":"Idk, I think this photo makes up for a lot","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1504183165955,"content":"I have become disillusioned","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1504183160931,"conten
+import { ConnectFourGameState, ZoneData } from "@/scripts/games/connect_four/types";
+import { createChallengeDeck } from "@/scripts/games/challenge_deck/handManagement";
+import { PolyData } from "@/scripts/types/googleMaps";
+import { AllPlayersData, GameSetupData, MoveContext, PlayerData } from "@/scripts/types/types";
+import type { Ctx } from "boardgame.io";
+import { playerSetup } from "@/scripts/games/shared_moves/playerSetup";
+import { challengeDeckPlayerSetup } from "@/scripts/games/challenge_deck/challenge_deck_player_setup";
+
+function isGameSetupData(data: unknown): string | undefined {
+	if (!data) return ('No game setup data provided');
+	if (typeof data !== 'object') return ('Game setup data is not an object');
+	if (!('city' in data) || typeof data.city !== 'string') return ('Game setup data is missing city');
+	if (!('zonePolygons' in data) || !('winningLines' in data) || !data.zonePolygons || !data.zonePolygons) return ('Game setup data is missing map data');
+}
+
+export function ConnectFourGameSetup(ctx: Ctx, setupData: GameSetupData): ConnectFourGameState {
+	console.log("Setting up game of connect four");
+	console.log("setup data", setupData)
+	console.log("players: ", ctx.numPlayers);
+	console.log("currentplayer ", ctx.currentPlayer);
+	console.log("city", setupData.mapSetupData.city);
+	console.log("getting map data");
+
+	return {
+		gameCode: "connect_four",
+		gameName: setupData.gameName,
+		zoneData: createBoardFromMapJson(setupData.mapSetupData.zonePolygons),
+		MatchMapData: setupData.mapSetupData,
+		active: false,
+		gameOver: false,
+		allPlayersData: {} as AllPlayersData,
+		allTeamsData : {},
+		challengeDeck: createChallengeDeck(setupData.mapSetupData.city),
+		allTeamsChallengeData: {},
+		gameStateLogs: [],
+		city: setupData.mapSetupData.city,
+		teamPhotoURLs: {},
+	};
+}
+
+export function createBoardFromMapJson(mapData: PolyData[]): ZoneData[] {
+	return mapData.map((zone, index) => {
+		return {
+			id: index,
+			status: "empty",
+			name: zone.featureName,
+			controlTeam: null,
+			locked: false
+		};
+	});
+}
+
+export function connectFourPlayerSetup(context: MoveContext<ConnectFourGameState>, newPlayerData: PlayerData){
+	playerSetup(context, newPlayerData)
+	challengeDeckPlayerSetup(context, newPlayerData)
+}
+
+export function setStartingZone(context: MoveContext<ConnectFourGameState>, startingZone: string){
+	context.G.startingZone = startingZone
+}

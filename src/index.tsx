@@ -1,1 +1,13 @@
-ssenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1503492226177,"content":"just a catfight between the tickets","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1503492222068,"content":"not too crazy","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","time
+import AppRouter from '@/src/site/AppRouter';
+import { StrictMode } from 'react';
+import { createRoot } from 'react-dom/client';
+import { ErrorBoundary } from 'react-error-boundary';
+let container = document.getElementById("app")!;
+let root = createRoot(container)
+root.render(
+  <StrictMode>
+    <ErrorBoundary fallback="something went wrong in approuter">
+      <AppRouter />
+    </ErrorBoundary>
+  </StrictMode>
+);

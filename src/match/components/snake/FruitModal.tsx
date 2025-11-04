@@ -1,1 +1,79 @@
-_name":"Michael Page","timestamp_ms":1495382259046,"content":"Umm","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1495382249104,"content":"Ok, good. How should I make this happen?","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1495382224096,"content":"definitely a thing that happens","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1495382216372,"content":"Yeah it probably will","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1495382116349,"content":"If a page gets several ppl reporting bad use of their image, can it be taken down?","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1495382087399,"content":"I think so too.","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1495382080601,"content":"it should be taken down though","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1495382058406,"content":"nah I\'ve heard wayyyy worse","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1495382057515,"content":"I messaged the guy asking whether any of the ppl knew their photos were used that way and then realised probs nit","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1495382035863,"content":"Sorry if this makes you feel shit. I  genuinely didn\'t know what to do","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1495382030254,"content":"Wow they put a lot of effort into a page that has literally no following","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1495381938061,"content":"Yeah I thought so too","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1495381928178,"content":"Already an unoriginal and invalid  point on which to mock someone","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1495381922970,"content":"that\'s not very original","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page",
+import { config } from "@/scripts/games/snake/config";
+import { PlayStateMoves_Snake } from "@/scripts/games/snake/snake";
+import { Fruit, SnakeChallenge } from "@/scripts/games/snake/types";
+import { GameContext, SnakeContext } from "@/src/match/Board";
+import { uploadEvidence } from "@/src/match/components/regions/region_claim_flow/claimZone";
+import { FruitIcon } from "@/src/match/components/snake/Fruit";
+import useMyLocation from "@/src/match/interfaces/useMyLocation";
+import Loading from "@/src/match/screens/game_status/Loading";
+import P from "@/src/userInterface/P";
+import { Button, FileInput, LoadingOverlay, Modal, Stack } from "@mantine/core";
+import { hasLength, useForm, UseFormReturnType } from "@mantine/form";
+import { useContext, useState } from "react";
+import { FaAppleAlt } from "react-icons/fa";
+
+
+function ChallengeBody(props : {
+	fruit : Fruit,
+	distance : number,
+	disabled? : boolean
+}) {
+	const fruitForm = useForm({
+	mode: "controlled",
+	initialValues: {
+		fruit: props.fruit,
+		evidence: "",
+	},
+	validate: {
+		evidence: hasLength({ min: 1 }, 'Please include evidence!'),
+	}
+	});
+	const [loading, setLoading] = useState(false);
+	const context = useContext(GameContext);
+	const moves = context.moves as PlayStateMoves_Snake;
+
+	async function handleSubmit(values: { evidence: string }) {
+		setLoading(true);
+		const evidenceUrls = await uploadEvidence(values.evidence as unknown as File[], context.playerID)
+		moves.completeChallengeAndEatFruit(props.fruit, evidenceUrls)
+		setLoading(false);
+		close();
+	}
+
+	return (<Stack align="center">
+		<LoadingOverlay visible={loading} loaderProps={{ children: <Loading message="Growing Snake..." /> }} />
+		<P>{props.fruit.challenge.title}</P>
+		<P>{props.fruit.challenge.variant}</P>
+		<P>{props.fruit.challenge.description}</P>
+		<P>{props.distance}</P>
+		<form onSubmit={fruitForm.onSubmit(handleSubmit)}>
+			<FileInput label="Evidence" multiple {...fruitForm.getInputProps("evidence")} />
+
+			<Button type="submit" disabled={props.disabled}>Complete and eat!</Button>
+		</form>
+	</Stack>);
+}
+
+
+export default function FruitModal({ opened, close, fruit, distance }: { opened: boolean, close: () => void, fruit: Fruit, distance: number }) {
+	const inRange = config.fruitClaimDistance > distance
+	const variant = fruit.challenge.variant
+	let modalBody;
+
+	if(inRange){
+		modalBody = <ChallengeBody fruit={fruit} distance={distance}></ChallengeBody> 
+	} else if(variant == "bring"){
+		modalBody = <ChallengeBody fruit={fruit} distance={distance} disabled={true}></ChallengeBody> 
+	} else {
+		modalBody = <P>Reach the fruit to see this challenge!</P>
+	}
+
+	return (
+		<Modal opened={opened} centered onClose={close}>
+			<Stack align="center">
+			{FruitIcon(fruit.challenge.variant)}
+			{modalBody}
+			</Stack>
+		</Modal>)
+}
+

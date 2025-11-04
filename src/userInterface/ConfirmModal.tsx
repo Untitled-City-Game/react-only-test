@@ -1,1 +1,21 @@
-geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1482989477499,"content":"it\'s beautiful","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1482989460767,"content":"Save us","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1482989444566,"photos":[{"uri":"your_facebook_activity/messages/e2ee_cutover/jessdaswani_10153453299124550/photos/395017598_6979617572088527_6086486501548639734_n_1340601779323496.jpg","creation_timestamp":1482989443,"backup_uri":"https://scontent.fymq3-1.fna.fbcdn.net/v/t1.15752-9/395017598_6979617572088
+import P from "@/src/userInterface/P";
+import { Button, ButtonProps, Modal, Stack } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
+
+export default function ConfirmButton({action, description, children, ...rest}: {action:  (...args: any[]) => void, description: string, children: React.ReactNode} & ButtonProps) { 
+  const [opened, { open, close }] = useDisclosure(false);
+	return (
+		<>
+		<Button variant={rest.variant || "filled"} onClick = {open}>{children}</Button>
+		<Modal zIndex={1000} opened={opened} onClose={close} title="Confirm" centered>
+			<Stack>
+        	<P>Are you sure you want to {description}?</P>
+			<Button onClick={() => {
+					action();
+					close();
+				}}>Confirm</Button>
+			</Stack>
+      	</Modal>
+		</>
+	)
+}

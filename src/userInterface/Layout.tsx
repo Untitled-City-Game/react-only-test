@@ -1,1 +1,64 @@
-":false},{"sender_name":"Jess Daswani","timestamp_ms":1480144070599,"content":"Hii","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1480144057144,"content":"helo","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1479563799533,"content":"Thank for checking","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1479563794573,"content":"Alas","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1479563788626,"content":"So I think no","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1479563783341,"content":"his light is off","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1479563747913,"content":"Thanks","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":
+import useWindowDimensions from "@/scripts/useWindowDimensions";
+import { Container, Stack } from "@mantine/core";
+import React from "react";
+
+export default function FullHeightLayout({
+	children,
+	...rest
+}: {
+	children: React.ReactNode;
+}) {
+	const { height } = useWindowDimensions();
+	return (
+		<div
+			style={{
+				height: height,
+				width: "100%",
+				display: "flex",
+				flexDirection: "column",
+				justifyContent: "space-between",
+				alignItems: "stretch",
+				overflow: "scroll",
+			}}>
+			{children}
+		</div>
+	);
+}
+
+export function VerticalSpread({
+	children,
+	...rest
+}: {
+	children: React.ReactNode;
+}) {
+	return (
+		<Container style={FullHeight} {...rest} display="flex" mb="md" w="100%">
+			<Stack
+				ta="center"
+				style={FullHeight}
+				mih="100%"
+				w="100%"
+				justify="space-between"
+				align="stretch"
+				>
+				{children}
+			</Stack>
+		</Container>
+	);
+}
+const FullHeight: React.CSSProperties = {
+	flexGrow: 100,
+};
+
+export const scrollParent : React.CSSProperties = {
+	display: "flex",
+	flexDirection: "column",
+	minHeight: "0",
+	flexShrink: "100"
+}
+
+export const scrollSacrifice : React.CSSProperties = {
+	overflow: "scroll",
+	flexShrink: "100",
+	flexGrow: "100"
+}

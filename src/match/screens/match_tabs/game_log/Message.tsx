@@ -1,1 +1,84 @@
-85375,"content":"Ohh, I\'m skyping Emily. So yes","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1489028081811,"content":"which is rare","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1489028077935,"content":"ive got free time","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1489028075099,"content":"just wondering if you want to hang out","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1489028060762,"content":"Why?","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1489028058760,"content":"Unsure. I feel like there\'s something I\'ve forgotten","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1489028037136,"content":"busy tonight?","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1488923494771,"sticker":{"uri":"your_facebook_activity/messages/stickers_used/39178562_1505197616293642_5411344281094848512_n_369239263222822.png","ai_stickers":[]},"ip":"124.168.211.127","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1488923494634,"content":"I might forget","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1488923489512,"content":"Will do tho you should FB message him","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1488923473448,"content":"Nope","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1488923473334,"content":"and could you ask mayank if he does?","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1488923465152,"content":"also do you know anything about a venture capitalist who was talking to Brian Schmidt?","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1488923459725,"content":"it me","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1488923446991,"content":"Finally, a male protagonist I can really get behind!","share":{"link":"https://www.theonion.com/pigeon-that-flew-down-into-subway-going-to-need-all-his-1819592209","share_text":"All the latest local coverage from The Onion, America\'s finest news source."},"is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1488892043968,"content":"I try","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page"
+import { LogMetadata, PlayerData, GameStateGeneric, GameBoardContextSpecific, GameStateAnything } from "@/scripts/types/types";
+import { ClaimChallengeCompleted, ChallengeEvidence, FruitEaten } from "@/src/match/screens/match_tabs/game_log/messages/ChallengeCompleted";
+import { DiscardHand } from "@/src/match/screens/match_tabs/game_log/messages/DiscardHand";
+import { GameStarted } from "@/src/match/screens/match_tabs/game_log/messages/GameStarted";
+import { JoinedMatch } from "@/src/match/screens/match_tabs/game_log/messages/JoinedMatch";
+import { MessageBox, MessageContainer, MessageWrapper } from "@/src/match/screens/match_tabs/game_log/MessageBox";
+import { ChallengeButton } from "@/src/match/screens/match_tabs/challenges/UI/ChallengePopup";
+import P from "@/src/userInterface/P";
+import { Avatar, Box } from "@mantine/core";
+import { LogEntry } from "boardgame.io";
+import { useContext } from "react";
+import { GameContext } from "@/src/match/Board";
+
+
+export function Message({ entry, gameData, playerData }: { entry: LogEntry; gameData: GameStateGeneric; playerData: PlayerData; }) {
+	const senderData = gameData.allPlayersData[entry.action.payload.playerID];
+	const gameState: GameBoardContextSpecific<GameStateAnything> = useContext(GameContext);
+	switch (entry.action.payload.type) {
+		case "completeChallengeAndClaim":
+			const challenge = gameState.G.challengeDeck!.find(challenge => challenge.title === entry.metadata.challenge)
+			return (
+				<>					
+					<MessageBox entry={entry} gameData={gameData} playerData={playerData} evidence={true}>
+						<ClaimChallengeCompleted metadata={entry.metadata as LogMetadata} />
+						{challenge ? <ChallengeButton
+							team={entry.metadata.team}
+							challenge={challenge}
+							completed={true}
+							claimButton={false}
+							/>
+							: null}
+					</MessageBox>
+				</>
+			);
+
+		case "playerSetup":
+			return (
+				<MessageBox entry={entry} gameData={gameData} playerData={playerData}>
+					<JoinedMatch senderData={senderData} />
+				</MessageBox>
+			);
+
+		case "startGame":
+			return (
+				<MessageBox entry={entry} gameData={gameData} playerData={playerData}>
+					<GameStarted senderData={senderData} />
+				</MessageBox>
+			);
+		case "discardHand":
+			return (
+				<MessageBox entry={entry} gameData={gameData} playerData={playerData}>
+					<DiscardHand senderData={senderData} />
+				</MessageBox>
+			)
+		case "completeChallengeAndEatFruit":
+			return (
+				<Box>
+					<MessageBox entry={entry} gameData={gameData} playerData={playerData} >
+						<FruitEaten
+							metadata={entry.metadata as LogMetadata} />
+						{entry.metadata.challenge ? <ChallengeButton
+							team={entry.metadata.team}
+							challenge={entry.metadata.challenge}
+							completed={true}
+							claimButton={false}
+						/>
+							: null}
+					</MessageBox>
+			
+					<MessageWrapper entry={entry} gameData={gameData} playerData={playerData} unstyled={true}>
+						<ChallengeEvidence metadata={entry.metadata as LogMetadata} />
+					</MessageWrapper>
+				</Box>
+			)
+		case "addSegment":
+			break;
+		case "eatFruit":
+			break;
+		case "addTeamPhoto":
+			break;
+		default:
+			return <P>{entry.action.payload.type}</P>;
+	}
+}

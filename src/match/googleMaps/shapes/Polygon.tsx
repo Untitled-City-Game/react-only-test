@@ -1,1 +1,132 @@
-iewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1491118573698,"content":"gonna have a bath maybe.","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1491118568102,"content":"yeah. same","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1491118527014,"content":"keen to do a relax","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1491118521424,"content":"long week","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1491118514686,"content":"mmm","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1491118503121,"content":"how u","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1491118453900,"photos":[{"uri":"https://interncache-eag.fbcdn.net/v/t34.18173-12/13734543_1736703359901749_104776992_n.gif?stp=dst-gif&ccb=1-7&_nc_sid=68f744&efg=eyJ1cmxnZW4iOiJwaHBfdXJsZ2VuX2NsaWVudC9pbW9nZW46RW50TWVzc2FnZUltYWdlLURZSU1lZGlhVXRpbHMtb3RoZXJfZGF0YV9tb2RlbCJ9&_nc_zt=23&_nc_gid=ANqaKaDHrzwFpU-E7DtbfGW&oh=00_AYBbZYcqHsWJHvaV1ARKZ1T04rfX3ispNNF3BQG9pVhNZg&oe=67A17257","creation_timestamp":1491118453,"backup_uri":"https://scontent.fymq3-1.fna.fbcdn.net/v/t34.18173-12/13734543_1736703359901749_104776992_n.gif?stp=dst-gif&_nc_cat=108&ccb=1-7&_nc_sid=9f807c&_nc_ohc=6xKOkcydOp4Q7kNvgF3mx3c&_nc_zt=23&_nc_ht=scontent.fymq3-1.fna&_nc_gid=ANqaKaDHrzwFpU-E7DtbfGW&oh=00_AYA2ZyHNqOFCIXr49Ptw6Y28Qmna0o7BnXO2yM19WmhSmg&oe=67A17257"}],"ip":"114.198.117.37","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1491118403037,"content":"helo","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1490791362177,"sticker":{"uri":"your_facebook_activity/messages/stickers_used/39178562_1505197616293642_5411344281094848512_n_369239263222822.png","ai_stickers":[]},"ip":"114.198.117.37","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1490791308051,"content":"Be at this.","share":{"link":"https://www.facebook.com/events/1446605825357730/"},"is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1490786273126,"content":"thanks tho\'","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1490786271391,"content":"ill just contact","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1490786269572,"content":"no thats cool","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1490786086799,"content":"I could also probably dig up his personal contact details but I think that would probs make him feel uncomfortable","is_geoblocked_for_viewer":false,"is_unsent_
+import {
+	forwardRef,
+	useContext,
+	useEffect,
+	useImperativeHandle,
+	useMemo,
+	useRef
+} from 'react';
+  
+  import { GoogleMapsContext, useMapsLibrary } from '@vis.gl/react-google-maps';
+  
+  import type { Ref } from 'react';
+  
+  type PolygonEventProps = {
+	onClick?: (e: google.maps.MapMouseEvent) => void;
+	onDrag?: (e: google.maps.MapMouseEvent) => void;
+	onDragStart?: (e: google.maps.MapMouseEvent) => void;
+	onDragEnd?: (e: google.maps.MapMouseEvent) => void;
+	onMouseOver?: (e: google.maps.MapMouseEvent) => void;
+	onMouseOut?: (e: google.maps.MapMouseEvent) => void;
+  };
+  
+  type PolygonCustomProps = {
+	/**
+	 * this is an encoded string for the path, will be decoded and used as a path
+	 */
+	encodedPaths?: string[];
+  };
+  
+  export type PolygonProps = google.maps.PolygonOptions &
+	PolygonEventProps &
+	PolygonCustomProps;
+  
+  export type PolygonRef = Ref<google.maps.Polygon | null>;
+  
+  function usePolygon(props: PolygonProps) {
+	const {
+	  onClick,
+	  onDrag,
+	  onDragStart,
+	  onDragEnd,
+	  onMouseOver,
+	  onMouseOut,
+	  encodedPaths,
+	  ...polygonOptions
+	} = props;
+	// This is here to avoid triggering the useEffect below when the callbacks change (which happen if the user didn't memoize them)
+	const callbacks = useRef<Record<string, (e: unknown) => void>>({});
+	Object.assign(callbacks.current, {
+	  onClick,
+	  onDrag,
+	  onDragStart,
+	  onDragEnd,
+	  onMouseOver,
+	  onMouseOut
+	});
+  
+	const geometryLibrary = useMapsLibrary('geometry');
+  
+	const polygon = useRef(new google.maps.Polygon()).current;
+	// update PolygonOptions (note the dependencies aren't properly checked
+	// here, we just assume that setOptions is smart enough to not waste a
+	// lot of time updating values that didn't change)
+	useMemo(() => {
+	  polygon.setOptions(polygonOptions);
+	}, [polygon, polygonOptions]);
+  
+	const map = useContext(GoogleMapsContext)?.map;
+  
+	// update the path with the encodedPath
+	useMemo(() => {
+	  if (!encodedPaths || !geometryLibrary) return;
+	  const paths = encodedPaths.map(path =>
+		geometryLibrary.encoding.decodePath(path)
+	  );
+	  polygon.setPaths(paths);
+	}, [polygon, encodedPaths, geometryLibrary]);
+  
+	// create polygon instance and add to the map once the map is available
+	useEffect(() => {
+	  if (!map) {
+		if (map === undefined)
+		  console.error('<Polygon> has to be inside a Map component.');
+  
+		return;
+	  }
+  
+	  polygon.setMap(map);
+  
+	  return () => {
+		polygon.setMap(null);
+	  };
+	}, [map]);
+  
+	// attach and re-attach event-handlers when any of the properties change
+	useEffect(() => {
+	  if (!polygon) return;
+  
+	  // Add event listeners
+	  const gme = google.maps.event;
+	  [
+		['click', 'onClick'],
+		['drag', 'onDrag'],
+		['dragstart', 'onDragStart'],
+		['dragend', 'onDragEnd'],
+		['mouseover', 'onMouseOver'],
+		['mouseout', 'onMouseOut']
+	  ].forEach(([eventName, eventCallback]) => {
+		gme.addListener(polygon, eventName, (e: google.maps.MapMouseEvent) => {
+		  const callback = callbacks.current[eventCallback];
+		  if (callback) callback(e);
+		});
+	  });
+  
+	  return () => {
+		gme.clearInstanceListeners(polygon);
+	  };
+	}, [polygon]);
+  
+	return polygon;
+  }
+  
+  /**
+   * Component to render a polygon on a map
+   */
+  export const Polygon = forwardRef((props: PolygonProps, ref: PolygonRef) => {
+	const polygon = usePolygon(props);
+  
+	useImperativeHandle(ref, () => polygon, []);
+  
+	return null;
+  });

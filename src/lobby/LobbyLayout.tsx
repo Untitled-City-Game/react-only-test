@@ -1,1 +1,49 @@
-_parent":false},{"sender_name":"Michael Page","timestamp_ms":1502288093889,"content":"here is a hug","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1502288091654,"content":"Very thanks","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1502288089581,"photos":[{"uri":"your_facebook_activity/messages/e2ee_cutover/jessdaswani_10153453299124550/photos/277149189_1019029932055395_251234472299021392_n_1582339911816347.gif","creation_timestamp":1502288089,"backup_uri":"https://scontent.fymq3-1.fna.fbcdn.net/v/t1.15752-9/277149189_1019029932055395_251234472299021392_n.gif?stp=dst-gif&_nc_cat=105&ccb=1-7&_nc_sid=9f807c&_nc_ohc=QUBeLGoprV0Q7kNvgF__yUA&_nc_zt=23&_nc_ht=scontent.fymq3-1.fna&oh=03_Q7cD1gEECHfneCcP1I38vO45biIBPNfe3EkCCh_68Sn4YSYtcg&oe=67C6F0E8"}],"ip":"124.171.211.37","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1502288078015,"content":"Thank you very","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1502288061973,"content":"that works :)","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{
+import { games } from "@/scripts/consts";
+import { theme } from "@/src/styles/theme";
+import Header from "@/src/userInterface/Header/Header";
+import { RiArrowLeftBoxLine } from "react-icons/ri";
+
+import useWindowDimensions from "@/scripts/useWindowDimensions";
+import FullHeightLayout, { scrollParent } from "@/src/userInterface/Layout";
+import {
+	ActionIcon,
+	Box,
+	Container,
+	MantineProvider,
+	mergeMantineTheme
+} from "@mantine/core";
+import { Outlet, useNavigate, useParams } from "react-router";
+
+export default function LobbyLayout() {
+	const navigate = useNavigate();
+	const gameCode = useParams().gameCode;
+	const game = games.find((game) => game.code === gameCode);
+	const lobbyTheme = mergeMantineTheme(theme, {
+		primaryColor: game?.color || "grey",
+		primaryShade: 6,
+	});
+	return (
+		<MantineProvider theme={lobbyTheme}>
+			<FullHeightLayout>
+				<Box>
+					<Header color={game?.color || "white"}>
+						{game?.name} Lobby
+					</Header>
+				</Box>
+				<Container maw="500px" w="100%" style={scrollParent}>
+					<Outlet />
+				</Container>
+				<Container w="100%" pb="md">
+					{/* <ActionIcon
+						size="lg"
+						aria-label="Back"
+						variant="filled"
+						autoContrast
+						onClick={() => navigate(-1)}>
+						<RiArrowLeftBoxLine size={100} />
+					</ActionIcon> */}
+				</Container>
+			</FullHeightLayout>
+		</MantineProvider>
+	);
+}

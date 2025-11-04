@@ -1,1 +1,42 @@
-ent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1489287050083,"sticker":{"uri":"your_facebook_activity/messages/stickers_used/851587_369239346556147_162929011_n_369239343222814.png","ai_stickers":[]},"is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1489281393828,"content":"very gratitude","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1489281390768,"content":"the photo you took is doing wonders for my tinder game","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1489229913876,"content":"Omfg the autocorrect on the tablet mode for my laptop is agonisingly useless","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1489229883026,"content":"How dare uU","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1489229813550,"photos":[{"uri":"your_facebook_activity/messages/e2ee_cutover/jessdaswani_10153453299124550/photos/278656102_1085615641987561_2002158158468017037_n_1412957695421237.jpg","creation_timestamp":1489229811,"backup_uri":"https://scontent.fymq3-1.fna.fbcdn.net/v/t1.15752-9/278656102_1085615641987561_2002158158468017037_n.jpg?_nc_cat=107&ccb=1-7&_nc_sid=9f807c&_
+import { Challenge } from "@/scripts/games/challenge_deck/challenge_deck_types";
+import { Color } from "@/scripts/types/types";
+import { ChallengeContext } from "@/src/match/screens/match_tabs/challenges/ChallengesTab";
+import { ChallengeBody } from "@/src/match/screens/match_tabs/challenges/UI/ChallengePopup";
+import DashedCard from "@/src/userInterface/DashedCard";
+import Span from "@/src/userInterface/Span";
+import { Button, CardProps, Container } from "@mantine/core";
+import { useContext } from "react";
+import { FaLock } from "react-icons/fa";
+import { FaStar } from "react-icons/fa6";
+
+export function ChallengeCard(props: { teamColor: Color; challenge: Challenge; completed? : boolean; claimButton? : boolean } & CardProps & React.HTMLAttributes<HTMLDivElement>) {
+	return (<DashedCard 
+	color={props.teamColor} 
+	bd={props.challenge.hard ? `4px solid ${props.teamColor}` : `1.5px dashed ${props.teamColor}`}
+	>
+		<Container w="100%">
+			<h3 style={{fontWeight: "bold"}}>{props.challenge.emoji} {props.challenge.title}</h3>
+			<ChallengeBody challenge={props.challenge} teamColor={props.teamColor} />
+		</Container>
+	</DashedCard>);
+}
+
+export function ClaimButton(props: {title: string}){
+	const {open, setCurrentChallenge} = useContext(ChallengeContext)
+	return(
+			<Button onClick={() => {
+				setCurrentChallenge(props.title)
+				open()
+				}} w="100%">
+				Complete and claim
+			</Button>
+
+	)
+
+}
+
+const punchStyle : React.CSSProperties = {
+	position: "absolute",
+	top: "10px",
+	right: "20px"
+}

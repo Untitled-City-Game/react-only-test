@@ -1,1 +1,45 @@
-488195558512,"content":"I have face masks","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1488195554711,"content":"im tire","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1488195551920,"content":"tag urself","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1488195549411,"photos":[{"uri":"your_facebook_activity/messages/e2ee_cutover/jessdaswani_10153453299124550/photos/299448615_1648801698899829_4653949567616634682_n_1400686663315007.jpg","creation_timestamp":1488195548,"backup_uri":"https://scontent.fymq3-1.fna.fbcdn.net/v/t1.15752-9/299448615_1648801698899829_4653949567616634682_n.jpg?_nc_cat=104&ccb=1-7&_nc_sid=9f807c&_nc_ohc=VoUDhZomNboQ7kNvgFp02gu&_nc_zt=23&_nc_ht=scontent.fymq3-1.fna&oh=03_Q7cD1gGg90BOcuihAHJpbEXHrAEmWzdgXYAhrOXHyKeikZx8Mg&oe=67C6D869"}],"ip":"124.168.211.127","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_m
+//Set of button links to choose game from list in consts.ts. Inactive games are marked "coming soon". Choosing a game will redirect to the choose match page.
+import { games } from "@/scripts/consts";
+import useWindowDimensions from "@/scripts/useWindowDimensions";
+import { Container, Stack, Text } from "@mantine/core";
+import { Link } from "react-router";
+import { ListButton } from "../userInterface/ListButton";
+import { useGeolocated } from "react-geolocated";
+
+export default function ChooseGame() {
+	const gameListItems = games.map((game, index) => {
+		return (
+			<ListButton
+				key={index}
+				component={game.active ? Link : undefined}
+				to={`/lobby/${game.code}/choose-match`}
+				color={game.active ? game.color : "gray"}
+				>
+				<game.icon color={game.active ? `var(--mantine-color-${game.color}-7` : "gray"} size={60} />
+				<Container p="0">
+					<h3>{game.name}</h3>
+					<Text fs="italic">{game.active ? "" : "Coming soon"}</Text>
+					<Text fz="sm">{game.description}</Text>
+				</Container>
+			</ListButton>
+		);
+	});
+
+    const { coords, isGeolocationAvailable, isGeolocationEnabled } = useGeolocated({
+            positionOptions: {
+                enableHighAccuracy: false,
+            },
+            userDecisionTimeout: 5000,
+        });
+		return (
+			<Stack
+				maw="500px"
+			>
+				<h2>Choose a game</h2>
+				<div>{isGeolocationAvailable ? "location available" : "location not available"}</div>
+				<div>{isGeolocationEnabled ? "location enabled" : "location not enabled"}</div>
+				{gameListItems}
+				
+			</Stack>
+	);
+}

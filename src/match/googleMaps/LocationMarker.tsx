@@ -1,1 +1,27 @@
-locked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1494555218074,"sticker":{"uri":"your_facebook_activity/messages/stickers_used/39178562_1505197616293642_5411344281094848512_n_369239263222822.png","ai_stickers":[]},"ip":"130.56.80.11","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Jess Daswani","timestamp_ms":1494555171868,"content":"I get off work early today ð","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1494551685573,"content":"the first episode of American Gods is out too","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1494551677739,"content":"also I would be keen to do sense8 tonight if you want","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1494551661820,"content":"They had to replace the chain and brake pads","is_geoblocked_for_viewer":false,"is_unsent_image_by_messenger_kid_parent":false},{"sender_name":"Michael Page","timestamp_ms":1494551654426,"content":"Also I got the bike serviced, $177","is_geoblock
+import { MatchTeamColor } from "@/scripts/types/types";
+import { GameContext } from "@/src/match/Board";
+import { AdvancedMarker } from "@vis.gl/react-google-maps";
+import { useContext, useEffect } from "react";
+import { IoLocationSharp } from "react-icons/io5";
+import useTeamLocations from "@/src/match/interfaces/useTeamLocations";
+import { Circle } from "@/src/match/googleMaps/shapes/Circle";
+export default function LocationMarker({position, accuracy, color} : {position: google.maps.LatLngLiteral, accuracy?: number, color: MatchTeamColor}) {
+	const {G: gameData} = useContext(GameContext)
+	const iconSize = 30
+	//update my location with location server
+	return (
+	<AdvancedMarker position={position}>
+		<IoLocationSharp 
+		fill={color}
+		size={`${iconSize*2}px`}
+		style={{
+			position: "absolute",
+			bottom: "0px",
+			left: `${-iconSize}px`
+		}} />
+		<img style={{height: `${iconSize}px`, width: `${iconSize}px`, objectFit: "cover", borderRadius : "50%", position: "absolute", bottom: `${iconSize*0.75}px`, left: `${-iconSize/2}px`}} src={gameData.teamPhotoURLs[color]}  />
+		<Circle center={position} radius={accuracy} strokeColor={color} fillColor={color} strokeOpacity={0.3} fillOpacity={0.1} />
+		{/* <FaCircle color={color} size="1rem" style={{filter: `drop-shadow(0 0 3px ${color})`, marginBottom: "-0.75rem"}} /> */}
+	</AdvancedMarker>
+	)
+}
