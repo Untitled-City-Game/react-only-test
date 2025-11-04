@@ -38,6 +38,7 @@
     "esbuild": "^0.25.12",
     "firebase": "^11.5.0",
     "lodash": "^4.17.21",
+    "node-persist": "^4.0.4",
     "point-in-polygon": "^1.1.0",
     "polylabel": "^2.0.1",
     "react": "^19.0.0",
@@ -53,8 +54,8 @@
     "xmldom": "^0.6.0"
   },
   "devDependencies": {
-    "@types/node": "^20.0.0",
     "@types/geojson": "^7946.0.16",
+    "@types/node": "^20.0.0",
     "@types/react": "^19.0.12",
     "@types/react-dom": "^19.0.4",
     "@types/xmldom": "^0.1.34",
