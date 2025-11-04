@@ -1,6 +1,6 @@
-import { ConnectFour } from '@/scripts/games/connect_four/connect_four';
+import { ConnectFour } from '@scripts/games/connect_four/connect_four';
 import { FlatFile, Origins, Server } from 'boardgame.io/server';
-import { Snake } from '@/scripts/games/snake/snake';
+import { Snake } from '@scripts/games/snake/snake';
 //import { DummyGame } from '@/scripts/games/connect_four/dummy_game';
 
 const authenticateCredentials = async () => {

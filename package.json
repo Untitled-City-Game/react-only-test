@@ -13,6 +13,14 @@
     "deploy-dev": "cross-env APP_ENVIRONMENT=prod npm run build && firebase deploy --project=dev",
     "stage": "npm run build && firebase deploy",
     "serve": "tsx --env-file .env.development --inspect server/server.ts",
+    "build-server": "esbuild server/server.ts --bundle --platform=node --outfile=build/server.js --external:./node_modules/*",
+    "start-server": "node --env-file=.env build/server.js",
+    "start-dev-server": "node --env-file=.env.development build/server.js",
+    "start-staging-server": "node --env-file=.env.staging build/server.js",
+    "build-location": "esbuild server/locationServer.ts --bundle --platform=node --outfile=build/locationServer.js --external:./node_modules/*",
+    "start-location": "node --env-file=.env build/locationServer.js",
+    "start-dev-location": "node --env-file=.env.development build/locationServer.js",
+    "start-staging-location": "node --env-file=.env.staging build/locationServer.js",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
