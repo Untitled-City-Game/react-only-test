@@ -7,10 +7,12 @@
     "staging": "tsx --env-file=.env.stage server/server.ts",
     "location-prod": "tsx --env-file=.env server/locationServer.ts",
     "location-staging": "tsx --env-file=.env.stage server/locationServer.ts",
-    "build": "tsc -p tsconfig.server.json",   
+    "build": "esbuild server/server.ts --bundle --platform=node --outfile=build/server.js --external:./node_modules/*",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@mantine/core": "^8.3.6",
+    "@mantine/form": "^8.3.6",
     "@tmcw/togeojson": "^7.0.0",
     "@turf/turf": "^7.2.0",
     "@types/geojson": "^7946.0.15",
@@ -36,6 +38,8 @@
     "@types/react": "^19.0.12",
     "@types/react-dom": "^19.0.4",
     "buffer": "^6.0.3",
-    "process": "^0.11.10"
+    "esbuild": "^0.25.12",
+    "process": "^0.11.10",
+    "tsc-alias": "^1.8.16"
   }
 }

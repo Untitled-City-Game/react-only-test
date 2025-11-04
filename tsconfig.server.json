@@ -5,6 +5,7 @@
     "moduleResolution": "node",
     "noEmit": false,
     "outDir": "./build",
+	"resolveJsonModule": true,
     "allowImportingTsExtensions": false,
 	"baseUrl" : ".",
     "paths": {
