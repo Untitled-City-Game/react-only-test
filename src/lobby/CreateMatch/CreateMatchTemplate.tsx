@@ -45,7 +45,7 @@ export default function CreateMatchTemplate({
 
 		if (!gameCode) { throw new Error("No game code provided"); }
 		const setupData = await getSetupData(values);
-		console.log("creating game", values, setupData);
+		console.log("creating game", values, setupData, process.env.GAME_SERVER);
 		//create match
 		console.log("setting up match");
 		const { matchID } = await lobbyClient.createMatch(gameCode, {
