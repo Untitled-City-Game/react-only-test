@@ -8,6 +8,7 @@
     "location-prod": "tsx --env-file=.env server/locationServer.ts",
     "location-staging": "tsx --env-file=.env.stage server/locationServer.ts",
     "build": "esbuild server/server.ts --bundle --platform=node --outfile=build/server.js --external:./node_modules/*",
+    "start": "node node --env-file=.env build/server.js build/server.js ",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
