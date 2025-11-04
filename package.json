@@ -6,11 +6,11 @@
   "scripts": {
     "sass": "sass --watch src/styles/interface.scss src/styles/interface.css",
     "start": "parcel --no-cache",
-    "dev": "cross-env APP_ENVIRONMENT=dev parcel --no-cache",
+    "dev": "dotenvx run -f .env.development -- parcel --no-cache",
+    "staging": "dotenvx run -f .env.staging -- parcel --no-cache",
     "build": "parcel build ./src/index.html --no-cache",
-    "deploy": "cross-env APP_ENVIRONMENT=prod npm run build && firebase deploy --project=prod",
-    "deploy-dev": "cross-env APP_ENVIRONMENT=prod npm run build && firebase deploy --project=dev",
-    "stage": "cross-env APP_ENVIRONMENT=staging npm run build && firebase deploy",
+    "deploy": "dotenvx run -- npm run build && firebase deploy --project=prod",
+    "stage": "dotenvx run -f .env.staging -- npm run build && firebase deploy",
     "serve": "tsx --env-file .env.development --inspect server/server.ts",
     "build-server": "esbuild server/server.ts --bundle --platform=node --outfile=build/server.js --packages=external",
     "start-server": "node --env-file=.env build/server.js",
@@ -23,6 +23,7 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@dotenvx/dotenvx": "^1.51.1",
     "@mantine/core": "^7.17.2",
     "@mantine/form": "^7.17.2",
     "@mantine/hooks": "^7.17.2",
