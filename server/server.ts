@@ -40,7 +40,7 @@ async function buildServer(){
 			ctx.body = { error: 'Internal server error' };
 		}
 	  });
-	const PORT = parseInt(process.env.SERVER_PORT || "8066");
+	const PORT = parseInt(process.env.SERVER_PORT || "8989");
 	server.run(PORT, () => console.log("server running..."));
 }
 
