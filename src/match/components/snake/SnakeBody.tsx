@@ -1,6 +1,5 @@
 import { SnakeTeam } from "@/scripts/games/snake/types";
 import { Polygon } from "@/src/match/googleMaps/shapes/Polygon";
-import { Polyline } from "@/src/match/googleMaps/shapes/PolyLine";
 import { bezierSpline, buffer, lineOffset, lineString } from "@turf/turf";
 import { Feature } from "geojson";
 
