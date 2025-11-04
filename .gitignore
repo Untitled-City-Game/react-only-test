@@ -1,7 +1,12 @@
-.parcel-cache/
-dist/
 node_modules/
-.vscode/
-*.code-workspace
-*.cache
+.env
+.env.*
+build/
+dist/
+.clinic
+.firebase
+.parcel-cache/
+.vscode
+.parcelrc
 server/db/
+package-lock.json

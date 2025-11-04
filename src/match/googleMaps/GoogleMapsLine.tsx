@@ -1,29 +1,71 @@
-import { LineData } from "@/scripts/types";
+import { geospatialFeature, LineData } from "@/scripts/types/googleMaps";
+import { Circle } from "@/src/match/googleMaps/shapes/Circle";
 import { Polyline } from "@/src/match/googleMaps/shapes/PolyLine";
-import { theme } from "@/styles/theme";
+import { ZoomContext } from "@/src/match/googleMaps/VisGLMapElement";
+import { theme } from "@/src/styles/theme";
 import { Marker } from "@vis.gl/react-google-maps";
-import { Fragment } from "react";
+import { Fragment, useContext, useEffect } from "react";
 
 export default function MapLine({
 	line,
+	allLines,
 	lineVisibility = false,
+	index,
 }: {
-	line: LineData;
+	line: geospatialFeature & {color: string};
+	allLines: geospatialFeature[]
 	lineVisibility: boolean;
 	index: number;
 }) {
+	const zoom = useContext(ZoomContext)
+	useEffect(()=> {
+		console.log("zoom changed!", zoom)
+	}, [zoom]);
+
 	return (
 		<>
 			<Polyline
 				path={line.coords}
 				visible={lineVisibility}
-				strokeColor = {theme.colors.red[0]}
+				strokeColor = {line.color}
 				strokeOpacity = {1}
-				strokeWeight = {4}
+				strokeWeight = {5}
 				clickable={false}
+				zIndex = {20}
+				
 			/>
+
+		</>
+	);
+}
+
+
+			{/* <Fragment>
+				<Circle 
+					center={line.coords[0]}
+					radius = {70}
+					fillColor = {`${theme.white}`}
+					fillOpacity = {1}
+					strokeColor = {"black"}
+					visible={lineVisibility}
+					zIndex={21}
+				/>
+			</Fragment>
+			<Fragment>
+				<Circle 
+					center={line.coords[line.coords.length-1]}
+					radius = {70}
+					fillColor = {`${theme.white}`}
+					fillOpacity = {1}
+					strokeColor = {"black"}
+					visible={lineVisibility}
+					zIndex={21}
+				/>
+			</Fragment>
+			 */}
+
 			{/* Make a circle at each vertex of the polyline */}
-			{line.coords.map((coord, index) => {
+			{/* {line.coords.map((coord, index) => {
 				return (
 					<Fragment key={index}>
 						<Marker 
@@ -40,32 +82,7 @@ export default function MapLine({
 								strokeWeight: 2,
 
 							}}
-
 						/>
-						{/* <Circle
-							center={coord}
-							radius={200}
-							visible={lineVisibility}
-							key={"circle"+index}
-							strokeColor = {"red"}
-							strokeOpacity={1}
-							strokeWeight = {12}
-							zIndex = {2}
-						/> */}
-						{/* <Circle
-							center={coord}
-							radius={200}
-							visible={lineVisibility}
-							key={"innercircle"+index}
-							strokeColor={"white"}
-							strokeOpacity={1}
-							strokeWeight = {6}
-							zIndex = {3}
-
-						/> */}
 					</Fragment>
 				);
-			})}
-		</>
-	);
-}
+			})} */}
