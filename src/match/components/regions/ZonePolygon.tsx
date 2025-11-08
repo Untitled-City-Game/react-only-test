@@ -32,7 +32,7 @@ export default function ZonePolygon({
 	const amHighlighted = activeLine?.matchedPolygons.includes(zone.featureName)
 	const coordsAsArray = zone.coords.map((coord) => [coord.lat, coord.lng]);
 	const polygonCenter = polylabel([coordsAsArray], 0.0000001);
-	const zoomThreshold = 13;
+	const zoomThreshold = 15;
 	const lineVisibilityTemp = Object.fromEntries(
 		zone.matchedLines.map((line) => [line.featureName, true])
 	);
