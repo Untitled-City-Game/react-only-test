@@ -20,8 +20,7 @@ export default function LocationMarker({position, accuracy, color} : {position: 
 			left: `${-iconSize}px`
 		}} />
 		<img style={{height: `${iconSize}px`, width: `${iconSize}px`, objectFit: "cover", borderRadius : "50%", position: "absolute", bottom: `${iconSize*0.75}px`, left: `${-iconSize/2}px`}} src={gameData.teamPhotoURLs[color]}  />
-		<Circle center={position} radius={accuracy} strokeColor={color} fillColor={color} strokeOpacity={0.3} fillOpacity={0.1} />
-		{/* <FaCircle color={color} size="1rem" style={{filter: `drop-shadow(0 0 3px ${color})`, marginBottom: "-0.75rem"}} /> */}
+		<Circle center={position} radius={accuracy} strokeColor={color} fillColor={color} strokeOpacity={0.3} fillOpacity={0.1} clickable={false} />
 	</AdvancedMarker>
 	)
 }
