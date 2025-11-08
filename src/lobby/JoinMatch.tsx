@@ -22,7 +22,7 @@ export default function JoinMatch() {
 	const game = games.find((game) => game.code === gameCode);
 
 	const lobbyClient = useMemo(
-		() => new LobbyClient({ server: "https://o.funwebsite.fun/websocket" }),
+		() => new LobbyClient({ server: process.env.GAME_SERVER }),
 		[]
 	);
 
