@@ -1,6 +1,7 @@
 import { ZoneData } from "@/scripts/games/connect_four/types";
 import { LineData, PolyData } from "@/scripts/types/googleMaps";
 import { Color } from "@/scripts/types/types";
+import { zoneColors } from "@/scripts/zoneColors";
 import { Polygon } from "@/src/match/googleMaps/shapes/Polygon";
 import { theme } from "@/src/styles/theme";
 import { AdvancedMarker, useMap } from "@vis.gl/react-google-maps";
@@ -63,23 +64,32 @@ export default function ZonePolygon({
 				paths={zone.coords}
 				key={zone.featureName}
 				strokeColor={
-					amCurrentZone ? theme.colors.green[4] : 
-					amHighlighted ? theme.colors.orange[7] :
-					zoneGameData.controlTeam || "black"
+					amCurrentZone ? zoneColors.selectedBorder : 
+					zoneGameData.controlTeam ? zoneGameData.controlTeam : 
+					//amHighlighted ? zoneColors.lineMemberBorder :
+"black"
 				}
 				strokeOpacity={amCurrentZone || amHighlighted ? 1 : 0.8}
-				strokeWeight={amCurrentZone ? 8 : zoneGameData.locked ? 6: 5}
+				strokeWeight={currentZone ? 
+								amCurrentZone ? 8 :
+								amHighlighted ? 6 : 
+								zoneGameData.locked ? 
+								6: 1 : 4}
 				fillColor={
+					//amHighlighted ? zoneColors.selectedBorder :
 					zoneGameData.controlTeam ||
-					(amCurrentZone ? theme.colors.green[6] : 
-					amHighlighted ? theme.colors.green[6] :
+					(amCurrentZone ? zoneColors.selectedFill : 
+					amHighlighted ? zoneColors.selectedBorder :
 					disabled ? theme.colors.gray[6] :
 						"#FFFFFF00") 
 				}
 				fillOpacity={
-					zoneGameData.locked ? 0.3 :
+					amCurrentZone ? 0.5 :
+					zoneGameData.locked ? 0.5 :
+					amHighlighted && zoneGameData.controlTeam ? 0.4 :
+					amHighlighted ? 0.2 :
 					disabled? 0.5 :
-					0.15}
+					currentZone ? 0.05 : 0.15}
 				onClick={() =>
 				{
 					if((map?.getZoom() ?? 30) > zoomThreshold){return};
@@ -87,8 +97,11 @@ export default function ZonePolygon({
 
 				}
 				}
-				zIndex={amCurrentZone ? 25 :
-				amHighlighted ? 24 : 
+				zIndex={
+					zoneGameData.controlTeam && amCurrentZone ? 26 :
+				zoneGameData.controlTeam && amHighlighted ? 24 :
+				amCurrentZone ? 23 :
+				amHighlighted ? 22 : 
 				zoneGameData.controlTeam ? 1 : 0}
 			/>
 			{/* {showLabels && (
