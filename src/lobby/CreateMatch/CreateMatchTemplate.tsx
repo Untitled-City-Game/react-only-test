@@ -42,7 +42,7 @@ export default function CreateMatchTemplate({
 	);
 
 	async function handleCreateGame(values: FormValues) {
-
+		setLoading(true);
 		if (!gameCode) { throw new Error("No game code provided"); }
 		const setupData = await getSetupData(values);
 		console.log("creating game", values, setupData);
@@ -71,8 +71,9 @@ export default function CreateMatchTemplate({
 
 	
 	return (
+	<>
+		<LoadingOverlay visible={loading} loaderProps={{ children: <Loading message="Joining match..." /> }} />
 		<form style={{ width: "100%" }} onSubmit={createGameForm.onSubmit(handleCreateGame)}>
-			<LoadingOverlay visible={loading} loaderProps={{ children: <Loading message="Joining match..." /> }} />
 			<h2>Create a {games.filter(game => game.code === gameCode)[0].name} match</h2>
 			<Stack pb="sm">
 				<TextInput
@@ -99,7 +100,7 @@ export default function CreateMatchTemplate({
 				<Button type="submit">Create and Join</Button>
 			</Stack>
 		</form>
-
+	</>
 	)
 }
 

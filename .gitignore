@@ -13,3 +13,4 @@ dist/
 .parcelrc
 server/db/
 package-lock.json
+fetchtest.js
