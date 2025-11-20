@@ -1,18 +1,23 @@
 {
   "compilerOptions": {
-    "plugins": [{ "name": "typescript-plugin-css-modules" }],
+    /* Visit https://aka.ms/tsconfig to read more about this file */
+      "plugins": [{ "name": "typescript-plugin-css-modules" }],
     "target": "ES2020",
     "lib": ["ES2020", "DOM", "DOM.Iterable"],
     "jsx": "react-jsx",
     "useDefineForClassFields": true,
-    "outDir": "./build",
+
     /* Modules */
     "module": "ESNext",
     "moduleResolution": "bundler",
 
+    /* Emit */
+    "noEmit": true,
+
     /* Interop Constraints */
     "isolatedModules": true,
     "allowSyntheticDefaultImports": true,
+    "allowImportingTsExtensions": true,
     "esModuleInterop": true,
     "forceConsistentCasingInFileNames": true,
 
@@ -21,7 +26,7 @@
 
     /* Completeness */
     "skipLibCheck": true,
-    "baseUrl" : ".",
+    "baseUrl" : "./",
     "paths": {
       "@/*": ["./*"],
       "@src/*": ["src/*"],
@@ -33,6 +38,5 @@
       "react": ["next-app/node_modules/@types/react/index"],
     }
 
-  },
-
+  }
 }
