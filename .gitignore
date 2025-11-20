@@ -1,6 +1,8 @@
 node_modules/
 .env
 .env.stage
+.env.staging
+pnpm-lock.yaml
 .env.development
 build/
 dist/

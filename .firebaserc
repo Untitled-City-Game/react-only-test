@@ -1,0 +1,9 @@
+{
+  "projects": {
+    "default": "metro-game-474bc",
+    "prod": "outside-2d699",
+    "dev": "playground-dev-43a78"
+  },
+  "targets": {},
+  "etags": {}
+}
