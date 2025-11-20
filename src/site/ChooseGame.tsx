@@ -36,8 +36,8 @@ export default function ChooseGame() {
 				maw="500px"
 			>
 				<h2>Choose a game</h2>
-				<div>{isGeolocationAvailable ? "location available" : "location not available"}</div>
-				<div>{isGeolocationEnabled ? "location enabled" : "location not enabled"}</div>
+				{/* <div>{isGeolocationAvailable ? "location available" : "location not available"}</div>
+				<div>{isGeolocationEnabled ? "location enabled" : "location not enabled"}</div> */}
 				{gameListItems}
 				
 			</Stack>
