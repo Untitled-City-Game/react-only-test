@@ -1,7 +1,7 @@
 export const zoneColors = {
 	selectedFill: '#B569FFFF',
 	selectedBorder: '#B569FFFF',
-	lineMemberFill: '#D4A8FFFF',
+	lineMemberFill: '#8d71a7ff',
 	lineMemberBorder: '#B569FFFF',
-	disabled: "#c5c5c5"
+	disabled: "#cbc67c"
 }

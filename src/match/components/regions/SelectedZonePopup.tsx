@@ -33,10 +33,7 @@ export default function SelectedZonePopup({
 					...selectedZonePopupStyles
 				}}
 				display={currentZone ? "initial" : "none"}>
-				<Container style={selectedStyles} ta="center" 
-				//bd={`2px solid ${theme.colors[props.playerData.data.teamColor][5]}`}
-				>
-					<Stack gap="xs">
+					<Stack gap="xs" w="100%" align="stretch">
 						<P>
 							<Span style={{
 								margin: 0,
@@ -58,12 +55,11 @@ export default function SelectedZonePopup({
 						<Button onClick={() => {
 							open();
 							setCurrentZone(undefined);
-						}} size="m" disabled={currentZone?.locked ||(currentZone && isZoneDisabled(currentZone.name, G))}>
+						}} size="m" disabled={currentZone?.locked || (currentZone && isZoneDisabled(currentZone.name, G))}>
 							<span>{currentZone?.controlTeam === null ? "Claim" : "Steal"}</span>
 						</Button>
 						<LineStepper allZoneData={G.zoneData} lines={winningLines.filter(line => line.matchedPolygons.includes(currentZone?.name || ""))} activeLine={activeLine} setActiveLine={setActiveLine} />
 					</Stack>
-				</Container>
 			</Center>
 			<ClaimFlowModal
 				open={opened}
@@ -87,8 +83,8 @@ function LineStepper({ lines, activeLine, setActiveLine, allZoneData }: { lines:
 	}
 	function prevLine() {
 		if (lineIndex == 0) {
-			setLineIndex(lines.length -1)
-			setActiveLine(lines[lines.length -1])
+			setLineIndex(lines.length - 1)
+			setActiveLine(lines[lines.length - 1])
 		} else {
 			setLineIndex(lineIndex - 1);
 			setActiveLine(lines[lineIndex - 1])
@@ -100,28 +96,28 @@ function LineStepper({ lines, activeLine, setActiveLine, allZoneData }: { lines:
 
 	return (
 		<>
-		<Group wrap="nowrap" align="center" justify="center">
-		<Button onClick={prevLine}><FaArrowCircleLeft /></Button>
-		<h3 style={{margin: 0}}>Line {lineIndex+1} of {lines.length}</h3>
-		<Button onClick={nextLine}><FaArrowCircleRight /></Button>
-		</Group>
-		<Group wrap="nowrap" align="flex-start" justify="space-between" style={lineStyles}>
-			<div style={lineStartStyle} color="darkgrey"/>
-			{activeLine?.matchedPolygons.map((polygonName, index) =>
-				<Stack key={index} align="center">
-					<FaCircle style={stationPointStyle} color={allZoneData.find(zone => zone.name === polygonName)?.controlTeam || "white"} />
-					<FaRegCircle style={stationPointStyle}/>
-					<P fz="xs" >{polygonName}</P>
-				</Stack>
-			)}
-			<div style={lineEndStyle} />
-		</Group>
-		
+			<Group wrap="nowrap" align="center" justify="center">
+				<Button onClick={prevLine}><FaArrowCircleLeft /></Button>
+				<h3 style={{ margin: 0 }}>Line {lineIndex + 1} of {lines.length}</h3>
+				<Button onClick={nextLine}><FaArrowCircleRight /></Button>
+			</Group>
+			{/* <Group wrap="nowrap" align="flex-start" justify="space-between" style={lineStyles}>
+				<div style={lineStartStyle} color="darkgrey" />
+				{activeLine?.matchedPolygons.map((polygonName, index) =>
+					<Stack key={index} align="center">
+						<FaCircle style={stationPointStyle} color={allZoneData.find(zone => zone.name === polygonName)?.controlTeam || "white"} />
+						<FaRegCircle style={stationPointStyle} />
+						<P fz="xs" >{polygonName}</P>
+					</Stack>
+				)}
+				<div style={lineEndStyle} />
+			</Group> */}
+
 		</>
 	)
 }
 
-const lineStartStyle : React.CSSProperties = {
+const lineStartStyle: React.CSSProperties = {
 	position: "absolute",
 	top: "-11px",
 	//left: "-10px",
@@ -129,7 +125,7 @@ const lineStartStyle : React.CSSProperties = {
 	width: "0.3rem",
 	backgroundColor: "darkgrey"
 }
-const lineEndStyle : React.CSSProperties = {
+const lineEndStyle: React.CSSProperties = {
 	position: "absolute",
 	top: "-11px",
 	right: "0px",
@@ -138,21 +134,21 @@ const lineEndStyle : React.CSSProperties = {
 	backgroundColor: "darkgrey"
 }
 
-const stationPointStyle : React.CSSProperties = {
+const stationPointStyle: React.CSSProperties = {
 	position: "absolute",
 	top: "-10px",
 
 }
 
-const lineStyles : React.CSSProperties = {
+const lineStyles: React.CSSProperties = {
 	borderTop: "5px solid darkgrey",
 	paddingTop: "8px",
 	position: "relative"
-	
+
 }
 
 const selectedStyles: React.CSSProperties = {
-	padding: "0.5rem 1rem",
+	margin: 0,
 	width: "100%",
 	backgroundColor: "white",
 	// borderRadius: "5px",
@@ -164,4 +160,7 @@ const selectedZonePopupStyles: React.CSSProperties = {
 	position: "fixed",
 	bottom: 0,
 	width: "100%",
+	backgroundColor: "white",
+	textAlign: "center",
+	padding: "0.5rem 1rem",
 };
