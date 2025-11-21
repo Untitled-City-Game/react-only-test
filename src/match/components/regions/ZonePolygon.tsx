@@ -80,7 +80,7 @@ export default function ZonePolygon({
 					zoneGameData.controlTeam ||
 					(amCurrentZone ? zoneColors.selectedFill : 
 					amHighlighted ? zoneColors.selectedBorder :
-					disabled ? theme.colors.gray[6] :
+					disabled ? zoneColors.disabled :
 						"#FFFFFF00") 
 				}
 				fillOpacity={

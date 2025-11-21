@@ -28,9 +28,14 @@ export default function SelectedZonePopup({
 	return (
 		<>
 			<Center
-				style={selectedZonePopupStyles}
+				style={{
+					borderTop: `3px solid ${theme.colors[props.playerData.data.teamColor][5]}`,
+					...selectedZonePopupStyles
+				}}
 				display={currentZone ? "initial" : "none"}>
-				<Container style={selectedStyles} ta="center" bd={`2px solid ${theme.colors[props.playerData.data.teamColor][5]}`}>
+				<Container style={selectedStyles} ta="center" 
+				//bd={`2px solid ${theme.colors[props.playerData.data.teamColor][5]}`}
+				>
 					<Stack gap="xs">
 						<P>
 							<Span style={{
@@ -148,15 +153,15 @@ const lineStyles : React.CSSProperties = {
 
 const selectedStyles: React.CSSProperties = {
 	padding: "0.5rem 1rem",
-	width: "90%",
+	width: "100%",
 	backgroundColor: "white",
-	borderRadius: "5px",
+	// borderRadius: "5px",
 	minHeight: "220px"
 };
 
 const selectedZonePopupStyles: React.CSSProperties = {
-	zIndex: 10,
-	position: "absolute",
-	bottom: 10,
+	zIndex: 1,
+	position: "fixed",
+	bottom: 0,
 	width: "100%",
 };

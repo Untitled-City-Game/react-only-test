@@ -127,5 +127,6 @@ const TabListStyles: React.CSSProperties = {
 	bottom: "0",
 	left: "0",
 	right: "0",
+	zIndex:"-1"
 }
 
