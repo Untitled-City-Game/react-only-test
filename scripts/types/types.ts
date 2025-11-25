@@ -22,7 +22,7 @@ export type GameStateUniversal = {
 	gameStateLogs: GameStateLog<any>[]
 	active: boolean;
 	teamPhotoURLs: {[key in MatchTeamString] : string}
-	
+	victory?: MatchTeamColor
 }
 
 export type GameStateGeneric = ConnectFourGameState | SnakeGameState
