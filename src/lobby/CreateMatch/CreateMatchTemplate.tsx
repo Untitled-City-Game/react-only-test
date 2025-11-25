@@ -2,7 +2,7 @@ import { games } from "@/scripts/consts";
 import { City, NamedColor, PlayerData } from "@/scripts/types/types";
 import Loading from "@/src/match/screens/game_status/Loading";
 import Span from "@/src/userInterface/Span";
-import { Radio, Paper, Group, LoadingOverlay, Stack, TextInput, Button } from "@mantine/core";
+import { Radio, Paper, Group, LoadingOverlay, Stack, TextInput, Button, Checkbox } from "@mantine/core";
 import { hasLength, useForm, UseFormReturnType } from "@mantine/form";
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router";
@@ -16,6 +16,7 @@ export type FormValues = {
 	teamColor: NamedColor;
 	gameName: string;
 	city?: City;
+	winter?: boolean;
 	[key:string]: any;
 };
 
@@ -44,7 +45,11 @@ export default function CreateMatchTemplate({
 	async function handleCreateGame(values: FormValues) {
 		setLoading(true);
 		if (!gameCode) { throw new Error("No game code provided"); }
-		const setupData = await getSetupData(values);
+		const gameSetupData = await getSetupData(values);
+		const setupData = {
+			winter: values.winter ?? false,
+			...gameSetupData
+		}
 		console.log("creating game", values, setupData);
 		console.log("env game server", process.env.GAME_SERVER)
 		console.log("env location server", process.env.LOCATION_SERVER)
@@ -89,6 +94,12 @@ export default function CreateMatchTemplate({
 					{...createGameForm.getInputProps("gameName")}
 				/>
 				{children}
+				<Checkbox 
+					label="Winter mode?" 
+					description="Removes challenges with a lot of time outdoors"
+					key={createGameForm.key("winter")}
+					{...createGameForm.getInputProps("winter")}
+				/>
 				<Radio.Group
 					label="Choose a team"
 					key={createGameForm.key("teamColor")}

@@ -1,7 +1,7 @@
 import { cities, maps } from "@/scripts/consts";
 import { fetchMapData } from "@/scripts/fetchMapData";
 import { City, NamedColor, MatchMapData } from "@/scripts/types/types";
-import CreateMatchTemplate, { createGameFormConstructor } from "@/src/lobby/CreateMatch/CreateMatchTemplate";
+import CreateMatchTemplate, { createGameFormConstructor, FormValues } from "@/src/lobby/CreateMatch/CreateMatchTemplate";
 import { Select } from "@mantine/core";
 
 export default function CreateMatchConnectFour() {
@@ -18,18 +18,13 @@ export default function CreateMatchConnectFour() {
 		teamOptions
 	)
 
-	type FormValues = {
-		PlayerName: string;
-		teamColor: NamedColor;
-		gameName: string;
-		[key:string]: any;
-	};
+	interface ConnectFourFormValues extends FormValues {}
 
-	const ConnectFourSetupData = async (values: FormValues) => {
+	const ConnectFourSetupData = async (values: ConnectFourFormValues) => {
 		const mapSetupData: MatchMapData = await fetchMapData(values.city);
 		const setupData = {
 			mapSetupData,
-			gameName: values.gameName
+			gameName: values.gameName,
 		}
 		return setupData;
 	};

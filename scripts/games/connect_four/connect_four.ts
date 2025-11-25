@@ -4,7 +4,7 @@ import { endGame, startGame } from "@/scripts/games/shared_moves/manageGame";
 import { ConnectFourGameSetup, connectFourPlayerSetup, setStartingZone } from "@/scripts/games/connect_four/setup";
 import customUndoTemplate from "@/scripts/games/undo";
 import {
-	GameSetupData,
+	GameSetupDataGeneric,
 	StripContext,
 	MoveContext
 } from "@/scripts/types/types";
@@ -37,7 +37,7 @@ export const ConnectFour: Game<ConnectFourGameState> = {
 	name: `connect_four`,
 	//set up game board using map json info
 	// validateSetupData: (data) => isGameSetupData(data),
-	setup: ({ ctx }, setupData : GameSetupData) => ConnectFourGameSetup(ctx, setupData),
+	setup: ({ ctx }, setupData : GameSetupDataGeneric) => ConnectFourGameSetup(ctx, setupData),
 	endIf: ({ G }) => {
 		console.log("gameover check", G.gameOver);
 		return G.gameOver ? "Game ended" : null;

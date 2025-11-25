@@ -1,7 +1,7 @@
-import { ConnectFourGameState, ZoneData } from "@/scripts/games/connect_four/types";
+import { ConnectFourGameSetupData, ConnectFourGameState, ZoneData } from "@/scripts/games/connect_four/types";
 import { createChallengeDeck } from "@/scripts/games/challenge_deck/handManagement";
 import { PolyData } from "@/scripts/types/googleMaps";
-import { AllPlayersData, GameSetupData, MoveContext, PlayerData } from "@/scripts/types/types";
+import { AllPlayersData, GameSetupDataGeneric, MoveContext, PlayerData } from "@/scripts/types/types";
 import type { Ctx } from "boardgame.io";
 import { playerSetup } from "@/scripts/games/shared_moves/playerSetup";
 import { challengeDeckPlayerSetup } from "@/scripts/games/challenge_deck/challenge_deck_player_setup";
@@ -13,7 +13,7 @@ function isGameSetupData(data: unknown): string | undefined {
 	if (!('zonePolygons' in data) || !('winningLines' in data) || !data.zonePolygons || !data.zonePolygons) return ('Game setup data is missing map data');
 }
 
-export function ConnectFourGameSetup(ctx: Ctx, setupData: GameSetupData): ConnectFourGameState {
+export function ConnectFourGameSetup(ctx: Ctx, setupData: ConnectFourGameSetupData): ConnectFourGameState {
 	console.log("Setting up game of connect four");
 	console.log("setup data", setupData)
 	console.log("players: ", ctx.numPlayers);
@@ -30,7 +30,7 @@ export function ConnectFourGameSetup(ctx: Ctx, setupData: GameSetupData): Connec
 		gameOver: false,
 		allPlayersData: {} as AllPlayersData,
 		allTeamsData : {},
-		challengeDeck: createChallengeDeck(setupData.mapSetupData.city),
+		challengeDeck: createChallengeDeck(setupData.mapSetupData.city, setupData.winter),
 		allTeamsChallengeData: {},
 		gameStateLogs: [],
 		city: setupData.mapSetupData.city,
