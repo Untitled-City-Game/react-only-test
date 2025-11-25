@@ -46,17 +46,17 @@ const themeOverride = createTheme({
       "#00973c"
     ],
     blue: [
-      "#e5f8ff",
-      "#d0edff",
-      "#9fd8fd",
-      "#6cc3fb",
-      "#47b1fa",
-      "#32a6fa",
-      "#26a0fb",
-      "#188be0",
-      "#007cc9",
-      "#006bb2"
-    ],
+  "#e5f3ff",
+  "#cde2ff",
+  "#9ac2ff",
+  "#64a0ff",
+  "#3884fe",
+  "#1d72fe",
+  "#0063ff",
+  "#0058e4",
+  "#004ecd",
+  "#0043b5"
+],
     grey: [
       "#eef7ee",
       "#e4e9e4",

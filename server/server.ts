@@ -24,14 +24,17 @@ async function buildServer(){
 	  });
 	server.router.get('/map-data/:citycode', async (ctx) => {
 		console.log("getting map data for city", ctx.params.citycode);
+		console.log("at url", `https://www.google.com/maps/d/u/0/kml?forcekml=1&mid=${ctx.params.citycode}`)
 		try {
 			const mapData = await fetch(`https://www.google.com/maps/d/u/0/kml?forcekml=1&mid=${ctx.params.citycode}`);
+			console.log("got a response")
 			if (!mapData.ok) {
       			console.error(`Failed to fetch map data: ${mapData.status} ${mapData.statusText}`);
       			ctx.status = mapData.status === 404 ? 404 : 502;
       			ctx.body = { error: 'Failed to retrieve map data' };
       			return;
    				 }
+			console.log("response is ok!")
 			ctx.body = await mapData.text();
 			return;
 		} catch (error) {
@@ -40,7 +43,7 @@ async function buildServer(){
 			ctx.body = { error: 'Internal server error' };
 		}
 	  });
-	const PORT = parseInt(process.env.SERVER_PORT || "8066");
+	const PORT = parseInt(process.env.SERVER_PORT || "8989");
 	server.run(PORT, () => console.log("server running..."));
 }
 

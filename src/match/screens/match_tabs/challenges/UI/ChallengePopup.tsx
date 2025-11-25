@@ -5,9 +5,9 @@ import RuleBox from "@/src/match/screens/match_tabs/challenges/UI/RuleBox";
 import DashedCard from "@/src/userInterface/DashedCard";
 import P from "@/src/userInterface/P";
 import Span from "@/src/userInterface/Span";
-import { Divider, Modal, Stack } from "@mantine/core";
+import { Box, Button, Divider, Modal, Stack } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { FaLock } from "react-icons/fa";
+import { FaExternalLinkSquareAlt, FaLock } from "react-icons/fa";
 
 export default function ChallengePopup({
 	opened,
@@ -67,19 +67,22 @@ export function ChallengeButton({
 
 export function ChallengeBody({challenge, teamColor} : {challenge: Challenge, teamColor: string}) {
 	return (<div>
-		< Divider color={teamColor} />
+		<Divider color={teamColor} />
 		<div style={{ marginTop: "0.5rem" }}>
 			{challenge.hard ? <>
 				<FaLock color={teamColor} />
 				<Span fz="0.9rem"> This challenge can lock or steal a zone</Span></> : null}
 		</div>
 		<div>{challenge.description.split("\n").map((line, index) => <p key={index}>{line}</p>)}</div>
-		<Stack mb="sm">
+		<Stack>
 			{challenge.rules.filter(rule => rule).map((rule, index) => {
 				return <RuleBox key={index}>{rule}</RuleBox>;
 			})}
-			<Divider color={teamColor} />
-
 		</Stack>
+		{challenge.link.url ? 
+		<Button w="100%" mt="0" variant="outline" component="a" target="_blank" href={challenge.link.url}>
+			{challenge.link.name}<Box m="0" ml={3}><FaExternalLinkSquareAlt /></Box>
+		</Button> : null}
+		<Divider color={teamColor} mb="sm" mt="sm" />
 	</div>);
 }

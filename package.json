@@ -4,17 +4,19 @@
   "version": "0.0.0",
   "source": "src/index.html",
   "scripts": {
-    "sass": "sass --watch src/styles/interface.scss src/styles/interface.css",
+    "sass": "sass src/styles/interface.scss src/styles/interface.css",
     "start": "parcel --no-cache",
-    "dev": "cross-env APP_ENVIRONMENT=dev parcel --no-cache",
+    "parcel-dev": "NODE_OPTIONS='--max-old-space-size=512' dotenvx run -f .env.development -- parcel --no-cache",
+    "dev": "npm run sass && npm run parcel-dev",
+    "staging": "dotenvx run -f .env.staging -- parcel --no-cache",
     "build": "parcel build ./src/index.html --no-cache",
-    "deploy": "cross-env APP_ENVIRONMENT=prod npm run build && firebase deploy --project=prod",
-    "deploy-dev": "cross-env APP_ENVIRONMENT=prod npm run build && firebase deploy --project=dev",
-    "stage": "npm run build && firebase deploy",
-    "serve": "tsx --env-file .env.development --inspect server/server.ts",
+    "deploy": "dotenvx run -- npm run build && firebase deploy --project=prod",
+    "stage": "dotenvx run -f .env.staging -- npm run build && firebase deploy",
+    "serve": "tsx --env-file .env.development server/server.ts",
     "build-server": "esbuild server/server.ts --bundle --platform=node --outfile=build/server.js --packages=external",
     "start-server": "node --env-file=.env build/server.js",
     "start-dev-server": "node --env-file=.env.development build/server.js",
+    "serve-dev": "npm run build-server && npm run start-dev-server",
     "start-staging-server": "node --env-file=.env.staging build/server.js",
     "build-location": "esbuild server/locationServer.ts --bundle --platform=node --outfile=build/locationServer.js --external:./node_modules/*",
     "start-location": "node --env-file=.env build/locationServer.js",
@@ -23,9 +25,14 @@
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
+    "@dotenvx/dotenvx": "^1.51.1",
     "@mantine/core": "^7.17.2",
     "@mantine/form": "^7.17.2",
     "@mantine/hooks": "^7.17.2",
+<<<<<<< HEAD
+=======
+    "@parcel/config-default": "^2.16.0",
+>>>>>>> staging
     "@tmcw/togeojson": "^7.0.0",
     "@turf/turf": "^7.2.0",
     "@types/lodash": "^4.17.16",
@@ -54,12 +61,24 @@
     "xmldom": "^0.6.0"
   },
   "devDependencies": {
+<<<<<<< HEAD
+=======
+    "@parcel/transformer-sass": "^2.16.0",
+>>>>>>> staging
     "@types/geojson": "^7946.0.16",
     "@types/node": "^20.0.0",
     "@types/react": "^19.0.12",
     "@types/react-dom": "^19.0.4",
     "@types/xmldom": "^0.1.34",
+<<<<<<< HEAD
     "parcel": "^2.14.1",
+=======
+    "buffer": "^6.0.3",
+    "parcel": "^2.14.1",
+    "parcel-plugin-static-files-copy": "^2.6.0",
+    "parcel-reporter-static-files-copy": "^1.5.3",
+    "process": "^0.11.10",
+>>>>>>> staging
     "tsx": "^4.20.3"
   }
 }

@@ -32,8 +32,8 @@ export default function Waiting() {
 	const [startDisabled, setStartDisabled] = useState(props.gameCode === "connect_four" ? true : false);
 	return (
 		<Center>
+			<LoadingOverlay visible={loading} loaderProps={{ children: <Loading message="Building trains..." /> }} />
 			<FullHeightLayout>
-				<LoadingOverlay visible={loading} loaderProps={{ children: <Loading message="Building trains..." /> }} />
 				<Header color={props.playerData.data.teamColor || "white"}>{game.name}</Header>
 				<VerticalSpread>
 					<div></div>

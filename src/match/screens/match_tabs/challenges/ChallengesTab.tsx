@@ -90,7 +90,7 @@ export default function ChallengesTab({ active }: { active: string | null }) {
 											bg={"white"}
 											key={index}
 											value={challenge.title} >
-											<Accordion.Control icon={challenge.emoji}><P fw="bold" tt="uppercase" className="mono">{challenge.title}</P></Accordion.Control>
+											<Accordion.Control icon={challenge.emoji}><P fw="bold" tt="uppercase" className="mono" pb={0}>{challenge.title}</P></Accordion.Control>
 											<Accordion.Panel>
 												<ChallengeBody teamColor={props.playerData.data.teamColor} challenge={challenge}></ChallengeBody>
 												<ClaimButton title={challenge.title} />

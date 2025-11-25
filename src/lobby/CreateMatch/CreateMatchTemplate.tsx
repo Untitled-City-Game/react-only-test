@@ -2,13 +2,13 @@ import { games } from "@/scripts/consts";
 import { City, NamedColor, PlayerData } from "@/scripts/types/types";
 import Loading from "@/src/match/screens/game_status/Loading";
 import Span from "@/src/userInterface/Span";
-import { Radio, Paper, Group, LoadingOverlay, Stack, TextInput, Button } from "@mantine/core";
+import { Radio, Paper, Group, LoadingOverlay, Stack, TextInput, Button, Checkbox } from "@mantine/core";
 import { hasLength, useForm, UseFormReturnType } from "@mantine/form";
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router";
 import { LobbyClient } from "boardgame.io/client";
 import { joinMatch } from "@/scripts/joinMatch";
-
+import { FaRegSnowflake } from "react-icons/fa6";
 interface CreateGameFormUniversal extends UseFormReturnType<any> {}
 
 export type FormValues = {
@@ -16,6 +16,7 @@ export type FormValues = {
 	teamColor: NamedColor;
 	gameName: string;
 	city?: City;
+	winter?: boolean;
 	[key:string]: any;
 };
 
@@ -42,10 +43,17 @@ export default function CreateMatchTemplate({
 	);
 
 	async function handleCreateGame(values: FormValues) {
-
+		setLoading(true);
 		if (!gameCode) { throw new Error("No game code provided"); }
-		const setupData = await getSetupData(values);
+		const gameSetupData = await getSetupData(values);
+		const setupData = {
+			winter: values.winter ?? false,
+			...gameSetupData
+		}
 		console.log("creating game", values, setupData);
+		console.log("env game server", process.env.GAME_SERVER)
+		console.log("env location server", process.env.LOCATION_SERVER)
+		console.log("env location server path", process.env.LOCATION_SERVER_PATH)
 		//create match
 		console.log("setting up match");
 		const { matchID } = await lobbyClient.createMatch(gameCode, {
@@ -68,8 +76,9 @@ export default function CreateMatchTemplate({
 
 	
 	return (
+	<>
+		<LoadingOverlay visible={loading} loaderProps={{ children: <Loading message="Joining match..." /> }} />
 		<form style={{ width: "100%" }} onSubmit={createGameForm.onSubmit(handleCreateGame)}>
-			<LoadingOverlay visible={loading} loaderProps={{ children: <Loading message="Joining match..." /> }} />
 			<h2>Create a {games.filter(game => game.code === gameCode)[0].name} match</h2>
 			<Stack pb="sm">
 				<TextInput
@@ -85,6 +94,14 @@ export default function CreateMatchTemplate({
 					{...createGameForm.getInputProps("gameName")}
 				/>
 				{children}
+				<Checkbox 
+					label="Winter mode?" 
+					description="Removes challenges with a lot of time outdoors"
+					color="cyan"
+					icon={FaRegSnowflake}
+					key={createGameForm.key("winter")}
+					{...createGameForm.getInputProps("winter")}
+				/>
 				<Radio.Group
 					label="Choose a team"
 					key={createGameForm.key("teamColor")}
@@ -96,7 +113,7 @@ export default function CreateMatchTemplate({
 				<Button type="submit">Create and Join</Button>
 			</Stack>
 		</form>
-
+	</>
 	)
 }
 

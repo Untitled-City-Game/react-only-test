@@ -5,6 +5,7 @@ import { SnakeGameState } from "@/scripts/games/snake/types";
 import { GameBoardContext, GameBoardContextSpecific, GameStateGeneric, PlayerData } from "@/scripts/types/types";
 import GameOver from "@/src/lobby/GameOver";
 import Loading from "@/src/match/screens/game_status/Loading";
+import VictoryModal from "@/src/match/screens/game_status/VictoryModal";
 import Waiting from "@/src/match/screens/game_status/Waiting";
 import TabSet from "@/src/match/screens/match_tabs/TabSet";
 import Span from "@/src/userInterface/Span";
@@ -121,6 +122,7 @@ function ConnectFourGameplay(G:ConnectFourGameState, playerData : PlayerData){
 		<>
 			<StatusBar>
 				{claimedZones} area{claimedZones === 1 ? "" : "s"} claimed
+				<VictoryModal />
 			</StatusBar>
 			<TabSet tabCodes={["challenges", "connect_four_map", "log"]} />
 		</>

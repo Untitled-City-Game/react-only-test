@@ -1,12 +1,15 @@
 node_modules/
 .env
-.env.*
+.env.stage
+.env.staging
+pnpm-lock.yaml
+.env.development
 build/
 dist/
 .clinic
 .firebase
 .parcel-cache/
 .vscode
-.parcelrc
 server/db/
 package-lock.json
+fetchtest.js
