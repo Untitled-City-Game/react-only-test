@@ -22,7 +22,7 @@ export type GameStateUniversal = {
 	gameStateLogs: GameStateLog<any>[]
 	active: boolean;
 	teamPhotoURLs: {[key in MatchTeamString] : string}
-	
+	victory?: MatchTeamColor
 }
 
 export type GameStateGeneric = ConnectFourGameState | SnakeGameState
@@ -68,16 +68,12 @@ export interface MapData {
 
 export type City = typeof cities[number];
 
-export type GameSetupData = {
-	mapSetupData: MatchMapData,
+export type GameSetupDataGeneric = {
 	gameName: string,
+	winter: boolean
 }
 
 export interface MatchMapData extends MapData {
-	city : City;
-}
-
-export type ConnectFourSetupData = {
 	city : City;
 }
 
@@ -92,7 +88,7 @@ export type ClientSetupData = {
 	playerID: string;
 }
 
-export type StrictMatch = Omit<LobbyAPI.Match, 'gameover' | 'setupData'> & { gameover: boolean, setupData: GameSetupData };
+export type StrictMatch = Omit<LobbyAPI.Match, 'gameover' | 'setupData'> & { gameover: boolean, setupData: GameSetupDataGeneric };
 
 export type GameBoardContextSpecific<GameState> = BoardProps<GameState> & ClientSetupData
 
