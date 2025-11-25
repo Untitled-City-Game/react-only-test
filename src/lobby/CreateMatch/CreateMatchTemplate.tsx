@@ -8,7 +8,7 @@ import { useMemo, useState } from "react";
 import { useNavigate } from "react-router";
 import { LobbyClient } from "boardgame.io/client";
 import { joinMatch } from "@/scripts/joinMatch";
-
+import { FaRegSnowflake } from "react-icons/fa6";
 interface CreateGameFormUniversal extends UseFormReturnType<any> {}
 
 export type FormValues = {
@@ -97,6 +97,8 @@ export default function CreateMatchTemplate({
 				<Checkbox 
 					label="Winter mode?" 
 					description="Removes challenges with a lot of time outdoors"
+					color="cyan"
+					icon={FaRegSnowflake}
 					key={createGameForm.key("winter")}
 					{...createGameForm.getInputProps("winter")}
 				/>

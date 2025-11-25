@@ -10,7 +10,6 @@ dist/
 .firebase
 .parcel-cache/
 .vscode
-.parcelrc
 server/db/
 package-lock.json
 fetchtest.js
