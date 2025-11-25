@@ -5,8 +5,8 @@ import { getStorage } from "firebase/storage";
 import 'firebase/firestore';
 const firebaseConfig = {
 	apiKey: "AIzaSyBQdAxW64FE0ZAOH1oiMhIk_jVQmVROqt4",
-	authDomain: `${process.env.FIREBASE}.firebaseapp.com`,
-	projectId: process.env.FIREBASE,
+	authDomain: "metro-game-474bc.firebaseapp.com",
+	projectId: "metro-game-474bc",
 	storageBucket: process.env.STORAGE,
 	messagingSenderId: "99015817585",
 	appId: "1:99015817585:web:e596628b1ff97745a3ded0"

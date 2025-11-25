@@ -5,6 +5,7 @@ import { discardChallenge, drawToFull } from "../../challenge_deck/handManagemen
 import { addLogMetadata } from "../../shared_moves/metadata";
 import { ConnectFourGameState } from "@/scripts/games/connect_four/types";
 import { Challenge } from "@/scripts/games/challenge_deck/challenge_deck_types";
+import { checkVictory } from "@/scripts/games/connect_four/checkVictory";
 
 export function completeChallengeAndClaim(
 	context: MoveContext<ConnectFourGameState>,
@@ -17,9 +18,10 @@ export function completeChallengeAndClaim(
 	if (challengeInfo === undefined) {
 		throw new Error(`Challenge ${challenge} not found`);
 	}
-	console.log("complete challenge and claim move found challenge ", challengeInfo);
+	// console.log("complete challenge and claim move found challenge ", challengeInfo);
 	const claimData = claimZone({ G, log, playerID }, zoneID, challengeInfo);
 	if(claimData === "INVALID_MOVE") return claimData;
+	checkVictory(context);
 	completeChallenge({ G, log, playerID }, challenge, evidence);
 	drawToFull(context);
 	createUndoPoint(G);
@@ -50,7 +52,7 @@ export function claimZone(
 	challenge: Challenge
 ) {
 	const claimedZone = G.zoneData[zoneID];
-	console.log("claiming zone", challenge);
+	console.log("claiming zone", claimedZone.name, challenge.title);
 	//regular claim
 	if (!challenge.hard && claimedZone.controlTeam === null) {
 		console.log("regular claim");

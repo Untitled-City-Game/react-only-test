@@ -6,10 +6,9 @@ import { MatchTeamColor, MoveContext } from "@/scripts/types/types";
 import { LogAPI } from "boardgame.io/dist/types/src/plugins/plugin-log";
 import challengeDataGeneric from 'data/challenges/challenges_generic.json';
 import challengeDataMelbourne from 'data/challenges/challenges_melbourne.json';
+import challengeDataMontreal from 'data/challenges/challenges_montreal.json';
+import challengeDataLondon from 'data/challenges/challenges_london.json'
 import { remove } from "lodash";
-const challengeDataMontreal: Challenge[] = []
-const challengeDataLondon: Challenge[] = []
-
 
 export function discardChallenge(
 	{ G, playerID }: { G: ChallengeGameGameState; log: LogAPI; playerID: string; },
@@ -103,18 +102,24 @@ export function discardHand(context: MoveContext<ChallengeGameGameState>) {
 
 }
 
-export function createChallengeDeck(city: string) {
-	const challengeData = challengeDataGeneric as RawChallenge[]
-	const structuredChallengeData = structureChallenges(challengeData)
-	switch (city) {
+export function createChallengeDeck(city: string, winter?: boolean) {
+	const genericChallengeData = challengeDataGeneric as RawChallenge[]
+	const allChallengeData = genericChallengeData.concat(getCityChallenges(city))
+	const filteredChallengeData = winter ? allChallengeData.filter(challenge => !challenge.exclude_winter) : allChallengeData
+	const structuredChallengeData = structureChallenges(filteredChallengeData);
+	return structuredChallengeData;
+}
+
+function getCityChallenges(city: string){
+		switch (city) {
 		case "melbourne":
-			return structuredChallengeData.concat(structureChallenges(challengeDataMelbourne))
+			return challengeDataMelbourne as RawChallenge []
 		case "montreal":
-			return structuredChallengeData.concat(challengeDataMontreal)
+			return challengeDataMontreal as RawChallenge []
 		case "london":
-			return structuredChallengeData.concat(challengeDataLondon)
+			return challengeDataLondon as RawChallenge []
 		default:
-			return structuredChallengeData
+			return []
 	}
 }
 
