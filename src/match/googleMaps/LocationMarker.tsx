@@ -1,12 +1,10 @@
 import { MatchTeamColor } from "@/scripts/types/types";
 import { GameContext } from "@/src/match/Board";
 import { AdvancedMarker } from "@vis.gl/react-google-maps";
-import { useContext, useEffect } from "react";
-import { ImCool2 } from "react-icons/im";
+import { useContext } from "react";
 import { IoLocationSharp } from "react-icons/io5";
-import useTeamLocations from "@/src/match/interfaces/useTeamLocations";
 import { Circle } from "@/src/match/googleMaps/shapes/Circle";
-import { theme } from "@/src/styles/theme";
+
 export default function LocationMarker({ position, accuracy, color }: { position: google.maps.LatLngLiteral, accuracy?: number, color: MatchTeamColor }) {
 	const { G: gameData } = useContext(GameContext)
 	const iconSize = 30

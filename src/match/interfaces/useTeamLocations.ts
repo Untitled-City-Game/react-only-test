@@ -1,10 +1,5 @@
-export type LocationData = {
-	teamName: MatchTeamColor;
-	location: google.maps.LatLngLiteral;
-	accuracy?: number;
-}
 import { socket } from "@/scripts/socket";
-import { MatchTeamColor } from "@/scripts/types/types";
+import { LocationData } from "@/scripts/types/types";
 import { useState, useEffect } from "react";
 
 export default function useTeamLocations(){
@@ -20,7 +15,7 @@ export default function useTeamLocations(){
 		}
 
 		function onLocationUpdate(value : LocationData) {
-			console.log("Received location update broadcast", value);
+			// console.log("Received location update broadcast", value);
 			setTeamLocations(previous => {
 				const index = previous.findIndex(teamData => teamData.teamName === value.teamName);
 				if (index == -1){

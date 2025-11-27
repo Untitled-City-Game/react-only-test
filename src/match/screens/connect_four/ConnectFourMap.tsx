@@ -1,20 +1,11 @@
-import { cities, gameLocationCenters, highlightColor } from "@/scripts/consts";
-import { GameBoardContext, GameBoardContextSpecific } from "@/scripts/types/types";
-import MapLine from "@/src/match/googleMaps/GoogleMapsLine";
+import { gameLocationCenters } from "@/scripts/consts";
 import VisGlMapElement from "@/src/match/googleMaps/VisGLMapElement";
 import SelectedZonePopup from "@/src/match/components/regions/SelectedZonePopup";
 import ZonePolygon from "@/src/match/components/regions/ZonePolygon";
 import { useContext, useMemo, useRef, useState } from "react";
 import { ConnectFourGameState, ZoneData } from "@/scripts/games/connect_four/types";
 import { ConnectFourContext, GameContext } from "@/src/match/Board";
-import useMyLocation from "@/src/match/interfaces/useMyLocation";
-import LocationMarker from "@/src/match/googleMaps/LocationMarker";
 import AllTeamMarkers from "@/src/match/googleMaps/AllTeamMarkers";
-import { processMetroLines } from "@/src/match/googleMaps/offsets";
-import { Circle } from "@/src/match/googleMaps/shapes/Circle";
-import ConnectionMarker from "@/src/match/googleMaps/ConnectionMarker";
-import { Polyline } from "@/src/match/googleMaps/shapes/PolyLine";
-import ConnectedSegment from "@/src/match/googleMaps/ConnectedSegment";
 import { LineData } from "@/scripts/types/googleMaps";
 import MyLocationMarker from "@/src/match/googleMaps/MyLocationMarker";
 import { isStartZoneClaimable } from "@/src/match/components/regions/region_claim_flow/ClaimFlowModal";
@@ -113,8 +104,8 @@ export default function ConnectFourMapTab() {
 					{/* <>{overlapLineElements}</> */}
 					{/* <>{connectionCirles}</> */}
 					<>{zoneElements}</>
-					<MyLocationMarker color={playerData.data.teamColor} defaultLocation={gameLocationCenters[G.city]} />
-					<AllTeamMarkers />
+					<MyLocationMarker color={playerData.data.teamColor} defaultLocation={gameLocationCenters[G.city]} playerID={playerData.data.playerID} broadcast={true} />
+					<AllTeamMarkers teamName={playerData.data.teamColor} />
 				</VisGlMapElement>
 			</div>
 		</>

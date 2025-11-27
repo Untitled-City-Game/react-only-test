@@ -19,8 +19,8 @@ export function MapAreaSelector({mapAreaCallback}: {mapAreaCallback: React.Dispa
 	<Input.Wrapper label="Game Area">
 		<div className="map-area-selector" style={{height: 400, width: "80%"}}>
 			{/* <AreaMap initialpos={{lat: 0, lng: 0}} mapAreaCallback={mapAreaCallback}/> */}
-			{myLocation.lat === 0 ? <span>Loading player location...</span> : 
-			<AreaMap initialpos={myLocation} mapAreaCallback={mapAreaCallback}/>
+			{myLocation.position.lat === 0 ? <span>Loading player location...</span> : 
+			<AreaMap initialpos={myLocation.position} mapAreaCallback={mapAreaCallback}/>
 			}
 		</div>
 	</Input.Wrapper>
