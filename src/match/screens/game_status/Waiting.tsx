@@ -1,12 +1,12 @@
 import { games } from "@/scripts/consts";
 import { GameBoardContext, GameStateGeneric, PlayerData } from "@/scripts/types/types";
 import Loading from "@/src/match/screens/game_status/Loading";
-import DashedCard from "@/src/userInterface/DashedCard";
+import DashedCard, { SolidCard } from "@/src/userInterface/DashedCard";
 import Header from "@/src/userInterface/Header/Header";
 import { HelpButton } from "@/src/match/components/help/HelpButton";
 import FullHeightLayout, { VerticalSpread } from "@/src/userInterface/Layout";
 import P from "@/src/userInterface/P";
-import { Box, Button, Center, Container, FileInput, LoadingOverlay, Stack } from "@mantine/core";
+import { Box, Button, Card, Center, Container, FileInput, LoadingOverlay, Stack, Title } from "@mantine/core";
 import { useContext, useEffect, useState } from "react";
 import { GameContext } from "@/src/match/Board";
 import { ConnectFourGameState } from "@/scripts/games/connect_four/types";
@@ -15,6 +15,7 @@ import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { ConnectFourMoves } from "@/scripts/games/connect_four/connect_four";
 import { SharedMoves } from "@/scripts/games/shared_moves/sharedMoves";
 import { StartingRegionButton } from "@/src/match/screens/game_status/StartingRegionModal";
+import Segment from "@/src/userInterface/Segment";
 
 export default function Waiting() {
 	console.log("rendering waiting page");
@@ -38,21 +39,31 @@ export default function Waiting() {
 				<VerticalSpread>
 					<div></div>
 					<div>
-						<Stack gap="xs" align="stretch">
-							<Box>
-								<h2 style={{ fontWeight: "light" }}><span style={{ fontWeight: "bold" }}>{props.G.gameName}</span> <br />is waiting to start.</h2>
-
+						<Stack gap="lg" align="stretch">
+															<h2 style={{ fontWeight: "light" }}>Your Connect Four game is waiting to start.</h2>
+							{/* <Segment>
+								<Title order={3} size="h4" mb="sm">Game Info</Title>
 								<P><strong>Host: </strong> {playerData[0]?.name}</P>
 								<P><strong>Invite code: </strong>{props.matchID}</P>
-							</Box>
-							<GameInviteButton gameCode={props.gameCode} matchID={props.matchID} />
-							<HelpButton />
-
-							<TeamSummary gameData={props.G} playerTeam={props.playerData.data.teamColor} />
+								<GameInviteButton gameCode={props.gameCode} matchID={props.matchID} />
+							</Segment> */}
+							<Segment>
+								<Stack>
+								<Title order={3} size="h4">Teams and Players</Title>
+								<TeamSummary gameData={props.G} playerTeam={props.playerData.data.teamColor} />
+								<GameInviteButton gameCode={props.gameCode} matchID={props.matchID} />
+								</Stack>
+							</Segment>
+							<Segment>
+							<Stack align="stretch">
+								<Title order={3} size="h4">Before you Start</Title>
+								<HelpButton />
+								{(props.playerData.data.admin && props.gameCode === "connect_four") ? <StartingRegionButton setStartDisabled={setStartDisabled}/> : null}
+							</Stack>
+							</Segment>
 						</Stack>
 					</div>
 					{props.playerData.data.admin ?<Stack> 
-					{props.gameCode === "connect_four" ? <StartingRegionButton setStartDisabled={setStartDisabled}/> : null}
 					<Button
 						disabled={startDisabled}
 						onClick={() => {
@@ -76,14 +87,14 @@ function TeamSummary({ gameData, playerTeam }: { gameData: GameStateGeneric, pla
 	return (
 		<Stack>
 			{teams.map((team, index) => (
-				<DashedCard key={index} color={team[0].teamColor}>
+				<SolidCard key={index} color={team[0].teamColor}>
 					<Container ta="left" w="100%">
 						<h3 style={{ textTransform: "capitalize" }}>{team[0].teamColor} team</h3>
 						<P>{team.map((player) => player.name).join(", ")}</P>
 					</Container>
 					{gameData.teamPhotoURLs[team[0].teamColor] ? <img style={{height: "80px", width: "80px", objectFit: "cover", borderRadius : "10px"}} src={gameData.teamPhotoURLs[team[0].teamColor]}  /> : 
 					team[0].teamColor === playerTeam ? <TeamFileUpload team={team} /> : null}
-				</DashedCard>
+				</SolidCard>
 			))}
 		</Stack>
 	)

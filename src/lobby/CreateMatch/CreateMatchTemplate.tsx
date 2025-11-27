@@ -9,6 +9,8 @@ import { useNavigate } from "react-router";
 import { LobbyClient } from "boardgame.io/client";
 import { joinMatch } from "@/scripts/joinMatch";
 import { FaRegSnowflake } from "react-icons/fa6";
+import { PrepButton } from "@/src/lobby/GamePrep";
+import Segment from "@/src/userInterface/Segment";
 interface CreateGameFormUniversal extends UseFormReturnType<any> {}
 
 export type FormValues = {
@@ -74,25 +76,20 @@ export default function CreateMatchTemplate({
 		navigate("/match");
 	}
 
-	
+	const game = games.filter(game => game.code === gameCode)[0]
+
 	return (
 	<>
 		<LoadingOverlay visible={loading} loaderProps={{ children: <Loading message="Joining match..." /> }} />
 		<form style={{ width: "100%" }} onSubmit={createGameForm.onSubmit(handleCreateGame)}>
-			<h2>Create a {games.filter(game => game.code === gameCode)[0].name} match</h2>
+			<h2>Create a {game.name} match</h2>
 			<Stack pb="sm">
-				<TextInput
-					fz="lg"
-					label="Your name"
-					key={createGameForm.key("PlayerName")}
-					{...createGameForm.getInputProps("PlayerName")}
-				/>
-				<TextInput
+				{/* <TextInput
 					label="Game name"
 					placeholder="My Game"
 					key={createGameForm.key("gameName")}
 					{...createGameForm.getInputProps("gameName")}
-				/>
+				/> */}
 				{children}
 				<Checkbox 
 					label="Winter mode?" 
@@ -101,6 +98,12 @@ export default function CreateMatchTemplate({
 					icon={FaRegSnowflake}
 					key={createGameForm.key("winter")}
 					{...createGameForm.getInputProps("winter")}
+				/>
+				<TextInput
+					fz="lg"
+					label="Your name"
+					key={createGameForm.key("PlayerName")}
+					{...createGameForm.getInputProps("PlayerName")}
 				/>
 				<Radio.Group
 					label="Choose a team"
@@ -156,10 +159,10 @@ export function createGameFormConstructor(formValues : Record<string, any>, vali
 				teamOptions.map((option) => option).includes(teamColor)
 					? null
 					: "Invalid team",
-			gameName: hasLength(
-				{ min: 2, max: 20 },
-				"Game name must be between 2 and 20 characters"
-			),
+			// gameName: hasLength(
+			// 	{ min: 2, max: 20 },
+			// 	"Game name must be between 2 and 20 characters"
+			// ),
 			...validators
 		},
 	});

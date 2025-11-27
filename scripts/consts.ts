@@ -72,13 +72,17 @@ export const games = [
 		code: "connect_four",
 		active: true,
 		description: "Connect four neighbourhoods in your city before the other team!",
-		color: "yellow",
+		playerMin: 4,
+		playerMax: 8,
+		color: "purple",
 		icon: MdGrid4X4
 	},
 	{
 		name: "Snake",
 		code: "snake",
 		active: true,
+		playerMin: 4,
+		playerMax: 8,
 		description: "Collect the fruit to grow your snake. Wrap around the other team to win!",
 		color: "green",
 		icon: VscSnake
@@ -87,6 +91,8 @@ export const games = [
 		name: "Tag",
 		code: "tag",
 		active: false,
+		playerMin: 6,
+		playerMax: 30,
 		description: "Explore the city and dodge the taggers - or chase your friends!",
 		color: "purple",
 		icon: PiPersonSimpleRunBold 
@@ -95,6 +101,8 @@ export const games = [
 		name: "Battleship",
 		code: "battleship",
 		active: false,
+		playerMin: 4,
+		playerMax: 8,
 		description: "Find and destroy the other team before they find you!",
 		color: "water",
 		icon: GiRadarSweep

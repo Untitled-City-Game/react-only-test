@@ -106,6 +106,17 @@ export type LogMetadata = {
 	growth?: number
 }
 
+export type GameMeta = {
+    name: string;
+    code: string;
+    active: boolean;
+    description: string;
+    color: string;
+    icon: IconType;
+	playerMin: number;
+	playerMax: number;
+}
+
 type RGB = `rgb(${number}, ${number}, ${number})`;
 type RGBA = `rgba(${number}, ${number}, ${number}, ${number})`;
 type HEX = `#${string}`;

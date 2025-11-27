@@ -1,5 +1,5 @@
 // App.tsx
-import ChooseMatch from "@/src/lobby/ChooseMatch";
+import LobbyLanding from "@/src/lobby/LobbyLanding";
 import JoinMatch from "@/src/lobby/JoinMatch";
 import LobbyLayout from "@/src/lobby/LobbyLayout";
 import ChooseGame from "@/src/site/ChooseGame";
@@ -29,7 +29,7 @@ export default function AppRouter(){
 				<Route path="lobby" element={<LobbyLayout />}>
 					<Route path=":gameCode/join-match/:matchID" element={<JoinMatch />} />
 					<Route path=":gameCode/create-match" element={<CreateMatch />} />
-					<Route path=":gameCode/choose-match" element={<ChooseMatch />} />
+					<Route path=":gameCode/choose-match" element={<LobbyLanding />} />
 				</Route>
 				<Route path="*" element={<NotFound />} />
 			</Route>

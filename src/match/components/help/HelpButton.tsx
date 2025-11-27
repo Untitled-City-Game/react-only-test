@@ -1,3 +1,4 @@
+import { theme } from "@/src/styles/theme";
 import { Button, Center, Container, Modal, ScrollArea, UnstyledButton } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { BsQuestionCircleFill } from "react-icons/bs";
@@ -21,7 +22,7 @@ export function HelpButton() {
 
 	return (
 		<>
-			<Button variant="outline" onClick={open}>How to play</Button>
+			<Button w="100%" variant="outline" onClick={open}>How to Play</Button>
 			<HelpModal opened={opened} close={close} />
 		</>
 	);

@@ -15,7 +15,6 @@ import {
 import { Outlet, useNavigate, useParams } from "react-router";
 
 export default function LobbyLayout() {
-	const navigate = useNavigate();
 	const gameCode = useParams().gameCode;
 	const game = games.find((game) => game.code === gameCode);
 	const lobbyTheme = mergeMantineTheme(theme, {

@@ -16,7 +16,7 @@ export function StartingRegionButton({setStartDisabled} : {setStartDisabled: Rea
 
 	return (
 		<>
-			<Button variant={connectFourContext.startingZone ? "light" : "outline"} onClick={open}>{connectFourContext.startingZone ? `Starting in: ${connectFourContext.startingZone}` : "Choose starting neighbourhood"}</Button>
+			<Button variant={connectFourContext.startingZone ? "light" : "filled"} onClick={open}>{connectFourContext.startingZone ? `Starting in: ${connectFourContext.startingZone}` : "Choose starting neighbourhood"}</Button>
 			<StartingRegionModal opened={opened} close={close} setStartDisabled={setStartDisabled} />
 		</>
 	);
