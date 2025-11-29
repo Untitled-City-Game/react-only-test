@@ -1,0 +1,24 @@
+import { defineConfig } from "vite";
+import react from "@vitejs/plugin-react-swc";
+import path from "path";
+
+export default defineConfig({
+  define: {
+    'process.env': process.env
+  },
+  server: {
+    port: 1234,
+  },
+  resolve: {
+    alias: {
+      "@": path.resolve(__dirname, "../"),
+      "@data": path.resolve(__dirname, "../data"),
+      "@src": path.resolve(__dirname, "../src"),
+      "@scripts": path.resolve(__dirname, "../scripts"),
+      "@styles": path.resolve(__dirname, "../src/styles"),
+      "@match": path.resolve(__dirname, "../src/match"),
+      "@server": path.resolve(__dirname, "../server"),
+    },
+  },
+  plugins: [react()],
+});
