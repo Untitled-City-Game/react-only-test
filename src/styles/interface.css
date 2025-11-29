@@ -15,7 +15,12 @@ body {
   font-family: "Roboto Mono", monospace;
 }
 
-h1, h2, h3, h4, h5, h6 {
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
   font-family: "underground", sans-serif;
 }
 
@@ -34,12 +39,15 @@ h3 {
   margin: 0.25rem 0;
 }
 
-label, .mantine-RadioGroup-label {
+label,
+.mantine-RadioGroup-label {
   font-size: 1rem !important;
   margin-bottom: 0rem !important;
 }
 
-input.mantine-Select-input, input.mantine-TextInput-input, div.mantine-Select-option {
+input.mantine-Select-input,
+input.mantine-TextInput-input,
+div.mantine-Select-option {
   font-size: 1rem !important;
   font-family: "Hanken Grotesk", sans-serif;
 }
@@ -49,7 +57,7 @@ input.mantine-Select-input, input.mantine-TextInput-input, div.mantine-Select-op
   width: 480px;
   overflow: hidden;
   float: left;
-  background-color: #ECECFB;
+  background-color: #ececfb;
   border: thin solid #333;
   border-left: none;
 }
@@ -61,6 +69,22 @@ input.mantine-Select-input, input.mantine-TextInput-input, div.mantine-Select-op
 .header h1 {
   margin: 0.5rem;
   margin-bottom: 0;
+}
+
+@keyframes myAnimation {
+  from {
+    opacity: 0.5;
+  }
+  to {
+    opacity: 0.2;
+  }
+}
+.location-missing {
+  animation-name: myAnimation;
+  animation-duration: 0.8s;
+  animation-iteration-count: infinite;
+  animation-direction: alternate;
+  animation-timing-function: linear;
 }
 
 /*# sourceMappingURL=interface.css.map */

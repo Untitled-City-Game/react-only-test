@@ -67,7 +67,7 @@ export default function TabSet({ tabCodes }: { tabCodes: TabCodes[] }) {
 	const [activeTab, setActiveTab] = useState<string | null>(null);
 	return (
 		<TabAlertsContext.Provider value={{setTabAlertState}}>
-		<Tabs defaultValue={"Log"} variant="pills" radius={0} id="matchContainer" onChange={setActiveTab}>
+		<Tabs defaultValue={"Map"} variant="pills" radius={0} id="matchContainer" onChange={setActiveTab}>
 			{tabCodes.map(tabCode => {
 				const tab = tabIndex[tabCode]
 				return (

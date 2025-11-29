@@ -117,12 +117,20 @@ export type GameMeta = {
 	playerMax: number;
 }
 
+export type LocationResult = {
+	position: google.maps.LatLngLiteral,
+	accuracy?: number,
+	time?: number,
+	invalid: boolean
+}
+
 export type LocationData = {
 	teamName: MatchTeamColor,
 	playerID: string,
 	timestamp: number,
 	location: google.maps.LatLngLiteral,
 	accuracy: number,
+	invalid?: boolean
 }
 
 type RGB = `rgb(${number}, ${number}, ${number})`;

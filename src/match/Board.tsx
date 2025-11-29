@@ -2,18 +2,18 @@ import { ChallengeDeck } from "@/scripts/games/challenge_deck/challenge_deck_typ
 import { ConnectFourMoves } from "@/scripts/games/connect_four/connect_four";
 import { ConnectFourGameState } from "@/scripts/games/connect_four/types";
 import { SnakeGameState } from "@/scripts/games/snake/types";
-import { GameBoardContext, GameBoardContextSpecific, GameStateGeneric, PlayerData } from "@/scripts/types/types";
+import { GameBoardContext, GameBoardContextSpecific, GameStateGeneric, LocationData, LocationResult, PlayerData } from "@/scripts/types/types";
 import GameOver from "@/src/lobby/GameOver";
+import useMyLocation from "@/src/match/interfaces/useMyLocation";
+import useTeamLocations from "@/src/match/interfaces/useTeamLocations";
 import Loading from "@/src/match/screens/game_status/Loading";
 import VictoryModal from "@/src/match/screens/game_status/VictoryModal";
 import Waiting from "@/src/match/screens/game_status/Waiting";
 import TabSet from "@/src/match/screens/match_tabs/TabSet";
-import Span from "@/src/userInterface/Span";
 import StatusBar from "@/src/userInterface/StatusBar";
-import { Box } from "@mantine/core";
-import { createContext, useEffect } from "react";
+import { createContext, RefObject, useContext, useEffect, useRef } from "react";
 import { ErrorBoundary } from "react-error-boundary";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 
 
 export const GameContext = createContext({} as GameBoardContext);
@@ -62,9 +62,11 @@ function Board(props: GameBoardContext){
 		// }
 		return (
 			<GameContext.Provider value={{ ...props }}>
-				<MatchContext G={props.G}>
-					<Waiting />
-				</MatchContext>
+				<LocationRefContextWrapper>
+					<MatchContext G={props.G}>
+						<Waiting />
+					</MatchContext>
+				</LocationRefContextWrapper>
 			</GameContext.Provider>
 		);
 	}
@@ -76,9 +78,13 @@ function Board(props: GameBoardContext){
 	return (
 		<GameContext.Provider value={{ ...props }}>
 			<ErrorBoundary fallback={<span>Something went wrong inside the board element</span>}>
-				<MatchContext G={props.G}>
-					<MatchGameplay G={props.G} playerData={props.playerData.data} />
-				</MatchContext>
+				<OtherTeamsContextWrapper>
+					<LocationRefContextWrapper>
+						<MatchContext G={props.G}>
+							<MatchGameplay G={props.G} playerData={props.playerData.data} />
+						</MatchContext>
+					</LocationRefContextWrapper>
+				</OtherTeamsContextWrapper>
 			</ErrorBoundary>
 		</GameContext.Provider>
 	);
@@ -114,7 +120,6 @@ function ConnectFourContextWrapper({G, children} : {G:ConnectFourGameState, chil
 		</ConnectFourContext.Provider>
 	)
 }
-
 
 function ConnectFourGameplay(G:ConnectFourGameState, playerData : PlayerData){
 	const claimedZones = G.zoneData.filter(zone => zone.controlTeam === playerData.teamColor).length
@@ -152,90 +157,29 @@ function SnakeGameplay(G: SnakeGameState, playerData : PlayerData){
 
 }
 
-// export function xBoard(props: MetroGameBoardProps) {
-// 	const { children, ...boardGameContext }  = props;
-// 	const { moves, playerID } = props;
-// 	const playerData = props.playerData.data;
-// 	let navigate = useNavigate();
-// 	// const [worker, setWorker] = useState<ServiceWorkerRegistration>()
-// 	// useEffect(() => {
-// 	// 		if ('serviceWorker' in navigator) {
-// 	// 			navigator.serviceWorker.register(
-// 	// 				new URL('service-worker.js', import.meta.url),
-// 	// 				{ type: 'module' }
-// 	// 			).then(worker => setWorker(worker));
-// 	// 		}
-// 	// 	}, []);
 
-// 	// useEffect(() => {
-// 	// 	if(worker){
-// 	// 		const latestUpdate = boardGameContext.log.slice(-1)[0];
-// 	// 		const metadata = latestUpdate.metadata;
-// 	// 		if(!metadata) return;
-// 	// 		let title = ""
-// 	// 		let body = ""
-// 	// 		console.warn("notification effect", metadata.team, playerData.teamColor)
-// 	// 		if(metadata.team === playerData.teamColor){
-// 	// 			return;
-// 	// 		}
-// 	// 		switch (latestUpdate.action.payload.type) {
-// 	// 			case "completeChallengeAndClaim":
-// 	// 				title = "Neighbourhood claimed!"
-// 	// 			 	body = `${metadata.team} team completed challenge ${metadata.challenge} to ${metadata.claimType || "claim"} ${metadata.zoneName || metadata.zone} ${metadata.stealFrom ? `from ${metadata.stealFrom}` : null}`
-// 	// 				break;
-// 	// 			case "startGame":
-// 	// 				title = "The game has started!"
-// 	// 				break;
-// 	// 			default:
-// 	// 				return;
-// 	// 		}
-// 	// 		worker.showNotification(title, {body});
-// 	// 	}
-// 	// }, [boardGameContext.G.zoneData]);
-	
-// 	useEffect(() => {
-// 		if (playerID && !props.G.allPlayersData[playerID]) {
-// 			console.log(
-// 				"setting up player ",
-// 				playerID,
-// 				playerData,
-// 				"on client"
-// 			);
-// 			moves.playerSetup(playerData);
-// 		}
-// 	}, [playerID, moves, playerData, props.G.allPlayersData]);
+export const OtherTeamsContext = createContext<LocationData[]>([])
 
-// 	if (props.G.gameOver) {
-// 		return <GameOver />;
-// 	}
+function OtherTeamsContextWrapper({children} : {children: React.ReactNode}){
+		const data = useTeamLocations()
+		return(
+		<OtherTeamsContext.Provider value={data}>
+				{children}
+		</OtherTeamsContext.Provider>
+	)
+}
 
-// 	if (!playerID){
-// 		navigate("/lobby");
-// 	}
+export const LocationContext = createContext<RefObject<LocationResult> | undefined>(undefined)
 
-// 	if (!props.G.active) {
-// 		return (
-// 			<GameContext.Provider value={{ ...boardGameContext }}>
-// 				{/* <Waiting /> */}
-// 			</GameContext.Provider>
-// 		);
-// 	}
-
-// 	if (playerID && !props.G.allPlayersData[playerID]) {
-// 		return <Loading message="Looking for local player data" />;
-// 	}
-
-// 	return (
-// 		<GameContext.Provider value={{ ...boardGameContext }}>
-// 			<p>Player ID: {playerID}</p>
-// 			<p>
-// 				Team: {playerID && props.G.allPlayersData[playerID].teamColor}
-// 			</p>
-// 			<p>Game state: {props.G.active ? "active" : "inactive"}</p>
-// 			<p>Gameover: {props.G.gameOver ? "true" : "false"}</p>
-// 			<ErrorBoundary fallback={<span>Something went wrong inside the board element</span>}>
-// 			{children}
-// 			</ErrorBoundary>
-// 		</GameContext.Provider>
-// 	);
-// }
+function LocationRefContextWrapper({children} : {children: React.ReactNode}){
+	const location = useMyLocation();
+	const locationRef = useRef(location);
+	useEffect(() => {
+		locationRef.current = location;
+	}, [location])
+	return (
+		<LocationContext value={locationRef}>
+			{children}
+		</LocationContext>
+	)
+}

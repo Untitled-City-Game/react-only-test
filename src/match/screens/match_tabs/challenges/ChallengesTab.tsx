@@ -1,6 +1,8 @@
 import { ConnectFourMoves } from "@/scripts/games/connect_four/connect_four";
-import { ChallengeDeckContext, GameContext } from "@/src/match/Board";
+import { ChallengeDeckContext, ConnectFourContext, GameContext } from "@/src/match/Board";
 import ClaimFlowModal from "@/src/match/components/regions/region_claim_flow/ClaimFlowModal";
+import useMyLocation from "@/src/match/interfaces/useMyLocation";
+import useMyZone from "@/src/match/interfaces/useMyZone";
 import { ClaimButton } from "@/src/match/screens/match_tabs/challenges/UI/ChallengeCard";
 import { ChallengeBody } from "@/src/match/screens/match_tabs/challenges/UI/ChallengePopup";
 import RuleBox from "@/src/match/screens/match_tabs/challenges/UI/RuleBox";
@@ -19,7 +21,7 @@ export const ChallengeContext = createContext<any>(null);
 
 export default function ChallengesTab({ active }: { active: string | null }) {
 	const { allTeamsChallengeData, } = useContext(ChallengeDeckContext)
-	const props = useContext(GameContext)
+	const props = useContext(GameContext);
 	const moves = props.moves as ConnectFourMoves; //TODO: Make this generic / composite
 	const { allPlayersData } = props.G;
 	const playerData = allPlayersData[props.playerData.data.playerID];
@@ -108,6 +110,7 @@ export default function ChallengesTab({ active }: { active: string | null }) {
 				open={opened}
 				close={close}
 				challengeTitle={currentChallenge}
+				inferZone={true}
 			/>
 		</>
 	);

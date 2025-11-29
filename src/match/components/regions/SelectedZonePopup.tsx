@@ -25,6 +25,7 @@ export default function SelectedZonePopup({
 	const props = useContext(GameContext)
 	const G = useContext(ConnectFourContext);
 	const winningLines = G.MatchMapData.winningLines;
+	const disabled = currentZone ? isZoneDisabled(currentZone.name, G) : false
 	return (
 		<>
 			<Center
@@ -52,11 +53,15 @@ export default function SelectedZonePopup({
 										"Unclaimed"
 								}</Span>
 						</P>
+						{disabled ?
+						<P>
+							You can't claim the starting neighbourhood first.
+						</P>: null}
 						<Button onClick={() => {
 							open();
 							setCurrentZone(undefined);
-						}} size="m" disabled={currentZone?.locked || (currentZone && isZoneDisabled(currentZone.name, G))}>
-							<span>{currentZone?.controlTeam === null ? "Claim" : "Steal"}</span>
+						}} size="m" disabled={currentZone?.locked || disabled}>
+							<span>{currentZone?.controlTeam === null ? "Claim" : currentZone?.controlTeam === props.playerData.data.teamColor ? "Lock" : "Steal"}</span>
 						</Button>
 						<LineStepper allZoneData={G.zoneData} lines={winningLines.filter(line => line.matchedPolygons.includes(currentZone?.name || ""))} activeLine={activeLine} setActiveLine={setActiveLine} />
 					</Stack>
@@ -101,18 +106,6 @@ function LineStepper({ lines, activeLine, setActiveLine, allZoneData }: { lines:
 				<h3 style={{ margin: 0 }}>Line {lineIndex + 1} of {lines.length}</h3>
 				<Button onClick={nextLine}><FaArrowCircleRight /></Button>
 			</Group>
-			{/* <Group wrap="nowrap" align="flex-start" justify="space-between" style={lineStyles}>
-				<div style={lineStartStyle} color="darkgrey" />
-				{activeLine?.matchedPolygons.map((polygonName, index) =>
-					<Stack key={index} align="center">
-						<FaCircle style={stationPointStyle} color={allZoneData.find(zone => zone.name === polygonName)?.controlTeam || "white"} />
-						<FaRegCircle style={stationPointStyle} />
-						<P fz="xs" >{polygonName}</P>
-					</Stack>
-				)}
-				<div style={lineEndStyle} />
-			</Group> */}
-
 		</>
 	)
 }

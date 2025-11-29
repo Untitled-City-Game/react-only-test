@@ -4,11 +4,12 @@ import { GameBoardContext, MatchTeamColor } from "@/scripts/types/types";
 import { ConnectFourContext, GameContext } from "@/src/match/Board";
 import MyLocationMarker from "@/src/match/googleMaps/MyLocationMarker";
 import VisGlMapElement from "@/src/match/googleMaps/VisGLMapElement";
+import { useMyZoneRef } from "@/src/match/interfaces/useMyZone";
 import { GenericMapZones } from "@/src/match/screens/connect_four/GenericMapZones";
 import P from "@/src/userInterface/P";
 import { Box, Button, Container, Modal, Select, Stack } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
 export function StartingRegionButton({setStartDisabled} : {setStartDisabled: React.Dispatch<React.SetStateAction<boolean>>}) {
 	const [opened, { open, close }] = useDisclosure(false);
@@ -34,7 +35,14 @@ export function StartingRegionModal({
 	const connectFourContext = useContext(ConnectFourContext);
 	const gameContext = useContext(GameContext)
 	const zoneSelectOptions = connectFourContext.zoneData.map(zone => { return { value: zone.name, label: zone.name } });
-	const [selectedZone, setSelectedZone] = useState<string | null>("");
+	const myZoneRef = useMyZoneRef()
+	const [selectedZone, setSelectedZone] = useState<string | null>();
+
+	useEffect(() => {
+		console.log("opened starting region modal", myZoneRef.current)
+		setSelectedZone(myZoneRef.current?.name)
+	}, [opened]);
+
 	const moves = gameContext.moves as ConnectFourMoves
 	return (
 		<Modal
@@ -44,7 +52,7 @@ export function StartingRegionModal({
 			mah="70vh"
 			title={
 				<span style={{ fontSize: "1.5rem", fontWeight: "bold" }}>
-					Select Starting Region
+					Select Starting Neighbourhood
 				</span>
 			}>
 				<Container style={{
@@ -52,7 +60,7 @@ export function StartingRegionModal({
 					overflowY: "scroll",
 				}}>
 					<Stack>
-						<P>The starting neighbourhood cannot be claimed first. Both teams must leave the starting neighbourhood and claim another neighbourhood.</P>
+						<P>The starting neighbourhood cannot be claimed first. Teams must leave the starting neighbourhood and claim another neighbourhood.</P>
 						<Select label="Starting neighbourhood" data={zoneSelectOptions} value={selectedZone} onChange={setSelectedZone}/>
 						<Box style={mapContainerStyle} >
 							<VisGlMapElement center={gameLocationCenters[connectFourContext.city]}>

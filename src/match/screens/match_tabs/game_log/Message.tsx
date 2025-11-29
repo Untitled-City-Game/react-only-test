@@ -79,6 +79,7 @@ export function Message({ entry, gameData, playerData }: { entry: LogEntry; game
 		case "addTeamPhoto":
 			break;
 		default:
-			return <P>{entry.action.payload.type}</P>;
+			break;
+			//return <P>{entry.action.payload.type}</P>;
 	}
 }

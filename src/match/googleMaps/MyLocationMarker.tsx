@@ -1,4 +1,4 @@
-import { gameLocationCenters } from "@/scripts/consts";
+import { EXPIRE_TIME, gameLocationCenters } from "@/scripts/consts";
 import { CoordSet, MatchTeamColor } from "@/scripts/types/types";
 import LocationMarker from "@/src/match/googleMaps/LocationMarker";
 import useMyLocation, { useAndBroadcastMyLocation } from "@/src/match/interfaces/useMyLocation";
@@ -6,11 +6,9 @@ import useMyLocation, { useAndBroadcastMyLocation } from "@/src/match/interfaces
 export default function MyLocationMarker(
 	{color, defaultLocation, playerID="", broadcast=false} : {color: MatchTeamColor, defaultLocation: google.maps.LatLngLiteral, playerID?:string, broadcast?: boolean}
 ){
-	const {position, accuracy} = broadcast ? 
-		useAndBroadcastMyLocation(color, playerID, defaultLocation || { lat: 0, lng: 0 })
-		: useMyLocation(defaultLocation);
-
+	const {position, accuracy, time, invalid} = useAndBroadcastMyLocation(color, playerID, defaultLocation || { lat: 0, lng: 0 })
+	
 	return (
-		<LocationMarker position={position || defaultLocation} color={color} accuracy={accuracy} />
+		<LocationMarker position={position || defaultLocation} color={color} accuracy={accuracy} invalid={invalid} />
 	)
 }

@@ -6,10 +6,11 @@
   "scripts": {
     "sass": "sass src/styles/interface.scss src/styles/interface.css",
     "start": "parcel --no-cache",
-    "parcel-dev": "NODE_OPTIONS='--max-old-space-size=512' dotenvx run -f .env.development -- parcel --no-cache",
+    "parcel-dev": "NODE_OPTIONS='--max-old-space-size=1080' dotenvx run -f .env.development -- parcel --no-cache ",
     "dev": "npm run sass && npm run parcel-dev",
     "staging": "dotenvx run -f .env.staging -- parcel --no-cache",
     "build": "parcel build ./src/index.html --no-cache",
+    "build-dev": "dotenvx run -f .env.development -- parcel build ./src/index.html --no-cache",
     "deploy": "dotenvx run -- npm run build && firebase deploy --project=prod",
     "stage": "dotenvx run -f .env.staging -- npm run build && firebase deploy",
     "serve": "NODE_OPTIONS='--max-old-space-size=512' tsx --env-file .env.development server/server.ts",
@@ -22,6 +23,10 @@
     "start-location": "node --env-file=.env build/locationServer.js",
     "start-dev-location": "node --max-old-space-size=512 --env-file=.env.development build/locationServer.js",
     "start-staging-location": "node --env-file=.env.staging build/locationServer.js",
+    "vite-dev": "dotenvx run -f .env.development -- vite serve src",
+    "vite-build": "dotenvx run -f .env.development -- vite build src --outDir ../dist --assetsDir static",
+    "vite-preview": "dotenvx run -f .env.development -- vite preview --port 1234",
+    "vite-dev-preview": "npm run vite-build && npm run vite-preview",
     "typecheck": "tsc --noEmit"
   },
   "dependencies": {
@@ -64,11 +69,13 @@
     "@types/react": "^19.0.12",
     "@types/react-dom": "^19.0.4",
     "@types/xmldom": "^0.1.34",
+    "@vitejs/plugin-react-swc": "^4.2.2",
     "buffer": "^6.0.3",
     "parcel": "^2.14.1",
     "parcel-plugin-static-files-copy": "^2.6.0",
     "parcel-reporter-static-files-copy": "^1.5.3",
     "process": "^0.11.10",
-    "tsx": "^4.20.3"
+    "tsx": "^4.20.3",
+    "vite": "^7.2.4"
   }
 }

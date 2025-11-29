@@ -4,10 +4,25 @@ import { AdvancedMarker } from "@vis.gl/react-google-maps";
 import { useContext } from "react";
 import { IoLocationSharp } from "react-icons/io5";
 import { Circle } from "@/src/match/googleMaps/shapes/Circle";
+import { FaQuestionCircle } from "react-icons/fa";
+import { useMantineTheme } from "@mantine/core";
+import Span from "@/src/userInterface/Span";
+import { ACCURACY_MAX } from "@/scripts/consts";
+import P from "@/src/userInterface/P";
 
-export default function LocationMarker({ position, accuracy, color }: { position: google.maps.LatLngLiteral, accuracy?: number, color: MatchTeamColor }) {
+const iconSize = 30
+
+export default function LocationMarker({ position, accuracy, color, invalid, expired }: 
+	{ 	position: google.maps.LatLngLiteral, 
+		accuracy?: number, 
+		color: MatchTeamColor, 
+		invalid?: boolean,
+		expired?: boolean
+
+	}) {
 	const { G: gameData } = useContext(GameContext)
-	const iconSize = 30
+	const theme = useMantineTheme();
+	const accurate = ((accuracy??ACCURACY_MAX) < ACCURACY_MAX) && !invalid
 	//update my location with location server
 	const teamImgStyle : React.CSSProperties = { 
 		height: `${iconSize}px`, 
@@ -16,11 +31,16 @@ export default function LocationMarker({ position, accuracy, color }: { position
 		borderRadius: "50%", 
 		position: "absolute", 
 		bottom: `${iconSize * 0.75}px`, 
-		left: `${-iconSize / 2}px` }
+		left: `${-iconSize / 2}px`,
+		zIndex: "3"
+	}
 	return (
 		<AdvancedMarker position={position}>
+			{/* <P fz="xs">accurate: {accurate ? 'true' : 'false'}</P>
+			<P fz="xs">expired: {expired ? 'true' : 'false'}</P>
+			<P fz="xs">invalid: {invalid ? 'true' : 'false'}</P> */}
 			<IoLocationSharp
-				fill={color}
+				fill={accurate ? theme.colors[color][6] : theme.colors[color][9]}
 				stroke="white"
 				strokeWidth={10}
 				strokeOpacity={1}
@@ -28,13 +48,21 @@ export default function LocationMarker({ position, accuracy, color }: { position
 				style={{
 					position: "absolute",
 					bottom: "0px",
-					left: `${-iconSize}px`
+					left: `${-iconSize}px`,
+					zIndex: "2"
 				}}
 			/>
 			
 			<img style={teamImgStyle} src={gameData.teamPhotoURLs[color] ?? "/snakemarker.png"} />
-			{/* : <ImCool2 style={teamImgStyle} color={theme.colors[color][1]} /> */}
-			<Circle center={position} radius={accuracy} strokeColor={color} fillColor={color} strokeOpacity={0.3} fillOpacity={0.1} clickable={false} />
+			{accurate ? <Circle 
+				center={position} 
+				radius={accuracy} 
+				strokeColor={color} 
+				fillColor={color} 
+				strokeOpacity={0.3} 
+				fillOpacity={0.1} 
+				clickable={false} 
+			/> : <FaQuestionCircle className="location-missing" size="4rem" opacity={0.3} style={{transform: "translate(-50%, 50%)", zIndex: "0"}} />}
 		</AdvancedMarker>
 	)
 }

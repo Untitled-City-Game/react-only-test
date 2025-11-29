@@ -1,9 +1,10 @@
 import { ConnectFourMoves } from "@/scripts/games/connect_four/connect_four";
 import { ConnectFourGameState, ZoneData } from "@/scripts/games/connect_four/types";
 import { GameBoardContext } from "@/scripts/types/types";
-import { ChallengeDeckContext, GameContext } from "@/src/match/Board";
+import { ChallengeDeckContext, ConnectFourContext, GameContext, LocationContext } from "@/src/match/Board";
 import claimZone from "@/src/match/components/regions/region_claim_flow/claimZone";
 import { ModalHeader } from "@/src/match/components/regions/region_claim_flow/ui/ModalHeader";
+import { useMyZoneRef } from "@/src/match/interfaces/useMyZone";
 import Loading from "@/src/match/screens/game_status/Loading";
 import {
 	Button,
@@ -28,19 +29,36 @@ export default function ClaimFlowModal({
 	open,
 	close,
 	claimedZone,
-	challengeTitle
+	challengeTitle,
+	inferZone
 }: {
 	open: boolean;
 	close: () => void;
 	claimedZone?: ZoneData;
 	challengeTitle?: string;
+	inferZone?: boolean;
 }) {
+	console.warn("rendering claim flow modal");
 	const props: GameBoardContext = useContext(GameContext);
-	const { allTeamsChallengeData } = useContext(ChallengeDeckContext)
+	const { allTeamsChallengeData } = useContext(ChallengeDeckContext);
+	
 	if (props.G.gameCode !== "connect_four") {
 		throw new Error("no challenges, game code " + props.G.gameCode);
 	}
+	
 	const [loading, setLoading] = useState(false);
+	
+	//const locationRef = useContext(LocationContext);
+	const myZoneRef = useMyZoneRef()
+	useEffect(() => {
+		console.warn("running modal open effect");
+		console.log("location: ", myZoneRef);
+
+		if(inferZone){
+			console.log("inferring zone")
+			claimForm.setValues({ zone: String(myZoneRef.current?.id) }
+		)}
+	}, [open]);
 
 	const claimForm = useForm({
 		mode: "controlled",
@@ -99,8 +117,11 @@ export default function ClaimFlowModal({
 					<Container pb="md">
 						<form onSubmit={claimForm.onSubmit(handleSubmit)}>
 							<Stack ta="left">
-								<Select label="Claiming neighbourhood" data={zoneSelectOptions} {...claimForm.getInputProps("zone")} defaultValue={String(claimedZone?.id || "")} />
-
+								<Select 
+									label="Claiming neighbourhood" 
+									data={zoneSelectOptions} {...claimForm.getInputProps("zone")} 
+									defaultValue={String(claimedZone?.id || "")} 
+								/>
 								<Select label="With challenge" data={challengeHand} {...claimForm.getInputProps("challenge")} defaultValue={challengeTitle} />
 								<FileInput
 									label="Evidence"
@@ -151,9 +172,7 @@ export function validZones(zones :  {
     value: string;
     label: string;
 }[], gameState: ConnectFourGameState){
-	
-	console.log("filtering zones", gameState.startingZone)
-	let validZones : {value: string, label: string}[] = [...zones]
+		let validZones : {value: string, label: string}[] = [...zones]
 	
 	//remove starting zone if no zones are claimed
 	if(!isStartZoneClaimable(gameState.zoneData)){
