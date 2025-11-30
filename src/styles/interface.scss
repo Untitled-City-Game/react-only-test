@@ -98,3 +98,12 @@ div.mantine-Select-option {
 		// border-radius: 1rem;
 	}
 }
+
+@keyframes growIn {
+	from {
+		transform: scale(0.9);
+	}
+	to {
+		transform: scale(1);
+	}
+}
