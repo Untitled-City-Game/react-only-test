@@ -12,7 +12,7 @@
     "build": "parcel build ./src/index.html --no-cache",
     "build-dev": "dotenvx run -f .env.development -- parcel build ./src/index.html --no-cache",
     "deploy": "dotenvx run -- npm run build && firebase deploy --project=prod",
-    "stage": "dotenvx run -f .env.staging -- npm run build && firebase deploy",
+    "stage": "dotenvx run -f .env.staging -- npm run vite-build && firebase deploy",
     "serve": "NODE_OPTIONS='--max-old-space-size=512' tsx --env-file .env.development server/server.ts",
     "build-server": "esbuild server/server.ts --bundle --platform=node --outfile=build/server.js --packages=external",
     "start-server": "node --env-file=.env build/server.js",
