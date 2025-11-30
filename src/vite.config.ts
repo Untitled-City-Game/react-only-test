@@ -9,6 +9,7 @@ export default defineConfig({
   server: {
     port: 1234,
   },
+  publicDir: '../static',
   resolve: {
     alias: {
       "@": path.resolve(__dirname, "../"),
@@ -20,5 +21,16 @@ export default defineConfig({
       "@server": path.resolve(__dirname, "../server"),
     },
   },
-  plugins: [react()],
+  plugins: [
+    react(),
+        {
+      name: "markdown-loader",
+      transform(code, id) {
+        if (id.slice(-3) === ".md") {
+          // For .md files, get the raw content
+          return `export default ${JSON.stringify(code)};`;
+        }
+      }
+    }
+  ],
 });

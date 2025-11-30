@@ -87,4 +87,8 @@ div.mantine-Select-option {
   animation-timing-function: linear;
 }
 
+.markdown img {
+  max-width: 100%;
+}
+
 /*# sourceMappingURL=interface.css.map */
