@@ -121,7 +121,7 @@ export default function ZonePolygon({
 				: null}
 			{disabled && !amHighlighted ?
 				<AdvancedMarker position={polygonCenter}>
-					<FaBan size="2rem" color="black" />
+					<FaBan size="2rem" color="black" style={{position: "relative", left: "20%", top:"70%" }} />
 				</AdvancedMarker>
 				: null}
 		</>
