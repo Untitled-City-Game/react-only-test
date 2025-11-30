@@ -91,4 +91,13 @@ div.mantine-Select-option {
   max-width: 100%;
 }
 
+@keyframes growIn {
+  from {
+    transform: scale(0.9);
+  }
+  to {
+    transform: scale(1);
+  }
+}
+
 /*# sourceMappingURL=interface.css.map */

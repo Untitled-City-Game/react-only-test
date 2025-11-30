@@ -12,6 +12,10 @@ import polylabel from "polylabel";
 import { useEffect, useState } from "react";
 import { FaBan, FaLock } from "react-icons/fa";
 import findPolygonCenter from "@/scripts/geojson/polygonCenter";
+import { transformScale } from "@turf/turf";
+import * as turf from "@turf/turf"
+import ease from "@/scripts/ease";
+import useEase from "@/scripts/ease";
 
 type ZonePolygonProps = {
 	zone: PolyData;
@@ -33,8 +37,10 @@ export default function ZonePolygon({
 	const amCurrentZone = zone.featureName === currentZone?.name;
 	const amHighlighted = activeLine?.matchedPolygons.includes(zone.featureName)
 	const coordsAsArray = zone.coords.map((coord) => [coord.lat, coord.lng]);
-	//const polygonCenter = polylabel([coordsAsArray], 0.0000001);
-	const polygonCenter = findPolygonCenter(zone.coords)
+	const polygonCenter = findPolygonCenter(zone.coords);
+	//const smallVersion = transformScale(turf.polygon([coordsAsArray]), 0.9, {origin: "center"});
+	const smallVersion = turf.buffer(turf.polygon([coordsAsArray]), -0.0005, { units: "degrees" })
+	const smallVersionPaths = smallVersion?.geometry.coordinates[0].map(position => { return { lat: position[0], lng: position[1] } })
 	const zoomThreshold = 14;
 	const [zoom, setZoom] = useState(0);
 	const map = useMap();
@@ -46,43 +52,63 @@ export default function ZonePolygon({
 		}
 	}, [map]);
 
-	//console.log("i am ", zone.featureName, "and my highlight is", amHighlighted)
+
+	const strokeColor = amCurrentZone ? zoneColors.selectedBorder :
+		zoneGameData.controlTeam ? theme.colors[zoneGameData.controlTeam][6] :
+			//amHighlighted ? zoneColors.lineMemberBorder :
+			"black"
+
+	const strokeWeightLogic = (zoneGameData.controlTeam && !zoneGameData.locked) ? 0 :
+						amCurrentZone ? 5 :
+							amHighlighted ?
+								zoneGameData.controlTeam ? 4 : 3 :
+								currentZone ? 0.5 : 2
+
+	const strokeWeight = ease(strokeWeightLogic, 100);
+
+	const strokeOpacityLogic = amCurrentZone || amHighlighted ? 1 : 0.8
+	const strokeOpacity = ease(strokeOpacityLogic, 100);
+
+	const fillColor = zoneGameData.controlTeam ? theme.colors[zoneGameData.controlTeam][6] :
+						(disabled ? zoneColors.disabled :
+							(amCurrentZone ? zoneColors.selectedFill :
+								amHighlighted ? zoneColors.lineMemberFill :
+									"#FFFFFF00"))
+
+
+	const fillOpacityLogic = (zoom > zoomThreshold ? 0.01 :
+						(currentZone && !amHighlighted) ? 0.15 :
+							amCurrentZone ? 0.5 :
+								zoneGameData.locked ? 0.4 :
+									amHighlighted && zoneGameData.controlTeam ? 0.4 :
+										disabled ? 0.5 :
+											amHighlighted ? 0.4 :
+												currentZone ? 0.05 :
+													zoneGameData.controlTeam ? 0.15 : 0)
+
+	const fillOpacity = useEase(fillOpacityLogic, 100);
+
+
 	return (
 		<>
-			{(zoneGameData.controlTeam && !zoneGameData.locked) ? <DashedOutline zone={zone} color={zoneGameData.controlTeam || "black"}  /> : null}
+			{(zoneGameData.controlTeam && !zoneGameData.locked) ? <DashedOutline zone={zone} color={zoneGameData.controlTeam || "black"} /> : null}
+			{/* <Polygon 
+				paths={smallVersionPaths}
+				strokeColor="black"
+				strokeWeight={2}
+				strokeOpacity={1}
+				key={zone.featureName + "small"}
+			/> */}
 			<Polygon
+
+				strokePosition={google.maps.StrokePosition.INSIDE}
 				paths={zone.coords}
 				key={zone.featureName}
-				strokeColor={
-					amCurrentZone ? zoneColors.selectedBorder :
-						zoneGameData.controlTeam ? theme.colors[zoneGameData.controlTeam][6] :
-							//amHighlighted ? zoneColors.lineMemberBorder :
-							"black"
-				}
-				strokeOpacity={amCurrentZone || amHighlighted ? 1 : 0.8}
-				strokeWeight={
-					(zoneGameData.controlTeam && !zoneGameData.locked) ? 0 :
-					amCurrentZone ? 5 :
-					amHighlighted ? 
-						zoneGameData.controlTeam ? 4 : 3 :
-					currentZone ? 0.5 : 2
-				}
-				fillColor={
-					zoneGameData.controlTeam ? theme.colors[zoneGameData.controlTeam][6] :
-					(disabled ? zoneColors.disabled : 
-					(amCurrentZone ? zoneColors.selectedFill :
-						amHighlighted ? zoneColors.lineMemberFill :
-								"#FFFFFF00"))
-				}
-				fillOpacity={
-					zoom > zoomThreshold ? 0.01 :
-					(currentZone && !amHighlighted) ? 0.15 :
-					amCurrentZone ? 0.5 :
-					zoneGameData.locked ? 0.4 :
-					amHighlighted && zoneGameData.controlTeam ? 0.4 :
-					disabled ? 0.5 :
-					amHighlighted ? 0.4 :
-					currentZone ? 0.05 : 0.15}
+				strokeColor={strokeColor}
+				strokeOpacity={strokeOpacity}
+				strokeWeight={strokeWeight}
+				fillColor={fillColor}
+				fillOpacity={fillOpacity}
 				onClick={() => {
 					if ((map?.getZoom() ?? 30) > zoomThreshold) { return };
 					handleZoneClick();
@@ -96,15 +122,10 @@ export default function ZonePolygon({
 								amHighlighted ? 22 :
 									zoneGameData.controlTeam ? 1 : 0}
 			/>
-			{/* {showLabels && (
-				<PolygonLabel
-					label={`${zone.featureName}`}
-					position={{ lat: polygonCenter[0], lng: polygonCenter[1] }}
-				/>
-			)} */}
 			{amHighlighted ?
 				<PolygonLabel
 					label={zone.featureName}
+					//label={String(fillOpacity)}
 					position={polygonCenter}
 					zoom={zoom}
 					locked={zoneGameData.locked}
@@ -121,7 +142,7 @@ export default function ZonePolygon({
 				: null}
 			{disabled && !amHighlighted ?
 				<AdvancedMarker position={polygonCenter}>
-					<FaBan size="2rem" color="black" />
+					<FaBan size="2rem" color="black" style={{ position: "relative", left: "20%", top: "70%" }} />
 				</AdvancedMarker>
 				: null}
 		</>

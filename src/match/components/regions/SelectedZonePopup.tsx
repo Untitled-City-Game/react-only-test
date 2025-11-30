@@ -5,7 +5,7 @@ import ClaimFlowModal, { isZoneDisabled } from "@/src/match/components/regions/r
 import { theme } from "@/src/styles/theme";
 import P from "@/src/userInterface/P";
 import Span from "@/src/userInterface/Span";
-import { Box, Button, Center, Container, Group, Stack } from "@mantine/core";
+import { Box, Button, Center, CloseButton, Container, Group, Stack } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import React, { Dispatch, SetStateAction, useContext, useEffect, useState } from "react";
 import { FaArrowCircleLeft, FaArrowCircleRight, FaCircle, FaGripLinesVertical, FaRegCircle } from "react-icons/fa";
@@ -26,6 +26,10 @@ export default function SelectedZonePopup({
 	const G = useContext(ConnectFourContext);
 	const winningLines = G.MatchMapData.winningLines;
 	const disabled = currentZone ? isZoneDisabled(currentZone.name, G) : false
+	function deselect(){
+		setCurrentZone(undefined);
+		setActiveLine(undefined);
+	}
 	return (
 		<>
 			<Center
@@ -33,38 +37,46 @@ export default function SelectedZonePopup({
 					borderTop: `3px solid ${theme.colors[props.playerData.data.teamColor][5]}`,
 					...selectedZonePopupStyles
 				}}
-				display={currentZone ? "initial" : "none"}>
-					<Stack gap="xs" w="100%" align="stretch">
-						<P>
-							<Span style={{
-								margin: 0,
-								padding: 0,
-								fontWeight: "bold"
-							}}>{currentZone?.name} </Span>
-							<Span style={{
-								margin: 0,
-								padding: 0
-							}}>{
-									currentZone?.controlTeam !== null ?
-										`${currentZone?.locked ?
-											"Locked" :
-											"Held"
-										} by ${currentZone?.controlTeam} team` :
-										"Unclaimed"
-								}</Span>
-						</P>
-						{disabled ?
+				display={currentZone ? "initial" : "none"}
+			>
+				<CloseButton 
+					style={{
+						position: "absolute",
+						right: "1rem",
+					}}
+					onClick={deselect}
+				/>
+				<Stack gap="xs" w="100%" align="stretch">
+					<P>
+						<Span style={{
+							margin: 0,
+							padding: 0,
+							fontWeight: "bold"
+						}}>{currentZone?.name} </Span>
+						<Span style={{
+							margin: 0,
+							padding: 0
+						}}>{
+								currentZone?.controlTeam !== null ?
+									`${currentZone?.locked ?
+										"Locked" :
+										"Held"
+									} by ${currentZone?.controlTeam} team` :
+									"Unclaimed"
+							}</Span>
+					</P>
+					{disabled ?
 						<P>
 							You can't claim the starting neighbourhood first.
-						</P>: null}
-						<Button onClick={() => {
-							open();
-							setCurrentZone(undefined);
-						}} size="m" disabled={currentZone?.locked || disabled}>
-							<span>{currentZone?.controlTeam === null ? "Claim" : currentZone?.controlTeam === props.playerData.data.teamColor ? "Lock" : "Steal"}</span>
-						</Button>
-						<LineStepper allZoneData={G.zoneData} lines={winningLines.filter(line => line.matchedPolygons.includes(currentZone?.name || ""))} activeLine={activeLine} setActiveLine={setActiveLine} />
-					</Stack>
+						</P> : null}
+					<Button onClick={() => {
+						open();
+						deselect();
+					}} size="m" disabled={currentZone?.locked || disabled}>
+						<span>{currentZone?.controlTeam === null ? "Claim" : currentZone?.controlTeam === props.playerData.data.teamColor ? "Lock" : "Steal"}</span>
+					</Button>
+					<LineStepper allZoneData={G.zoneData} lines={winningLines.filter(line => line.matchedPolygons.includes(currentZone?.name || ""))} activeLine={activeLine} setActiveLine={setActiveLine} />
+				</Stack>
 			</Center>
 			<ClaimFlowModal
 				open={opened}

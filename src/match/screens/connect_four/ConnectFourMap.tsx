@@ -79,7 +79,7 @@ export default function ConnectFourMapTab() {
 				zoneGameData={G.zoneData[index]}
 				key={index}
 				activeLine={activeLine}
-				// disabled={zoneDisabled}
+				disabled={zoneDisabled}
 			/>
 		);
 	});

@@ -19,7 +19,7 @@ export type GameStateUniversal = {
 	gameOver: boolean;
 	startTime?: number;
 	endTime?: number;
-	gameStateLogs: GameStateLog<any>[]
+	gameStateLogs: GameStateLog<GameStateUniversal>[]
 	active: boolean;
 	teamPhotoURLs: {[key in MatchTeamString] : string}
 	victory?: MatchTeamColor

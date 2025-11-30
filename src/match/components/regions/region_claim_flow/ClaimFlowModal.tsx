@@ -25,6 +25,8 @@ const claimFormValues = {
 }
 export type ClaimFormValues = typeof claimFormValues;
 
+const DEBUG = false
+
 export default function ClaimFlowModal({
 	open,
 	close,
@@ -38,8 +40,9 @@ export default function ClaimFlowModal({
 	challengeTitle?: string;
 	inferZone?: boolean;
 }) {
-	console.warn("rendering claim flow modal");
+	DEBUG && console.warn("rendering claim flow modal");
 	const props: GameBoardContext = useContext(GameContext);
+	
 	const { allTeamsChallengeData } = useContext(ChallengeDeckContext);
 	
 	if (props.G.gameCode !== "connect_four") {
@@ -51,11 +54,11 @@ export default function ClaimFlowModal({
 	//const locationRef = useContext(LocationContext);
 	const myZoneRef = useMyZoneRef()
 	useEffect(() => {
-		console.warn("running modal open effect");
-		console.log("location: ", myZoneRef);
+		DEBUG && console.warn("running modal open effect");
+		DEBUG && console.log("location: ", myZoneRef);
 
 		if(inferZone){
-			console.log("inferring zone")
+			DEBUG && console.log("inferring zone")
 			claimForm.setValues({ zone: String(myZoneRef.current?.id) }
 		)}
 	}, [open]);

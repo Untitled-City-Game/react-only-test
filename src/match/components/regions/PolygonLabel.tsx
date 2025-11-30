@@ -32,6 +32,7 @@ export default function PolygonLabel(props : PolygonLabelProps){
 				borderWidth: color ? locked ? "4px" : "2px" : selected ? "4px" : "2px",
 				backgroundColor: "white",
 				borderColor: color ? theme.colors[color][6] : selected ? zoneColors.selectedBorder : "grey",
+				
 				...labelStyle
 				}}>
 			{locked ? <FaLock size="1rem" color={theme.colors[color || "yellow"][6]} /> : null}
@@ -58,4 +59,6 @@ const labelStyle : React.CSSProperties = {
 	display: "flex",
 	alignItems: "center",
 	gap: "0.2rem",
+	animation: "growIn 0.1s ease-out",
+	transformOrigin: "center",
 }
