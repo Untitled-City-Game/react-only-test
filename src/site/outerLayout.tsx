@@ -6,7 +6,14 @@ import { Outlet } from "react-router";
 export default function OuterLayout() {
 	return (
 		<MantineProvider theme={theme}>
-			<Header color="rainbow">Playground City</Header>
+			{/* <Header color="rainbow">Playground City</Header> */}
+			<Center>
+			<img src="logo.png" style={{
+				width: "80%",
+				maxWidth: "30rem",
+				paddingTop: "1rem"
+			}} />
+			</Center>
 			<Container>
 				<Center>
 					<Outlet />
