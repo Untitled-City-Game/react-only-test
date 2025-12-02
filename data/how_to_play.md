@@ -60,7 +60,24 @@ If neither team completes a line within the time limit, the team with the most n
 
 If both teams have the same number of neighbourhoods, that's just a tie!
 
-## Tips and tricks
+## **Tips and tricks**
+Here's some general advice on how to play well.
+
+### **You really have to be scrappy**
+
+Blocking the other team's line and stealing their neighbourhoods are essential. If you don't do this, you'll probably lose!
+
+So, don't be scared to throw some elbows. It's part of the fun!
+
+### **Stay close to the other team**
+
+All you need to win the game is four neighbourhoods. With the right combo of challenges and transit, this can happen really fast!
+
+So, be cautious how far you get from the other team. If you're nearby, you can see them making a line, and maybe block them before they win.
+
+### **Slow challenges are dangerous**
+
+Some challenges might look really easy, but always consider the time commitment. While you're locked down for 10 or fifteen minutes, a lot can change!
 
 ## **Other important rules**
 

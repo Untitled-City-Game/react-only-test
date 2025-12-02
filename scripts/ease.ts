@@ -1,6 +1,6 @@
 import useInterval from "@/scripts/useInterval";
 import { useEffect, useState } from "react";
-const DEBUG = true;
+const DEBUG = false;
 const REFRESH_RATE = 20
 
 export default function useEase(target: number, duration: number, precision: number = 4){

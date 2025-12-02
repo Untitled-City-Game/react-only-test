@@ -7,7 +7,7 @@ export const highlightColor = "orange";
 export const EXPIRE_TIME = 5000;
 export const ACCURACY_MAX = 300;
 export const numPlayers = 6;
-export const gameTimeMinutes = 360;
+export const gameTimeMinutes = 180;
 export const cities = [
 	"melbourne",
 	"montreal",

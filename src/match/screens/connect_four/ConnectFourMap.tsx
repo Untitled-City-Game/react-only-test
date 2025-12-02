@@ -10,6 +10,8 @@ import { LineData } from "@/scripts/types/googleMaps";
 import MyLocationMarker from "@/src/match/googleMaps/MyLocationMarker";
 import { isStartZoneClaimable } from "@/src/match/components/regions/region_claim_flow/ClaimFlowModal";
 
+const DEBUG = false
+
 export default function ConnectFourMapTab() {
 	const { playerData } = useContext(GameContext)
 	const G = useContext(ConnectFourContext);
@@ -56,9 +58,9 @@ export default function ConnectFourMapTab() {
 			// lineVisibilityTemp: { [key: string]: boolean },
 			// highlightedZonesTemp: { [key: string]: boolean }
 		) {
-			console.log("zone clicked", zone);
+			DEBUG && console.log("zone clicked", zone);
 			// console.log("highlight zones", highlightedZonesTemp)
-			console.log("current zone", currentZone)
+			DEBUG && console.log("current zone", currentZone)
 			//check if already selected
 			if(currentZone?.name === zone.featureName){
 				setCurrentZone(undefined)
