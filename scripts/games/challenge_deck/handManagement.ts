@@ -4,10 +4,10 @@ import { addLogMetadata } from "@/scripts/games/shared_moves/metadata";
 import { createUndoPoint } from "@/scripts/games/undo";
 import { MatchTeamColor, MoveContext } from "@/scripts/types/types";
 import { LogAPI } from "boardgame.io/dist/types/src/plugins/plugin-log";
-import challengeDataGeneric from 'data/challenges/challenges_generic.json';
-import challengeDataMelbourne from 'data/challenges/challenges_melbourne.json';
-import challengeDataMontreal from 'data/challenges/challenges_montreal.json';
-import challengeDataLondon from 'data/challenges/challenges_london.json'
+import challengeDataGeneric from '@data/challenges/challenges_generic.json';
+import challengeDataMelbourne from '@data/challenges/challenges_melbourne.json';
+import challengeDataMontreal from '@data/challenges/challenges_montreal.json';
+import challengeDataLondon from '@data/challenges/challenges_london.json'
 import { remove } from "lodash";
 
 export function discardChallenge(

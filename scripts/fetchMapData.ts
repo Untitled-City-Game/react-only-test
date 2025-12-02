@@ -1,7 +1,7 @@
 import { maps } from "@/scripts/consts";
 import makeLines, { assignPolygons } from "@/scripts/geojson/makeLines";
 import makePolygons from "@/scripts/geojson/makePolygons";
-import toGeoJson from "@tmcw/togeojson";
+import * as toGeoJson from "@tmcw/togeojson";
 import { DOMParser } from "xmldom";
 import { City, MatchMapData } from "./types/types";
 import { LineData, PolyData } from "@/scripts/types/googleMaps";

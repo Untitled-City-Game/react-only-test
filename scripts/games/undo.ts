@@ -1,6 +1,7 @@
+import { ConnectFourGameState } from "@/scripts/games/connect_four/types";
 import { MoveContext, GameStateUniversal } from "@/scripts/types/types";
 
-export default function customUndoTemplate(context: MoveContext<GameStateUniversal>){
+export default function customUndoTemplate(context: MoveContext<ConnectFourGameState>){
 	console.log("custom undo activated");
 	let G = context.G;
 	const gameStateLogs = G.gameStateLogs;
@@ -12,6 +13,8 @@ export default function customUndoTemplate(context: MoveContext<GameStateUnivers
 	if(!lastState){
 		throw new Error("Type of laststate was not expected");
 	}
+	console.log("current state", JSON.stringify(G.zoneData,null,4));
+	console.log("last state", JSON.stringify(lastState.zoneData,null,4));
 	return {
 		gameStateLogs: G.gameStateLogs.slice(0,-1),
 		...lastState,
