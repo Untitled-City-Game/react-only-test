@@ -1,5 +1,5 @@
-import { theme } from "@/src/styles/theme";
-import { Center, CenterProps } from "@mantine/core";
+import { defaultColor, theme } from "@/src/styles/theme";
+import { Center, CenterProps, MantineColorShade, useMantineTheme } from "@mantine/core";
 import React from "react";
 
 export default function Header({ children, color }: { children: React.ReactNode, color: string }) {
@@ -10,14 +10,15 @@ export default function Header({ children, color }: { children: React.ReactNode,
 	);
 }
 
-export function ComplexHeader({ children, color, ...rest }: { children: React.ReactNode, color: string} & CenterProps) {
+export function ComplexHeader({ children, color, ...rest }: { children: React.ReactNode, color?: string} & CenterProps) {
+	const theme = useMantineTheme();
 	return (
 		<Center 
 		className="header"
 		style={{
-			background: color === "rainbow" ? rainbowBackground : theme.colors[color][1],
-			borderBottom: color === "rainbow" ? "none" : `2px solid ${theme.colors[color][6]}`,
-			borderTop: color === "rainbow" ? "none" : `2px solid ${theme.colors[color][6]}`,
+			background: color === "rainbow" ? rainbowBackground : theme.colors[color || theme.primaryColor][1],
+			borderBottom: color === "rainbow" ? "none" : `2px solid ${defaultColor(color)}`,
+			borderTop: color === "rainbow" ? "none" : `2px solid ${defaultColor(color)}`,
 			textShadow: "white 1px 0 3px"
 		}}
 		{...rest}

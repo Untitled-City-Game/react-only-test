@@ -99,6 +99,18 @@ div.mantine-Select-option {
 	}
 }
 
+.modalFix {
+	// min-height: 100vh;
+	// min-height: 100dvh;
+	// min-height: -webkit-fill-available;
+	//max-height: 50vh;
+	//height: -webkit-fill-available;
+	//max-height: 50dvh;
+	height: 100px;
+}
+
+
+
 @keyframes growIn {
 	from {
 		transform: scale(0.9);

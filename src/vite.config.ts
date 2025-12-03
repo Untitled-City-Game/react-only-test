@@ -8,6 +8,8 @@ export default defineConfig({
   },
   server: {
     port: 1234,
+    host: true,
+    allowedHosts: true
   },
   publicDir: '../static',
   resolve: {

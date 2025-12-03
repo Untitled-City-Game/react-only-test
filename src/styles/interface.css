@@ -91,6 +91,10 @@ div.mantine-Select-option {
   max-width: 100%;
 }
 
+.modalFix {
+  height: 100px;
+}
+
 @keyframes growIn {
   from {
     transform: scale(0.9);

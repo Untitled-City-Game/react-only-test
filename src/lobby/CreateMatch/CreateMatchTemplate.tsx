@@ -11,6 +11,7 @@ import { joinMatch } from "@/scripts/joinMatch";
 import { FaRegSnowflake } from "react-icons/fa6";
 import { PrepButton } from "@/src/lobby/GamePrep";
 import Segment from "@/src/userInterface/Segment";
+import SafariWarning from "@/src/site/SafariWarning";
 interface CreateGameFormUniversal extends UseFormReturnType<any> {}
 
 export type FormValues = {
@@ -81,6 +82,7 @@ export default function CreateMatchTemplate({
 	return (
 	<>
 		<LoadingOverlay visible={loading} loaderProps={{ children: <Loading message="Joining match..." /> }} />
+		<SafariWarning />
 		<form style={{ width: "100%" }} onSubmit={createGameForm.onSubmit(handleCreateGame)}>
 			<h2>Create a {game.name} match</h2>
 			<Stack pb="sm">

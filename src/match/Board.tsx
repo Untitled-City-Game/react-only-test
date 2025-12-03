@@ -10,6 +10,7 @@ import Loading from "@/src/match/screens/game_status/Loading";
 import VictoryModal from "@/src/match/screens/game_status/VictoryModal";
 import Waiting from "@/src/match/screens/game_status/Waiting";
 import TabSet from "@/src/match/screens/match_tabs/TabSet";
+import ErrorDialog from "@/src/site/errorHandling/ErrorDialog";
 import StatusBar from "@/src/userInterface/StatusBar";
 import { createContext, RefObject, useContext, useEffect, useRef } from "react";
 import { ErrorBoundary } from "react-error-boundary";
@@ -18,37 +19,37 @@ import { useLocation, useNavigate } from "react-router";
 
 export const GameContext = createContext({} as GameBoardContext);
 
-export function ConnectFourBoard(props: GameBoardContextSpecific<ConnectFourGameState>){
+export function ConnectFourBoard(props: GameBoardContextSpecific<ConnectFourGameState>) {
 	return Board(props)
 }
 
-export function SnakeBoard(props: GameBoardContextSpecific<SnakeGameState>){
+export function SnakeBoard(props: GameBoardContextSpecific<SnakeGameState>) {
 	return Board(props)
-	}
+}
 
-function Board(props: GameBoardContext){
+function Board(props: GameBoardContext) {
 	const playerID = props.playerID;
 	const moves = props.moves as ConnectFourMoves
 	const playerData = props.playerData;
 	let navigate = useNavigate();
 
 	useEffect(() => {
-	if (playerID && props.G.allPlayersData && !props.G.allPlayersData[playerID]) {
-		console.log(
-			"setting up player ",
-			playerID,
-			playerData,
-			"on client"
-		);
-		moves.playerSetup(playerData.data);
-	}
-}, [playerID, moves, playerData, props.G.allPlayersData]);
+		if (playerID && props.G.allPlayersData && !props.G.allPlayersData[playerID]) {
+			console.log(
+				"setting up player ",
+				playerID,
+				playerData,
+				"on client"
+			);
+			moves.playerSetup(playerData.data);
+		}
+	}, [playerID, moves, playerData, props.G.allPlayersData]);
 
 	if (props.G.gameOver) {
 		return <GameOver />;
 	}
 
-	if (!playerID){
+	if (!playerID) {
 		navigate("/lobby");
 	}
 
@@ -77,7 +78,8 @@ function Board(props: GameBoardContext){
 
 	return (
 		<GameContext.Provider value={{ ...props }}>
-			<ErrorBoundary fallback={<span>Something went wrong inside the board element</span>}>
+			<ErrorBoundary
+				FallbackComponent={ErrorDialog}>
 				<OtherTeamsContextWrapper>
 					<LocationRefContextWrapper>
 						<MatchContext G={props.G}>
@@ -90,16 +92,16 @@ function Board(props: GameBoardContext){
 	);
 }
 
-function MatchGameplay({G, playerData}:{G: GameStateGeneric, playerData : PlayerData}){
-	switch(G.gameCode){
+function MatchGameplay({ G, playerData }: { G: GameStateGeneric, playerData: PlayerData }) {
+	switch (G.gameCode) {
 		case "connect_four":
-			return ConnectFourGameplay(G, playerData )
+			return ConnectFourGameplay(G, playerData)
 		case "snake":
-			return SnakeGameplay(G, playerData )
+			return SnakeGameplay(G, playerData)
 	}
 }
-function MatchContext({G, children}:{G: GameStateGeneric, children: React.ReactNode}){
-	switch(G.gameCode){
+function MatchContext({ G, children }: { G: GameStateGeneric, children: React.ReactNode }) {
+	switch (G.gameCode) {
 		case "connect_four":
 			return <ConnectFourContextWrapper G={G}>{children}</ConnectFourContextWrapper>
 		case "snake":
@@ -108,22 +110,22 @@ function MatchContext({G, children}:{G: GameStateGeneric, children: React.ReactN
 }
 
 export const SnakeContext = createContext({} as SnakeGameState);
-export const ConnectFourContext= createContext({} as ConnectFourGameState);
+export const ConnectFourContext = createContext({} as ConnectFourGameState);
 export const ChallengeDeckContext = createContext({} as ChallengeDeck)
 
-function ConnectFourContextWrapper({G, children} : {G:ConnectFourGameState, children: React.ReactNode}){
-		return(
+function ConnectFourContextWrapper({ G, children }: { G: ConnectFourGameState, children: React.ReactNode }) {
+	return (
 		<ConnectFourContext.Provider value={G}>
-			<ChallengeDeckContext.Provider value={{challengeDeck: G.challengeDeck, allTeamsChallengeData: G.allTeamsChallengeData}}>
+			<ChallengeDeckContext.Provider value={{ challengeDeck: G.challengeDeck, allTeamsChallengeData: G.allTeamsChallengeData }}>
 				{children}
 			</ChallengeDeckContext.Provider>
 		</ConnectFourContext.Provider>
 	)
 }
 
-function ConnectFourGameplay(G:ConnectFourGameState, playerData : PlayerData){
+function ConnectFourGameplay(G: ConnectFourGameState, playerData: PlayerData) {
 	const claimedZones = G.zoneData.filter(zone => zone.controlTeam === playerData.teamColor).length
-	return(
+	return (
 		<>
 			<StatusBar>
 				{claimedZones} area{claimedZones === 1 ? "" : "s"} claimed
@@ -134,8 +136,8 @@ function ConnectFourGameplay(G:ConnectFourGameState, playerData : PlayerData){
 	)
 }
 
-function SnakeContextWrapper({G, children} : {G:SnakeGameState, children: React.ReactNode}){
-		return(
+function SnakeContextWrapper({ G, children }: { G: SnakeGameState, children: React.ReactNode }) {
+	return (
 		<SnakeContext.Provider value={G}>
 			{children}
 		</SnakeContext.Provider>
@@ -143,15 +145,15 @@ function SnakeContextWrapper({G, children} : {G:SnakeGameState, children: React.
 	)
 }
 
-function SnakeGameplay(G: SnakeGameState, playerData : PlayerData){
+function SnakeGameplay(G: SnakeGameState, playerData: PlayerData) {
 	console.log("snake game state", G, playerData)
 	const snakeLength = G.snakeTeamData[playerData.teamColor]?.snakeBody.maxLength
-	return(
+	return (
 		<>
 			<StatusBar>
 				Snake length: {snakeLength}m
 			</StatusBar>
-			<TabSet tabCodes={["snake_map", "snake_data", "log" ]} />
+			<TabSet tabCodes={["snake_map", "snake_data", "log"]} />
 		</>
 	)
 
@@ -160,18 +162,18 @@ function SnakeGameplay(G: SnakeGameState, playerData : PlayerData){
 
 export const OtherTeamsContext = createContext<LocationData[]>([])
 
-function OtherTeamsContextWrapper({children} : {children: React.ReactNode}){
-		const data = useTeamLocations()
-		return(
+function OtherTeamsContextWrapper({ children }: { children: React.ReactNode }) {
+	const data = useTeamLocations()
+	return (
 		<OtherTeamsContext.Provider value={data}>
-				{children}
+			{children}
 		</OtherTeamsContext.Provider>
 	)
 }
 
 export const LocationContext = createContext<RefObject<LocationResult> | undefined>(undefined)
 
-function LocationRefContextWrapper({children} : {children: React.ReactNode}){
+function LocationRefContextWrapper({ children }: { children: React.ReactNode }) {
 	const location = useMyLocation();
 	const locationRef = useRef(location);
 	useEffect(() => {

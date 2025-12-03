@@ -26,7 +26,7 @@ export default function VisGlMapElement(props: MapElementProps) {
 				mapTypeControl={false}
 				defaultCenter={props.center}
 				defaultZoom={12}
-				gestureHandling={'greedy'}
+				gestureHandling={props.gestureHandling || 'greedy'}
 				disableDefaultUI={true}
 				onZoomChanged={(zoomEvent) => setZoom(prevZoom => zoomEvent.map.getZoom() || prevZoom)}
 				onClick={props.onClick}

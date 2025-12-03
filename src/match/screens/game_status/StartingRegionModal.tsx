@@ -1,6 +1,5 @@
 import { gameLocationCenters } from "@/scripts/consts";
 import { ConnectFourMoves } from "@/scripts/games/connect_four/connect_four";
-import { GameBoardContext, MatchTeamColor } from "@/scripts/types/types";
 import { ConnectFourContext, GameContext } from "@/src/match/Board";
 import MyLocationMarker from "@/src/match/googleMaps/MyLocationMarker";
 import VisGlMapElement from "@/src/match/googleMaps/VisGLMapElement";
@@ -48,22 +47,21 @@ export function StartingRegionModal({
 		<Modal
 			opened={opened}
 			onClose={close}
-			centered
-			mah="70vh"
+			removeScrollProps={{ allowPinchZoom: true }}
 			title={
-				<span style={{ fontSize: "1.5rem", fontWeight: "bold" }}>
-					Select Starting Neighbourhood
+				<span style={{ fontSize: "1.2rem", fontWeight: "bold" }}>
+					Choose Starting Neighbourhood
 				</span>
 			}>
-				<Container style={{
-					maxHeight: "90vh",
-					overflowY: "scroll",
-				}}>
-					<Stack>
-						<P>The starting neighbourhood cannot be claimed first. Teams must leave the starting neighbourhood and claim another neighbourhood.</P>
+				<Container 	>
+					<Stack gap="0.5rem">
+						<div>
+							<P fz="sm">The starting neighbourhood cannot be claimed first.</P>
+							<P fz="sm">Teams must leave the starting neighbourhood, and claim another neighbourhood.</P>
+						</div>
 						<Select label="Starting neighbourhood" data={zoneSelectOptions} value={selectedZone} onChange={setSelectedZone}/>
 						<Box style={mapContainerStyle} >
-							<VisGlMapElement center={gameLocationCenters[connectFourContext.city]}>
+							<VisGlMapElement center={gameLocationCenters[connectFourContext.city]} gestureHandling="cooperative">
 								<MyLocationMarker color={gameContext.playerData.data.teamColor} defaultLocation={gameLocationCenters[connectFourContext.city]} />
 								<GenericMapZones 
 									MapData={connectFourContext.MatchMapData} 

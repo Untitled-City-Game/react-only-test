@@ -6,7 +6,7 @@ import Header from "@/src/userInterface/Header/Header";
 import { HelpButton } from "@/src/match/components/help/HelpButton";
 import FullHeightLayout, { VerticalSpread } from "@/src/userInterface/Layout";
 import P from "@/src/userInterface/P";
-import { Box, Button, Card, Center, Container, FileInput, LoadingOverlay, Stack, Title } from "@mantine/core";
+import { Box, Button, Card, Center, Container, FileInput, LoadingOverlay, Stack, Title, useMantineTheme } from "@mantine/core";
 import { useContext, useEffect, useState } from "react";
 import { GameContext } from "@/src/match/Board";
 import { ConnectFourGameState } from "@/scripts/games/connect_four/types";
@@ -16,7 +16,6 @@ import { ConnectFourMoves } from "@/scripts/games/connect_four/connect_four";
 import { SharedMoves } from "@/scripts/games/shared_moves/sharedMoves";
 import { StartingRegionButton } from "@/src/match/screens/game_status/StartingRegionModal";
 import Segment from "@/src/userInterface/Segment";
-
 export default function Waiting() {
 	console.log("rendering waiting page");
 	const props: GameBoardContext = useContext(GameContext);
@@ -31,6 +30,7 @@ export default function Waiting() {
 	}
 	const [loading, setLoading] = useState(false);
 	const [startDisabled, setStartDisabled] = useState(props.gameCode === "connect_four" ? true : false);
+
 	return (
 		<Center>
 			<LoadingOverlay visible={loading} loaderProps={{ children: <Loading message="Building trains..." /> }} />
@@ -40,38 +40,32 @@ export default function Waiting() {
 					<div></div>
 					<div>
 						<Stack gap="lg" align="stretch">
-															<h2 style={{ fontWeight: "light" }}>Your Connect Four game is waiting to start.</h2>
-							{/* <Segment>
-								<Title order={3} size="h4" mb="sm">Game Info</Title>
-								<P><strong>Host: </strong> {playerData[0]?.name}</P>
-								<P><strong>Invite code: </strong>{props.matchID}</P>
-								<GameInviteButton gameCode={props.gameCode} matchID={props.matchID} />
-							</Segment> */}
+							<h2 style={{ fontWeight: "light" }}>Your Connect Four game is waiting to start.</h2>
 							<Segment>
 								<Stack>
-								<Title order={3} size="h4">Teams and Players</Title>
-								<TeamSummary gameData={props.G} playerTeam={props.playerData.data.teamColor} />
-								<GameInviteButton gameCode={props.gameCode} matchID={props.matchID} />
+									<Title order={3} size="h4">Teams and Players</Title>
+									<TeamSummary gameData={props.G} playerTeam={props.playerData.data.teamColor} />
+									<GameInviteButton gameCode={props.gameCode} matchID={props.matchID} />
 								</Stack>
 							</Segment>
 							<Segment>
-							<Stack align="stretch">
-								<Title order={3} size="h4">Before you Start</Title>
-								<HelpButton />
-								{(props.playerData.data.admin && props.gameCode === "connect_four") ? <StartingRegionButton setStartDisabled={setStartDisabled}/> : null}
-							</Stack>
+								<Stack align="stretch">
+									<Title order={3} size="h4">Before you Start</Title>
+									<HelpButton />
+									{(props.playerData.data.admin && props.gameCode === "connect_four") ? <StartingRegionButton setStartDisabled={setStartDisabled} /> : null}
+								</Stack>
 							</Segment>
 						</Stack>
 					</div>
-					{props.playerData.data.admin ?<Stack> 
-					<Button
-						disabled={startDisabled}
-						onClick={() => {
-							setLoading(true);
-							props.moves.startGame();
-						}}>
-						Start the Game
-					</Button></Stack>
+					{props.playerData.data.admin ? <Stack>
+						<Button
+							disabled={startDisabled}
+							onClick={() => {
+								setLoading(true);
+								props.moves.startGame();
+							}}>
+							Start the Game
+						</Button></Stack>
 						: <div />}
 				</VerticalSpread>
 			</FullHeightLayout>
@@ -92,8 +86,8 @@ function TeamSummary({ gameData, playerTeam }: { gameData: GameStateGeneric, pla
 						<h3 style={{ textTransform: "capitalize" }}>{team[0].teamColor} team</h3>
 						<P>{team.map((player) => player.name).join(", ")}</P>
 					</Container>
-					{gameData.teamPhotoURLs[team[0].teamColor] ? <img style={{height: "80px", width: "80px", objectFit: "cover", borderRadius : "10px"}} src={gameData.teamPhotoURLs[team[0].teamColor]}  /> : 
-					team[0].teamColor === playerTeam ? <TeamFileUpload team={team} /> : null}
+					{gameData.teamPhotoURLs[team[0].teamColor] ? <img style={{ height: "80px", width: "80px", objectFit: "cover", borderRadius: "10px" }} src={gameData.teamPhotoURLs[team[0].teamColor]} /> :
+						team[0].teamColor === playerTeam ? <TeamFileUpload team={team} /> : null}
 				</SolidCard>
 			))}
 		</Stack>
@@ -108,34 +102,34 @@ export function GameInviteButton({ gameCode, matchID }: { gameCode: string, matc
 	)
 }
 
-function TeamFileUpload({team} : {team: PlayerData[]}){
+function TeamFileUpload({ team }: { team: PlayerData[] }) {
 	const props = useContext(GameContext);
 	const moves = props.moves as SharedMoves
 	const gameData = props.G
-	async function addTeamPhoto(payload: File | null){
-		if(!payload){return}
+	async function addTeamPhoto(payload: File | null) {
+		if (!payload) { return }
 		const imageRef = ref(
-		storage,
-		`images/${gameData.gameName}/teampic${team[0].teamColor}${Date.now()}`
+			storage,
+			`images/${gameData.gameName}/teampic${team[0].teamColor}${Date.now()}`
 		);
-			try {
-				const uploadTask = await uploadBytes(imageRef, payload);
-				console.log("Uploaded bytes to: ", uploadTask.metadata.fullPath);
-			} catch (e) {
-				console.error("Error adding document: ", e);
-			}
-			
-			let evidenceURL = "";
-		
-			try{
-				 evidenceURL = await getDownloadURL(imageRef);
-			} catch{
-				console.error("couldn't get download url");
-				return;
-			}
-			moves.addTeamPhoto(evidenceURL, team[0].teamColor)
+		try {
+			const uploadTask = await uploadBytes(imageRef, payload);
+			console.log("Uploaded bytes to: ", uploadTask.metadata.fullPath);
+		} catch (e) {
+			console.error("Error adding document: ", e);
+		}
+
+		let evidenceURL = "";
+
+		try {
+			evidenceURL = await getDownloadURL(imageRef);
+		} catch {
+			console.error("couldn't get download url");
+			return;
+		}
+		moves.addTeamPhoto(evidenceURL, team[0].teamColor)
 	}
 	return (
-		<FileInput label="Team photo" placeholder="Upload" miw="50%" onChange={addTeamPhoto}/>
+		<FileInput label="Team photo" placeholder="Upload" miw="50%" onChange={addTeamPhoto} />
 	)
 }

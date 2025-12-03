@@ -2,10 +2,9 @@ import { ZoneData } from "@/scripts/games/connect_four/types";
 import { LineData } from "@/scripts/types/googleMaps";
 import { ConnectFourContext, GameContext } from "@/src/match/Board";
 import ClaimFlowModal, { isZoneDisabled } from "@/src/match/components/regions/region_claim_flow/ClaimFlowModal";
-import { theme } from "@/src/styles/theme";
 import P from "@/src/userInterface/P";
 import Span from "@/src/userInterface/Span";
-import { Box, Button, Center, CloseButton, Container, Group, Stack } from "@mantine/core";
+import { Box, Button, Center, CloseButton, Container, Group, Stack, useMantineTheme } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import React, { Dispatch, SetStateAction, useContext, useEffect, useState } from "react";
 import { FaArrowCircleLeft, FaArrowCircleRight, FaCircle, FaGripLinesVertical, FaRegCircle } from "react-icons/fa";
@@ -21,6 +20,7 @@ export default function SelectedZonePopup({
 	activeLine: LineData | undefined;
 	setActiveLine: Dispatch<SetStateAction<LineData | undefined>>;
 }) {
+	const theme = useMantineTheme();
 	const [opened, { open, close }] = useDisclosure(false);
 	const props = useContext(GameContext)
 	const G = useContext(ConnectFourContext);
@@ -30,11 +30,12 @@ export default function SelectedZonePopup({
 		setCurrentZone(undefined);
 		setActiveLine(undefined);
 	}
+	const ownerColor = currentZone?.controlTeam ? theme.colors[currentZone.controlTeam][5] : undefined
 	return (
 		<>
 			<Center
 				style={{
-					borderTop: `3px solid ${theme.colors[props.playerData.data.teamColor][5]}`,
+					borderTop: `3px solid ${ownerColor || theme.colors.actionColor[5]}`,
 					...selectedZonePopupStyles
 				}}
 				display={currentZone ? "initial" : "none"}
@@ -69,13 +70,15 @@ export default function SelectedZonePopup({
 						<P>
 							You can't claim the starting neighbourhood first.
 						</P> : null}
-					<Button onClick={() => {
+					<Button 
+					color={ownerColor}
+					onClick={() => {
 						open();
 						deselect();
 					}} size="m" disabled={currentZone?.locked || disabled}>
 						<span>{currentZone?.controlTeam === null ? "Claim" : currentZone?.controlTeam === props.playerData.data.teamColor ? "Lock" : "Steal"}</span>
 					</Button>
-					<LineStepper allZoneData={G.zoneData} lines={winningLines.filter(line => line.matchedPolygons.includes(currentZone?.name || ""))} activeLine={activeLine} setActiveLine={setActiveLine} />
+					<LineStepper color={currentZone?.controlTeam || undefined} lines={winningLines.filter(line => line.matchedPolygons.includes(currentZone?.name || ""))} activeLine={activeLine} setActiveLine={setActiveLine} />
 				</Stack>
 			</Center>
 			<ClaimFlowModal
@@ -87,7 +90,7 @@ export default function SelectedZonePopup({
 	);
 }
 
-function LineStepper({ lines, activeLine, setActiveLine, allZoneData }: { lines: LineData[], activeLine: LineData | undefined, setActiveLine: Dispatch<SetStateAction<LineData | undefined>>, allZoneData: ZoneData[] }) {
+function LineStepper({ lines, activeLine, setActiveLine, color }: { lines: LineData[], activeLine: LineData | undefined, setActiveLine: Dispatch<SetStateAction<LineData | undefined>>, color?: string }) {
 	const [lineIndex, setLineIndex] = useState(0);
 	function nextLine() {
 		if (lineIndex >= lines.length - 1) {
@@ -114,9 +117,9 @@ function LineStepper({ lines, activeLine, setActiveLine, allZoneData }: { lines:
 	return (
 		<>
 			<Group wrap="nowrap" align="center" justify="center">
-				<Button onClick={prevLine}><FaArrowCircleLeft /></Button>
+				<Button color={color} onClick={prevLine}><FaArrowCircleLeft /></Button>
 				<h3 style={{ margin: 0 }}>Line {lineIndex + 1} of {lines.length}</h3>
-				<Button onClick={nextLine}><FaArrowCircleRight /></Button>
+				<Button color={color} onClick={nextLine}><FaArrowCircleRight /></Button>
 			</Group>
 		</>
 	)

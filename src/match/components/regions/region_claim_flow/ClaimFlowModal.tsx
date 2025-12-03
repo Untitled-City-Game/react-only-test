@@ -115,7 +115,7 @@ export default function ClaimFlowModal({
 			<Modal.Overlay />
 			<Modal.Content>
 				<LoadingOverlay visible={loading} loaderProps={{ children: <Loading message="Claiming neighbourhood..." /> }} />
-				{ModalHeader(props.playerData.data.teamColor)}
+				{ModalHeader()}
 				<Modal.Body>
 					<Container pb="md">
 						<form onSubmit={claimForm.onSubmit(handleSubmit)}>

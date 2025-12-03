@@ -5,7 +5,8 @@ import ChallengesTab from "@/src/match/screens/match_tabs/challenges/ChallengesT
 import LogTab from "@/src/match/screens/match_tabs/game_log/LogTab";
 import SnakeData from "@/src/match/screens/snake/SnakeDataTab";
 import SnakeMap from "@/src/match/screens/snake/SnakeMapTab";
-import { Group, Indicator, Tabs, TabsList, TabsPanel, TabsTab } from "@mantine/core";
+import ErrorDialog from "@/src/site/errorHandling/ErrorDialog";
+import { Group, Indicator, Tabs, TabsList, TabsPanel, TabsTab, useMantineTheme } from "@mantine/core";
 import { createContext, Dispatch, SetStateAction, Suspense, useContext, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { GiSnake } from "react-icons/gi";
@@ -61,6 +62,7 @@ function addTab(tabs : TabsAlert, newtab: string){
 export const TabAlertsContext = createContext<{setTabAlertState : Dispatch<SetStateAction<TabsAlert>>}>({} as any)
 
 export default function TabSet({ tabCodes }: { tabCodes: TabCodes[] }) {
+	const theme = useMantineTheme();
 	const [tabAlertState, setTabAlertState] = useState(tabAlert);
 	console.log("rendering match");
 
@@ -73,7 +75,7 @@ export default function TabSet({ tabCodes }: { tabCodes: TabCodes[] }) {
 				return (
 					<TabsPanel key={tabCode} value={tab.name} style={panelLayout}>
 						<ErrorBoundary
-							fallback={<span>Something went wrong in {tab.name} tab</span>}>
+							FallbackComponent={ErrorDialog}>
 							<tab.component active={activeTab} />
 						</ErrorBoundary>
 					</TabsPanel>
@@ -88,7 +90,7 @@ export default function TabSet({ tabCodes }: { tabCodes: TabCodes[] }) {
 						const tab = tabIndex[tabCode]
 						return (
 							<TabsTab key={tab.name} value={tab.name} flex="1">
-								<Indicator disabled={!tabAlertState || !tabAlertState[tabCode]} processing inline size="12" position="middle-start" offset={-10} color="red">
+								<Indicator disabled={!tabAlertState || !tabAlertState[tabCode]} processing inline size="12" position="middle-start" offset={-10} color={theme.primaryColor}>
 									<Group gap="0.2rem" fz="md" wrap="nowrap"><tab.icon size="1rem" />
 										<span>{tab.name}</span>
 									</Group>

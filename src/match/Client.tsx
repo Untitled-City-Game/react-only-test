@@ -1,10 +1,11 @@
+import { games } from "@/scripts/consts";
 import { ConnectFour } from "@/scripts/games/connect_four/connect_four";
 import { Snake } from "@/scripts/games/snake/snake";
-import type { ClientSetupData, PlayerData } from "@/scripts/types/types";
+import type { ClientSetupData, GameMeta, PlayerData } from "@/scripts/types/types";
 import { ConnectFourBoard, SnakeBoard } from "@/src/match/Board";
 import Loading from "@/src/match/screens/game_status/Loading";
 import { theme } from "@/src/styles/theme";
-import { MantineProvider, mergeMantineTheme } from "@mantine/core";
+import { MantineProvider, mergeMantineTheme, useMantineTheme } from "@mantine/core";
 import { SocketIO } from "boardgame.io/multiplayer";
 import { Client } from "boardgame.io/react";
 import { useEffect, useState } from "react";
@@ -14,7 +15,6 @@ import { useNavigate } from "react-router";
 export default function MatchClient() {
 	const [playerData, setPlayerData] = useState<PlayerData>();
 	const navigate = useNavigate();
-	
 	//Check if session is already part of a game
 	useEffect(() => {
 		console.log("running localstorage playerdata effect");
@@ -39,10 +39,14 @@ export default function MatchClient() {
 	// Create match client
 	if (playerData) {
 		const GameClient = createGame(playerData)
-
+		const game : GameMeta | undefined = games.find((game) => game.code === playerData?.gameCode);
+		
 		const clientTheme = mergeMantineTheme(theme, {
-			primaryColor: playerData.teamColor,
-			primaryShade: 6,
+			primaryColor: game?.color,
+			colors: {
+				...theme.colors,
+				actionColor: game ? theme.colors[game.color] : theme.colors.actionColor,
+			}
 		});
 		
 

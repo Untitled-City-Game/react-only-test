@@ -11,6 +11,7 @@ import Loading from "@/src/match/screens/game_status/Loading";
 import P from "@/src/userInterface/P";
 import { useEffect, useMemo, useState } from "react";
 import { ListButton } from "../userInterface/ListButton";
+import SafariWarning from "@/src/site/SafariWarning";
 
 export default function JoinMatch() {
 	const matchID = useParams().matchID;
@@ -115,6 +116,7 @@ export default function JoinMatch() {
 		return (
 			<>
 				<LoadingOverlay visible={loading} loaderProps={{ children: <Loading message="Joining match..." /> }} />
+				<SafariWarning />
 				<h1>{matchData.setupData.gameName}</h1>
 
 				<Stack gap={0} mb="sm">

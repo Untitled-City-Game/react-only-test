@@ -19,7 +19,6 @@ export default function LobbyLayout() {
 	const game = games.find((game) => game.code === gameCode);
 	const lobbyTheme = mergeMantineTheme(theme, {
 		primaryColor: game?.color || "grey",
-		primaryShade: 6,
 	});
 	return (
 		<MantineProvider theme={lobbyTheme}>

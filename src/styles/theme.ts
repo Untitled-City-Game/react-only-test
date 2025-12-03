@@ -2,13 +2,16 @@ import {
   colorsTuple,
   createTheme,
   DEFAULT_THEME,
+  MantineColorShade,
+  MantineTheme,
   mergeMantineTheme,
+  useMantineTheme,
 } from '@mantine/core';
 
 
 const themeOverride = createTheme({
   autoContrast: true,
-  primaryShade: 7,
+  primaryShade: 6,
   fontFamily: "'Hanken Grotesk', sans-serif",
   primaryColor: "actionColor",
   white: "#FFFFFF",
@@ -21,7 +24,19 @@ const themeOverride = createTheme({
   },
   colors: {
 	  paper: colorsTuple("#FFFFFF"),
-    red: [
+    red :[
+  "#ffe9eb",
+  "#fed3d5",
+  "#f6a5a9",
+  "#ef747a",
+  "#ea4b52",
+  "#e73139",
+  "#e01923",
+  "#cd141f",
+  "#b70c1a",
+  "#a10014"
+],
+    red_old: [
       "#ffe9ee",
       "#fed3da",
       "#f6a5b1",
@@ -46,6 +61,18 @@ const themeOverride = createTheme({
       "#00973c"
     ],
     blue: [
+  "#e5f8ff",
+  "#d0edfe",
+  "#a0d8fb",
+  "#6ec2fa",
+  "#48b0f8",
+  "#34a5f7",
+  "#279ff8",
+  "#198bde",
+  "#0273ba",
+  "#006ab0"
+],
+    blue_old: [
   "#e5f3ff",
   "#cde2ff",
   "#9ac2ff",
@@ -81,7 +108,19 @@ const themeOverride = createTheme({
       "#cb8400",
       "#b07100"
     ],
-    purple: [
+    purple:[
+  "#fbeffb",
+  "#f2dbf2",
+  "#e7b2e6",
+  "#db87da",
+  "#d164d0",
+  "#cc4eca",
+  "#c942c7",
+  "#b235b0",
+  "#9f2d9d",
+  "#8f248e"
+],
+    purple_old: [
       "#f3edff",
       "#e0d7fa",
       "#beabf0",
@@ -137,3 +176,8 @@ const themeOverride = createTheme({
 });
 
 export const theme = mergeMantineTheme(DEFAULT_THEME, themeOverride);
+
+export function defaultColor(color?: string){
+  const theme = useMantineTheme();
+  return theme.colors[color || theme.primaryColor][theme.primaryShade as MantineColorShade]
+}
