@@ -9,17 +9,16 @@ import { useNavigate } from "react-router";
 import { LobbyClient } from "boardgame.io/client";
 import { joinMatch } from "@/scripts/joinMatch";
 import { FaRegSnowflake } from "react-icons/fa6";
-import { PrepButton } from "@/src/lobby/GamePrep";
-import Segment from "@/src/userInterface/Segment";
 import SafariWarning from "@/src/site/SafariWarning";
 interface CreateGameFormUniversal extends UseFormReturnType<any> {}
-
+import { MdOutlineMoneyOff } from "react-icons/md";
 export type FormValues = {
 	PlayerName: string;
 	teamColor: NamedColor;
 	gameName: string;
 	city?: City;
 	winter?: boolean;
+	money?: boolean;
 	[key:string]: any;
 };
 
@@ -51,6 +50,7 @@ export default function CreateMatchTemplate({
 		const gameSetupData = await getSetupData(values);
 		const setupData = {
 			winter: values.winter ?? false,
+			money: values.money ?? false,
 			...gameSetupData
 		}
 		console.log("creating game", values, setupData);
@@ -94,10 +94,18 @@ export default function CreateMatchTemplate({
 				/> */}
 				{children}
 				<Checkbox 
-					label="Winter mode?" 
-					description="Removes challenges with a lot of time outdoors"
+					label="Frozen mode?" 
+					description="Removes challenges which don't work well in snowy winter weather"
 					color="cyan"
 					icon={FaRegSnowflake}
+					key={createGameForm.key("winter")}
+					{...createGameForm.getInputProps("winter")}
+				/>
+				<Checkbox 
+					label="No money?" 
+					description="Removes challenges which involve small purchases e.g. boba, coffee"
+					color="yellow"
+					icon={MdOutlineMoneyOff}
 					key={createGameForm.key("winter")}
 					{...createGameForm.getInputProps("winter")}
 				/>

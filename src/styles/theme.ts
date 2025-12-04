@@ -177,7 +177,9 @@ const themeOverride = createTheme({
 
 export const theme = mergeMantineTheme(DEFAULT_THEME, themeOverride);
 
-export function defaultColor(color?: string){
+export function defaultColor(args : {shade?: number, color?: string} = {}){
+  console.log("default color", args)
   const theme = useMantineTheme();
-  return theme.colors[color || theme.primaryColor][theme.primaryShade as MantineColorShade]
+  const {shade, color} = args
+  return theme.colors[color || theme.primaryColor][shade || theme.primaryShade as MantineColorShade]
 }

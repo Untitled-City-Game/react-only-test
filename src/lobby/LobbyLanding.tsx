@@ -23,7 +23,7 @@ export default function LobbyLanding() {
 					<PrepButton />
 					<HelpButton />
 				</Group>
-				<Segment color={theme.colors[theme.primaryColor][6] || "black"}>
+				<Segment color={theme.primaryColor || "black"}>
 					<Stack gap="0">
 						<h2 style={{ margin: "0 0 0.5rem 0" }}>Create a match</h2>
 						<Button
@@ -35,7 +35,7 @@ export default function LobbyLanding() {
 						</Button>
 					</Stack>
 				</Segment>
-				<Segment color={theme.colors[theme.primaryColor][6] || "black"}>
+				<Segment color={theme.primaryColor || "black"}>
 					<Stack gap="0">
 						<h2 style={{ margin: "0 0 0.5rem 0" }}>Join a match</h2>
 						<JoinMatchCodeInput gameCode={gameCode || ""} />

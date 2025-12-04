@@ -30,7 +30,7 @@ export function ConnectFourGameSetup(ctx: Ctx, setupData: ConnectFourGameSetupDa
 		gameOver: false,
 		allPlayersData: {} as AllPlayersData,
 		allTeamsData : {},
-		challengeDeck: createChallengeDeck(setupData.mapSetupData.city, setupData.winter),
+		challengeDeck: createChallengeDeck(setupData.mapSetupData.city, setupData.winter, setupData.money),
 		allTeamsChallengeData: {},
 		gameStateLogs: [],
 		city: setupData.mapSetupData.city,

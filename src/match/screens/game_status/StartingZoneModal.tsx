@@ -10,19 +10,19 @@ import { Box, Button, Container, Modal, Select, Stack } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import React, { useContext, useEffect, useState } from "react";
 
-export function StartingRegionButton({setStartDisabled} : {setStartDisabled: React.Dispatch<React.SetStateAction<boolean>>}) {
+export function StartingZoneButton({setStartDisabled} : {setStartDisabled: React.Dispatch<React.SetStateAction<boolean>>}) {
 	const [opened, { open, close }] = useDisclosure(false);
 	const connectFourContext = useContext(ConnectFourContext);
 
 	return (
 		<>
 			<Button variant={connectFourContext.startingZone ? "light" : "filled"} onClick={open}>{connectFourContext.startingZone ? `Starting in: ${connectFourContext.startingZone}` : "Choose starting neighbourhood"}</Button>
-			<StartingRegionModal opened={opened} close={close} setStartDisabled={setStartDisabled} />
+			<StartingZoneModal opened={opened} close={close} setStartDisabled={setStartDisabled} />
 		</>
 	);
 }
 
-export function StartingRegionModal({
+export function StartingZoneModal({
 	opened,
 	close,
 	setStartDisabled
@@ -47,13 +47,12 @@ export function StartingRegionModal({
 		<Modal
 			opened={opened}
 			onClose={close}
-			removeScrollProps={{ allowPinchZoom: true }}
 			title={
 				<span style={{ fontSize: "1.2rem", fontWeight: "bold" }}>
 					Choose Starting Neighbourhood
 				</span>
 			}>
-				<Container 	>
+				<Container>
 					<Stack gap="0.5rem">
 						<div>
 							<P fz="sm">The starting neighbourhood cannot be claimed first.</P>

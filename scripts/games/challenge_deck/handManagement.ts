@@ -92,12 +92,23 @@ export function discardHand(context: MoveContext<ChallengeGameGameState>) {
 
 }
 
-export function createChallengeDeck(city: string, winter?: boolean) {
+export function createChallengeDeck(city: string, winter?: boolean, money?: boolean) {
 	const genericChallengeData = challengeDataGeneric as RawChallenge[]
 	const allChallengeData = genericChallengeData.concat(getCityChallenges(city))
-	const filteredChallengeData = winter ? allChallengeData.filter(challenge => !challenge.exclude_winter) : allChallengeData
+	const filteredChallengeData = filterChallenges(allChallengeData, {winter, money})
 	const structuredChallengeData = structureChallenges(filteredChallengeData);
 	return structuredChallengeData;
+}
+
+function filterChallenges(challengeData: RawChallenge[], filters : {winter?: boolean, money?: boolean}){
+	return challengeData.filter(challenge => {
+		for (const [key, value] of Object.entries(filters)){
+			if(value && challenge[`exclude_${key}` as keyof RawChallenge]){
+				return false
+			}
+		}
+		return true;
+	})
 }
 
 function getCityChallenges(city: string){

@@ -26,6 +26,7 @@ export type RawChallenge = {
 	link_name: string,
 	hard?: string,
 	exclude_winter?: string,
+	exclude_money?: string,
 }
 
 export type Challenge = {

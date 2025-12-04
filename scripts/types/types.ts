@@ -70,7 +70,8 @@ export type City = typeof cities[number];
 
 export type GameSetupDataGeneric = {
 	gameName: string,
-	winter: boolean
+	winter: boolean,
+	money: boolean
 }
 
 export interface MatchMapData extends MapData {

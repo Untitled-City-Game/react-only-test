@@ -6,7 +6,7 @@ import Header from "@/src/userInterface/Header/Header";
 import { HelpButton } from "@/src/match/components/help/HelpButton";
 import FullHeightLayout, { VerticalSpread } from "@/src/userInterface/Layout";
 import P from "@/src/userInterface/P";
-import { Box, Button, Card, Center, Container, FileInput, LoadingOverlay, Stack, Title, useMantineTheme } from "@mantine/core";
+import { Box, Button, ButtonProps, Card, Center, Container, FileInput, LoadingOverlay, Stack, Title, useMantineTheme } from "@mantine/core";
 import { useContext, useEffect, useState } from "react";
 import { GameContext } from "@/src/match/Board";
 import { ConnectFourGameState } from "@/scripts/games/connect_four/types";
@@ -14,8 +14,9 @@ import { storage } from "@/scripts/firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { ConnectFourMoves } from "@/scripts/games/connect_four/connect_four";
 import { SharedMoves } from "@/scripts/games/shared_moves/sharedMoves";
-import { StartingRegionButton } from "@/src/match/screens/game_status/StartingRegionModal";
+import { StartingZoneButton } from "@/src/match/screens/game_status/StartingZoneModal";
 import Segment from "@/src/userInterface/Segment";
+import { defaultColor } from "@/src/styles/theme";
 export default function Waiting() {
 	console.log("rendering waiting page");
 	const props: GameBoardContext = useContext(GameContext);
@@ -30,29 +31,29 @@ export default function Waiting() {
 	}
 	const [loading, setLoading] = useState(false);
 	const [startDisabled, setStartDisabled] = useState(props.gameCode === "connect_four" ? true : false);
-
+	const teamColor = props.playerData.data.teamColor
 	return (
 		<Center>
 			<LoadingOverlay visible={loading} loaderProps={{ children: <Loading message="Building trains..." /> }} />
 			<FullHeightLayout>
-				<Header color={props.playerData.data.teamColor || "white"}>{game.name}</Header>
+				<Header color={teamColor || "white"}>{game.name}</Header>
 				<VerticalSpread>
 					<div></div>
 					<div>
 						<Stack gap="lg" align="stretch">
 							<h2 style={{ fontWeight: "light" }}>Your Connect Four game is waiting to start.</h2>
-							<Segment>
+							<Segment color={teamColor}>
 								<Stack>
 									<Title order={3} size="h4">Teams and Players</Title>
-									<TeamSummary gameData={props.G} playerTeam={props.playerData.data.teamColor} />
-									<GameInviteButton gameCode={props.gameCode} matchID={props.matchID} />
+									<TeamSummary gameData={props.G} playerTeam={teamColor} />
+									<GameInviteButton color={defaultColor({color: teamColor, shade: 7})} gameCode={props.gameCode} matchID={props.matchID} />
 								</Stack>
 							</Segment>
 							<Segment>
 								<Stack align="stretch">
 									<Title order={3} size="h4">Before you Start</Title>
 									<HelpButton />
-									{(props.playerData.data.admin && props.gameCode === "connect_four") ? <StartingRegionButton setStartDisabled={setStartDisabled} /> : null}
+									{(props.playerData.data.admin && props.gameCode === "connect_four") ? <StartingZoneButton setStartDisabled={setStartDisabled} /> : null}
 								</Stack>
 							</Segment>
 						</Stack>
@@ -94,9 +95,9 @@ function TeamSummary({ gameData, playerTeam }: { gameData: GameStateGeneric, pla
 	)
 }
 
-export function GameInviteButton({ gameCode, matchID }: { gameCode: string, matchID: string }) {
+export function GameInviteButton({ gameCode, matchID, ...rest }: { gameCode: string, matchID: string } & ButtonProps) {
 	return (
-		<Button onClick={() => navigator.clipboard.writeText(`${process.env.GAME_ADDRESS}/lobby/${gameCode}/join-match/${matchID}`)}>
+		<Button {...rest} onClick={() => navigator.clipboard.writeText(`${process.env.GAME_ADDRESS}/lobby/${gameCode}/join-match/${matchID}`)}>
 			Copy invite link
 		</Button>
 	)

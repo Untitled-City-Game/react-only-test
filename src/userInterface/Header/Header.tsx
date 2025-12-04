@@ -16,9 +16,9 @@ export function ComplexHeader({ children, color, ...rest }: { children: React.Re
 		<Center 
 		className="header"
 		style={{
-			background: color === "rainbow" ? rainbowBackground : theme.colors[color || theme.primaryColor][1],
-			borderBottom: color === "rainbow" ? "none" : `2px solid ${defaultColor(color)}`,
-			borderTop: color === "rainbow" ? "none" : `2px solid ${defaultColor(color)}`,
+			background: color === "rainbow" ? rainbowBackground : defaultColor({shade: 1}),
+			borderBottom: color === "rainbow" ? "none" : `2px solid ${defaultColor()}`,
+			//borderTop: color === "rainbow" ? "none" : `2px solid ${defaultColor({shade: 3})}`,
 			textShadow: "white 1px 0 3px"
 		}}
 		{...rest}
