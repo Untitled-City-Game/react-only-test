@@ -1,5 +1,6 @@
 import { ConnectFourMoves } from "@/scripts/games/connect_four/connect_four";
 import { ConnectFourGameState, ZoneData } from "@/scripts/games/connect_four/types";
+import onlyUnique from "@/scripts/helpers/onlyUnique";
 import { GameBoardContext } from "@/scripts/types/types";
 import { ChallengeDeckContext, ConnectFourContext, GameContext, LocationContext } from "@/src/match/Board";
 import claimZone from "@/src/match/components/regions/region_claim_flow/claimZone";
@@ -125,7 +126,7 @@ export default function ClaimFlowModal({
 									data={zoneSelectOptions} {...claimForm.getInputProps("zone")} 
 									defaultValue={String(claimedZone?.id || "")} 
 								/>
-								<Select label="With challenge" data={challengeHand} {...claimForm.getInputProps("challenge")} defaultValue={challengeTitle} />
+								<Select label="With challenge" data={onlyUnique(challengeHand)} {...claimForm.getInputProps("challenge")} defaultValue={challengeTitle} />
 								<FileInput
 									label="Evidence"
 									multiple
