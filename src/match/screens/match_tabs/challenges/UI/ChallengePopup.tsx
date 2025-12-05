@@ -2,10 +2,11 @@ import { Challenge } from "@/scripts/games/challenge_deck/challenge_deck_types";
 import { Color } from "@/scripts/types/types";
 import { ChallengeCard } from "@/src/match/screens/match_tabs/challenges/UI/ChallengeCard";
 import RuleBox from "@/src/match/screens/match_tabs/challenges/UI/RuleBox";
+import Button from "@/src/userInterface/CustomButton";
 import DashedCard from "@/src/userInterface/DashedCard";
 import P from "@/src/userInterface/P";
 import Span from "@/src/userInterface/Span";
-import { Box, Button, Divider, Modal, Stack } from "@mantine/core";
+import { Box,  Divider, Modal, Stack } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { FaExternalLinkSquareAlt, FaLock } from "react-icons/fa";
 

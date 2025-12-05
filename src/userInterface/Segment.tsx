@@ -1,8 +1,10 @@
-import { defaultColor } from "@/src/styles/theme";
-import { CardProps, MantineProvider, mergeMantineTheme, useMantineTheme } from "@mantine/core";
+import { defaultColor, LocalColorContext, ThemeColor } from "@/src/styles/theme";
+import { CardProps } from "@mantine/core";
+import { createContext } from "vm";
 
-export default function Segment({ children, color, ...rest }: { children: React.ReactNode, color?: string } & React.HTMLAttributes<HTMLDivElement> & CardProps){
+export default function Segment({ children, color, ...rest }: { children: React.ReactNode, color?:ThemeColor } & React.HTMLAttributes<HTMLDivElement> & CardProps){
 	return (
+		<LocalColorContext.Provider value={color}>
 			<div style={{
 				border: `2px dashed ${defaultColor({color})}`,
 				padding: '1rem',
@@ -10,5 +12,6 @@ export default function Segment({ children, color, ...rest }: { children: React.
 			}}>
 				{children}
 			</div>
+		</LocalColorContext.Provider>
 	)
 }

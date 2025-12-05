@@ -4,7 +4,7 @@ import { ClientSetupData, MatchMapData, MatchTeamColor, PlayerData } from "@/scr
 import { ConnectFourBoard, SnakeBoard } from "@/src/match/Board";
 import { Client } from "boardgame.io/react";
 import Loading from "@/src/match/screens/game_status/Loading";
-import { Button, MantineProvider, mergeMantineTheme } from "@mantine/core";
+import {  MantineProvider, mergeMantineTheme } from "@mantine/core";
 import { SocketIO } from "boardgame.io/multiplayer";
 import { ErrorBoundary } from "react-error-boundary";
 import { theme } from "@/src/styles/theme";

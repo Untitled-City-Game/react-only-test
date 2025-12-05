@@ -7,8 +7,9 @@ import claimZone from "@/src/match/components/regions/region_claim_flow/claimZon
 import { ModalHeader } from "@/src/match/components/regions/region_claim_flow/ui/ModalHeader";
 import { useMyZoneRef } from "@/src/match/interfaces/useMyZone";
 import Loading from "@/src/match/screens/game_status/Loading";
+import Button from "@/src/userInterface/CustomButton";
 import {
-	Button,
+	
 	Container,
 	FileInput,
 	LoadingOverlay,

@@ -1,4 +1,4 @@
-import { Button, LoadingOverlay, Radio, Stack, TextInput } from "@mantine/core";
+import {  LoadingOverlay, Radio, Stack, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { LobbyAPI } from "boardgame.io";
 import { LobbyClient } from "boardgame.io/client";
@@ -12,6 +12,7 @@ import P from "@/src/userInterface/P";
 import { useEffect, useMemo, useState } from "react";
 import { ListButton } from "../userInterface/ListButton";
 import SafariWarning from "@/src/site/SafariWarning";
+import Button from "@/src/userInterface/CustomButton";
 
 export default function JoinMatch() {
 	const matchID = useParams().matchID;

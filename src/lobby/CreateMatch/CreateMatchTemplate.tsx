@@ -2,7 +2,7 @@ import { games } from "@/scripts/consts";
 import { City, NamedColor, PlayerData } from "@/scripts/types/types";
 import Loading from "@/src/match/screens/game_status/Loading";
 import Span from "@/src/userInterface/Span";
-import { Radio, Paper, Group, LoadingOverlay, Stack, TextInput, Button, Checkbox } from "@mantine/core";
+import { Radio, Paper, Group, LoadingOverlay, Stack, TextInput,  Checkbox } from "@mantine/core";
 import { hasLength, useForm, UseFormReturnType } from "@mantine/form";
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router";
@@ -12,6 +12,7 @@ import { FaRegSnowflake } from "react-icons/fa6";
 import SafariWarning from "@/src/site/SafariWarning";
 interface CreateGameFormUniversal extends UseFormReturnType<any> {}
 import { MdOutlineMoneyOff } from "react-icons/md";
+import Button from "@/src/userInterface/CustomButton";
 export type FormValues = {
 	PlayerName: string;
 	teamColor: NamedColor;

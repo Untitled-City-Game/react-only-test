@@ -5,8 +5,9 @@ import MyLocationMarker from "@/src/match/googleMaps/MyLocationMarker";
 import VisGlMapElement from "@/src/match/googleMaps/VisGLMapElement";
 import { useMyZoneRef } from "@/src/match/interfaces/useMyZone";
 import { GenericMapZones } from "@/src/match/screens/connect_four/GenericMapZones";
+import Button from "@/src/userInterface/CustomButton";
 import P from "@/src/userInterface/P";
-import { Box, Button, Container, Modal, Select, Stack } from "@mantine/core";
+import { Box,  Container, Modal, Select, Stack } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import React, { useContext, useEffect, useState } from "react";
 

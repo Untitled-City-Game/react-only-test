@@ -10,7 +10,7 @@ import { useAutoScrollToBottom } from "@/src/userInterface/chatScroll";
 import ConfirmButton from "@/src/userInterface/ConfirmModal";
 import { ComplexHeader } from "@/src/userInterface/Header/Header";
 import P from "@/src/userInterface/P";
-import { Avatar, Box, Button, Group, ScrollAreaAutosize, Stack } from "@mantine/core";
+import { Avatar, Box,  Group, ScrollAreaAutosize, Stack } from "@mantine/core";
 import { useContext, useEffect, useRef, useState } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 

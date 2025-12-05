@@ -7,7 +7,7 @@ import { FruitIcon } from "@/src/match/components/snake/Fruit";
 import useMyLocation from "@/src/match/interfaces/useMyLocation";
 import Loading from "@/src/match/screens/game_status/Loading";
 import P from "@/src/userInterface/P";
-import { Button, FileInput, LoadingOverlay, Modal, Stack } from "@mantine/core";
+import {  Button, FileInput, LoadingOverlay, Modal, Stack } from "@mantine/core";
 import { hasLength, useForm, UseFormReturnType } from "@mantine/form";
 import { useContext, useState } from "react";
 import { FaAppleAlt } from "react-icons/fa";

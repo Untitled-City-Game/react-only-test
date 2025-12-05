@@ -1,9 +1,10 @@
 import { theme } from "@/src/styles/theme";
-import { Button, Center, Container, Modal, ScrollArea, UnstyledButton } from "@mantine/core";
+import {Center, Container, Modal, ScrollArea, UnstyledButton } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { BsQuestionCircleFill } from "react-icons/bs";
 import Markdown from 'react-markdown'
 import HowToPlay from '@data/how_to_play.md'
+import Button from "@/src/userInterface/CustomButton";
 
 export default function HelpIcon() {
 	const [opened, { open, close }] = useDisclosure(false);

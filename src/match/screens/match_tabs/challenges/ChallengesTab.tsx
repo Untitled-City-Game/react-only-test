@@ -11,7 +11,7 @@ import ConfirmButton from "@/src/userInterface/ConfirmModal";
 import { ComplexHeader } from "@/src/userInterface/Header/Header";
 import P from "@/src/userInterface/P";
 import Span from "@/src/userInterface/Span";
-import { Box, Container, Stack, Group, Button, ScrollAreaAutosize, Accordion, ScrollArea, Flex, Divider, useMantineTheme } from "@mantine/core";
+import { Box, Container, Stack, Group,  ScrollAreaAutosize, Accordion, ScrollArea, Flex, Divider, useMantineTheme } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { createContext, useContext, useEffect, useState } from "react";
 import { FaLock } from "react-icons/fa";

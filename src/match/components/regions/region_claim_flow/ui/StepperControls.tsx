@@ -1,5 +1,5 @@
 // import { GameBoardProps } from "@/scripts/types/types";
-// import { Button, Group } from "@mantine/core";
+// import {  Group } from "@mantine/core";
 
 // export default function StepperControls(claimForm: any, step: number, setStep: React.Dispatch<React.SetStateAction<number>>, closeClaim: () => void,  setLoading: React.Dispatch<React.SetStateAction<boolean>>
 // , props: GameBoardProps) {

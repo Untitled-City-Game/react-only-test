@@ -1,7 +1,7 @@
 import { games } from "@/scripts/consts";
 import { HelpButton } from "@/src/match/components/help/HelpButton";
 import Segment from "@/src/userInterface/Segment";
-import { Box, Button, Group, Stack, TextInput, useMantineTheme } from "@mantine/core";
+import { Box,  Group, Stack, TextInput, useMantineTheme } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { LobbyClient } from "boardgame.io/client";
 import { useMemo, useState } from "react";
@@ -9,6 +9,8 @@ import { Link, useNavigate, useParams } from "react-router";
 import { PrepButton } from "@/src/lobby/GamePrep";
 import GameIntro from "@/src/lobby/GameIntro";
 import { GameMeta } from "@/scripts/types/types";
+import { ThemeColor } from "@/src/styles/theme";
+import Button from "@/src/userInterface/CustomButton";
 
 export default function LobbyLanding() {
 	const gameCode = useParams().gameCode;
@@ -23,7 +25,7 @@ export default function LobbyLanding() {
 					<PrepButton />
 					<HelpButton />
 				</Group>
-				<Segment color={theme.primaryColor || "black"}>
+				<Segment color="orange">
 					<Stack gap="0">
 						<h2 style={{ margin: "0 0 0.5rem 0" }}>Create a match</h2>
 						<Button
@@ -35,7 +37,7 @@ export default function LobbyLanding() {
 						</Button>
 					</Stack>
 				</Segment>
-				<Segment color={theme.primaryColor || "black"}>
+				<Segment>
 					<Stack gap="0">
 						<h2 style={{ margin: "0 0 0.5rem 0" }}>Join a match</h2>
 						<JoinMatchCodeInput gameCode={gameCode || ""} />
