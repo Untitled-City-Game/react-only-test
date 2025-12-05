@@ -51,7 +51,6 @@
     "firebase": "^11.5.0",
     "load-esm": "^1.0.3",
     "lodash": "^4.17.21",
-    "mime-db": "^1.54.0",
     "node-persist": "^4.0.4",
     "point-in-polygon": "^1.1.0",
     "polylabel": "^2.0.1",
