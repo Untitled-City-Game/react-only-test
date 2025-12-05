@@ -4,10 +4,7 @@ import path from "path";
 
 export default defineConfig({
   define: {
-    'process.env.GAME_SERVER': JSON.stringify(process.env.GAME_SERVER),
-    'process.env.GAME_ADDRESS': JSON.stringify(process.env.GAME_ADDRESS),
-    'process.env.LOCATION_SERVER': JSON.stringify(process.env.LOCATION_SERVER),
-    'process.env.LOCATION_SERVER_PATH': JSON.stringify(process.env.LOCATION_SERVER_PATH),
+    'process.env': process.env
   },
   server: {
     port: 1234,
