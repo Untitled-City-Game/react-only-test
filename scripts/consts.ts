@@ -76,13 +76,13 @@ export const games = [
         description: "Connect four neighbourhoods in your city before the other team!",
         playerMin: 4,
         playerMax: 8,
-        color: "orange",
+        color: "yellow",
         icon: MdGrid4X4
     },
     {
         name: "Snake",
         code: "snake",
-        active: true,
+        active: false,
         playerMin: 4,
         playerMax: 8,
         description: "Collect the fruit to grow your snake. Wrap around the other team to win!",

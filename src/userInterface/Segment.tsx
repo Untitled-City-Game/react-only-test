@@ -6,7 +6,7 @@ export default function Segment({ children, color, ...rest }: { children: React.
     return (
         <LocalColorContext.Provider value={color}>
             <div style={{
-                border: `2px dashed ${defaultColor({ color })}`,
+                border: `2px dashed ${defaultColor({ color, shade: 4 })}`,
                 padding: '1rem',
                 borderRadius: `10px`
             }}>
