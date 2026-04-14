@@ -45,9 +45,10 @@ export default function ZonePolygon({
 	const map = useMap();
 	useEffect(() => {
 		if (map) {
-			map.addListener("zoom_changed", () => {
-				setZoom((map.getZoom() ?? 0));
+			const listener = map.addListener("zoom_changed", () => {
+				setZoom(map.getZoom() ?? 0);
 			});
+			return () => listener.remove();
 		}
 	}, [map]);
 

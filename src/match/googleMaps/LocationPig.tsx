@@ -3,7 +3,7 @@ import { CoordSet, MatchTeamColor } from "@/scripts/types/types";
 import { GameContext } from "@/src/match/Board";
 import SnakeHead from "@/src/match/components/snake/SnakeHead";
 import LocationMarker from "@/src/match/googleMaps/LocationMarker";
-import React, { createContext, SetStateAction, useContext, useEffect, useState, Dispatch } from "react";
+import React, { createContext, SetStateAction, useCallback, useContext, useEffect, useState, Dispatch } from "react";
 
 export type LocationPigContext = [
 	google.maps.LatLngLiteral,
@@ -25,7 +25,7 @@ export default function LocationPig({initialPosition} : {initialPosition : googl
 	
 	const offset = 0.0001
 	//listen for arrow key input
-	const handleKeyPress = (event : KeyboardEvent) => {
+	const handleKeyPress = useCallback((event : KeyboardEvent) => {
 		switch(event.key){
 			case 'w':
 				setPosition((prevPosition) => {
@@ -35,25 +35,25 @@ export default function LocationPig({initialPosition} : {initialPosition : googl
 			case 'a':
 				setPosition((prevPosition) => {
 					return {lat: prevPosition.lat, lng: prevPosition.lng - offset};
-				});				
+				});
 				break;
 			case 's':
 				setPosition((prevPosition) => {
 					return {lat: prevPosition.lat - offset, lng: prevPosition.lng};
-				});					
+				});
 				break;
 			case 'd':
 				setPosition((prevPosition) => {
 					return {lat: prevPosition.lat, lng: prevPosition.lng + offset};
-				});	
+				});
 				break;
 		}
-	}
+	}, [setPosition])
 
 	useEffect(() => {
 		 document.addEventListener("keydown", handleKeyPress);
 		return () => document.removeEventListener('keydown', handleKeyPress, false);
-	})
+	}, [handleKeyPress])
 	return (
 		<>
 		<LocationMarker position={position} color={gameContext.playerData.data.teamColor} />
