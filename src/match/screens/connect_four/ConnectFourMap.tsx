@@ -3,7 +3,7 @@ import VisGlMapElement from "@/src/match/googleMaps/VisGLMapElement";
 import SelectedZonePopup from "@/src/match/components/regions/SelectedZonePopup";
 import ZonePolygon from "@/src/match/components/regions/ZonePolygon";
 import { useContext, useMemo, useRef, useState } from "react";
-import { ConnectFourGameState, ZoneData } from "@/scripts/games/connect_four/types";
+import { ZoneData } from "@/scripts/games/connect_four/types";
 import { ConnectFourContext, GameContext } from "@/src/match/Board";
 import AllTeamMarkers from "@/src/match/googleMaps/AllTeamMarkers";
 import { LineData } from "@/scripts/types/googleMaps";
@@ -121,6 +121,3 @@ const mapStyles: React.CSSProperties = {
 };
 
 
-export function createZoneElements(G: ConnectFourGameState){
-	
-}

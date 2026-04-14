@@ -14,7 +14,6 @@ import { FaBan, FaLock } from "react-icons/fa";
 import findPolygonCenter from "@/scripts/geojson/polygonCenter";
 import { transformScale } from "@turf/turf";
 import * as turf from "@turf/turf"
-import ease from "@/scripts/ease";
 import useEase from "@/scripts/ease";
 
 type ZonePolygonProps = {
@@ -64,10 +63,10 @@ export default function ZonePolygon({
 								zoneGameData.controlTeam ? 4 : 3 :
 								currentZone ? 0.5 : 2
 
-	const strokeWeight = ease(strokeWeightLogic, 100);
+	const strokeWeight = useEase(strokeWeightLogic, 100);
 
 	const strokeOpacityLogic = amCurrentZone || amHighlighted ? 1 : 0.8
-	const strokeOpacity = ease(strokeOpacityLogic, 100);
+	const strokeOpacity = useEase(strokeOpacityLogic, 100);
 
 	const fillColor = zoneGameData.controlTeam ? theme.colors[zoneGameData.controlTeam][6] :
 						(disabled ? zoneColors.disabled :

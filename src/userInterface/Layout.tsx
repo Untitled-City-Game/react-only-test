@@ -57,8 +57,3 @@ export const scrollParent : React.CSSProperties = {
 	flexShrink: "100"
 }
 
-export const scrollSacrifice : React.CSSProperties = {
-	overflow: "scroll",
-	flexShrink: "100",
-	flexGrow: "100"
-}

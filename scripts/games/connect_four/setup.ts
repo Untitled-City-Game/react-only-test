@@ -6,13 +6,6 @@ import type { Ctx } from "boardgame.io";
 import { playerSetup } from "@/scripts/games/shared_moves/playerSetup";
 import { challengeDeckPlayerSetup } from "@/scripts/games/challenge_deck/challenge_deck_player_setup";
 
-function isGameSetupData(data: unknown): string | undefined {
-	if (!data) return ('No game setup data provided');
-	if (typeof data !== 'object') return ('Game setup data is not an object');
-	if (!('city' in data) || typeof data.city !== 'string') return ('Game setup data is missing city');
-	if (!('zonePolygons' in data) || !('winningLines' in data) || !data.zonePolygons || !data.zonePolygons) return ('Game setup data is missing map data');
-}
-
 export function ConnectFourGameSetup(ctx: Ctx, setupData: ConnectFourGameSetupData): ConnectFourGameState {
 	console.log("Setting up game of connect four");
 	console.log("setup data", setupData)

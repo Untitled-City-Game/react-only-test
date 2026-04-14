@@ -143,33 +143,8 @@ export type Color = RGB | RGBA | HEX | NamedColor;
 
 export type CoordSet = {lat: number, long: number}
 
-export function isCity(city: string) : city is City{
-	return cities.includes(city as City);
-	}
-
-// type AtLeastOneColor<T extends string> = {
-// 	[K in T]?: TeamData; // Values can be anything, change type as needed
-// 	} & {
-// 	[K in T]: TeamData;
-// 	}
-
 export type MatchTeamString = string & {__isMatchTeam: true};
 export type MatchTeamColor = NamedColor & {__isMatchTeam: true};
-
-/** Mimics the result of Object.keys(...) */
-export type keysOf<o> = o extends readonly unknown[]
-    ? number extends o["length"]
-        ? `${number}`
-        : keyof o & `${number}`
-    : {
-          [K in keyof o]: K extends string
-              ? K
-              : K extends number
-              ? `${K}`
-              : never
-      }[keyof o]
-
-export const keysOf = <o extends object>(o: o) => Object.keys(o) as keysOf<o>[]
 export type ClaimZoneFormValues = UseFormReturnType<
 	{
 		zone: number;

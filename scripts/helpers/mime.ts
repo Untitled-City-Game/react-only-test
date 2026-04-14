@@ -11,7 +11,7 @@
     return mime_types[path];
   };
 
-export const mime_types: Record<string, string | undefined> = {
+const mime_types: Record<string, string | undefined> = {
   "3gp": "video/3gpp",
   a: "application/octet-stream",
   ai: "application/postscript",
