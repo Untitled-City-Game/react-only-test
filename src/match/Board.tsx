@@ -12,7 +12,7 @@ import Waiting from "@/src/match/screens/game_status/Waiting";
 import TabSet from "@/src/match/screens/match_tabs/TabSet";
 import ErrorDialog from "@/src/site/errorHandling/ErrorDialog";
 import StatusBar from "@/src/userInterface/StatusBar";
-import { createContext, RefObject, useContext, useEffect, useRef } from "react";
+import { createContext, RefObject, useContext, useEffect, useMemo, useRef } from "react";
 import { ErrorBoundary } from "react-error-boundary";
 import { useLocation, useNavigate } from "react-router";
 
@@ -32,6 +32,8 @@ function Board(props: GameBoardContext) {
 	const moves = props.moves as ConnectFourMoves
 	const playerData = props.playerData;
 	let navigate = useNavigate();
+
+	const contextValue = useMemo(() => ({ ...props }), [props.G, props.playerID, props.moves, props.playerData, props.credentials]);
 
 	useEffect(() => {
 		if (playerID && props.G.allPlayersData && !props.G.allPlayersData[playerID]) {
@@ -54,15 +56,8 @@ function Board(props: GameBoardContext) {
 	}
 
 	if (!props.G.active) {
-		// if(props.G.gameName === "connect_four_demo"){
-		// 	// props.moves.startGame();
-		// 	return <>
-		// 	<h1>Loading demo...</h1>
-		// 	<button onClick={props.moves.startGame}>Start game</button>
-		// 	</>
-		// }
 		return (
-			<GameContext.Provider value={{ ...props }}>
+			<GameContext.Provider value={contextValue}>
 				<LocationRefContextWrapper>
 					<MatchContext G={props.G}>
 						<Waiting />
@@ -77,7 +72,7 @@ function Board(props: GameBoardContext) {
 	}
 
 	return (
-		<GameContext.Provider value={{ ...props }}>
+		<GameContext.Provider value={contextValue}>
 			<ErrorBoundary
 				FallbackComponent={ErrorDialog}>
 				<OtherTeamsContextWrapper>
