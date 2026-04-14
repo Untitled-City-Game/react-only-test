@@ -1,6 +1,6 @@
 import { LineData, PolygonFeature, PolyData } from "@/scripts/types/googleMaps";
-import { Position } from "geojson";
 import PointInPolygon from "point-in-polygon";
+import { toLatLng } from "@/scripts/geojson/coords";
 
 export default function makePolygons(zoneDataObj: GeoJSON.FeatureCollection, zoneLines: LineData[]) {
 
@@ -19,10 +19,7 @@ export default function makePolygons(zoneDataObj: GeoJSON.FeatureCollection, zon
 		});
 
 		//convert coords to latlong (for some reason polygon has an extra array layer than polyline)
-		const zoneCoords = zone.geometry.coordinates[0].map((coord: Position) => {
-			const latlong = coord as number[];
-			return {lat: latlong[1], lng: latlong[0]}
-		})
+		const zoneCoords = zone.geometry.coordinates[0].map(toLatLng)
 		const newPoly: PolyData = {featureName: zoneName, coords: zoneCoords, matchedLines : matchedLines};
 		//add matched lines to the line's matchedPolygons
 		matchedLines.forEach((line) => {

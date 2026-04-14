@@ -16,9 +16,7 @@ import { sharedMoves } from "@/scripts/games/shared_moves/sharedMoves";
 
 export const handSize = 5;
 
-const customUndo = (context : MoveContext<ConnectFourGameState>) => {
-	return customUndoTemplate(context)
-}
+const customUndo = (context: MoveContext<ConnectFourGameState>) => customUndoTemplate(context);
 
 const claimStateMoves = {
 	playerSetup: connectFourPlayerSetup,

@@ -1,6 +1,7 @@
 import { LineData, LineFeature, PolyData, PolygonFeature } from "@/scripts/types/googleMaps";
-import { Position } from "geojson";
 import PointInPolygon from "point-in-polygon";
+import onlyUnique from "@/scripts/helpers/onlyUnique";
+import { toLatLng } from "@/scripts/geojson/coords";
 
 export default function makeLines(zoneDataObj: GeoJSON.FeatureCollection) {
 	//filter to polylines
@@ -15,10 +16,7 @@ export default function makeLines(zoneDataObj: GeoJSON.FeatureCollection) {
 	const regionLines : LineData[] = validPolyLines.map((line: LineFeature) => {
 		const lineName: string = line.properties.Name || line.properties.name;
 		//convert coords to latlong
-		const lineCoords = line.geometry.coordinates.map((coord: Position) => {
-			const latlong = coord as number[];
-			return {lat: latlong[1], lng: latlong[0]}
-		})
+		const lineCoords = line.geometry.coordinates.map(toLatLng)
 		return {featureName: lineName, coords: lineCoords, matchedPolygons: []};
 	})
 	return regionLines;
@@ -32,10 +30,6 @@ function findPolygons(line: LineData, polygons: PolyData[]){
 	const polygonSet = line.coords.map(coord => {
 		return polygons.find(poly => PointInPolygon([coord.lng, coord.lat], poly.coords.map(coord => [coord.lng, coord.lat])))?.featureName
 	})
-	line.matchedPolygons = polygonSet.filter(onlyUnique) as string[]
+	line.matchedPolygons = onlyUnique(polygonSet.filter(Boolean) as string[])
 	return line;
-}
-
-function onlyUnique(value: unknown, index: number, array : unknown[]) {
-  return value && array.indexOf(value) === index;
 }

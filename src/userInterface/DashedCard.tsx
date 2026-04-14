@@ -1,6 +1,8 @@
 import { Card, CardProps, Group } from "@mantine/core";
 
-export default function DashedCard({ children, color, ...rest }: { children: React.ReactNode, color: string } & React.HTMLAttributes<HTMLDivElement> & CardProps){
+type StyledCardProps = { children: React.ReactNode, color: string, variant?: "dashed" | "solid" } & React.HTMLAttributes<HTMLDivElement> & CardProps;
+
+function StyledCard({ children, color, variant = "dashed", ...rest }: StyledCardProps){
 	return (
 		<Card
 			// m="0"
@@ -10,7 +12,7 @@ export default function DashedCard({ children, color, ...rest }: { children: Rea
 			style={{
 				borderRadius: "10px",
 			}}
-			bd={`1.5px dashed ${color}`}
+			bd={`1.5px ${variant} ${color}`}
 						{...rest}
 
 			>
@@ -21,23 +23,8 @@ export default function DashedCard({ children, color, ...rest }: { children: Rea
 	)
 }
 
-export function SolidCard({ children, color, ...rest }: { children: React.ReactNode, color: string } & React.HTMLAttributes<HTMLDivElement> & CardProps){
-	return (
-		<Card
-			// m="0"
-			py="sm"
-			px="lg"
-			shadow="lg"
-			style={{
-				borderRadius: "10px",
-			}}
-			bd={`1.5px solid ${color}`}
-						{...rest}
+export default StyledCard;
 
-			>
-			<Group wrap="nowrap" gap="lg">
-				{children}
-			</Group>
-		</Card>
-	)
+export function SolidCard({ children, ...rest }: Omit<StyledCardProps, "variant">){
+	return <StyledCard variant="solid" {...rest}>{children}</StyledCard>
 }

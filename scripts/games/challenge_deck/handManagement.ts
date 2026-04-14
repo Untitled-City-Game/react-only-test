@@ -21,7 +21,7 @@ export function discardChallenge(
 		teamData.challengeHand,
 		(challengeInHand) => challengeInHand.title === challenge
 	);
-	teamData.challengeDiscard.concat(removedChallenge);
+	teamData.challengeDiscard.push(...removedChallenge);
 }
 
 export function drawChallenge({ G, playerID }: { G: ChallengeGameGameState; playerID: string; }, teamData: TeamChallengeData) {
@@ -81,7 +81,7 @@ export function discardHand(context: MoveContext<ChallengeGameGameState>) {
 		return "INVALID_MOVE"
 	}
 	
-	teamData.challengeDiscard.concat(teamData.challengeHand);
+	teamData.challengeDiscard.push(...teamData.challengeHand);
 	teamData.challengeHand = [];
 	drawToFull(context);
 	createUndoPoint(G);

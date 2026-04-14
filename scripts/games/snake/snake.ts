@@ -12,9 +12,8 @@ import { MoveContext, StripContext } from "@/scripts/types/types";
 import { Game } from "boardgame.io";
 
 
-const customUndo = (context : MoveContext<SnakeGameState>) => {
-	customUndoTemplate(context)
-}
+const customUndo = (context: MoveContext<SnakeGameState>) => customUndoTemplate(context);
+
 const playStateMoves_Snake = {
 	endGame,
 	customUndo,
