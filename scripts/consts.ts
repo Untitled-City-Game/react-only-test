@@ -11,7 +11,6 @@ export const gameTimeMinutes = 180;
 export const cities = [
     "melbourne",
     "montreal",
-    "montreal_mini",
     "london",
     "nyc"
 ] as const;
@@ -27,11 +26,11 @@ export const maps = {
         code: "montreal",
         kml_live_id: "1bliTnqrqX9A6txnta7C27Em0PJ3phzE",
     },
-    montreal_mini: {
-        name: "Montreal mini",
-        code: "montreal_mini",
-        kml_live_id: "1RCl4vAXoYFF8HCwX7wTAVlgSs765ZJk"
-    },
+    // montreal_mini: {
+    //     name: "Montreal mini",
+    //     code: "montreal_mini",
+    //     kml_live_id: "1RCl4vAXoYFF8HCwX7wTAVlgSs765ZJk"
+    // },
     london: {
         name: "London",
         code: "london",
@@ -57,10 +56,10 @@ export const gameLocationCenters = {
         lat: 51.5073509,
         lng: -0.1277583,
     },
-    montreal_mini: {
-        lat: 45.5070113731678,
-        lng: -73.57570671343632,
-    },
+    // montreal_mini: {
+    //     lat: 45.5070113731678,
+    //     lng: -73.57570671343632,
+    // },
     nyc: {
         lat: 40.74807572237176,
         lng: -73.98590688638745

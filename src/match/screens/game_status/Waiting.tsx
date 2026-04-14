@@ -37,13 +37,12 @@ export default function Waiting() {
         <Center>
             <LoadingOverlay visible={loading} loaderProps={{ children: <Loading message="Building trains..." /> }} />
             <FullHeightLayout>
-                <Header color={teamColor || "white"}>{game.name}</Header>
                 <VerticalSpread>
                     <div></div>
                     <div>
                         <Stack gap="lg" align="stretch">
                             <h2 style={{ fontWeight: "light" }}>Your Connect Four game is waiting to start.</h2>
-                            <Segment color={"orange"}>
+                            <Segment>
                                 <Stack>
                                     <Title order={3} size="h4">Teams and Players</Title>
                                     <TeamSummary gameData={props.G} playerTeam={teamColor} />
@@ -54,7 +53,7 @@ export default function Waiting() {
                                     />
                                 </Stack>
                             </Segment>
-                            <Segment color={teamColor}>
+                            <Segment>
                                 <Stack align="stretch">
                                     <Title order={3} size="h4">Before you Start</Title>
                                     <HelpButton />
