@@ -8,17 +8,16 @@ export function checkVictory(
 	const zoneData = context.G.zoneData;
 	const teams = context.G.allTeamsData
 	console.log("Checking victory condition")
+	//build zone lookup by name for O(1) access
+	const zoneByName = new Map(zoneData.map(zone => [zone.name, zone]));
 	//iterate over winning lines and check relevant polygons
 	for (const line of winningLines){
-		//get relevant zonedata
-		const matchedZoneControl = zoneData.filter(zone => line.matchedPolygons.includes(zone.name)).map(zone => zone.controlTeam)
-		//check if all are owned by one team
-		for(const team of Object.keys(teams)){
-			if(matchedZoneControl.every(control => control === team)){
-				context.G.victory = team as MatchTeamColor
-				console.log("Victory has occured", team)
-				return;
-			}
+		const controls = line.matchedPolygons.map(name => zoneByName.get(name)?.controlTeam ?? null);
+		//check if all zones in line are controlled by the same team
+		if (controls.length > 0 && controls[0] !== null && controls.every(c => c === controls[0])){
+			context.G.victory = controls[0] as MatchTeamColor;
+			console.log("Victory has occured", controls[0]);
+			return;
 		}
 	}
 }
