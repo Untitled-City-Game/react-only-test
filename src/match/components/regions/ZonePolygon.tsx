@@ -9,7 +9,7 @@ import { Polyline } from "@/src/match/googleMaps/shapes/PolyLine";
 import { theme } from "@/src/styles/theme";
 import { AdvancedMarker, useMap } from "@vis.gl/react-google-maps";
 import polylabel from "polylabel";
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { FaBan, FaLock } from "react-icons/fa";
 import findPolygonCenter from "@/scripts/geojson/polygonCenter";
 import { transformScale } from "@turf/turf";
@@ -35,11 +35,12 @@ export default function ZonePolygon({
 }: ZonePolygonProps) {
 	const amCurrentZone = zone.featureName === currentZone?.name;
 	const amHighlighted = activeLine?.matchedPolygons.includes(zone.featureName)
-	const coordsAsArray = zone.coords.map((coord) => [coord.lat, coord.lng]);
-	const polygonCenter = findPolygonCenter(zone.coords);
-	//const smallVersion = transformScale(turf.polygon([coordsAsArray]), 0.9, {origin: "center"});
-	const smallVersion = turf.buffer(turf.polygon([coordsAsArray]), -0.0005, { units: "degrees" })
-	const smallVersionPaths = smallVersion?.geometry.coordinates[0].map(position => { return { lat: position[0], lng: position[1] } })
+	const coordsAsArray = useMemo(() => zone.coords.map((coord) => [coord.lat, coord.lng]), [zone.coords]);
+	const polygonCenter = useMemo(() => findPolygonCenter(zone.coords), [zone.coords]);
+	const smallVersionPaths = useMemo(() => {
+		const smallVersion = turf.buffer(turf.polygon([coordsAsArray]), -0.0005, { units: "degrees" })
+		return smallVersion?.geometry.coordinates[0].map(position => { return { lat: position[0], lng: position[1] } })
+	}, [coordsAsArray]);
 	const zoomThreshold = 14;
 	const [zoom, setZoom] = useState(0);
 	const map = useMap();
