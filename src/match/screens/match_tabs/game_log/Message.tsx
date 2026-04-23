@@ -1,5 +1,6 @@
 import { LogMetadata, PlayerData, GameStateGeneric, GameBoardContextSpecific, GameStateAnything } from "@/scripts/types/types";
 import { ClaimChallengeCompleted, ChallengeEvidence, FruitEaten } from "@/src/match/screens/match_tabs/game_log/messages/ChallengeCompleted";
+import { ChatMessage } from "@/src/match/screens/match_tabs/game_log/messages/ChatMessage";
 import { DiscardHand } from "@/src/match/screens/match_tabs/game_log/messages/DiscardHand";
 import { GameStarted } from "@/src/match/screens/match_tabs/game_log/messages/GameStarted";
 import { JoinedMatch } from "@/src/match/screens/match_tabs/game_log/messages/JoinedMatch";
@@ -44,6 +45,12 @@ export function Message({ entry, gameData, playerData }: { entry: LogEntry; game
 			return (
 				<MessageBox entry={entry} gameData={gameData} playerData={playerData}>
 					<GameStarted senderData={senderData} />
+				</MessageBox>
+			);
+		case "sendChatMessage":
+			return (
+				<MessageBox entry={entry} gameData={gameData} playerData={playerData}>
+					<ChatMessage metadata={entry.metadata as LogMetadata} />
 				</MessageBox>
 			);
 		case "discardHand":

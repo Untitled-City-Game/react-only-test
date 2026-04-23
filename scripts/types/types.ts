@@ -105,6 +105,7 @@ export type LogMetadata = {
 	claimType?: "lock" | "claim" | "steal";
 	stealFrom?: Color;
 	growth?: number
+	chatText?: string;
 }
 
 export type GameMeta = {
