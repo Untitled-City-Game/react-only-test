@@ -9,6 +9,7 @@ import AllTeamMarkers from "@/src/match/googleMaps/AllTeamMarkers";
 import { LineData } from "@/scripts/types/googleMaps";
 import MyLocationMarker from "@/src/match/googleMaps/MyLocationMarker";
 import { isStartZoneClaimable } from "@/src/match/components/regions/region_claim_flow/ClaimFlowModal";
+import { Polygon } from "@/src/match/googleMaps/shapes/Polygon";
 
 const DEBUG = false
 
@@ -20,6 +21,23 @@ export default function ConnectFourMapTab() {
 
     //Render zone polygons
     const { zonePolygons, winningLines, city } = G.MatchMapData;
+
+    const maskPaths = useMemo(() => {
+        if (!zonePolygons) return [];
+        const center = gameLocationCenters[city];
+        const halfKm = 50;
+        const latDelta = halfKm / 111;
+        const lngDelta = halfKm / (111 * Math.cos((center.lat * Math.PI) / 180));
+        // CCW outer ring so inner rings (zone coords) become holes
+        const outerRing = [
+            { lat: center.lat + latDelta, lng: center.lng - lngDelta },
+            { lat: center.lat - latDelta, lng: center.lng - lngDelta },
+            { lat: center.lat - latDelta, lng: center.lng + lngDelta },
+            { lat: center.lat + latDelta, lng: center.lng + lngDelta },
+        ];
+        const holes = zonePolygons.map(zone => [...zone.coords].reverse());
+        return [outerRing, ...holes];
+    }, [zonePolygons, city]);
     const zoneElements = zonePolygons?.map((zone, index) => {
         const onClick = function (
         ) {
@@ -60,6 +78,14 @@ export default function ConnectFourMapTab() {
                         setActiveLine(undefined);
                     }}
                 >
+                    <Polygon
+                        paths={maskPaths}
+                        fillColor="#000000"
+                        fillOpacity={0.35}
+                        strokeWeight={0}
+                        clickable={false}
+                        zIndex={-1}
+                    />
                     <>{zoneElements}</>
                     <MyLocationMarker color={playerData.data.teamColor} defaultLocation={gameLocationCenters[G.city]} playerID={playerData.data.playerID} broadcast={true} />
                     <AllTeamMarkers teamName={playerData.data.teamColor} />
