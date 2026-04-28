@@ -49,7 +49,8 @@ export default function CreateMatchTemplate({
         ["teamColor"],
     ];
 
-    function handleNext() {
+    function handleNext(e?: React.SyntheticEvent) {
+        e?.preventDefault();
         const fields = stepFields[step];
         const hasError = fields
             .map((field) => createGameForm.validateField(field).hasError)
@@ -58,7 +59,8 @@ export default function CreateMatchTemplate({
         setStep((s) => Math.min(s + 1, totalSteps - 1));
     }
 
-    function handleBack() {
+    function handleBack(e?: React.SyntheticEvent) {
+        e?.preventDefault();
         if (step === 0) {
             navigate(-1);
             return;
@@ -111,7 +113,17 @@ export default function CreateMatchTemplate({
             <LoadingOverlay visible={loading} loaderProps={{ children: <Loading message="Joining match..." /> }} />
             <SafariWarning />
 
-            <form style={{ width: "100%", height: "100%" }} onSubmit={createGameForm.onSubmit(handleCreateGame)}>
+            <form
+                style={{ width: "100%", height: "100%" }}
+                onSubmit={(e) => {
+                    if (step < totalSteps - 1) {
+                        e.preventDefault();
+                        handleNext();
+                        return;
+                    }
+                    createGameForm.onSubmit(handleCreateGame)(e);
+                }}
+            >
 
                 <Stack id="formstack" pb="sm" pt="sm" h="100%" justify="space-between">
                     <div>
