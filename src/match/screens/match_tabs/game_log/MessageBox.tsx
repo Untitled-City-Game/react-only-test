@@ -23,14 +23,15 @@ export function MessageContainer({ myMessage, children }: {
 }
 
 export function MessageBox({
-    entry, gameData, playerData, children, unstyled, evidence
+    entry, gameData, playerData, children, unstyled, evidence, gameMessage
 }: {
     entry: LogEntry;
     gameData: GameStateAnything;
     playerData: PlayerData;
     children: React.ReactNode;
     unstyled?: boolean;
-    evidence?: boolean
+    evidence?: boolean;
+    gameMessage?: boolean;
 }) {
     const [timestamp, setTimestamp] = useState("placeholder timestamp");
     const metadata = entry.metadata
@@ -64,6 +65,7 @@ export function MessageBox({
                         gameData={gameData}
                         playerData={playerData}
                         unstyled={unstyled}
+                        gameMessage={gameMessage}
                     >
                         <Group w="100%" justify="space-between" wrap="nowrap" align="flex-start" gap="xs">
                             <P fz="sm" style={{ whiteSpace: "nowrap" }}><Span fw="bold" c={theme.colors[senderData.teamColor][6]}>{senderData.name}</Span> | <Span fz="xs" fs="italic" className="capitalize">{senderData.teamColor}</Span>
@@ -84,13 +86,14 @@ export function MessageBox({
 }
 
 export function MessageWrapper({
-    entry, gameData, playerData, children, unstyled
+    entry, gameData, playerData, children, unstyled, gameMessage
 }: {
     entry: LogEntry;
     gameData: GameStateAnything;
     playerData: PlayerData;
     children: React.ReactNode;
     unstyled?: boolean;
+    gameMessage?: boolean;
 }) {
     const senderData = gameData.allPlayersData[entry.action.payload.playerID];
     return (
@@ -104,6 +107,7 @@ export function MessageWrapper({
             style={{
                 borderRadius: "10px",
                 padding: `${unstyled ? "0" : "10px 10px 10px 10px"}`,
+                border: gameMessage && !unstyled ? `2px solid ${theme.colors[senderData.teamColor][3]}` : undefined,
                 justifySelf: senderData.playerID === playerData.playerID ? "flex-end" : "flex-start"
             }}
         >
