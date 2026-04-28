@@ -2,7 +2,7 @@ import { games } from "@/scripts/consts";
 import { City, NamedColor, PlayerData } from "@/scripts/types/types";
 import Loading from "@/src/match/screens/game_status/Loading";
 import Span from "@/src/userInterface/Span";
-import { Radio, Paper, Group, LoadingOverlay, Stack, TextInput,  Checkbox } from "@mantine/core";
+import { Radio, Paper, Group, LoadingOverlay, Stack, TextInput, Checkbox, Stepper, StepperProps } from "@mantine/core";
 import { hasLength, useForm, UseFormReturnType } from "@mantine/form";
 import { useMemo, useState } from "react";
 import { useNavigate } from "react-router";
@@ -10,172 +10,243 @@ import { LobbyClient } from "boardgame.io/client";
 import { joinMatch } from "@/scripts/joinMatch";
 import { FaRegSnowflake } from "react-icons/fa6";
 import SafariWarning from "@/src/site/SafariWarning";
-interface CreateGameFormUniversal extends UseFormReturnType<any> {}
+interface CreateGameFormUniversal extends UseFormReturnType<any> { }
 import { MdOutlineMoneyOff } from "react-icons/md";
 import Button from "@/src/userInterface/CustomButton";
 export type FormValues = {
-	PlayerName: string;
-	teamColor: NamedColor;
-	gameName: string;
-	city?: City;
-	winter?: boolean;
-	money?: boolean;
-	[key:string]: any;
+    PlayerName: string;
+    teamColor: NamedColor;
+    gameName: string;
+    city?: City;
+    winter?: boolean;
+    money?: boolean;
+    [key: string]: any;
 };
 
 export default function CreateMatchTemplate({
-	teamOptions,
-	gameCode,
-	getSetupData,
-	createGameForm,
-	children
-} : {
-	teamOptions : string[]
-	gameCode : string
-	getSetupData : (args : FormValues) => Record<string, unknown> | Promise<Record<string, unknown>>;
-	createGameForm : CreateGameFormUniversal;
-	children : React.ReactNode
-}){
-	const [loading, setLoading] = useState(false);
-	const teamCards = createTeamCards(teamOptions);
-	const navigate = useNavigate();
-	
-	const lobbyClient = useMemo(
-		() => new LobbyClient({ server: process.env.GAME_SERVER }),
-		[]
-	);
+    teamOptions,
+    gameCode,
+    getSetupData,
+    createGameForm,
+    children
+}: {
+    teamOptions: string[]
+    gameCode: string
+    getSetupData: (args: FormValues) => Record<string, unknown> | Promise<Record<string, unknown>>;
+    createGameForm: CreateGameFormUniversal;
+    children: React.ReactNode
+}) {
+    const [loading, setLoading] = useState(false);
+    const [step, setStep] = useState(0);
+    const teamCards = createTeamCards(teamOptions);
+    const navigate = useNavigate();
+    const totalSteps = 4;
 
-	async function handleCreateGame(values: FormValues) {
-		setLoading(true);
-		if (!gameCode) { throw new Error("No game code provided"); }
-		const gameSetupData = await getSetupData(values);
-		const setupData = {
-			winter: values.winter ?? false,
-			money: values.money ?? false,
-			...gameSetupData
-		}
-		console.log("creating game", values, setupData);
-		console.log("env game server", process.env.GAME_SERVER)
-		console.log("env location server", process.env.LOCATION_SERVER)
-		console.log("env location server path", process.env.LOCATION_SERVER_PATH)
-		//create match
-		console.log("setting up match");
-		const { matchID } = await lobbyClient.createMatch(gameCode, {
-			numPlayers: 20,
-			setupData
-		});
-		console.log("joining match");
-		//join match
-		const playerData: PlayerData = await joinMatch(
-			lobbyClient,
-			gameCode,
-			matchID,
-			values.PlayerName,
-			values.teamColor,
-			true
-		);
-		localStorage.setItem("localPlayerData", JSON.stringify(playerData));
-		navigate("/match");
-	}
+    const stepFields: string[][] = [
+        [],            // step 0: game-specific (children — validated by their own form bindings)
+        [],            // step 1: modes (toggles, no validation)
+        ["PlayerName"],
+        ["teamColor"],
+    ];
 
-	const game = games.filter(game => game.code === gameCode)[0]
+    function handleNext() {
+        const fields = stepFields[step];
+        const hasError = fields
+            .map((field) => createGameForm.validateField(field).hasError)
+            .some(Boolean);
+        if (hasError) return;
+        setStep((s) => Math.min(s + 1, totalSteps - 1));
+    }
 
-	return (
-	<>
-		<LoadingOverlay visible={loading} loaderProps={{ children: <Loading message="Joining match..." /> }} />
-		<SafariWarning />
-		<form style={{ width: "100%" }} onSubmit={createGameForm.onSubmit(handleCreateGame)}>
-			<h2>Create a {game.name} match</h2>
-			<Stack pb="sm">
-				{/* <TextInput
-					label="Game name"
-					placeholder="My Game"
-					key={createGameForm.key("gameName")}
-					{...createGameForm.getInputProps("gameName")}
-				/> */}
-				{children}
-				<Checkbox 
-					label="Frozen mode?" 
-					description="Removes challenges which don't work well in snowy winter weather"
-					color="cyan"
-					icon={FaRegSnowflake}
-					key={createGameForm.key("winter")}
-					{...createGameForm.getInputProps("winter")}
-				/>
-				<Checkbox 
-					label="No money?" 
-					description="Removes challenges which involve small purchases e.g. boba, coffee"
-					color="yellow"
-					icon={MdOutlineMoneyOff}
-					key={createGameForm.key("winter")}
-					{...createGameForm.getInputProps("winter")}
-				/>
-				<TextInput
-					fz="lg"
-					label="Your name"
-					key={createGameForm.key("PlayerName")}
-					{...createGameForm.getInputProps("PlayerName")}
-				/>
-				<Radio.Group
-					label="Choose a team"
-					key={createGameForm.key("teamColor")}
-					{...createGameForm.getInputProps("teamColor")}>
-					<Stack gap="xs">
-						{teamCards}
-					</Stack>
-				</Radio.Group>
-				<Button type="submit">Create and Join</Button>
-			</Stack>
-		</form>
-	</>
-	)
+    function handleBack() {
+        if (step === 0) {
+            navigate(-1);
+            return;
+        }
+        setStep((s) => Math.max(s - 1, 0));
+    }
+
+    const lobbyClient = useMemo(
+        () => new LobbyClient({ server: process.env.GAME_SERVER }),
+        []
+    );
+
+    async function handleCreateGame(values: FormValues) {
+        setLoading(true);
+        if (!gameCode) { throw new Error("No game code provided"); }
+        const gameSetupData = await getSetupData(values);
+        const setupData = {
+            winter: values.winter ?? false,
+            money: values.money ?? false,
+            ...gameSetupData
+        }
+        console.log("creating game", values, setupData);
+        console.log("env game server", process.env.GAME_SERVER)
+        console.log("env location server", process.env.LOCATION_SERVER)
+        console.log("env location server path", process.env.LOCATION_SERVER_PATH)
+        //create match
+        console.log("setting up match");
+        const { matchID } = await lobbyClient.createMatch(gameCode, {
+            numPlayers: 20,
+            setupData
+        });
+        console.log("joining match");
+        //join match
+        const playerData: PlayerData = await joinMatch(
+            lobbyClient,
+            gameCode,
+            matchID,
+            values.PlayerName,
+            values.teamColor,
+            true
+        );
+        localStorage.setItem("localPlayerData", JSON.stringify(playerData));
+        navigate("/match");
+    }
+
+    const game = games.filter(game => game.code === gameCode)[0]
+
+    return (
+        <>
+            <LoadingOverlay visible={loading} loaderProps={{ children: <Loading message="Joining match..." /> }} />
+            <SafariWarning />
+
+            <form style={{ width: "100%", height: "100%" }} onSubmit={createGameForm.onSubmit(handleCreateGame)}>
+
+                <Stack id="formstack" pb="sm" pt="sm" h="100%" justify="space-between">
+                    <div>
+                        <StyledStepper active={step} onStepClick={setStep} size="xs" pb="md">
+                            <Stepper.Step label="City" />
+                            <Stepper.Step label="Modes" />
+                            <Stepper.Step label="Name" />
+                            <Stepper.Step label="Team" />
+                        </StyledStepper>
+                    </div>
+                    <Stack>
+                        {step === 0 && children}
+                        {step === 1 && (
+                            <>
+                                <Checkbox
+                                    label="Frozen mode?"
+                                    description="Removes challenges which don't work well in snowy winter weather"
+                                    color="cyan"
+                                    icon={FaRegSnowflake}
+                                    key={createGameForm.key("winter")}
+                                    {...createGameForm.getInputProps("winter", { type: "checkbox" })}
+                                />
+                                <Checkbox
+                                    label="No money?"
+                                    description="Removes challenges which involve small purchases e.g. boba, coffee"
+                                    color="yellow"
+                                    icon={MdOutlineMoneyOff}
+                                    key={createGameForm.key("money")}
+                                    {...createGameForm.getInputProps("money", { type: "checkbox" })}
+                                />
+                            </>
+                        )}
+                        {step === 2 && (
+                            <TextInput
+                                fz="lg"
+                                label="Your name"
+                                key={createGameForm.key("PlayerName")}
+                                {...createGameForm.getInputProps("PlayerName")}
+                            />
+                        )}
+                        {step === 3 && (
+                            <Radio.Group
+                                label="Choose a team"
+                                key={createGameForm.key("teamColor")}
+                                {...createGameForm.getInputProps("teamColor")}>
+                                <Stack gap="xs">
+                                    {teamCards}
+                                </Stack>
+                            </Radio.Group>
+                        )}
+                    </Stack>
+                    <Group justify="space-between" pt="sm">
+                        <Button onClick={handleBack} type="button">Back</Button>
+                        {step < totalSteps - 1
+                            ? <Button onClick={handleNext} type="button">Next</Button>
+                            : <Button type="submit">Create and Join</Button>}
+                    </Group>
+                </Stack>
+            </form>
+        </>
+    )
 }
 
 function createTeamCards(teamOptions: string[]) {
-	return teamOptions.map((team) => (
-		<Radio.Card radius="md" value={team} key={team}>
-			<Paper radius="md" p="md">
-				<Group wrap="nowrap" align="center">
-					<Radio.Indicator
-						iconColor='white'
-						color={team}
-						size="lg" />
-					<div>
-						<Span>{team}</Span>
-					</div>
-				</Group>
-			</Paper>
-		</Radio.Card>
-	));
+    return teamOptions.map((team) => (
+        <Radio.Card radius="md" value={team} key={team}>
+            <Paper radius="md" p="md">
+                <Group wrap="nowrap" align="center">
+                    <Radio.Indicator
+                        iconColor='white'
+                        color={team}
+                        size="lg" />
+                    <div>
+                        <Span>{team}</Span>
+                    </div>
+                </Group>
+            </Paper>
+        </Radio.Card>
+    ));
 }
 
 
 
-export function createGameFormConstructor(formValues : Record<string, any>, validators : Record<string, any>, teamOptions : string[]) {
-	return useForm({
-		mode: "uncontrolled",
-		initialValues: {
-			PlayerName: "",
-			teamColor: "blue" as NamedColor,
-			//numPlayers: numPlayers,
-			gameName: "",
-			...formValues
-		},
-		validate: {
-			PlayerName: hasLength(
-				{ min: 2, max: 20 },
-				"Player name must be between 2 and 20 characters"
-			),
-			teamColor: (teamColor) =>
-				teamOptions.map((option) => option).includes(teamColor)
-					? null
-					: "Invalid team",
-			// gameName: hasLength(
-			// 	{ min: 2, max: 20 },
-			// 	"Game name must be between 2 and 20 characters"
-			// ),
-			...validators
-		},
-	});
-	
+export function createGameFormConstructor(formValues: Record<string, any>, validators: Record<string, any>, teamOptions: string[]) {
+    return useForm({
+        mode: "uncontrolled",
+        initialValues: {
+            PlayerName: "",
+            teamColor: "blue" as NamedColor,
+            //numPlayers: numPlayers,
+            gameName: "",
+            ...formValues
+        },
+        validate: {
+            PlayerName: hasLength(
+                { min: 2, max: 20 },
+                "Player name must be between 2 and 20 characters"
+            ),
+            teamColor: (teamColor) =>
+                teamOptions.map((option) => option).includes(teamColor)
+                    ? null
+                    : "Invalid team",
+            // gameName: hasLength(
+            // 	{ min: 2, max: 20 },
+            // 	"Game name must be between 2 and 20 characters"
+            // ),
+            ...validators
+        },
+    });
+
+}
+
+function StyledStepper(props: StepperProps) {
+    return (
+        <Stepper
+            styles={{
+                stepBody: {
+                    display: 'none',
+                },
+
+                step: {
+                    padding: 0,
+                },
+
+                stepIcon: {
+                    borderWidth: 4,
+                },
+
+                separator: {
+                    marginLeft: -2,
+                    marginRight: -2,
+                    height: 10,
+                },
+            }}
+            {...props}
+        />
+    );
 }
