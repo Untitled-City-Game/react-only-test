@@ -7,6 +7,8 @@ export const EXPIRE_TIME = 5000;
 export const ACCURACY_MAX = 300;
 export const numPlayers = 6;
 export const gameTimeMinutes = 180;
+// Limits how far the user can zoom out. Zoom 11 ≈ 50km across at mid-latitudes on a typical viewport.
+export const mapMinZoom = 11;
 export const cities = [
     "melbourne",
     "montreal",

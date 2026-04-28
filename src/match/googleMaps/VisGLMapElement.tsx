@@ -1,5 +1,6 @@
 import { APIProvider, Map, MapProps } from "@vis.gl/react-google-maps";
 import React, { createContext, useEffect, useState } from "react";
+import { mapMinZoom } from "@/scripts/consts";
 
 interface MapElementProps extends React.PropsWithChildren, MapProps {
     center: google.maps.LatLngLiteral
@@ -26,6 +27,7 @@ export default function VisGlMapElement(props: MapElementProps) {
                     mapTypeControl={false}
                     defaultCenter={props.center}
                     defaultZoom={12}
+                    minZoom={mapMinZoom}
                     gestureHandling={props.gestureHandling || 'greedy'}
                     disableDefaultUI={true}
                     onZoomChanged={(zoomEvent) => setZoom(prevZoom => zoomEvent.map.getZoom() || prevZoom)}
