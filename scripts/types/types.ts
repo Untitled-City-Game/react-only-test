@@ -19,7 +19,7 @@ export type GameStateUniversal = {
 	gameOver: boolean;
 	startTime?: number;
 	endTime?: number;
-	gameStateLogs: GameStateLog<any>[]
+	gameStateLogs: GameStateLog<GameStateUniversal>[]
 	active: boolean;
 	teamPhotoURLs: {[key in MatchTeamString] : string}
 	victory?: MatchTeamColor
@@ -70,7 +70,8 @@ export type City = typeof cities[number];
 
 export type GameSetupDataGeneric = {
 	gameName: string,
-	winter: boolean
+	winter: boolean,
+	money: boolean
 }
 
 export interface MatchMapData extends MapData {
@@ -104,6 +105,34 @@ export type LogMetadata = {
 	claimType?: "lock" | "claim" | "steal";
 	stealFrom?: Color;
 	growth?: number
+	chatText?: string;
+}
+
+export type GameMeta = {
+    name: string;
+    code: string;
+    active: boolean;
+    description: string;
+    color: string;
+    icon: IconType;
+	playerMin: number;
+	playerMax: number;
+}
+
+export type LocationResult = {
+	position: google.maps.LatLngLiteral,
+	accuracy?: number,
+	time?: number,
+	invalid: boolean
+}
+
+export type LocationData = {
+	teamName: MatchTeamColor,
+	playerID: string,
+	timestamp: number,
+	location: google.maps.LatLngLiteral,
+	accuracy: number,
+	invalid?: boolean
 }
 
 type RGB = `rgb(${number}, ${number}, ${number})`;
@@ -115,33 +144,8 @@ export type Color = RGB | RGBA | HEX | NamedColor;
 
 export type CoordSet = {lat: number, long: number}
 
-export function isCity(city: string) : city is City{
-	return cities.includes(city as City);
-	}
-
-// type AtLeastOneColor<T extends string> = {
-// 	[K in T]?: TeamData; // Values can be anything, change type as needed
-// 	} & {
-// 	[K in T]: TeamData;
-// 	}
-
 export type MatchTeamString = string & {__isMatchTeam: true};
 export type MatchTeamColor = NamedColor & {__isMatchTeam: true};
-
-/** Mimics the result of Object.keys(...) */
-export type keysOf<o> = o extends readonly unknown[]
-    ? number extends o["length"]
-        ? `${number}`
-        : keyof o & `${number}`
-    : {
-          [K in keyof o]: K extends string
-              ? K
-              : K extends number
-              ? `${K}`
-              : never
-      }[keyof o]
-
-export const keysOf = <o extends object>(o: o) => Object.keys(o) as keysOf<o>[]
 export type ClaimZoneFormValues = UseFormReturnType<
 	{
 		zone: number;

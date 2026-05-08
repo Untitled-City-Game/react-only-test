@@ -1,5 +1,6 @@
+import Button from "@/src/userInterface/CustomButton";
 import P from "@/src/userInterface/P";
-import { Button, ButtonProps, Modal, Stack } from "@mantine/core";
+import {  ButtonProps, Modal, Stack } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 
 export default function ConfirmButton({action, description, children, ...rest}: {action:  (...args: any[]) => void, description: string, children: React.ReactNode} & ButtonProps) { 

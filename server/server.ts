@@ -1,8 +1,7 @@
 import { ConnectFour } from '@scripts/games/connect_four/connect_four';
 import { FlatFile, Origins, Server } from 'boardgame.io/server';
 import { Snake } from '@scripts/games/snake/snake';
-//import { DummyGame } from '@/scripts/games/connect_four/dummy_game';
-
+import { Server as IOServer } from 'socket.io';
 const authenticateCredentials = async () => {
  return true;
 }
@@ -44,7 +43,29 @@ async function buildServer(){
 		}
 	  });
 	const PORT = parseInt(process.env.SERVER_PORT || "8989");
-	server.run(PORT, () => console.log("server running..."));
+	const { appServer } = await server.run(PORT, () => console.log("server running..."));
+
+	const locationIO = new IOServer(appServer, {
+		path: process.env.LOCATION_SERVER_PATH,
+		cors: {
+			origin: [Origins.LOCALHOST, process.env.LAN_ADDRESS || false, process.env.GAME_ADDRESS || false],
+			methods: ["GET", "POST"],
+		},
+	});
+
+	locationIO.on('connection', (socket) => {
+		console.log('a user connected');
+		socket.on('disconnect', () => {
+			console.log('user disconnected');
+		});
+		socket.on("foo", (body) => {
+			console.log("someone said foo " + body);
+			locationIO.emit("foo", body);
+		});
+		socket.on("locationUpdate", (body) => {
+			socket.broadcast.emit("locationUpdate", body);
+		});
+	});
 }
 
 buildServer();

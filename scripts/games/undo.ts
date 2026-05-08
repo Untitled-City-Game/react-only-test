@@ -1,6 +1,6 @@
 import { MoveContext, GameStateUniversal } from "@/scripts/types/types";
 
-export default function customUndoTemplate(context: MoveContext<GameStateUniversal>){
+export default function customUndoTemplate<T extends GameStateUniversal>(context: MoveContext<T>): T | "INVALID_MOVE" {
 	console.log("custom undo activated");
 	let G = context.G;
 	const gameStateLogs = G.gameStateLogs;
@@ -15,7 +15,7 @@ export default function customUndoTemplate(context: MoveContext<GameStateUnivers
 	return {
 		gameStateLogs: G.gameStateLogs.slice(0,-1),
 		...lastState,
-	}
+	} as T
 }
 
 export function createUndoPoint<GameState extends GameStateUniversal>(G: GameState){

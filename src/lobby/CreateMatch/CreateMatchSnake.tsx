@@ -7,7 +7,7 @@ import P from "@/src/userInterface/P";
 import { Select } from "@mantine/core";
 import { useState } from "react";
 
-export default function CreateMatchConnectFour() {
+export default function CreateMatchSnake() {
 	const teamOptions = ["pink", "aqua"];
 
 	//Setup mantine form

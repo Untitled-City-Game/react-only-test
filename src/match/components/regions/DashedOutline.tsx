@@ -38,6 +38,6 @@ export default function DashedOutline({zone, color}: {zone : PolyData, color: st
 
 	]
 	return (
-			<Polyline zIndex={99} path={zone.coords} strokeWeight={0}  icons={linePattern} />
+			<Polyline zIndex={99} path={zone.coords} strokeWeight={0} icons={linePattern} />
 	)
 }

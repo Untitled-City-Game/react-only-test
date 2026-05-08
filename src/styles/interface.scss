@@ -1,23 +1,28 @@
-@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap");
 @font-face {
-	font-family: 'underground';
-	src: url('underground.otf');
-  }
-
-  html {
-	font-size: 18px;
-  }
-  
-  body {
-	font-family: 'Hanken Grotesk', sans-serif;
-  }
-
-.mono {
-	  font-family: "Roboto Mono", monospace;
+	font-family: "underground";
+	src: url("underground.otf");
 }
 
-h1, h2, h3, h4, h5, h6 {
-	font-family: 'underground', sans-serif;
+html {
+	font-size: 18px;
+}
+
+body {
+	font-family: "Hanken Grotesk", sans-serif;
+}
+
+.mono {
+	font-family: "Roboto Mono", monospace;
+}
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+	font-family: "underground", sans-serif;
 }
 h1 {
 	margin: 0.8rem 0;
@@ -34,37 +39,83 @@ h3 {
 	margin: 0.25rem 0;
 }
 
-label, .mantine-RadioGroup-label {
-	font-size : 1rem !important;
+label,
+.mantine-RadioGroup-label {
+	font-size: 1rem !important;
 	margin-bottom: 0rem !important;
 }
 
-input.mantine-Select-input, input.mantine-TextInput-input, div.mantine-Select-option {
+input.mantine-Select-input,
+input.mantine-TextInput-input,
+div.mantine-Select-option {
 	font-size: 1rem !important;
-	font-family: 'Hanken Grotesk', sans-serif;
+	font-family: "Hanken Grotesk", sans-serif;
 }
 
 #capture {
- height: 360px;
- width: 480px;
- overflow: hidden;
- float: left;
- background-color: #ECECFB;
- border: thin solid #333;
- border-left: none;
- }
+	height: 360px;
+	width: 480px;
+	overflow: hidden;
+	float: left;
+	background-color: #ececfb;
+	border: thin solid #333;
+	border-left: none;
+}
 
- .capitalize {
+.capitalize {
 	text-transform: capitalize;
- }
+}
 
- .header {
+.header {
 	h1 {
-		margin: .5rem;
+		margin: 0.5rem;
 		margin-bottom: 0;
 	}
- }
+}
 
-// path {
-//   fill: blue !important;
-// }
+@keyframes myAnimation {
+	from {
+		opacity: 0.5;
+	}
+	to {
+		opacity: 0.2;
+	}
+}
+
+.location-missing {
+	animation-name: myAnimation;
+	animation-duration: 0.8s;
+	animation-iteration-count: infinite;
+	animation-direction: alternate;
+	animation-timing-function: linear;
+}
+
+
+.markdown {
+	img {
+		max-width: 100%;
+		// border: 2px dashed rgb(160, 79, 200);
+		// border-radius: 1rem;
+	}
+}
+
+.modalFix {
+	// min-height: 100vh;
+	// min-height: 100dvh;
+	// min-height: -webkit-fill-available;
+	//max-height: 50vh;
+	//height: -webkit-fill-available;
+	//max-height: 50dvh;
+	height: 100px;
+}
+
+
+
+@keyframes growIn {
+	from {
+		transform: scale(0.9);
+	}
+	to {
+		transform: scale(1);
+	}
+}

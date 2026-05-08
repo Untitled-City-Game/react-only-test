@@ -1,15 +1,14 @@
-export type LocationData = {
-	teamName: MatchTeamColor;
-	location: google.maps.LatLngLiteral;
-	accuracy?: number;
-}
 import { socket } from "@/scripts/socket";
-import { MatchTeamColor } from "@/scripts/types/types";
+import { LocationData } from "@/scripts/types/types";
 import { useState, useEffect } from "react";
 
-export default function useTeamLocations(){
-  	const [teamLocations, setTeamLocations] = useState<LocationData[]>([]);
-	
+export default function useTeamLocations() {
+	const [teamLocations, setTeamLocations] = useState<LocationData[]>([]);
+	useEffect(() => {
+		console.warn('useTeamLocations mounted');
+		return () => console.log('useTeamLocations unmounted');
+	}, []);
+
 	useEffect(() => {
 		function onConnect() {
 			console.warn("socket.io location server is connected now")
@@ -19,29 +18,33 @@ export default function useTeamLocations(){
 			console.warn("socket.io location server is disconnected now")
 		}
 
-		function onLocationUpdate(value : LocationData) {
-			console.log("Received location update broadcast", value);
+		function onLocationUpdate(value: LocationData) {
+			//console.warn("Received location update broadcast", value);
 			setTeamLocations(previous => {
+				//console.log("searhing existing data", previous)
 				const index = previous.findIndex(teamData => teamData.teamName === value.teamName);
-				if (index == -1){
+				if (index === -1) {
 					return [...previous, value];
-				};
-				previous.splice(index, 1).push(value);
-				return previous;
+				}
+				
+				//Create a new array with the updated value
+				const updated = [...previous];
+				updated[index] = value;
+				return updated;
 			});
 		}
 
 		socket.on('connect', onConnect);
 		socket.on('disconnect', onDisconnect);
 		socket.on('locationUpdate', onLocationUpdate);
-		
+
 		return () => {
+			console.warn("team locations cleanup!")
 			socket.off('connect', onConnect);
 			socket.off('disconnect', onDisconnect);
 			socket.off('locationUpdate', onLocationUpdate);
 		};
 	}, []);
-
 
 	return teamLocations
 }

@@ -1,43 +1,162 @@
+import { ACCURACY_MAX, EXPIRE_TIME } from "@/scripts/consts";
 import { socket } from "@/scripts/socket";
-import { MatchTeamColor } from "@/scripts/types/types";
+import { LocationData, LocationResult, MatchTeamColor } from "@/scripts/types/types";
+import useInterval from "@/scripts/useInterval";
+import { OtherTeamsContext } from "@/src/match/Board";
 import { AdvancedMarker } from "@vis.gl/react-google-maps";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useGeolocated } from "react-geolocated";
 import { FaCircle } from "react-icons/fa";
 
-export default function useMyLocation(updateSocket : boolean, teamName: MatchTeamColor, initialPosition?: google.maps.LatLngLiteral) {
-	const [position, setPosition] = useState(initialPosition || {lat: 0, lng: 0});
-	const [accuracy, setAccuracy] = useState<number | undefined>(undefined)
-	const {coords} = useGeolocated({
+export default function useMyLocation(initialPosition?: google.maps.LatLngLiteral) : LocationResult {
+	const [position, setPosition] = useState(initialPosition || { lat: 0, lng: 0 });
+	const [accuracy, setAccuracy] = useState<number | undefined>(undefined);
+
+	const [invalid, setInvalid] = useState(false);
+
+	const geoLocation = useGeolocated({
 		positionOptions: {
 			enableHighAccuracy: true,
 		},
 		watchPosition: true,
-		userDecisionTimeout: 5000,
+		userDecisionTimeout: 100000,
 	});
+	const coords = geoLocation.coords;
 
 	useEffect(() => {
-		if(!coords){
+		if (!coords) {
 			console.warn("no coords for location hook");
+			setInvalid(true)
 			return;
 		}
-		// if(coords.latitude === position.lat && coords.longitude === position.lng){
-		// 	//console.log('no change in coords detected')
-		// 	return;
-		// }
-		const latlongcoords : google.maps.LatLngLiteral = {lat: coords.latitude, lng: coords.longitude}
+
+		const latlongcoords: google.maps.LatLngLiteral = { lat: coords.latitude, lng: coords.longitude }
 		setPosition(latlongcoords);
-		setAccuracy(coords.accuracy)
-		if(updateSocket){
-			socket.emit("locationUpdate", {
-				teamName,
-				location: {lat: coords.latitude, lng: coords.longitude},
-				accuracy: coords.accuracy
-			})
+		setAccuracy(coords.accuracy);
+		setInvalid(false);
+	}
+		, [coords, geoLocation.timestamp]);
+
+	const time = geoLocation.timestamp
+	//console.log("updated geolocation", position, accuracy, time)
+
+	return { position, accuracy, time, invalid }
+}
+
+export function useAndBroadcastMyLocation(teamName: MatchTeamColor, playerID: string, initialPosition?: google.maps.LatLngLiteral) {
+	const [position, setPosition] = useState(initialPosition || { lat: 0, lng: 0 });
+	const [accuracy, setAccuracy] = useState<number>(9999)
+	const [invalid, setInvalid] = useState(true)
+
+	const teamLocations = useContext(OtherTeamsContext)
+	
+	const geoLocation = useGeolocated({
+		positionOptions: {
+			enableHighAccuracy: true,
+		},
+		watchPosition: true,
+		userDecisionTimeout: 100000,
+	});
+
+	function updateServer() {
+		const location_data = generateLocationData();
+		if (location_data !== null) {
+			socket.emit("locationUpdate", location_data);
 		}
 	}
-	, [coords])
 
-	
-	return {position, accuracy}
+	function updateLocalPosition() {
+		const coords = geoLocation.coords;
+		
+		if(!coords){
+			console.warn("Location api returned no position");
+			setInvalid(true);
+			return;
+		}
+
+		//set state
+		setPosition({ lat: coords.latitude, lng: coords.longitude });
+		setAccuracy(coords.accuracy);
+		setInvalid(false);
+
+		console.warn("local geolocation coords updated! accuracy:", coords.accuracy);
+	}
+
+	function generateLocationData(): LocationData | null {
+		const location_data = {
+			teamName,
+			playerID,
+			location: position,
+			accuracy: accuracy,
+			timestamp: undefined as any,
+			invalid: false
+		}
+		const coords = geoLocation.coords;
+		
+		//if location data returned an error (e.g. location sharing not permitted)
+		if (!coords) {
+			location_data.invalid = true;
+		} else {
+			//set data
+			location_data.location = { lat: coords.latitude, lng: coords.longitude }
+			location_data.accuracy = coords.accuracy
+			location_data.timestamp = Date.now()
+		}
+
+		//console.log("prepared regular timed update", location_data, teamLocations.length);
+
+		//Check if my position is not useful for update
+		const myTeamLastLocation = teamLocations.find(team => team.teamName === teamName)
+
+		//if there's no existing location data for this team
+		if (!myTeamLastLocation) {
+			//console.warn("broadcasting location, no others exist for my team")
+			return location_data
+		}
+
+		//if the existing location data is my own
+		if (myTeamLastLocation.playerID === playerID) {
+			//console.warn("broadcasting location, current one is mine")
+			return location_data
+		}
+
+		//if the only data is invalid, and mine is not invalid
+		if (myTeamLastLocation.invalid && !location_data.invalid) {
+			//console.warn("broadcasting location, existing is invalid")
+			return location_data
+		}
+
+		//if the existing location data is out of date
+		if ((location_data.timestamp - myTeamLastLocation.timestamp) > EXPIRE_TIME) {
+			//console.warn("broadcasting location, existing is out of date")
+			return location_data
+		}
+
+		//if my read is more accurate
+		if (location_data.accuracy < myTeamLastLocation.accuracy) {
+			//console.warn("broadcasting location, mine is more accurate")
+			return location_data
+		}
+
+		//or, if it's not useful
+		//console.warn("timed update not useful, quitting.")
+		return null;
+
+	}
+
+	//Poll location updates
+	useInterval(() => {
+		updateServer()
+
+	}, EXPIRE_TIME);
+
+	//Update when coords update
+	useEffect(() => {
+		updateLocalPosition()
+		updateServer()
+	}, [geoLocation.coords])
+
+	const time = geoLocation.timestamp
+
+	return { position, accuracy, time, invalid }
 }

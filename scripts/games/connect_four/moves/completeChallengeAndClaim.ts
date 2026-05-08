@@ -37,15 +37,6 @@ export function completeChallengeAndClaim(
 	);
 }
 
-function removeChallenges(challengeHand: Challenge[], challengesToRemove: Challenge[]) {
-	return challengeHand.filter(challenge =>
-		!challengesToRemove.find(challengeToRemove =>
-			challenge.title === challengeToRemove.title
-		)
-	)
-
-}
-
 export function claimZone(
 	{ G, log, playerID }: { G: ConnectFourGameState; log: LogAPI; playerID: string; },
 	zoneID: number,

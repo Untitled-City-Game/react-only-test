@@ -1,4 +1,4 @@
-import { Button, LoadingOverlay, Radio, Stack, TextInput } from "@mantine/core";
+import {  LoadingOverlay, Radio, Stack, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { LobbyAPI } from "boardgame.io";
 import { LobbyClient } from "boardgame.io/client";
@@ -11,6 +11,8 @@ import Loading from "@/src/match/screens/game_status/Loading";
 import P from "@/src/userInterface/P";
 import { useEffect, useMemo, useState } from "react";
 import { ListButton } from "../userInterface/ListButton";
+import SafariWarning from "@/src/site/SafariWarning";
+import Button from "@/src/userInterface/CustomButton";
 
 export default function JoinMatch() {
 	const matchID = useParams().matchID;
@@ -115,6 +117,7 @@ export default function JoinMatch() {
 		return (
 			<>
 				<LoadingOverlay visible={loading} loaderProps={{ children: <Loading message="Joining match..." /> }} />
+				<SafariWarning />
 				<h1>{matchData.setupData.gameName}</h1>
 
 				<Stack gap={0} mb="sm">

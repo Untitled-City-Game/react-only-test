@@ -4,10 +4,10 @@ import { addLogMetadata } from "@/scripts/games/shared_moves/metadata";
 import { createUndoPoint } from "@/scripts/games/undo";
 import { MatchTeamColor, MoveContext } from "@/scripts/types/types";
 import { LogAPI } from "boardgame.io/dist/types/src/plugins/plugin-log";
-import challengeDataGeneric from 'data/challenges/challenges_generic.json';
-import challengeDataMelbourne from 'data/challenges/challenges_melbourne.json';
-import challengeDataMontreal from 'data/challenges/challenges_montreal.json';
-import challengeDataLondon from 'data/challenges/challenges_london.json'
+import challengeDataGeneric from '@data/challenges/challenges_generic.json';
+import challengeDataMelbourne from '@data/challenges/challenges_melbourne.json';
+import challengeDataMontreal from '@data/challenges/challenges_montreal.json';
+import challengeDataLondon from '@data/challenges/challenges_london.json'
 import { remove } from "lodash";
 
 export function discardChallenge(
@@ -21,7 +21,7 @@ export function discardChallenge(
 		teamData.challengeHand,
 		(challengeInHand) => challengeInHand.title === challenge
 	);
-	teamData.challengeDiscard.concat(removedChallenge);
+	teamData.challengeDiscard.push(...removedChallenge);
 }
 
 export function drawChallenge({ G, playerID }: { G: ChallengeGameGameState; playerID: string; }, teamData: TeamChallengeData) {
@@ -29,19 +29,19 @@ export function drawChallenge({ G, playerID }: { G: ChallengeGameGameState; play
 	const hardChallenges = teamData.challengeHand.filter(challenge => challenge.hard).length
 
 	if (teamData.challengeDeck.length === 0) {
-		console.log("no cards left in deck")
-		throw new Error("deck empty");
+		console.log("no cards left in deck");
+		return("NO_CARDS")
 	}
 
 	//draw a challenge from deck
-	let drawnChallenge;
+	let drawnChallenge : Challenge;
 	if (hardChallenges === 0) {
 		//draw hard challenge
 		const hardChallenge = teamData.challengeDeck.findIndex(challenge => challenge.hard);
 		if (hardChallenge !== -1) {
 			drawnChallenge = teamData.challengeDeck.splice(hardChallenge, 1)[0];
 		} else {
-			drawnChallenge = teamData.challengeDeck.pop();
+			drawnChallenge = teamData.challengeDeck.pop()!;
 		}
 	}
 	else if (hardChallenges >= 2) {
@@ -50,48 +50,38 @@ export function drawChallenge({ G, playerID }: { G: ChallengeGameGameState; play
 		if (normalChallenge !== -1) {
 			drawnChallenge = teamData.challengeDeck.splice(normalChallenge, 1)[0];
 		} else {
-			drawnChallenge = teamData.challengeDeck.pop();
+			drawnChallenge = teamData.challengeDeck.pop()!;
 		}
 	} else {
 		//draw a random challenge
-		drawnChallenge = teamData.challengeDeck.pop();
+		drawnChallenge = teamData.challengeDeck.pop()!;
 	}
-
-	if (drawnChallenge) {
-		teamData.challengeHand.unshift(drawnChallenge);
-		console.log("drawn challenge", drawnChallenge.title);
-		//return drawnChallenge;
-	} else {
-		console.log("no cards left in deck");
-		return("NO_CARDS")
-	}
+	teamData.challengeHand.unshift(drawnChallenge);
+	console.log("drawn challenge", drawnChallenge.title);
 }
 
 export function drawToFull({ G, playerID }: MoveContext<ChallengeGameGameState>, team?: MatchTeamColor) {
 	console.log("drawing to full", team);
-	const drawnChallenges : Challenge[] = []
-	let i = 0;
 	const teamData = team ? G.allTeamsChallengeData[team] : G.allTeamsChallengeData[G.allPlayersData[playerID].teamColor];
 	while (teamData.challengeHand.length < handSize) {
 		const errorCheck = drawChallenge({ G, playerID }, teamData);
 		if(errorCheck === "NO_CARDS") {
 			break;
 		}
-		// i++;
-		// if (i > handSize) {
-		// 	console.log("error: couldn't draw to full");
-		// 	break;
-		// }
 	}
-	// teamData.challengeHand.concat(drawnChallenges);
-	//return drawnChallenges;
 }
 
 export function discardHand(context: MoveContext<ChallengeGameGameState>) {
 	const { G, playerID, log } = context;
 	const team = G.allPlayersData[playerID].teamColor;
 	const teamData = G.allTeamsChallengeData[team];
-	teamData.challengeDiscard.concat(teamData.challengeHand);
+	
+	//Don't discard if 0 challenges left
+	if(teamData.challengeDeck.length === 0){
+		return "INVALID_MOVE"
+	}
+	
+	teamData.challengeDiscard.push(...teamData.challengeHand);
 	teamData.challengeHand = [];
 	drawToFull(context);
 	createUndoPoint(G);
@@ -102,12 +92,23 @@ export function discardHand(context: MoveContext<ChallengeGameGameState>) {
 
 }
 
-export function createChallengeDeck(city: string, winter?: boolean) {
+export function createChallengeDeck(city: string, winter?: boolean, money?: boolean) {
 	const genericChallengeData = challengeDataGeneric as RawChallenge[]
 	const allChallengeData = genericChallengeData.concat(getCityChallenges(city))
-	const filteredChallengeData = winter ? allChallengeData.filter(challenge => !challenge.exclude_winter) : allChallengeData
+	const filteredChallengeData = filterChallenges(allChallengeData, {winter, money})
 	const structuredChallengeData = structureChallenges(filteredChallengeData);
 	return structuredChallengeData;
+}
+
+function filterChallenges(challengeData: RawChallenge[], filters : {winter?: boolean, money?: boolean}){
+	return challengeData.filter(challenge => {
+		for (const [key, value] of Object.entries(filters)){
+			if(value && challenge[`exclude_${key}` as keyof RawChallenge]){
+				return false
+			}
+		}
+		return true;
+	})
 }
 
 function getCityChallenges(city: string){
@@ -124,7 +125,7 @@ function getCityChallenges(city: string){
 }
 
 function structureChallenges(challengeData : RawChallenge[]) : Challenge[]{
-	return challengeData.map(challenge => {
+	return challengeData.filter(challenge => challenge.title?.trim()).map(challenge => {
 		return {
 			title: challenge.title,
 			description: challenge.description,

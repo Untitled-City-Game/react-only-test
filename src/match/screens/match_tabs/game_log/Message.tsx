@@ -1,5 +1,6 @@
 import { LogMetadata, PlayerData, GameStateGeneric, GameBoardContextSpecific, GameStateAnything } from "@/scripts/types/types";
 import { ClaimChallengeCompleted, ChallengeEvidence, FruitEaten } from "@/src/match/screens/match_tabs/game_log/messages/ChallengeCompleted";
+import { ChatMessage } from "@/src/match/screens/match_tabs/game_log/messages/ChatMessage";
 import { DiscardHand } from "@/src/match/screens/match_tabs/game_log/messages/DiscardHand";
 import { GameStarted } from "@/src/match/screens/match_tabs/game_log/messages/GameStarted";
 import { JoinedMatch } from "@/src/match/screens/match_tabs/game_log/messages/JoinedMatch";
@@ -20,7 +21,7 @@ export function Message({ entry, gameData, playerData }: { entry: LogEntry; game
 			const challenge = gameState.G.challengeDeck!.find(challenge => challenge.title === entry.metadata.challenge)
 			return (
 				<>					
-					<MessageBox entry={entry} gameData={gameData} playerData={playerData} evidence={true}>
+					<MessageBox entry={entry} gameData={gameData} playerData={playerData} evidence={true} gameMessage={true}>
 						<ClaimChallengeCompleted metadata={entry.metadata as LogMetadata} />
 						{challenge ? <ChallengeButton
 							team={entry.metadata.team}
@@ -35,27 +36,33 @@ export function Message({ entry, gameData, playerData }: { entry: LogEntry; game
 
 		case "playerSetup":
 			return (
-				<MessageBox entry={entry} gameData={gameData} playerData={playerData}>
+				<MessageBox entry={entry} gameData={gameData} playerData={playerData} gameMessage={true}>
 					<JoinedMatch senderData={senderData} />
 				</MessageBox>
 			);
 
 		case "startGame":
 			return (
-				<MessageBox entry={entry} gameData={gameData} playerData={playerData}>
+				<MessageBox entry={entry} gameData={gameData} playerData={playerData} gameMessage={true}>
 					<GameStarted senderData={senderData} />
+				</MessageBox>
+			);
+		case "sendChatMessage":
+			return (
+				<MessageBox entry={entry} gameData={gameData} playerData={playerData}>
+					<ChatMessage metadata={entry.metadata as LogMetadata} />
 				</MessageBox>
 			);
 		case "discardHand":
 			return (
-				<MessageBox entry={entry} gameData={gameData} playerData={playerData}>
+				<MessageBox entry={entry} gameData={gameData} playerData={playerData} gameMessage={true}>
 					<DiscardHand senderData={senderData} />
 				</MessageBox>
 			)
 		case "completeChallengeAndEatFruit":
 			return (
 				<Box>
-					<MessageBox entry={entry} gameData={gameData} playerData={playerData} >
+					<MessageBox entry={entry} gameData={gameData} playerData={playerData} gameMessage={true}>
 						<FruitEaten
 							metadata={entry.metadata as LogMetadata} />
 						{entry.metadata.challenge ? <ChallengeButton
@@ -79,6 +86,7 @@ export function Message({ entry, gameData, playerData }: { entry: LogEntry; game
 		case "addTeamPhoto":
 			break;
 		default:
-			return <P>{entry.action.payload.type}</P>;
+			break;
+			//return <P>{entry.action.payload.type}</P>;
 	}
 }

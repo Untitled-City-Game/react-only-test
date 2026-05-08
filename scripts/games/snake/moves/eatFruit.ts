@@ -9,9 +9,9 @@ import { MoveContext } from "@/scripts/types/types";
 function eatFruit(context: MoveContext<SnakeGameState>, eatenFruit: Fruit) {
 	
 	//remove eaten fruit
-	context.G.fruits = context.G.fruits.filter(fruit => {
+	context.G.fruits = context.G.fruits.filter(fruit =>
 		fruit.challenge.title !== eatenFruit.challenge.title
-	})
+	)
 
 	growSnake(context, config.standardFruitGrowth)
 	updateFruit(context)

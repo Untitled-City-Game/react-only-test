@@ -1,6 +1,8 @@
 import { ConnectFourMoves } from "@/scripts/games/connect_four/connect_four";
-import { ChallengeDeckContext, GameContext } from "@/src/match/Board";
+import { ChallengeDeckContext, ConnectFourContext, GameContext } from "@/src/match/Board";
 import ClaimFlowModal from "@/src/match/components/regions/region_claim_flow/ClaimFlowModal";
+import useMyLocation from "@/src/match/interfaces/useMyLocation";
+import useMyZone from "@/src/match/interfaces/useMyZone";
 import { ClaimButton } from "@/src/match/screens/match_tabs/challenges/UI/ChallengeCard";
 import { ChallengeBody } from "@/src/match/screens/match_tabs/challenges/UI/ChallengePopup";
 import RuleBox from "@/src/match/screens/match_tabs/challenges/UI/RuleBox";
@@ -9,7 +11,7 @@ import ConfirmButton from "@/src/userInterface/ConfirmModal";
 import { ComplexHeader } from "@/src/userInterface/Header/Header";
 import P from "@/src/userInterface/P";
 import Span from "@/src/userInterface/Span";
-import { Box, Container, Stack, Group, Button, ScrollAreaAutosize, Accordion, ScrollArea, Flex, Divider } from "@mantine/core";
+import { Box, Container, Stack, Group,  ScrollAreaAutosize, Accordion, ScrollArea, Flex, Divider, useMantineTheme } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
 import { createContext, useContext, useEffect, useState } from "react";
 import { FaLock } from "react-icons/fa";
@@ -19,7 +21,7 @@ export const ChallengeContext = createContext<any>(null);
 
 export default function ChallengesTab({ active }: { active: string | null }) {
 	const { allTeamsChallengeData, } = useContext(ChallengeDeckContext)
-	const props = useContext(GameContext)
+	const props = useContext(GameContext);
 	const moves = props.moves as ConnectFourMoves; //TODO: Make this generic / composite
 	const { allPlayersData } = props.G;
 	const playerData = allPlayersData[props.playerData.data.playerID];
@@ -28,6 +30,7 @@ export default function ChallengesTab({ active }: { active: string | null }) {
 	const challengeDeck = allTeamsChallengeData[myTeam]?.challengeDeck;
 	const [opened, { open, close }] = useDisclosure(false);
 	const [currentChallenge, setCurrentChallenge] = useState("");
+	const theme = useMantineTheme()
 	if (!challengeHand) {
 		return <h1>No challenges available</h1>;
 	}
@@ -52,7 +55,7 @@ export default function ChallengesTab({ active }: { active: string | null }) {
 	return (
 		<>
 			<Box style={{ zIndex: 10 }}>
-				<ComplexHeader color={props.playerData.data.teamColor}>
+				<ComplexHeader>
 					<Container w="100%">
 						<Stack gap="0" ta="center" align="stretch" w="100%">
 							{/* <h1>Challenges</h1> */}
@@ -75,15 +78,16 @@ export default function ChallengesTab({ active }: { active: string | null }) {
 							<Accordion variant="separated">
 								{challengeHand.map((challenge, index) => {
 									return (
-										// <ChallengeCard key={index} teamColor={props.playerData.data.teamColor} onClick={() => {
+										// <ChallengeCard key={index} teamColor={theme.primaryColor} onClick={() => {
 										// 	setCurrentChallenge(challenge.title);
 										// 	console.log("opening modal");
 										// 	open();
 										// }
 										// } challenge={challenge}></ChallengeCard>
-										// <ChallengeButton challenge={challenge} key={index} team={props.playerData.data.teamColor} claimButton={true} />
+										// <ChallengeButton challenge={challenge} key={index} team={theme.primaryColor} claimButton={true} />
 										<Accordion.Item
-											bd={challenge.hard ? `2px solid ${props.playerData.data.teamColor}` : `1.5px dashed ${props.playerData.data.teamColor}`}
+											
+											bd={challenge.hard ? `2px solid ${theme.primaryColor}` : `1.5px dashed ${theme.primaryColor}`}
 											style={{
 												borderRadius: "10px"
 											}}
@@ -92,7 +96,7 @@ export default function ChallengesTab({ active }: { active: string | null }) {
 											value={challenge.title} >
 											<Accordion.Control icon={challenge.emoji}><P fw="bold" tt="uppercase" className="mono" pb={0}>{challenge.title}</P></Accordion.Control>
 											<Accordion.Panel>
-												<ChallengeBody teamColor={props.playerData.data.teamColor} challenge={challenge}></ChallengeBody>
+												<ChallengeBody teamColor={theme.primaryColor} challenge={challenge}></ChallengeBody>
 												<ClaimButton title={challenge.title} />
 
 											</Accordion.Panel>
@@ -108,6 +112,7 @@ export default function ChallengesTab({ active }: { active: string | null }) {
 				open={opened}
 				close={close}
 				challengeTitle={currentChallenge}
+				inferZone={true}
 			/>
 		</>
 	);

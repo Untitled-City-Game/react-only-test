@@ -1,28 +1,29 @@
 import { gameLocationCenters } from "@/scripts/consts";
 import { ConnectFourMoves } from "@/scripts/games/connect_four/connect_four";
-import { GameBoardContext, MatchTeamColor } from "@/scripts/types/types";
 import { ConnectFourContext, GameContext } from "@/src/match/Board";
 import MyLocationMarker from "@/src/match/googleMaps/MyLocationMarker";
 import VisGlMapElement from "@/src/match/googleMaps/VisGLMapElement";
+import { useMyZoneRef } from "@/src/match/interfaces/useMyZone";
 import { GenericMapZones } from "@/src/match/screens/connect_four/GenericMapZones";
+import Button from "@/src/userInterface/CustomButton";
 import P from "@/src/userInterface/P";
-import { Box, Button, Container, Modal, Select, Stack } from "@mantine/core";
+import { Box,  Container, Modal, Select, Stack } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import React, { useContext, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
-export function StartingRegionButton({setStartDisabled} : {setStartDisabled: React.Dispatch<React.SetStateAction<boolean>>}) {
+export function StartingZoneButton({setStartDisabled} : {setStartDisabled: React.Dispatch<React.SetStateAction<boolean>>}) {
 	const [opened, { open, close }] = useDisclosure(false);
 	const connectFourContext = useContext(ConnectFourContext);
 
 	return (
 		<>
-			<Button variant={connectFourContext.startingZone ? "light" : "outline"} onClick={open}>{connectFourContext.startingZone ? `Starting in: ${connectFourContext.startingZone}` : "Choose starting neighbourhood"}</Button>
-			<StartingRegionModal opened={opened} close={close} setStartDisabled={setStartDisabled} />
+			<Button variant={connectFourContext.startingZone ? "light" : "filled"} onClick={open}>{connectFourContext.startingZone ? `Starting in: ${connectFourContext.startingZone}` : "Choose starting neighbourhood"}</Button>
+			<StartingZoneModal opened={opened} close={close} setStartDisabled={setStartDisabled} />
 		</>
 	);
 }
 
-export function StartingRegionModal({
+export function StartingZoneModal({
 	opened,
 	close,
 	setStartDisabled
@@ -34,28 +35,33 @@ export function StartingRegionModal({
 	const connectFourContext = useContext(ConnectFourContext);
 	const gameContext = useContext(GameContext)
 	const zoneSelectOptions = connectFourContext.zoneData.map(zone => { return { value: zone.name, label: zone.name } });
-	const [selectedZone, setSelectedZone] = useState<string | null>("");
+	const myZoneRef = useMyZoneRef()
+	const [selectedZone, setSelectedZone] = useState<string | null>();
+
+	useEffect(() => {
+		console.log("opened starting region modal", myZoneRef.current)
+		setSelectedZone(myZoneRef.current?.name)
+	}, [opened]);
+
 	const moves = gameContext.moves as ConnectFourMoves
 	return (
 		<Modal
 			opened={opened}
 			onClose={close}
-			centered
-			mah="70vh"
 			title={
-				<span style={{ fontSize: "1.5rem", fontWeight: "bold" }}>
-					Select Starting Region
+				<span style={{ fontSize: "1.2rem", fontWeight: "bold" }}>
+					Choose Starting Neighbourhood
 				</span>
 			}>
-				<Container style={{
-					maxHeight: "90vh",
-					overflowY: "scroll",
-				}}>
-					<Stack>
-						<P>The starting neighbourhood cannot be claimed first. Both teams must leave the starting neighbourhood and claim another neighbourhood.</P>
+				<Container>
+					<Stack gap="0.5rem">
+						<div>
+							<P fz="sm">The starting neighbourhood cannot be claimed first.</P>
+							<P fz="sm">Teams must leave the starting neighbourhood, and claim another neighbourhood.</P>
+						</div>
 						<Select label="Starting neighbourhood" data={zoneSelectOptions} value={selectedZone} onChange={setSelectedZone}/>
 						<Box style={mapContainerStyle} >
-							<VisGlMapElement center={gameLocationCenters[connectFourContext.city]}>
+							<VisGlMapElement center={gameLocationCenters[connectFourContext.city]} gestureHandling="cooperative">
 								<MyLocationMarker color={gameContext.playerData.data.teamColor} defaultLocation={gameLocationCenters[connectFourContext.city]} />
 								<GenericMapZones 
 									MapData={connectFourContext.MatchMapData} 
