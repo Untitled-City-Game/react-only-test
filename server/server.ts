@@ -19,7 +19,7 @@ async function buildServer() {
     });
 
     server.router.get('/hello', (ctx) => {
-        ctx.body = `Hello! Running server for STAGING env of Playground City at http://localhost:1234, ${Origins.LOCALHOST} and ${process.env.GAME_ADDRESS}`;
+        ctx.body = `Hello! Running server for PRODUCTION env of Playground City at http://localhost:1234, ${Origins.LOCALHOST} and ${process.env.GAME_ADDRESS}`;
     });
     server.router.get('/map-data/:citycode', async (ctx) => {
         console.log("getting map data for city", ctx.params.citycode);
