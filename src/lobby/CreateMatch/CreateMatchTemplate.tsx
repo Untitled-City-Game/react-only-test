@@ -84,7 +84,6 @@ export default function CreateMatchTemplate({
         }
         console.log("creating game", values, setupData);
         console.log("env game server", process.env.GAME_SERVER)
-        console.log("env location server", process.env.LOCATION_SERVER)
         console.log("env location server path", process.env.LOCATION_SERVER_PATH)
         //create match
         console.log("setting up match");

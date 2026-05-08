@@ -125,7 +125,7 @@ function getCityChallenges(city: string){
 }
 
 function structureChallenges(challengeData : RawChallenge[]) : Challenge[]{
-	return challengeData.map(challenge => {
+	return challengeData.filter(challenge => challenge.title?.trim()).map(challenge => {
 		return {
 			title: challenge.title,
 			description: challenge.description,
