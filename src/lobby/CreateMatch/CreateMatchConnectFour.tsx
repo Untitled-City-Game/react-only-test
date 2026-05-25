@@ -1,4 +1,4 @@
-import { cities, maps } from "@/scripts/consts";
+import { cities, gameLocationCenters, maps } from "@/scripts/consts";
 import { fetchChallenges } from "@/scripts/games/challenge_deck/fetchChallenges";
 import { fetchMapData } from "@/scripts/fetchMapData";
 import { City, MatchMapData } from "@/scripts/types/types";
@@ -6,6 +6,33 @@ import CreateMatchTemplate, { createGameFormConstructor, FormValues } from "@/sr
 import StartingZonePicker from "@/src/lobby/CreateMatch/StartingZonePicker";
 import { Select } from "@mantine/core";
 import { useEffect, useState } from "react";
+import { useGeolocated } from "react-geolocated";
+
+// Great-circle distance in km. Picking the closest city only needs relative
+// ordering, so any monotonic distance function would do; haversine is cheap.
+function haversineKm(a: { lat: number; lng: number }, b: { lat: number; lng: number }) {
+	const R = 6371;
+	const toRad = (deg: number) => (deg * Math.PI) / 180;
+	const dLat = toRad(b.lat - a.lat);
+	const dLng = toRad(b.lng - a.lng);
+	const lat1 = toRad(a.lat);
+	const lat2 = toRad(b.lat);
+	const s = Math.sin(dLat / 2) ** 2 + Math.sin(dLng / 2) ** 2 * Math.cos(lat1) * Math.cos(lat2);
+	return 2 * R * Math.asin(Math.sqrt(s));
+}
+
+function closestCity(userLoc: { lat: number; lng: number }): City {
+	let best: City = "london";
+	let bestDist = Infinity;
+	for (const [code, center] of Object.entries(gameLocationCenters)) {
+		const d = haversineKm(userLoc, center);
+		if (d < bestDist) {
+			bestDist = d;
+			best = code as City;
+		}
+	}
+	return best;
+}
 
 export default function CreateMatchConnectFour() {
 	const teamOptions = ["red", "blue"];
@@ -13,6 +40,22 @@ export default function CreateMatchConnectFour() {
 	const [city, setCity] = useState<City>("london");
 	const [mapData, setMapData] = useState<MatchMapData | undefined>();
 	const [startingZone, setStartingZone] = useState<string>("");
+	const [cityManuallyPicked, setCityManuallyPicked] = useState(false);
+
+	const { coords } = useGeolocated({
+		positionOptions: { enableHighAccuracy: false },
+		userDecisionTimeout: 5000,
+	});
+
+	// Auto-select the nearest city when geolocation resolves, unless the player
+	// has already picked one manually.
+	useEffect(() => {
+		if (!coords || cityManuallyPicked) return;
+		const nearest = closestCity({ lat: coords.latitude, lng: coords.longitude });
+		if (nearest === city) return;
+		setCity(nearest);
+		createGameForm.setFieldValue("city", nearest);
+	}, [coords, cityManuallyPicked]);
 
 	// Preload map data as soon as the city is known so the starting-zone step
 	// doesn't have to wait when the player arrives at it.
@@ -81,10 +124,12 @@ export default function CreateMatchConnectFour() {
 					label: map.name,
 					value: map.code
 				}))}
+				key={createGameForm.key("city")}
 				{...createGameForm.getInputProps("city")}
 				onChange={(value) => {
 					createGameForm.setFieldValue("city", value);
 					if (value) setCity(value as City);
+					setCityManuallyPicked(true);
 					// Selecting a different city invalidates whatever zone was previously picked
 					setStartingZone("");
 					createGameForm.setFieldValue("startingZone", "");
