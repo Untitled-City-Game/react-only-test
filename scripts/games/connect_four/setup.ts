@@ -15,6 +15,7 @@ export function ConnectFourGameSetup(ctx: Ctx, setupData: ConnectFourGameSetupDa
 		challengeDeck: createChallengeDeck(setupData.mapSetupData.city, setupData.winter, setupData.money),
 		allTeamsChallengeData: {},
 		city: setupData.mapSetupData.city,
+		startingZone: setupData.startingZone,
 	};
 }
 

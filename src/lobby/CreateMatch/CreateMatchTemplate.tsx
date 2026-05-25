@@ -23,30 +23,40 @@ export type FormValues = {
     [key: string]: any;
 };
 
+export interface ExtraStep {
+    label: string;
+    content: React.ReactNode;
+    fields?: string[];
+}
+
 export default function CreateMatchTemplate({
     teamOptions,
     gameCode,
     getSetupData,
     createGameForm,
+    extraSteps,
     children
 }: {
     teamOptions: string[]
     gameCode: string
     getSetupData: (args: FormValues) => Record<string, unknown> | Promise<Record<string, unknown>>;
     createGameForm: CreateGameFormUniversal;
+    extraSteps?: ExtraStep[];
     children: React.ReactNode
 }) {
     const [loading, setLoading] = useState(false);
     const [step, setStep] = useState(0);
     const teamCards = createTeamCards(teamOptions);
     const navigate = useNavigate();
-    const totalSteps = 4;
+    const baseStepCount = 4;
+    const totalSteps = baseStepCount + (extraSteps?.length ?? 0);
 
     const stepFields: string[][] = [
         [],            // step 0: game-specific (children — validated by their own form bindings)
         [],            // step 1: modes (toggles, no validation)
         ["PlayerName"],
         ["teamColor"],
+        ...(extraSteps?.map((s) => s.fields ?? []) ?? []),
     ];
 
     function handleNext(e?: React.SyntheticEvent) {
@@ -131,10 +141,14 @@ export default function CreateMatchTemplate({
                             <Stepper.Step label="Modes" />
                             <Stepper.Step label="Name" />
                             <Stepper.Step label="Team" />
+                            {extraSteps?.map((s, i) => (
+                                <Stepper.Step key={i} label={s.label} />
+                            ))}
                         </StyledStepper>
                     </div>
                     <Stack>
                         {step === 0 && children}
+                        {step >= baseStepCount && extraSteps?.[step - baseStepCount]?.content}
                         {step === 1 && (
                             <>
                                 <Checkbox

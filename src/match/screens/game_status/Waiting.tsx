@@ -15,7 +15,6 @@ import { storage } from "@/scripts/firebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
 import { ConnectFourMoves } from "@/scripts/games/connect_four/connect_four";
 import { SharedMoves } from "@/scripts/games/shared_moves/sharedMoves";
-import { StartingZoneButton } from "@/src/match/screens/game_status/StartingZoneModal";
 import Segment from "@/src/userInterface/Segment";
 import TeamAvatar from "@/src/userInterface/TeamAvatar";
 import { defaultColor, LocalColorContext, localColorName } from "@/src/styles/theme";
@@ -32,7 +31,6 @@ export default function Waiting() {
         return <h1>allPlayersData data not found in Waiting!</h1>
     }
     const [loading, setLoading] = useState(false);
-    const [startDisabled, setStartDisabled] = useState(props.gameCode === "connect_four" ? true : false);
     const teamColor = props.playerData.data.teamColor
     return (
         <Center>
@@ -54,25 +52,23 @@ export default function Waiting() {
                                     />
                                 </Stack>
                             </Segment>
-                            <Segment>
-                                <Stack align="stretch">
-                                    <Title order={3} size="h4">Before you Start</Title>
-                                    <HelpButton />
-                                    {(props.playerData.data.admin && props.gameCode === "connect_four") ? <StartingZoneButton setStartDisabled={setStartDisabled} /> : null}
-                                </Stack>
-                            </Segment>
                         </Stack>
                     </div>
-                    {props.playerData.data.admin ? <Stack>
-                        <Button
-                            disabled={startDisabled}
-                            onClick={() => {
-                                setLoading(true);
-                                props.moves.startGame();
-                            }}>
-                            Start the Game
-                        </Button></Stack>
-                        : <div />}
+                    <div>
+                        <Stack>
+                            <HelpButton />
+
+                            {props.playerData.data.admin ? <Stack>
+                                <Button
+                                    onClick={() => {
+                                        setLoading(true);
+                                        props.moves.startGame();
+                                    }}>
+                                    Start the Game
+                                </Button></Stack>
+                                : <div />}
+                        </Stack>
+                    </div>
                 </VerticalSpread>
             </FullHeightLayout>
         </Center>

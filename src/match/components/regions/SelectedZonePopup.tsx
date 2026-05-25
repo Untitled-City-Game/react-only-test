@@ -69,7 +69,7 @@ export default function SelectedZonePopup({
                     justifyContent: "space-between",
                     alignItems: "center",
                     backgroundColor: "white",
-                    borderBottom: `3px solid ${ownerColor || theme.colors.actionColor[5]}`,
+                    borderBottom: `3px solid ${theme.colors.actionColor[5]}`,
                     padding: "0.25rem 0.5rem",
                 }}
             >

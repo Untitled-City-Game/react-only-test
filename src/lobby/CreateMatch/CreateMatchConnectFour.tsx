@@ -1,45 +1,75 @@
 import { cities, maps } from "@/scripts/consts";
 import { fetchMapData } from "@/scripts/fetchMapData";
-import { City, NamedColor, MatchMapData } from "@/scripts/types/types";
+import { City, MatchMapData } from "@/scripts/types/types";
 import CreateMatchTemplate, { createGameFormConstructor, FormValues } from "@/src/lobby/CreateMatch/CreateMatchTemplate";
+import StartingZonePicker from "@/src/lobby/CreateMatch/StartingZonePicker";
 import { Select } from "@mantine/core";
+import { useState } from "react";
 
 export default function CreateMatchConnectFour() {
 	const teamOptions = ["red", "blue"];
 
+	const [city, setCity] = useState<City>("london");
+	const [mapData, setMapData] = useState<MatchMapData | undefined>();
+	const [startingZone, setStartingZone] = useState<string>("");
+
 	//Setup mantine form
 	const createGameForm = createGameFormConstructor(
 		{
-		city: "london" as City,
+			city: "london" as City,
+			startingZone: "",
 		},
 		{
-		city: (city : string) => cities.includes(city as City) ? null : "Invalid city",
-		}, 
+			city: (value: string) => cities.includes(value as City) ? null : "Invalid city",
+			startingZone: (value: string) => value ? null : "Pick a starting neighbourhood",
+		},
 		teamOptions
 	)
 
-	interface ConnectFourFormValues extends FormValues {}
-
-	const ConnectFourSetupData = async (values: ConnectFourFormValues) => {
-		const mapSetupData: MatchMapData = await fetchMapData(values.city);
-		const setupData = {
+	const ConnectFourSetupData = async (values: FormValues) => {
+		const mapSetupData = mapData ?? await fetchMapData(values.city as City);
+		return {
 			mapSetupData,
 			gameName: values.gameName,
-		}
-		return setupData;
+			startingZone: values.startingZone as string,
+		};
 	};
 
 	return (
-		<CreateMatchTemplate 
+		<CreateMatchTemplate
 			teamOptions={teamOptions}
-			gameCode={"connect_four"} 
+			gameCode={"connect_four"}
 			getSetupData={ConnectFourSetupData}
-			createGameForm={createGameForm}			
+			createGameForm={createGameForm}
+			extraSteps={[{
+				label: "Start",
+				fields: ["startingZone"],
+				content: (
+					<StartingZonePicker
+						city={city}
+						value={startingZone}
+						onChange={(zone) => {
+							setStartingZone(zone);
+							createGameForm.setFieldValue("startingZone", zone);
+						}}
+						onMapDataLoaded={setMapData}
+					/>
+				),
+			}]}
 		>
-		<Select label="Choose a city" placeholder="Melbourne" data={Object.values(maps).map(map => ({
-			label: map.name,
-			value: map.code
-	}))} {...createGameForm.getInputProps("city")} />
+			<Select
+				label="Choose a city"
+				placeholder="Melbourne"
+				data={Object.values(maps).map(map => ({
+					label: map.name,
+					value: map.code
+				}))}
+				{...createGameForm.getInputProps("city")}
+				onChange={(value) => {
+					createGameForm.setFieldValue("city", value);
+					if (value) setCity(value as City);
+				}}
+			/>
 		</CreateMatchTemplate>
 	);
 }

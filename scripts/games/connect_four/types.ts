@@ -7,6 +7,7 @@ import { GameStateUniversal, MatchMapData, GameStateLog, Color, zoneStatus, City
 export interface ConnectFourGameSetupData extends GameSetupDataGeneric {
 	mapSetupData: MatchMapData,
 	city : City;
+	startingZone: string;
 }
 
 export interface ConnectFourGameState extends GameStateUniversal, ChallengeDeck {
