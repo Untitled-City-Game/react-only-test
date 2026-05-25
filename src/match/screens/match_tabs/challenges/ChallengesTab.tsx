@@ -13,7 +13,7 @@ import P from "@/src/userInterface/P";
 import Span from "@/src/userInterface/Span";
 import { Box, Container, Stack, Group,  ScrollAreaAutosize, Accordion, ScrollArea, Flex, Divider, useMantineTheme } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { createContext, useContext, useEffect, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { FaLock } from "react-icons/fa";
 
 
@@ -41,9 +41,20 @@ export default function ChallengesTab({ active }: { active: string | null }) {
 
 	const { setTabAlertState } = useContext(TabAlertsContext)
 
+	// G is replaced on every server update, so challengeHand always has a new
+	// reference. Compare titles to detect actual draws and ignore re-renders
+	// caused by unrelated state changes.
+	const previousHandTitles = useRef<string[] | undefined>(undefined);
 	useEffect(() => {
-		console.log("challenge hand changed");
-		setTabAlertState(oldValues => { return { ...oldValues, "challenges": true } });
+		const currentTitles = challengeHand?.map(c => c.title) ?? [];
+		const previous = previousHandTitles.current;
+		previousHandTitles.current = currentTitles;
+		if (previous === undefined) return; // first render — don't fire
+		const previousSet = new Set(previous);
+		const hasNew = currentTitles.some(title => !previousSet.has(title));
+		if (hasNew) {
+			setTabAlertState(oldValues => ({ ...oldValues, "challenges": true }));
+		}
 	}, [challengeHand]);
 
 	useEffect(() => {
