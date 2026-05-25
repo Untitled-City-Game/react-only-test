@@ -65,12 +65,15 @@ export default function SelectedZonePopup({
                     left: 0,
                     width: "100%",
                     zIndex: 1,
-                    display: currentZone ? "flex" : "none",
+                    display: "flex",
                     justifyContent: "space-between",
                     alignItems: "center",
                     backgroundColor: "white",
                     borderBottom: `3px solid ${theme.colors.actionColor[5]}`,
                     padding: "0.25rem 0.5rem",
+                    transform: currentZone ? "translateY(0)" : "translateY(-100%)",
+                    transition: "transform 200ms ease",
+                    pointerEvents: currentZone ? "auto" : "none",
                 }}
             >
                 <button
@@ -95,9 +98,11 @@ export default function SelectedZonePopup({
             <Center
                 style={{
                     borderTop: `3px solid ${ownerColor || theme.colors.actionColor[5]}`,
-                    ...selectedZonePopupStyles
+                    ...selectedZonePopupStyles,
+                    transform: currentZone ? "translateY(0)" : "translateY(100%)",
+                    transition: "transform 200ms ease",
+                    pointerEvents: currentZone ? "auto" : "none",
                 }}
-                display={currentZone ? "initial" : "none"}
             >
 
 
