@@ -7,6 +7,7 @@ import GameOver from "@/src/lobby/GameOver";
 import useMyLocation from "@/src/match/interfaces/useMyLocation";
 import useTeamLocations from "@/src/match/interfaces/useTeamLocations";
 import Loading from "@/src/match/screens/game_status/Loading";
+import OtherTeamClaimModal from "@/src/match/screens/game_status/OtherTeamClaimModal";
 import VictoryModal from "@/src/match/screens/game_status/VictoryModal";
 import Waiting from "@/src/match/screens/game_status/Waiting";
 import TabSet from "@/src/match/screens/match_tabs/TabSet";
@@ -125,6 +126,7 @@ function ConnectFourGameplay(G: ConnectFourGameState, playerData: PlayerData) {
             <StatusBar>
                 {claimedZones} neighbourhood{claimedZones === 1 ? "" : "s"} claimed
                 <VictoryModal />
+                <OtherTeamClaimModal />
             </StatusBar>
             <TabSet tabCodes={["challenges", "connect_four_map", "log"]} />
         </>
