@@ -5,7 +5,7 @@ import { City, MatchMapData } from "@/scripts/types/types";
 import CreateMatchTemplate, { createGameFormConstructor, FormValues } from "@/src/lobby/CreateMatch/CreateMatchTemplate";
 import StartingZonePicker from "@/src/lobby/CreateMatch/StartingZonePicker";
 import { Select } from "@mantine/core";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 export default function CreateMatchConnectFour() {
 	const teamOptions = ["red", "blue"];
@@ -13,6 +13,17 @@ export default function CreateMatchConnectFour() {
 	const [city, setCity] = useState<City>("london");
 	const [mapData, setMapData] = useState<MatchMapData | undefined>();
 	const [startingZone, setStartingZone] = useState<string>("");
+
+	// Preload map data as soon as the city is known so the starting-zone step
+	// doesn't have to wait when the player arrives at it.
+	useEffect(() => {
+		let cancelled = false;
+		setMapData(undefined);
+		fetchMapData(city).then((data) => {
+			if (!cancelled) setMapData(data);
+		});
+		return () => { cancelled = true; };
+	}, [city]);
 
 	//Setup mantine form
 	const createGameForm = createGameFormConstructor(
@@ -52,6 +63,7 @@ export default function CreateMatchConnectFour() {
 				content: (
 					<StartingZonePicker
 						city={city}
+						mapData={mapData}
 						value={startingZone}
 						onChange={(zone) => {
 							setStartingZone(zone);
@@ -73,6 +85,9 @@ export default function CreateMatchConnectFour() {
 				onChange={(value) => {
 					createGameForm.setFieldValue("city", value);
 					if (value) setCity(value as City);
+					// Selecting a different city invalidates whatever zone was previously picked
+					setStartingZone("");
+					createGameForm.setFieldValue("startingZone", "");
 				}}
 			/>
 		</CreateMatchTemplate>

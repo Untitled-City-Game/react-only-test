@@ -9,29 +9,34 @@ import React, { useEffect, useState } from "react";
 
 export default function StartingZonePicker({
     city,
+    mapData: mapDataProp,
     value,
     onChange,
     onMapDataLoaded,
 }: {
     city: City;
+    mapData?: MatchMapData;
     value?: string;
     onChange: (zone: string) => void;
     onMapDataLoaded?: (mapData: MatchMapData) => void;
 }) {
-    const [mapData, setMapData] = useState<MatchMapData | undefined>();
+    const [fetchedMapData, setFetchedMapData] = useState<MatchMapData | undefined>();
+    const mapData = mapDataProp ?? fetchedMapData;
 
     useEffect(() => {
+        // If the parent supplied map data, skip the internal fetch.
+        if (mapDataProp) return;
         let cancelled = false;
-        setMapData(undefined);
+        setFetchedMapData(undefined);
         fetchMapData(city).then((data) => {
             if (cancelled) return;
-            setMapData(data);
+            setFetchedMapData(data);
             onMapDataLoaded?.(data);
         });
         return () => {
             cancelled = true;
         };
-    }, [city]);
+    }, [city, mapDataProp]);
 
     if (!mapData) {
         return (
