@@ -1,4 +1,4 @@
-import { ChallengeDeck } from "@/scripts/games/challenge_deck/challenge_deck_types";
+import { ChallengeDeck, RawChallenge } from "@/scripts/games/challenge_deck/challenge_deck_types";
 import { GameStateUniversal, MatchMapData, GameStateLog, Color, zoneStatus, City, GameSetupDataGeneric } from "@/scripts/types/types";
 
 //Game state
@@ -8,6 +8,7 @@ export interface ConnectFourGameSetupData extends GameSetupDataGeneric {
 	mapSetupData: MatchMapData,
 	city : City;
 	startingZone: string;
+	challengeData: RawChallenge[];
 }
 
 export interface ConnectFourGameState extends GameStateUniversal, ChallengeDeck {

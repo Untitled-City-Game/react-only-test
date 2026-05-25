@@ -4,10 +4,6 @@ import { addLogMetadata } from "@/scripts/games/shared_moves/metadata";
 import { createUndoPoint } from "@/scripts/games/undo";
 import { MatchTeamColor, MoveContext } from "@/scripts/types/types";
 import { LogAPI } from "boardgame.io/dist/types/src/plugins/plugin-log";
-import challengeDataGeneric from '@data/challenges/challenges_generic.json';
-import challengeDataMelbourne from '@data/challenges/challenges_melbourne.json';
-import challengeDataMontreal from '@data/challenges/challenges_montreal.json';
-import challengeDataLondon from '@data/challenges/challenges_london.json'
 import { remove } from "lodash";
 
 export function discardChallenge(
@@ -92,10 +88,8 @@ export function discardHand(context: MoveContext<ChallengeGameGameState>) {
 
 }
 
-export function createChallengeDeck(city: string, winter?: boolean, money?: boolean) {
-	const genericChallengeData = challengeDataGeneric as RawChallenge[]
-	const allChallengeData = genericChallengeData.concat(getCityChallenges(city))
-	const filteredChallengeData = filterChallenges(allChallengeData, {winter, money})
+export function createChallengeDeck(challengeData: RawChallenge[], winter?: boolean, money?: boolean) {
+	const filteredChallengeData = filterChallenges(challengeData, {winter, money})
 	const structuredChallengeData = structureChallenges(filteredChallengeData);
 	return structuredChallengeData;
 }
@@ -109,19 +103,6 @@ function filterChallenges(challengeData: RawChallenge[], filters : {winter?: boo
 		}
 		return true;
 	})
-}
-
-function getCityChallenges(city: string){
-		switch (city) {
-		case "melbourne":
-			return challengeDataMelbourne as RawChallenge []
-		case "montreal":
-			return challengeDataMontreal as RawChallenge []
-		case "london":
-			return challengeDataLondon as RawChallenge []
-		default:
-			return []
-	}
 }
 
 function structureChallenges(challengeData : RawChallenge[]) : Challenge[]{

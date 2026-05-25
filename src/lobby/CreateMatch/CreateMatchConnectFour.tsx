@@ -1,4 +1,5 @@
 import { cities, maps } from "@/scripts/consts";
+import { fetchChallenges } from "@/scripts/games/challenge_deck/fetchChallenges";
 import { fetchMapData } from "@/scripts/fetchMapData";
 import { City, MatchMapData } from "@/scripts/types/types";
 import CreateMatchTemplate, { createGameFormConstructor, FormValues } from "@/src/lobby/CreateMatch/CreateMatchTemplate";
@@ -27,11 +28,15 @@ export default function CreateMatchConnectFour() {
 	)
 
 	const ConnectFourSetupData = async (values: FormValues) => {
-		const mapSetupData = mapData ?? await fetchMapData(values.city as City);
+		const [mapSetupData, challengeData] = await Promise.all([
+			mapData ? Promise.resolve(mapData) : fetchMapData(values.city as City),
+			fetchChallenges(values.city as City),
+		]);
 		return {
 			mapSetupData,
 			gameName: values.gameName,
 			startingZone: values.startingZone as string,
+			challengeData,
 		};
 	};
 

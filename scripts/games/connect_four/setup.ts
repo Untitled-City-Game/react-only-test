@@ -12,7 +12,7 @@ export function ConnectFourGameSetup(ctx: Ctx, setupData: ConnectFourGameSetupDa
 		...baseGameState("connect_four", setupData.gameName),
 		zoneData: createBoardFromMapJson(setupData.mapSetupData.zonePolygons),
 		MatchMapData: setupData.mapSetupData,
-		challengeDeck: createChallengeDeck(setupData.mapSetupData.city, setupData.winter, setupData.money),
+		challengeDeck: createChallengeDeck(setupData.challengeData, setupData.winter, setupData.money),
 		allTeamsChallengeData: {},
 		city: setupData.mapSetupData.city,
 		startingZone: setupData.startingZone,
