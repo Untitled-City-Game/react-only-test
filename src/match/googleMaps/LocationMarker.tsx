@@ -10,6 +10,7 @@ import Span from "@/src/userInterface/Span";
 import { ACCURACY_MAX } from "@/scripts/consts";
 import P from "@/src/userInterface/P";
 import useEase from "@/scripts/ease";
+import TeamAvatar from "@/src/userInterface/TeamAvatar";
 
 const iconSize = 30
 
@@ -58,7 +59,7 @@ export default function LocationMarker({ position, accuracy, color, invalid, exp
                 }}
             />
 
-            <img style={teamImgStyle} src={gameData.teamPhotoURLs[color] ?? "/default-team.png"} />
+            <TeamAvatar color={color} photoURL={gameData.teamPhotoURLs[color]} style={teamImgStyle} />
             {accurate ? <Circle
                 center={positionEased}
                 radius={accuracyRadius}

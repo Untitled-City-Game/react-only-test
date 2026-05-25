@@ -17,6 +17,7 @@ import { ConnectFourMoves } from "@/scripts/games/connect_four/connect_four";
 import { SharedMoves } from "@/scripts/games/shared_moves/sharedMoves";
 import { StartingZoneButton } from "@/src/match/screens/game_status/StartingZoneModal";
 import Segment from "@/src/userInterface/Segment";
+import TeamAvatar from "@/src/userInterface/TeamAvatar";
 import { defaultColor, LocalColorContext, localColorName } from "@/src/styles/theme";
 export default function Waiting() {
     console.log("rendering waiting page");
@@ -91,8 +92,9 @@ function TeamSummary({ gameData, playerTeam }: { gameData: GameStateGeneric, pla
                         <h3 style={{ textTransform: "capitalize" }}>{team[0].teamColor} team</h3>
                         <P>{team.map((player) => player.name).join(", ")}</P>
                     </Container>
-                    {gameData.teamPhotoURLs[team[0].teamColor] ? <img style={{ height: "80px", width: "80px", objectFit: "cover", borderRadius: "10px" }} src={gameData.teamPhotoURLs[team[0].teamColor]} /> :
-                        team[0].teamColor === playerTeam ? <TeamFileUpload team={team} /> : null}
+                    {gameData.teamPhotoURLs[team[0].teamColor] || team[0].teamColor !== playerTeam ?
+                        <TeamAvatar color={team[0].teamColor} photoURL={gameData.teamPhotoURLs[team[0].teamColor]} style={{ height: "80px", width: "80px", objectFit: "cover", borderRadius: "10px" }} /> :
+                        <TeamFileUpload team={team} />}
                 </SolidCard>
             ))}
         </Stack>

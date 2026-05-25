@@ -58,53 +58,38 @@ export default function SelectedZonePopup({
     const ownerColor = currentZone?.controlTeam ? theme.colors[currentZone.controlTeam][5] : undefined
     return (
         <>
-            <div style={{
-                pointerEvents: "none",
-                position: "absolute",
-                top: "0",
-                zIndex: "999",
-                display: currentZone ? "flex" : "none",
-                gap: "5px",
-                flexWrap: "nowrap",
-                width: "100%",
-                height: "100%",
-                justifyContent: "space-between",
-                alignItems: "center",
-                opacity: "80%"
-            }}>
+            <div
+                style={{
+                    position: "absolute",
+                    top: 0,
+                    left: 0,
+                    width: "100%",
+                    zIndex: 1,
+                    display: currentZone ? "flex" : "none",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    backgroundColor: "white",
+                    borderBottom: `3px solid ${ownerColor || theme.colors.actionColor[5]}`,
+                    padding: "0.25rem 0.5rem",
+                }}
+            >
                 <button
                     onClick={prevLine}
-                    style={{
-
-                        pointerEvents: "all",
-                        flexGrow: "1",
-                        maxWidth: "15vw",
-                        height: "30%",
-                        padding: "1rem",
-                        border: "2px solid",
-                        borderColor: `${theme.colors.violet[8]}`,
-                        borderLeft: "none",
-                        backgroundColor: `${theme.colors.violet[3]}`
-                    }}>
+                    style={lineNavButtonStyles(theme.colors.violet[8])}
+                    aria-label="Previous line"
+                >
                     <FaArrowCircleLeft size="2rem" />
                 </button>
-                <div></div>
+                <Span size="sm">
+                    {lines.length > 0 ? `Line ${lineIndex + 1} of ${lines.length}` : "No lines"}
+                </Span>
                 <button
                     onClick={nextLine}
-                    style={{
-                        pointerEvents: "all",
-                        flexGrow: "1",
-                        maxWidth: "15vw",
-                        height: "30%",
-                        padding: "1rem",
-                        border: "2px solid",
-                        borderColor: `${theme.colors.violet[8]}`,
-                        borderRight: "none",
-                        backgroundColor: `${theme.colors.violet[3]}`
-                    }}>
+                    style={lineNavButtonStyles(theme.colors.violet[8])}
+                    aria-label="Next line"
+                >
                     <FaArrowCircleRight size="2rem" />
                 </button>
-
             </div>
 
             <Center
@@ -181,3 +166,13 @@ const selectedZonePopupStyles: React.CSSProperties = {
     textAlign: "center",
     padding: "0.5rem 1rem",
 };
+
+const lineNavButtonStyles = (color: string): React.CSSProperties => ({
+    background: "none",
+    border: "none",
+    padding: "0.25rem 0.5rem",
+    cursor: "pointer",
+    display: "flex",
+    alignItems: "center",
+    color,
+});
